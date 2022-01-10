@@ -2,7 +2,7 @@ import React from "react";
 
 import Paper from "@mui/material/Paper";
 
-function Home(props) {
+function Home() {
   return <Paper>App</Paper>;
 }
 

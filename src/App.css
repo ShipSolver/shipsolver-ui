@@ -1,0 +1,6 @@
+:root {
+    --wlp-brand-transition-time: 0.3s;
+    --wlp-brand-border-radius: 30px;
+    --wlp-brand-card-padding: 32px;
+    --wlp-brand-spacing: 8px;
+}

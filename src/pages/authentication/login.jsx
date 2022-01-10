@@ -1,226 +1,123 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import Link from "@mui/material/Link";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import Alert from "@mui/material/Alert";
 
-import { useForm, Controller } from "react-hook-form";
+import { observer } from "mobx-react-lite";
+import { useStateContext } from "../../state";
 
-import { makeStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import CircleCheckedFilled from "@material-ui/icons/CheckCircle";
-import CircleUnchecked from "@material-ui/icons/RadioButtonUnchecked";
-import Link from "@material-ui/core/Link";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import Tooltip from "@material-ui/core/Tooltip";
-import IconButton from "@material-ui/core/IconButton";
-import Visibility from "@material-ui/icons/Visibility";
-import VisibilityOff from "@material-ui/icons/VisibilityOff";
+function validateEmail(email) {
+  var re =
+    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(String(email).toLowerCase());
+}
 
-import { connect } from "react-redux";
-import { login } from "../../services/authenticationServices.js";
+function LogIn(props) {
+  const { AuthenticationState } = useStateContext();
+  const { error, login } = AuthenticationState;
 
-import ToastFactory from "../components/ToastFactory";
-import Loading from "../components/Loading";
-
-import Logo from "../../assets/logos/simpleLandlordFullsize.png";
-
-const errorMessages = {
-  email: {
-    required: "Please enter your email",
-  },
-  password: {
-    required: "Please enter your password",
-  },
-};
-
-const useStyles = makeStyles((theme) => ({
-  main: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "flex-start",
-    alignItems: "center",
-    marginTop: "82px",
-  },
-  logo: {
-    width: "100%",
-    paddingLeft: "64px",
-    paddingRight: "64px",
-    paddingTop: "32px",
-    paddingBottom: "32px",
-  },
-  form: {
-    width: "100%",
-    marginTop: "16px",
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-}));
-
-function Login(props) {
-  const {
-    handleSubmit,
-    setError,
-    control,
-    formState: { errors },
-  } = useForm();
-
-  const [showPassword, setshowPassword] = useState(false);
-
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [notice, setNotice] = useState("");
   const [rememberMe, setRememberMe] = useState(true);
-  const handleRememberMeChange = (event) => setRememberMe(event.target.checked);
+  const [formError, setFormError] = useState(null);
 
-  const [toasts, setToasts] = useState([]);
-  const addToast = (content, severity) => setToasts([...toasts, { content, severity }]);
-
-  useEffect(() => {
-    const errors = props.error;
-    if (typeof errors === "string") {
-      addToast(errors, "error");
-    } else if (typeof errors === "object") {
-      let field;
-      for (field in errors) {
-        setError(field, {
-          type: errors[field],
-        });
-      }
+  const handleLogin = async (event) => {
+    if (validateEmail(email) && password != "") {
+      setFormError(null);
+      await login(email, password, rememberMe);
+    } else {
+      setFormError("Please enter a valid email and password");
     }
-  }, [props.error]);
-
-  const onSubmit = async (loginData) => {
-    const loggedIn = await login(props.dispatch, loginData, rememberMe);
-    if (!loggedIn) addToast("The credentials you entered do not match our records, please try again", "error");
-    else props.history.push(`/home`);
   };
 
-  const classes = useStyles();
-
-  if (props.loading) {
-    return <Loading />;
-  }
-
   return (
-    <div className={classes.main}>
-      <ToastFactory toasts={toasts} />
-      <img src={Logo} className={classes.logo} alt="The Simple Landlord Logo" />
-      <Typography variant="h4">Log in</Typography>
-      <form className={classes.form} noValidate onSubmit={handleSubmit(onSubmit)}>
-        <Grid container spacing={1}>
-          <Grid item xs={12}>
-            <Controller
-              name="email"
-              control={control}
-              defaultValue=""
-              rules={{
-                required: true,
-              }}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  variant="outlined"
-                  margin="normal"
-                  fullWidth
-                  required
-                  id="email"
-                  label="Email"
-                  autoComplete="email"
-                  autoFocus
-                  error={errors.email && errors.email !== null}
-                  helperText={errors.email ? errorMessages["email"][errors.email.type] : null}
-                />
-              )}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <Controller
-              name="password"
-              control={control}
-              defaultValue=""
-              rules={{
-                required: true,
-              }}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  variant="outlined"
-                  margin="normal"
-                  fullWidth
-                  required
-                  type={showPassword ? "text" : "password"}
-                  id="password"
-                  label="Password"
-                  autoComplete="current-password"
-                  error={errors.password && errors.password !== null}
-                  helperText={errors.password ? errorMessages["password"][errors.password.type] : null}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <Tooltip title="Show Password" PopperProps={{ style: { marginTop: "-8px" } }}>
-                          <IconButton
-                            onClick={() => {
-                              setshowPassword(!showPassword);
-                            }}
-                          >
-                            {showPassword ? <Visibility /> : <VisibilityOff />}
-                          </IconButton>
-                        </Tooltip>
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-              )}
-            />
-
-            <FormControlLabel
-              control={
-                <Checkbox
-                  color="primary"
-                  checked={rememberMe}
-                  onChange={handleRememberMeChange}
-                  icon={<CircleUnchecked />}
-                  checkedIcon={<CircleCheckedFilled />}
-                />
-              }
-              label="Remember me"
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
-              Log in
-            </Button>
-          </Grid>
-          <Grid container>
-            <Grid item xs>
-              <Link href="/authentication/forgotpassword" variant="body2">
-                <b>Forgot password?</b>
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link href="/authentication/signup" variant="body2">
-                <b>Don't have an account? Sign Up</b>
-              </Link>
-            </Grid>
-          </Grid>
+    <div>
+      {(error && error != "") || (formError && formError != "") ? (
+        <Alert severity="error">{error != "" ? error : formError}</Alert>
+      ) : null}
+      <Typography component="h1" variant="h4" color="primary">
+        Sign in
+      </Typography>
+      <TextField
+        variant="outlined"
+        margin="normal"
+        required
+        fullWidth
+        id="email"
+        label="Email Address"
+        name="email"
+        autoComplete="email"
+        autoFocus
+        value={email}
+        error={notice && notice != "" ? true : false}
+        helperText={notice && notice != "" ? notice : null}
+        onChange={(event) => {
+          let emailStr = event.target.value;
+          setEmail(emailStr.replace(" ", ""));
+          if (!validateEmail(emailStr) && emailStr != "") {
+            setNotice("Username is not a valid email");
+          } else {
+            setNotice("");
+          }
+        }}
+      />
+      <TextField
+        variant="outlined"
+        margin="normal"
+        required
+        fullWidth
+        name="password"
+        label="Password"
+        type="password"
+        id="password"
+        autoComplete="current-password"
+        onChange={(event) => setPassword(event.target.value)}
+        onKeyPress={(e) => {
+          if (e.charCode == 13) handleLogin();
+        }}
+      />
+      <FormControlLabel
+        control={
+          <Checkbox
+            color="primary"
+            checked={rememberMe}
+            onChange={(event) => setRememberMe(event.target.checked)}
+          />
+        }
+        label="Remember me"
+      />
+      <Button
+        fullWidth
+        variant="contained"
+        color="primary"
+        onClick={handleLogin}
+        sx={{
+          margin:
+            "calc(var(--wlp-brand-spacing)*3), 0, calc(var(--wlp-brand-spacing)*2)",
+        }}
+      >
+        Sign In
+      </Button>
+      <Grid container>
+        <Grid item xs>
+          <Link href="/authentication/forgot_password" variant="body2">
+            Forgot password?
+          </Link>
         </Grid>
-      </form>
+        <Grid item>
+          <Link href="/authentication/signup" variant="body2">
+            {"Don't have an account? Sign Up"}
+          </Link>
+        </Grid>
+      </Grid>
     </div>
   );
 }
 
-const mapState = (state) => {
-  return {
-    user: state.authentication.user,
-    error: state.authentication.error,
-    loading: state.authentication.loading,
-  };
-};
-
-const mapDispatch = (dispatch) => {
-  return {
-    dispatch: (data) => dispatch(data),
-  };
-};
-
-export default connect(mapState, mapDispatch)(Login);
+export default observer(LogIn);

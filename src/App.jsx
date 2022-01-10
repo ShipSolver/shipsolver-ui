@@ -1,28 +1,45 @@
 import React from "react";
+import "./App.css";
+
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import { ThemeProvider } from "@mui/material";
+import CssBaseline from "@mui/material/CssBaseline";
+
+import { StateProvider } from "./state";
+
+import WLPBrand from "./WLPBrand";
+
 import ScrollReset from "./utils/scrollReset";
-import AppRoute from "./utils/appRoute";
+import RouteProtector from "./utils/routeProtector";
 
-import { Provider } from "react-redux";
-import configureStore from "./redux/store";
-
-import { BrowserRouter, Switch, Route } from "react-router-dom";
-
-import authenticationRoutes from "./pages/authentication";
-import appRoutes from "./pages/app";
-
-const store = configureStore();
+import AuthenticationRoutes from "./pages/authentication";
+import AppRoutes from "./pages/app";
 
 function App() {
   return (
-    <Provider store={store}>
+    <ThemeProvider theme={WLPBrand}>
       <BrowserRouter>
+        <CssBaseline />
         <ScrollReset />
-        <Switch>
-          <Route path="/authentication" component={authenticationRoutes} />
-          <AppRoute path="/" component={appRoutes} />
-        </Switch>
+        <StateProvider>
+          <Routes>
+            <Route
+              path="/authentication/*"
+              element={<AuthenticationRoutes />}
+            />
+            <Route
+              path="/*"
+              element={
+                <RouteProtector>
+                  <AppRoutes />
+                </RouteProtector>
+              }
+            />
+          </Routes>
+        </StateProvider>
       </BrowserRouter>
-    </Provider>
+    </ThemeProvider>
   );
 }
 
