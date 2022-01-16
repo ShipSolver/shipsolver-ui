@@ -12,6 +12,26 @@ const WLPBrand = createTheme({
     },
   },
   components: {
+    MuiTypography: {
+      variants: [
+        {
+          props: { variant: "h1" },
+          style: {
+            [theme.breakpoints.down("sm")]: {
+              fontSize: "3rem",
+            },
+          },
+        },
+        {
+          props: { variant: "h3" },
+          style: {
+            [theme.breakpoints.down("sm")]: {
+              fontSize: "1.5rem",
+            },
+          },
+        },
+      ],
+    },
     MuiOutlinedInput: {
       styleOverrides: {
         root: {
@@ -40,23 +60,40 @@ const WLPBrand = createTheme({
     MuiButton: {
       styleOverrides: {
         root: {
-          transition: "all var(--wlp-brand-transition-time)",
-          boxShadow: "rgba(0, 0, 0, 0.06) 0px 1px 2px",
-          "&:active": {
-            boxShadow: "none !important",
-            transform: "translate3d(0px, 1px, 0px)",
+          fontSize: "1.25rem",
+          lineHeight: 2,
+          padding: "8px 16px",
+          textTransform: "none",
+          [theme.breakpoints.down("sm")]: {
+            fontSize: "0.95rem",
           },
-          borderRadius: "var(--wlp-brand-border-radius)",
         },
       },
+      variants: [
+        {
+          props: { variant: "contained" },
+          style: {
+            transition: "all var(--wlp-brand-transition-time)",
+            boxShadow: "var(--wlp-brand-box-shadow)",
+            borderRadius: "var(--wlp-brand-border-radius)",
+            "&:active": {
+              boxShadow: "none !important",
+              transform: "translate3d(0px, 1px, 0px)",
+            },
+            "&:hover": {
+              boxShadow: "var(--wlp-brand-box-shadow-hover)",
+            },
+          },
+        },
+      ],
     },
     MuiCard: {
       styleOverrides: {
         root: {
           transition: "all var(--wlp-brand-transition-time)",
-          boxShadow: "rgba(0, 0, 0, 0.06) 0px 2px 4px",
+          boxShadow: "var(--wlp-brand-box-shadow)",
           "&:hover": {
-            boxShadow: "rgba(0, 0, 0, 0.22) 0px 19px 43px",
+            boxShadow: "var(--wlp-brand-box-shadow-hover)",
             transform: "translate3d(0px, -1px, 0px)",
           },
           borderRadius: "var(--wlp-brand-border-radius)",

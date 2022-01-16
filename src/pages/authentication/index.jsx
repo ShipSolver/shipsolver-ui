@@ -12,7 +12,7 @@ import Copyright from "../components/copyright";
 
 import Login from "./login";
 import SignupManager from "./signupManager";
-import SignupBroker from "./signupBroker";
+import SignupStandardUser from "./signupStandardUser";
 import Home from "./home";
 import SignupConfirmation from "./signupConfirmation";
 
@@ -36,11 +36,11 @@ function AuthenticationRouter({ location }) {
   ) : loading ? (
     <Loading />
   ) : (
-    <Container component="main" maxWidth="xs">
+    <Container component="main" maxWidth="sm" className="wlp-brand-app-content">
       <Routes>
-        <Route path="signup/confirmation" element={<SignupConfirmation />} />
-        <Route path="signupBroker" element={<SignupBroker />} />
-        <Route path="signupManager" element={<SignupManager />} />
+        <Route path="signup_confirmation" element={<SignupConfirmation />} />
+        <Route path="signup_standard_user" element={<SignupStandardUser />} />
+        <Route path="signup_manager" element={<SignupManager />} />
         <Route path="login" element={<Login />} />
         <Route index element={<Home />} />
       </Routes>

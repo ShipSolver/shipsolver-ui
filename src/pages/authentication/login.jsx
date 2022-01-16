@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -17,9 +17,13 @@ function validateEmail(email) {
   return re.test(String(email).toLowerCase());
 }
 
-function LogIn(props) {
+function Login(props) {
   const { AuthenticationState } = useStateContext();
-  const { error, login } = AuthenticationState;
+  const { error, login, setError, errorDefault } = AuthenticationState;
+
+  useEffect(() => {
+    setError(errorDefault);
+  }, []);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -28,6 +32,7 @@ function LogIn(props) {
   const [formError, setFormError] = useState(null);
 
   const handleLogin = async (event) => {
+    setError(errorDefault);
     if (validateEmail(email) && password != "") {
       setFormError(null);
       await login(email, password, rememberMe);
@@ -36,14 +41,20 @@ function LogIn(props) {
     }
   };
 
+  console.log({ error, formError, errorDefault });
+
   return (
-    <div>
+    <>
       {(error && error != "") || (formError && formError != "") ? (
-        <Alert severity="error">{error != "" ? error : formError}</Alert>
+        <Alert severity="error">
+          {error && error != "" ? error : formError}
+        </Alert>
       ) : null}
-      <Typography component="h1" variant="h4" color="primary">
-        Sign in
+      <div className="wlp-brand-spacer" />
+      <Typography component="h1" variant="h2" color="primary" align="center">
+        <b>Log in</b>
       </Typography>
+      <div className="wlp-brand-spacer" />
       <TextField
         variant="outlined"
         margin="normal"
@@ -92,6 +103,7 @@ function LogIn(props) {
         }
         label="Remember me"
       />
+      <div className="wlp-brand-spacer" />
       <Button
         fullWidth
         variant="contained"
@@ -102,7 +114,7 @@ function LogIn(props) {
             "calc(var(--wlp-brand-spacing)*3), 0, calc(var(--wlp-brand-spacing)*2)",
         }}
       >
-        Sign In
+        Go
       </Button>
       <Grid container>
         <Grid item xs>
@@ -111,13 +123,13 @@ function LogIn(props) {
           </Link>
         </Grid>
         <Grid item>
-          <Link href="/authentication/signup" variant="body2">
-            {"Don't have an account? Sign Up"}
+          <Link href="/authentication/" variant="body2">
+            {"Don't have an account? Go home"}
           </Link>
         </Grid>
       </Grid>
-    </div>
+    </>
   );
 }
 
-export default observer(LogIn);
+export default observer(Login);

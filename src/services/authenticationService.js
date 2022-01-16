@@ -78,7 +78,7 @@ export default class AuthenticationService {
 
   refreshUser = async () => {
     await this.delay(250);
-    return { user: this.TestUser, error: null };
+    return { user: null, error: "User does not exist anymore" };
 
     let user = null;
     let error = null;
@@ -203,7 +203,7 @@ export default class AuthenticationService {
     return { error };
   };
 
-  getBrokerAgreement = async () => {
+  getStandardUserAgreement = async () => {
     return (
       "This is a long and complicated terms and conditions paragraph. I got bored writing this so I will copy and past this a bunch of times" +
       "This is a long and complicated terms and conditions paragraph. I got bored writing this so I will copy and past this a bunch of times" +
@@ -215,12 +215,12 @@ export default class AuthenticationService {
     let error = null;
     let agreement = null;
     await axios
-      .get(`${SERVER_URL}api/broker_agreement`)
+      .get(`${SERVER_URL}api/standard_user_agreement`)
       .then((res) => {
         agreement = res.data;
       })
       .catch((e) => {
-        error = e.message || "Could not retreive Broker Agreement";
+        error = e.message || "Could not retreive Standard User Agreement";
       });
 
     return { agreement, error };

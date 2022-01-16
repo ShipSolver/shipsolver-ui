@@ -7,6 +7,8 @@ import DraftsIcon from "@mui/icons-material/Drafts";
 import Avatar from "@mui/material/Avatar";
 import { indigo } from "@mui/material/colors";
 
+import Link from "../components/plainLink";
+
 function SignupConfirmation(props) {
   return (
     <Paper
@@ -32,15 +34,11 @@ function SignupConfirmation(props) {
       >
         <DraftsIcon />
       </Avatar>
-      <Button
-        fullWidth
-        size="large"
-        variant="contained"
-        color="primary"
-        onClick={() => props.history.push("/authentication/login")}
-      >
-        Log In
-      </Button>
+      <Link to="/authentication/login" style={{ width: "100%" }}>
+        <Button fullWidth variant="contained" color="primary">
+          Log In
+        </Button>
+      </Link>
     </Paper>
   );
 }

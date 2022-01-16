@@ -1,6 +1,32 @@
 :root {
-    --wlp-brand-transition-time: 0.3s;
-    --wlp-brand-border-radius: 30px;
-    --wlp-brand-card-padding: 32px;
-    --wlp-brand-spacing: 8px;
+  --wlp-brand-transition-time: 0.3s;
+  --wlp-brand-border-radius: 8px;
+  --wlp-brand-card-padding: 32px;
+  --wlp-brand-spacing: 8px;
+  --wlp-brand-box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 8px;
+  --wlp-brand-box-shadow-hover: rgba(0, 0, 0, 0.4) 0px 4px 16px;
+  --wlp-brand-spacer-height: 64px;
+  --wlp-brand-spacer-height-small: 32px;
+}
+
+.wlp-brand-app-content {
+  align-content: center;
+  padding: var(--wlp-brand-card-padding);
+}
+
+.wlp-brand-margin-vertical {
+  margin-top: 8px !important;
+  margin-bottom: 8px !important;
+}
+
+.wlp-brand-padding-large {
+  padding: 24px !important;
+}
+
+.wlp-brand-spacer {
+  margin-top: var(--wlp-brand-spacer-height);
+}
+
+.wlp-brand-spacer-small {
+  margin-top: var(--wlp-brand-spacer-height-small);
 }

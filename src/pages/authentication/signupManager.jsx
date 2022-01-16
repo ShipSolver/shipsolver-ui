@@ -54,7 +54,7 @@ function Signup(props) {
         phone,
       });
       setLoading(false);
-      if (!err) navigate("/authentication/signup/confirmation");
+      if (!err) navigate("/authentication/signup_confirmation");
       setError((err && err.message) || err);
     } else {
       setInvalidForm(true);
@@ -74,9 +74,10 @@ function Signup(props) {
     <div>
       {invalidForm ? <Alert severity="error">Check form fields</Alert> : null}
       {error && error != "" ? <Alert severity="error">{error}</Alert> : null}
-      <Typography component="h1" variant="h4" color="primary">
-        Sign up as a Manager
+      <Typography component="h1" variant="h2" color="primary" align="center">
+        <b>Sign up as a manager</b>
       </Typography>
+      <div className="wlp-brand-spacer-small" />
       <Grid container spacing={1}>
         <Grid item xs={12} sm={6}>
           <TextField

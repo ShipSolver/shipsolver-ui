@@ -1,9 +1,15 @@
 import React from "react";
 
-import Paper from "@mui/material/Paper";
+import Button from "@mui/material/Button";
+import Paper from "../components/roundedPaper";
 
 function Home(props) {
-  return <Paper>App</Paper>;
+  return (
+    <Paper>
+      App
+      <Button variant="contained">Hi</Button>
+    </Paper>
+  );
 }
 
 export default Home;
