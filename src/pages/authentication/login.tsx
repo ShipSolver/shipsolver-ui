@@ -7,43 +7,50 @@ import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Alert from "@mui/material/Alert";
+import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
+import { ErrorAtom, UserAtom } from "../../state/authentication";
+import { login } from "../../services/authenticationServices";
+import Loading from "../components/loading";
+import { validateEmail } from "../../utils/regex";
 
-import { observer } from "mobx-react-lite";
-import { useStateContext } from "../../state";
+function Login() {
+  const [error, setError] = useRecoilState(ErrorAtom);
+  const resetError = useResetRecoilState(ErrorAtom);
+  const setUser = useSetRecoilState(UserAtom);
 
-function validateEmail(email) {
-  var re =
-    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  return re.test(String(email).toLowerCase());
-}
-
-function Login(props) {
-  const { AuthenticationState } = useStateContext();
-  const { error, login, setError, errorDefault } = AuthenticationState;
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    setError(errorDefault);
-  }, []);
+    resetError();
+  }, [resetError]);
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [notice, setNotice] = useState("");
-  const [rememberMe, setRememberMe] = useState(true);
-  const [formError, setFormError] = useState(null);
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [notice, setNotice] = useState<string>("");
+  const [rememberMe, setRememberMe] = useState<boolean>(true);
+  const [formError, setFormError] = useState<null | string>(null);
 
-  const handleLogin = async (event) => {
-    setError(errorDefault);
+  const handleLogin = async () => {
+    resetError();
     if (validateEmail(email) && password != "") {
       setFormError(null);
-      await login(email, password, rememberMe);
+      setLoading(true);
+      const { user: u, error: e } = await login({
+        email,
+        password,
+        rememberMe,
+      });
+      setError(e);
+      setUser(u);
+      setLoading(true);
     } else {
       setFormError("Please enter a valid email and password");
     }
   };
 
-  console.log({ error, formError, errorDefault });
-
-  return (
+  return loading ? (
+    <Loading />
+  ) : (
     <>
       {(error && error != "") || (formError && formError != "") ? (
         <Alert severity="error">
@@ -132,4 +139,4 @@ function Login(props) {
   );
 }
 
-export default observer(Login);
+export default Login;

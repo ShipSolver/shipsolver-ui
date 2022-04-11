@@ -1,8 +1,8 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, LinkProps } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 
-const PlainLink = styled(Link)(({ theme }) => ({
+const PlainLink = styled(Link)(() => ({
   textDecoration: "none",
   color: "inherit",
   "&:focus, &:hover, &:visited, &:link, &:active": {
@@ -10,4 +10,4 @@ const PlainLink = styled(Link)(({ theme }) => ({
   },
 }));
 
-export default (props) => <PlainLink {...props} />;
+export default (props: LinkProps) => <PlainLink {...props} />;

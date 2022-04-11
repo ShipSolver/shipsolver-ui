@@ -16,13 +16,21 @@ const pages = ["Home", "Messages"];
 const settings = ["Profile", "Settings", "Logout"];
 
 const Header = () => {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [anchorElNav, setAnchorElNav] = React.useState<
+    (EventTarget & HTMLButtonElement) | null
+  >(null);
+  const [anchorElUser, setAnchorElUser] = React.useState<
+    (EventTarget & HTMLButtonElement) | null
+  >(null);
 
-  const handleOpenNavMenu = (event) => {
+  const handleOpenNavMenu = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     setAnchorElNav(event.currentTarget);
   };
-  const handleOpenUserMenu = (event) => {
+  const handleOpenUserMenu = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     setAnchorElUser(event.currentTarget);
   };
 

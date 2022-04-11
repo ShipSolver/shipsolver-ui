@@ -24,7 +24,6 @@ function Home() {
         </Button>
       </Link>
       <Typography
-        fullWidth
         variant="h6"
         align="center"
         className="wlp-brand-margin-vertical"

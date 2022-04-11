@@ -7,47 +7,51 @@ import Alert from "@mui/material/Alert";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogTitle from "@mui/material/DialogTitle";
-
-import { Navigate, useNavigate } from "react-router-dom";
-
-import Loading from "../components/Loading.jsx";
-import { TransitionUp } from "../components/transitions.jsx";
-
 import qs from "qs";
 
-function NewPasswordPage({ location }) {
-  const referer = location && location.state ? location.state.referer : "/";
-  const params =
-    location && location.search
-      ? qs.parse(location.search, { ignoreQueryPrefix: true })
-      : null;
-  const resetToken = params && params.reset_token;
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
+
+import Loading from "../components/loading";
+import { SlideUp } from "../components/transitions";
+
+import { useRecoilState } from "recoil";
+import { ErrorAtom } from "../../state/authentication/index.js";
+
+import { resetPassword } from "../../services/authenticationServices";
+
+function NewPasswordPage() {
+  const location = useLocation();
+  const params = location.search
+    ? qs.parse(location.search, { ignoreQueryPrefix: true })
+    : null;
+  const resetToken =
+    params && params.reset_token ? (params.reset_token as string) : null;
 
   if (!resetToken) return <Navigate to={"/authentication"} />;
 
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [passwordStrengthError, setPasswordStrengthError] = useState("");
-  const [passwordHelp, setPasswordHelp] = useState("");
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [password, setPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
+  const [passwordStrengthError, setPasswordStrengthError] = useState<string>(
+    ""
+  );
+  const [passwordHelp, setPasswordHelp] = useState<string>("");
+  const [success, setSuccess] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const [error, setError] = useRecoilState(ErrorAtom);
 
   const navigate = useNavigate();
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async () => {
     if (
-      resetToken &&
-      password &&
       password != "" &&
-      confirmPassword &&
       confirmPassword != "" &&
-      (!passwordStrengthError || passwordStrengthError == "") &&
-      (!passwordHelp || passwordHelp == "")
+      passwordStrengthError == "" &&
+      passwordHelp == ""
     ) {
       setLoading(true);
-      let { error } = await resetPassword(password, resetToken);
-      setError((error && error.message) || error);
+      let { error: e } = await resetPassword({ password, resetToken });
+      setError(e);
       setSuccess(!error);
     } else {
       setError("Please correctly fill in password fields");
@@ -62,7 +66,7 @@ function NewPasswordPage({ location }) {
     <div>
       <Dialog
         open={error != null}
-        TransitionComponent={TransitionUp}
+        TransitionComponent={SlideUp}
         keepMounted
         onClose={() => setError(null)}
       >
@@ -77,7 +81,7 @@ function NewPasswordPage({ location }) {
       </Dialog>
       <Dialog
         open={success}
-        TransitionComponent={TransitionUp}
+        TransitionComponent={SlideUp}
         keepMounted
         onClose={() => navigate("/authentication/login")}
       >
@@ -123,10 +127,10 @@ function NewPasswordPage({ location }) {
           setPasswordStrengthError("");
           if (pass.length < 8)
             setPasswordStrengthError("password is not long enough");
-          var hasUpperCase = /[A-Z]/.test(pass);
-          var hasLowerCase = /[a-z]/.test(pass);
-          var hasNumbers = /\d/.test(pass);
-          var hasNonalphas = /\W/.test(pass);
+          const hasUpperCase = /[A-Z]/.test(pass) ? 1 : 0;
+          const hasLowerCase = /[a-z]/.test(pass) ? 1 : 0;
+          const hasNumbers = /\d/.test(pass) ? 1 : 0;
+          const hasNonalphas = /\W/.test(pass) ? 1 : 0;
           if (hasUpperCase + hasLowerCase + hasNumbers + hasNonalphas < 4)
             setPasswordStrengthError(
               "Password must contain upper and lower case letters, numbers and symbols"

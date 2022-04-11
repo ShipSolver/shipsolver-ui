@@ -13,49 +13,40 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogTitle from "@mui/material/DialogTitle";
 
-import Loading from "../components/Loading.jsx";
-import { TransitionUp } from "../components/transitions";
+import Loading from "../components/loading";
+import { SlideUp } from "../components/transitions";
 
-import { forgotPassword } from "../../services/authenticationServices.js";
+import { forgotPassword } from "../../services/authenticationServices";
+import { validateEmail } from "../../utils/regex";
 
-function validateEmail(email) {
-  var re =
-    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  return re.test(String(email).toLowerCase());
-}
-
-function ForgotPassword({ history }) {
+function ForgotPassword() {
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState("");
-  const [notice, setNotice] = useState("");
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState<string>("");
+  const [notice, setNotice] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async () => {
     if (validateEmail(email)) {
       setLoading(true);
-      let { error } = await forgotPassword({ email });
+      const { error } = await forgotPassword(email);
       setSuccess(!error);
-      setError(
-        (error && error.message) || "Could not send password reset email"
-      );
+      setError(error);
       setLoading(false);
     } else {
       setError("Please enter a valid email");
     }
   };
 
-  if (loading) {
-    return <Loading />;
-  }
-
-  return (
+  return loading ? (
+    <Loading />
+  ) : (
     <Container component="main" maxWidth="xs" sx={{ alignItems: "center" }}>
       <Dialog
         open={error != null}
-        TransitionComponent={TransitionUp}
+        TransitionComponent={SlideUp}
         keepMounted
         onClose={() => setError(null)}
       >
@@ -70,7 +61,7 @@ function ForgotPassword({ history }) {
       </Dialog>
       <Dialog
         open={success}
-        TransitionComponent={TransitionUp}
+        TransitionComponent={SlideUp}
         keepMounted
         onClose={() => navigate("/authentication/")}
       >

@@ -8,60 +8,57 @@ import Alert from "@mui/material/Alert";
 
 import { useNavigate } from "react-router-dom";
 
-import { useStateContext } from "../../state/index.jsx";
+import Loading from "../components/loading";
+import { validateEmail } from "../../utils/regex";
+import { signup } from "../../services/authenticationServices";
+import { useRecoilState } from "recoil";
+import { ErrorAtom } from "../../state/authentication";
 
-import Loading from "../components/loading.jsx";
+function Signup() {
+  const [firstName, setFirstName] = useState<string>("");
+  const [lastName, setLastName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [phone, setPhone] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
+  const [passwordStrengthError, setPasswordStrengthError] = useState<string>(
+    ""
+  );
+  const [emailHelp, setEmailHelp] = useState<string>("");
+  const [passwordHelp, setPasswordHelp] = useState<string>("");
+  const [invalidForm, setInvalidForm] = useState<string | null>(null);
 
-function validateEmail(email) {
-  var re =
-    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  return re.test(String(email).toLowerCase());
-}
-
-function Signup(props) {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [phone, setPhone] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [passwordStrengthError, setPasswordStrengthError] = useState("");
-  const [emailHelp, setEmailHelp] = useState("");
-  const [passwordHelp, setPasswordHelp] = useState("");
-  const [invalidForm, setInvalidForm] = useState(false);
-
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [error, setError] = useRecoilState(ErrorAtom);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
-  const { AuthenticationService } = useStateContext();
-  const signup = AuthenticationService.signup;
-
-  const handleSignup = async (event) => {
-    if (
-      password == confirmPassword &&
-      (passwordStrengthError == null || passwordStrengthError == "") &&
-      validateEmail(email)
-    ) {
-      setInvalidForm(false);
+  const handleSignup = async () => {
+    const validEmail = validateEmail(email);
+    const passwordMatch = password == confirmPassword;
+    const passwordStrength = passwordStrengthError == "";
+    const phoneExists = phone !== "";
+    if (validEmail && passwordMatch && passwordStrength && phoneExists) {
+      setInvalidForm(null);
       setLoading(true);
-      const { error: err } = await signup({
+      const { error: e } = await signup({
         name: firstName + " " + lastName,
         email,
         password,
-        isManager: true,
         phone,
       });
+      setError(e);
       setLoading(false);
-      if (!err) navigate("/authentication/signup_confirmation");
-      setError((err && err.message) || err);
+      if (!e) navigate("/authentication/signup_confirmation");
     } else {
-      setInvalidForm(true);
-      if (password != confirmPassword) {
+      if (!passwordMatch) {
         setPasswordHelp("Passwords do not match");
-      } else {
+      }
+      if (!validEmail) {
         setEmailHelp("Please enter a valid email");
+      }
+      if (!phoneExists) {
+        setInvalidForm("Invalid phone number");
       }
     }
   };
@@ -72,10 +69,12 @@ function Signup(props) {
 
   return (
     <div>
-      {invalidForm ? <Alert severity="error">Check form fields</Alert> : null}
-      {error && error != "" ? <Alert severity="error">{error}</Alert> : null}
+      {invalidForm !== null ? (
+        <Alert severity="error">{invalidForm}</Alert>
+      ) : null}
+      {error != "" ? <Alert severity="error">{error}</Alert> : null}
       <Typography component="h1" variant="h2" color="primary" align="center">
-        <b>Sign up as a manager</b>
+        <b>Sign up as a user</b>
       </Typography>
       <div className="wlp-brand-spacer-small" />
       <Grid container spacing={1}>
@@ -157,10 +156,10 @@ function Signup(props) {
               setPasswordStrengthError("");
               if (pass.length < 8)
                 setPasswordStrengthError("password is not long enough");
-              var hasUpperCase = /[A-Z]/.test(pass);
-              var hasLowerCase = /[a-z]/.test(pass);
-              var hasNumbers = /\d/.test(pass);
-              var hasNonalphas = /\W/.test(pass);
+              const hasUpperCase = /[A-Z]/.test(pass) ? 1 : 0;
+              const hasLowerCase = /[a-z]/.test(pass) ? 1 : 0;
+              const hasNumbers = /\d/.test(pass) ? 1 : 0;
+              const hasNonalphas = /\W/.test(pass) ? 1 : 0;
               if (hasUpperCase + hasLowerCase + hasNumbers + hasNonalphas < 4)
                 setPasswordStrengthError(
                   "Password must contain upper and lower case letters, numbers and symbols"
@@ -206,7 +205,7 @@ function Signup(props) {
             onChange={(e) => {
               let pn = e.target.value;
               if (!pn || !pn.length || pn.length == 0) {
-                setPhone(null);
+                setPhone("");
                 return;
               }
               pn = pn.replace(" ", "");
@@ -242,7 +241,7 @@ function Signup(props) {
             Sign up
           </Button>
         </Grid>
-        <Grid container justify="flex-end">
+        <Grid container sx={{ justifyContent: "end" }}>
           <Grid item>
             <Link href="/authentication/login" variant="body2">
               Already have an account? Sign in

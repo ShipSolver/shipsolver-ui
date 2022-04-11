@@ -9,7 +9,7 @@ import { indigo } from "@mui/material/colors";
 
 import Link from "../components/plainLink";
 
-function SignupConfirmation(props) {
+function SignupConfirmation() {
   return (
     <Paper
       sx={{

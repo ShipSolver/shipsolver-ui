@@ -2,7 +2,7 @@ import { createTheme } from "@mui/material/styles";
 import { green, indigo } from "@mui/material/colors";
 
 const theme = createTheme();
-const WLPBrand = createTheme({
+const LongshipBrand = createTheme({
   palette: {
     primary: {
       main: indigo[500],
@@ -35,7 +35,7 @@ const WLPBrand = createTheme({
     MuiOutlinedInput: {
       styleOverrides: {
         root: {
-          borderRadius: "var(--wlp-brand-border-radius)",
+          borderRadius: "var(--longship-brand-border-radius)",
         },
       },
     },
@@ -47,12 +47,12 @@ const WLPBrand = createTheme({
           },
         },
         paper: {
-          borderRadius: "var(--wlp-brand-border-radius)",
+          borderRadius: "var(--longship-brand-border-radius)",
           [theme.breakpoints.down("xs")]: {
             margin: 0,
             width: "100vw",
             borderRadius:
-              "var(--wlp-brand-border-radius) var(--wlp-brand-border-radius) 0px 0px",
+              "var(--longship-brand-border-radius) var(--longship-brand-border-radius) 0px 0px",
           },
         },
       },
@@ -73,15 +73,15 @@ const WLPBrand = createTheme({
         {
           props: { variant: "contained" },
           style: {
-            transition: "all var(--wlp-brand-transition-time)",
-            boxShadow: "var(--wlp-brand-box-shadow)",
-            borderRadius: "var(--wlp-brand-border-radius)",
+            transition: "all var(--longship-brand-transition-time)",
+            boxShadow: "var(--longship-brand-box-shadow)",
+            borderRadius: "var(--longship-brand-border-radius)",
             "&:active": {
               boxShadow: "none !important",
               transform: "translate3d(0px, 1px, 0px)",
             },
             "&:hover": {
-              boxShadow: "var(--wlp-brand-box-shadow-hover)",
+              boxShadow: "var(--longship-brand-box-shadow-hover)",
             },
           },
         },
@@ -90,20 +90,20 @@ const WLPBrand = createTheme({
     MuiCard: {
       styleOverrides: {
         root: {
-          transition: "all var(--wlp-brand-transition-time)",
-          boxShadow: "var(--wlp-brand-box-shadow)",
+          transition: "all var(--longship-brand-transition-time)",
+          boxShadow: "var(--longship-brand-box-shadow)",
           "&:hover": {
-            boxShadow: "var(--wlp-brand-box-shadow-hover)",
+            boxShadow: "var(--longship-brand-box-shadow-hover)",
             transform: "translate3d(0px, -1px, 0px)",
           },
-          borderRadius: "var(--wlp-brand-border-radius)",
+          borderRadius: "var(--longship-brand-border-radius)",
         },
       },
     },
     MuiCardContent: {
       styleOverrides: {
         root: {
-          padding: "var(--wlp-brand-card-padding)",
+          padding: "var(--longship-brand-card-padding)",
         },
       },
     },
@@ -120,4 +120,4 @@ const WLPBrand = createTheme({
   },
 });
 
-export default WLPBrand;
+export default LongshipBrand;

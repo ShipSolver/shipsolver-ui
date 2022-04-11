@@ -1,28 +1,26 @@
 import React from "react";
-import "./App.css";
+
+import { RecoilRoot } from "recoil";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import { ThemeProvider } from "@mui/material";
-import CssBaseline from "@mui/material/CssBaseline";
+import CssBaseline from "@mui/material/ScopedCssBaseline";
 
-import { StateProvider } from "./state";
-
-import WLPBrand from "./WLPBrand";
-
-import ScrollReset from "./utils/scrollReset";
-import RouteProtector from "./utils/routeProtector";
+import LongshipBrand from "./LongshipBrand";
+import ScrollReset from "./utils/ScrollReset";
 
 import AuthenticationRoutes from "./pages/authentication";
 import AppRoutes from "./pages/app";
+import RouteProtector from "./utils/routeProtector";
 
 function App() {
   return (
-    <ThemeProvider theme={WLPBrand}>
+    <ThemeProvider theme={LongshipBrand}>
       <BrowserRouter>
         <CssBaseline />
         <ScrollReset />
-        <StateProvider>
+        <RecoilRoot>
           <Routes>
             <Route
               path="/authentication/*"
@@ -37,7 +35,7 @@ function App() {
               }
             />
           </Routes>
-        </StateProvider>
+        </RecoilRoot>
       </BrowserRouter>
     </ThemeProvider>
   );

@@ -4,10 +4,11 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import DraftsIcon from "@mui/icons-material/Drafts";
 import Avatar from "@mui/material/Avatar";
-
 import { indigo } from "@mui/material/colors";
+import { useNavigate } from "react-router-dom";
 
-function Confirmation(props) {
+function Confirmation() {
+  const navigate = useNavigate();
   return (
     <div>
       <Typography
@@ -45,7 +46,7 @@ function Confirmation(props) {
           size="large"
           variant="contained"
           color="primary"
-          onClick={() => props.history.push("/authentication/login")}
+          onClick={() => navigate("/authentication/login")}
         >
           Log In
         </Button>
