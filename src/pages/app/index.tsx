@@ -8,6 +8,7 @@ import Copyright from "../components/copyright";
 import Header from "./components/header";
 
 import Home from "./home";
+import TicketFactory from "./ticketFactory";
 
 function AppRouter() {
   return (
@@ -16,6 +17,7 @@ function AppRouter() {
       <Container component="main" maxWidth="lg">
         <Routes>
           <Route index element={<Home />} />
+          <Route path="ticket-factory"  element={<TicketFactory />} />
         </Routes>
         <Box mt={4}>
           <Copyright />

@@ -31,7 +31,7 @@ function ForgotPassword() {
   const handleSubmit = async () => {
     if (validateEmail(email)) {
       setLoading(true);
-      const { error } = await forgotPassword(email);
+      const { error } = await forgotPassword({ email });
       setSuccess(!error);
       setError(error);
       setLoading(false);

@@ -20,32 +20,16 @@ function Home() {
           fullWidth
           className="wlp-brand-margin-vertical wlp-brand-padding-large"
         >
-          Login
+          <b>LOGIN</b>
         </Button>
       </Link>
-      <Typography
-        variant="h6"
-        align="center"
-        className="wlp-brand-margin-vertical"
-      >
-        Or
-      </Typography>
-      <Link to="signup_manager">
+      <Link to="signup">
         <Button
           variant="contained"
           fullWidth
           className="wlp-brand-margin-vertical wlp-brand-padding-large"
         >
-          Signup as a&nbsp;<b>WAREHOUSE MANAGER</b>
-        </Button>
-      </Link>
-      <Link to="signup_standard_user">
-        <Button
-          variant="contained"
-          fullWidth
-          className="wlp-brand-margin-vertical wlp-brand-padding-large"
-        >
-          Signup as a&nbsp;<b>USER</b>
+          <b>SIGN UP</b>
         </Button>
       </Link>
     </>

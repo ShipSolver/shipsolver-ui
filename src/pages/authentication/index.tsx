@@ -45,7 +45,7 @@ function AuthenticationRouter() {
   ) : (
     <Container component="main" maxWidth="sm" className="wlp-brand-app-content">
       <Routes>
-        <Route path="signup_confirmation" element={<SignupConfirmation />} />
+        <Route path="signup-confirmation" element={<SignupConfirmation />} />
         <Route path="signup" element={<SignupStandardUser />} />
         <Route path="login" element={<Login />} />
         <Route index element={<Home />} />
