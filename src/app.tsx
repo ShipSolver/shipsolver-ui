@@ -7,7 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "@mui/material";
 import CssBaseline from "@mui/material/ScopedCssBaseline";
 
-import LongshipBrand from "./LongshipBrand";
+import ShipSolverBrand from "./ShipSolverBrand";
 import ScrollReset from "./utils/ScrollReset";
 
 import AuthenticationRoutes from "./pages/authentication";
@@ -16,7 +16,7 @@ import RouteProtector from "./utils/routeProtector";
 
 function App() {
   return (
-    <ThemeProvider theme={LongshipBrand}>
+    <ThemeProvider theme={ShipSolverBrand}>
       <BrowserRouter>
         <CssBaseline />
         <ScrollReset />

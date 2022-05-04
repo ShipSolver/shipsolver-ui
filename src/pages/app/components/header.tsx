@@ -12,8 +12,8 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 
-const pages = ["Home", "Messages"];
-const settings = ["Profile", "Settings", "Logout"];
+const pages = ["Home"];
+const settings = ["Settings", "Logout"];
 
 const Header = () => {
   const [anchorElNav, setAnchorElNav] = React.useState<
@@ -43,7 +43,7 @@ const Header = () => {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" color="transparent">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography

@@ -14,7 +14,7 @@ function SignupConfirmation() {
     <Paper
       sx={{
         marginTop: "64px",
-        padding: "calc(var(--wlp-brand-spacing)*3)",
+        padding: "calc(var(--ss-brand-spacing)*3)",
         textAlign: "center",
         alignItems: "center",
         display: "flex",

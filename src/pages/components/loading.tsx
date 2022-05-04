@@ -18,11 +18,11 @@ function Loading() {
       <Typography
         color="primary"
         variant="h2"
-        sx={{ margin: "calc(var(--wlp-brand-spacing)*5)" }}
+        sx={{ margin: "calc(var(--ss-brand-spacing)*5)" }}
       >
         Loading
       </Typography>
-      <CircularProgress sx={{ margin: "calc(var(--wlp-brand-spacing)*5)" }} />
+      <CircularProgress sx={{ margin: "calc(var(--ss-brand-spacing)*5)" }} />
     </Container>
   );
 }

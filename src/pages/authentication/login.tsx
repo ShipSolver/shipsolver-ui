@@ -57,11 +57,11 @@ function Login() {
           {error && error != "" ? error : formError}
         </Alert>
       ) : null}
-      <div className="wlp-brand-spacer" />
+      <div className="ss-brand-spacer" />
       <Typography component="h1" variant="h2" color="primary" align="center">
         <b>Log in</b>
       </Typography>
-      <div className="wlp-brand-spacer" />
+      <div className="ss-brand-spacer" />
       <TextField
         variant="outlined"
         margin="normal"
@@ -110,7 +110,7 @@ function Login() {
         }
         label="Remember me"
       />
-      <div className="wlp-brand-spacer" />
+      <div className="ss-brand-spacer" />
       <Button
         fullWidth
         variant="contained"
@@ -118,7 +118,7 @@ function Login() {
         onClick={handleLogin}
         sx={{
           margin:
-            "calc(var(--wlp-brand-spacing)*3), 0, calc(var(--wlp-brand-spacing)*2)",
+            "calc(var(--ss-brand-spacing)*3), 0, calc(var(--ss-brand-spacing)*2)",
         }}
       >
         Go

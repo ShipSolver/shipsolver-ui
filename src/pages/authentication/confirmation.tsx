@@ -16,7 +16,7 @@ function Confirmation() {
         color="primary"
         variant="h2"
         sx={{
-          paddingBottom: "calc(var(--wlp-brand-spacing)*2)",
+          paddingBottom: "calc(var(--ss-brand-spacing)*2)",
         }}
       >
         Check your email for a confirmation letter!
@@ -25,7 +25,7 @@ function Confirmation() {
         <Avatar
           sx={{
             bgcolor: indigo[500],
-            paddingBottom: "calc(var(--wlp-brand-spacing)*3)",
+            paddingBottom: "calc(var(--ss-brand-spacing)*3)",
           }}
         >
           <DraftsIcon />
@@ -33,7 +33,7 @@ function Confirmation() {
         <Typography
           align="center"
           sx={{
-            paddingBottom: "calc(var(--wlp-brand-spacing)*3)",
+            paddingBottom: "calc(var(--ss-brand-spacing)*3)",
           }}
           variant="h5"
         >

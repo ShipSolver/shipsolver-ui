@@ -43,7 +43,7 @@ function AuthenticationRouter() {
   ) : isLoading ? (
     <Loading />
   ) : (
-    <Container component="main" maxWidth="sm" className="wlp-brand-app-content">
+    <Container component="main" maxWidth="sm" className="ss-brand-app-content">
       <Routes>
         <Route path="signup-confirmation" element={<SignupConfirmation />} />
         <Route path="signup" element={<SignupStandardUser />} />

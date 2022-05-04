@@ -127,7 +127,7 @@ type refreshFn = () => refreshResponse;
 
 export const refreshUser: refreshFn = async () => {
   await delay(250);
-  return { user: null, error: "User does not exist anymore" };
+  return { user: TestUser, error: null };
 
   let user = null;
   let error = null;

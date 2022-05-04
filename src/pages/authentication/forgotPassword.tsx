@@ -107,7 +107,7 @@ function ForgotPassword() {
         onClick={handleSubmit}
         sx={{
           margin:
-            "calc(var(--wlp-brand-spacing)*3), 0, calc(var(--wlp-brand-spacing)*2)",
+            "calc(var(--ss-brand-spacing)*3), 0, calc(var(--ss-brand-spacing)*2)",
         }}
       >
         Send Email

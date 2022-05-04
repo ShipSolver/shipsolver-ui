@@ -76,7 +76,7 @@ function Signup() {
       <Typography component="h1" variant="h2" color="primary" align="center">
         <b>Sign up as a user</b>
       </Typography>
-      <div className="wlp-brand-spacer-small" />
+      <div className="ss-brand-spacer-small" />
       <Grid container spacing={1}>
         <Grid item xs={12} sm={6}>
           <TextField

@@ -1,14 +1,14 @@
 import { createTheme } from "@mui/material/styles";
-import { green, indigo } from "@mui/material/colors";
+import { blue, indigo } from "@mui/material/colors";
 
 const theme = createTheme();
-const LongshipBrand = createTheme({
+const ShipSolverBrand = createTheme({
   palette: {
     primary: {
-      main: indigo[500],
+      main: blue[700],
     },
     secondary: {
-      main: green["A400"],
+      main: indigo[500],
     },
   },
   components: {
@@ -35,7 +35,7 @@ const LongshipBrand = createTheme({
     MuiOutlinedInput: {
       styleOverrides: {
         root: {
-          borderRadius: "var(--longship-brand-border-radius)",
+          borderRadius: "var(--ss-brand-border-radius)",
         },
       },
     },
@@ -47,12 +47,10 @@ const LongshipBrand = createTheme({
           },
         },
         paper: {
-          borderRadius: "var(--longship-brand-border-radius)",
+          borderRadius: "var(--ss-brand-border-radius)",
           [theme.breakpoints.down("xs")]: {
             margin: 0,
-            width: "100vw",
-            borderRadius:
-              "var(--longship-brand-border-radius) var(--longship-brand-border-radius) 0px 0px",
+            width: "100%",
           },
         },
       },
@@ -73,15 +71,15 @@ const LongshipBrand = createTheme({
         {
           props: { variant: "contained" },
           style: {
-            transition: "all var(--longship-brand-transition-time)",
-            boxShadow: "var(--longship-brand-box-shadow)",
-            borderRadius: "var(--longship-brand-border-radius)",
+            transition: "all var(--ss-brand-transition-time)",
+            boxShadow: "var(--ss-brand-box-shadow)",
+            borderRadius: "var(--ss-brand-border-radius)",
             "&:active": {
               boxShadow: "none !important",
               transform: "translate3d(0px, 1px, 0px)",
             },
             "&:hover": {
-              boxShadow: "var(--longship-brand-box-shadow-hover)",
+              boxShadow: "var(--ss-brand-box-shadow-hover)",
             },
           },
         },
@@ -90,20 +88,20 @@ const LongshipBrand = createTheme({
     MuiCard: {
       styleOverrides: {
         root: {
-          transition: "all var(--longship-brand-transition-time)",
-          boxShadow: "var(--longship-brand-box-shadow)",
+          transition: "all var(--ss-brand-transition-time)",
+          boxShadow: "var(--ss-brand-box-shadow)",
           "&:hover": {
-            boxShadow: "var(--longship-brand-box-shadow-hover)",
+            boxShadow: "var(--ss-brand-box-shadow-hover)",
             transform: "translate3d(0px, -1px, 0px)",
           },
-          borderRadius: "var(--longship-brand-border-radius)",
+          borderRadius: "var(--ss-brand-border-radius)",
         },
       },
     },
     MuiCardContent: {
       styleOverrides: {
         root: {
-          padding: "var(--longship-brand-card-padding)",
+          padding: "var(--ss-brand-card-padding)",
         },
       },
     },
@@ -120,4 +118,4 @@ const LongshipBrand = createTheme({
   },
 });
 
-export default LongshipBrand;
+export default ShipSolverBrand;

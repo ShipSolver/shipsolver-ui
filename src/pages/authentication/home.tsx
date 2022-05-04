@@ -13,12 +13,12 @@ function Home() {
       <Typography variant="h1" align="center">
         <b>Warehouse Logger Pro</b>
       </Typography>
-      <div className="wlp-brand-spacer" />
+      <div className="ss-brand-spacer" />
       <Link to="login">
         <Button
           variant="contained"
           fullWidth
-          className="wlp-brand-margin-vertical wlp-brand-padding-large"
+          className="ss-brand-margin-vertical ss-brand-padding-large"
         >
           <b>LOGIN</b>
         </Button>
@@ -27,7 +27,7 @@ function Home() {
         <Button
           variant="contained"
           fullWidth
-          className="wlp-brand-margin-vertical wlp-brand-padding-large"
+          className="ss-brand-margin-vertical ss-brand-padding-large"
         >
           <b>SIGN UP</b>
         </Button>
