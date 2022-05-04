@@ -49,7 +49,7 @@ function Signup() {
       });
       setError(e);
       setLoading(false);
-      if (!e) navigate("/authentication/signup_confirmation");
+      if (!e) navigate("/authentication/signup-confirmation");
     } else {
       if (!passwordMatch) {
         setPasswordHelp("Passwords do not match");
