@@ -1,0 +1,29 @@
+{
+  "tickets": [
+    {
+      "FIRST_PARTY": "CEVA",
+      "HOUSE_REF": "0000011111",
+      "BARCODE": "0000011111",
+      "PCS": ["Treadmill", "Mats"],
+      "NUM_PCS": "2",
+      "WEIGHT": "21kg",
+      "BOL_NUM": "0000011111",
+      "SPECIAL_SERVICES": "Lift gate",
+      "SPECIAL_INSTRUCTIONS": "Handle with care",
+      "CONSIGNEE": {
+        "COMPANY": "CEVA",
+        "NAME": "Mr. CEVA",
+        "ADDRESS": "123 CEVA Drive, Missisauga, ON, CA",
+        "POSTAL_CODE": "A1B 2C3",
+        "PHONE_NUMBER": "123-456-7890"
+      },
+      "SHIPPER": {
+        "COMPANY": "GymShark",
+        "NAME": "Mr. Shark",
+        "ADDRESS": "123 Shark Drive, Toronto, ON, CA",
+        "POSTAL_CODE": "C3B 2A1",
+        "PHONE_NUMBER": "098-765-4321"
+      }
+    }
+  ]
+}
