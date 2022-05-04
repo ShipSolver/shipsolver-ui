@@ -12,7 +12,7 @@ function Copyright() {
     >
       {"Copyright © "}
       <Link color="inherit" href="/about">
-        Warehouse Logger Pro
+        ShipSolver
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}

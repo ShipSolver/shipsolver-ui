@@ -11,7 +11,7 @@ function Home() {
         Welcome to
       </Typography>
       <Typography variant="h1" align="center">
-        <b>Warehouse Logger Pro</b>
+        <b>ShipSolver</b>
       </Typography>
       <div className="ss-brand-spacer" />
       <Link to="login">
