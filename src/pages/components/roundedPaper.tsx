@@ -5,7 +5,6 @@ import { styled } from "@mui/material/styles";
 const RoundedPaper = styled(Paper)(({ theme }) => ({
   boxShadow: "var(--ss-brand-box-shadow)",
   borderRadius: "var(--ss-brand-border-radius)",
-  margin: theme.spacing(1),
   padding: "var(--ss-brand-card-padding)",
 }));
 

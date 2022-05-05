@@ -1,0 +1,9 @@
+.ss-space-children-vertically {
+  display: flex;
+  flex-direction: column;
+}
+
+.ss-space-children-vertically > * {
+  margin: calc(var(--ss-brand-spacing) * 2) 0 calc(var(--ss-brand-spacing) * 2)
+    0;
+}

@@ -5,7 +5,7 @@ const theme = createTheme();
 const ShipSolverBrand = createTheme({
   palette: {
     primary: {
-      main: blue[700],
+      main: blue[800],
     },
     secondary: {
       main: indigo[500],
@@ -48,9 +48,12 @@ const ShipSolverBrand = createTheme({
         },
         paper: {
           borderRadius: "var(--ss-brand-border-radius)",
+          // on small screens turn modal into slide up menu
           [theme.breakpoints.down("xs")]: {
             margin: 0,
-            width: "100%",
+            width: "100vw",
+            borderRadius:
+              "var(--ShipSolver-brand-border-radius) var(--ShipSolver-brand-border-radius) 0px 0px",
           },
         },
       },

@@ -2,246 +2,744 @@
   "tickets": [
     {
       "FIRST_PARTY": "CEVA",
-      "HOUSE_REF": "0000011111",
-      "BARCODE": "0000011111",
-      "PCS": ["Treadmill", "Mats"],
-      "NUM_PCS": "2",
-      "WEIGHT": "21kg",
-      "BOL_NUM": "0000011111",
-      "SPECIAL_SERVICES": "Lift gate",
-      "SPECIAL_INSTRUCTIONS": "Handle with care",
-      "CONSIGNEE": {
-        "COMPANY": "CEVA",
-        "NAME": "Mr. CEVA",
-        "ADDRESS": "123 CEVA Drive, Missisauga, ON, CA",
-        "POSTAL_CODE": "A1B 2C3",
-        "PHONE_NUMBER": "123-456-7890"
-      },
-      "SHIPPER": {
-        "COMPANY": "GymShark",
-        "NAME": "Mr. Shark",
-        "ADDRESS": "123 Shark Drive, Toronto, ON, CA",
-        "POSTAL_CODE": "C3B 2A1",
-        "PHONE_NUMBER": "098-765-4321"
-      },
       "STATUS": "INVENTORY",
-      "ASSIGNED_BROKER_ID": "1234567890"
-    },
-    {
-      "FIRST_PARTY": "CEVA",
       "HOUSE_REF": "0000011111",
       "BARCODE": "0000011111",
-      "PCS": ["Treadmill", "Mats"],
+      "PCS": [
+        {
+          "DESCRIPTION": "Treadmill"
+        },
+        {
+          "DESCRIPTION": "Treadmill"
+        }
+      ],
       "NUM_PCS": "2",
-      "WEIGHT": "21kg",
-      "BOL_NUM": "0000011111",
-      "SPECIAL_SERVICES": "Lift gate",
+      "WEIGHT": "10kg",
+      "BOL_NUM": "2",
+      "SPECIAL_SERVICES": "",
       "SPECIAL_INSTRUCTIONS": "Handle with care",
+      "CURRENT_ASSIGNED_USER_ID": "1010101010",
+      "NO_SIGNATURE_REQUIRED": true,
+      "TAILGATE_AUTHORIZED": true,
+      "IS_PICKUP": false,
+      "APPOINTMENT_TIME": "1651763821",
       "CONSIGNEE": {
-        "COMPANY": "CEVA",
-        "NAME": "Mr. CEVA",
-        "ADDRESS": "123 CEVA Drive, Missisauga, ON, CA",
-        "POSTAL_CODE": "A1B 2C3",
-        "PHONE_NUMBER": "123-456-7890"
+        "COMPANY": "UWaterloo",
+        "NAME": "Feridun",
+        "ADDRESS": "1 University Avenue",
+        "POSTAL_CODE": "1AB2C3",
+        "PHONE_NUMBER": "1234567890"
       },
       "SHIPPER": {
         "COMPANY": "GymShark",
         "NAME": "Mr. Shark",
-        "ADDRESS": "123 Shark Drive, Toronto, ON, CA",
-        "POSTAL_CODE": "C3B 2A1",
-        "PHONE_NUMBER": "098-765-4321"
+        "ADDRESS": "123 Shark Way",
+        "POSTAL_CODE": "3C2B1A",
+        "PHONE_NUMBER": "0987654321"
       },
-      "STATUS": "ASSIGNED",
-      "ASSIGNED_BROKER_ID": "1234567890"
+      "MILESTONES": [
+        {
+          "TIMESTAMP": "1651763821",
+          "DESCRIPTION": "Arrived at Warehouse"
+        }
+      ],
+      "EDITS": [
+        {
+          "TIMESTAMP": "1651763821",
+          "USERNAME": "feridunlover69",
+          "CHANGES_MADE": [
+            {
+              "FIELD_TYPE": "NO_SIGNATURE_REQUIRED",
+              "ORIGINAL_VALUE": "false",
+              "NEW_VALUE": "true"
+            }
+          ]
+        }
+      ]
     },
     {
       "FIRST_PARTY": "CEVA",
-      "HOUSE_REF": "0000011111",
-      "BARCODE": "0000011111",
-      "PCS": ["Treadmill", "Mats"],
-      "NUM_PCS": "2",
-      "WEIGHT": "21kg",
-      "BOL_NUM": "0000011111",
-      "SPECIAL_SERVICES": "Lift gate",
-      "SPECIAL_INSTRUCTIONS": "Handle with care",
-      "CONSIGNEE": {
-        "COMPANY": "CEVA",
-        "NAME": "Mr. CEVA",
-        "ADDRESS": "123 CEVA Drive, Missisauga, ON, CA",
-        "POSTAL_CODE": "A1B 2C3",
-        "PHONE_NUMBER": "123-456-7890"
-      },
-      "SHIPPER": {
-        "COMPANY": "GymShark",
-        "NAME": "Mr. Shark",
-        "ADDRESS": "123 Shark Drive, Toronto, ON, CA",
-        "POSTAL_CODE": "C3B 2A1",
-        "PHONE_NUMBER": "098-765-4321"
-      },
       "STATUS": "IN-PROGRESS",
-      "ASSIGNED_BROKER_ID": "1234567890"
-    },
-    {
-      "FIRST_PARTY": "CEVA",
       "HOUSE_REF": "0000011111",
       "BARCODE": "0000011111",
-      "PCS": ["Treadmill", "Mats"],
+      "PCS": [
+        {
+          "DESCRIPTION": "Treadmill"
+        },
+        {
+          "DESCRIPTION": "Treadmill"
+        }
+      ],
       "NUM_PCS": "2",
-      "WEIGHT": "21kg",
-      "BOL_NUM": "0000011111",
-      "SPECIAL_SERVICES": "Lift gate",
+      "WEIGHT": "10kg",
+      "BOL_NUM": "2",
+      "SPECIAL_SERVICES": "",
       "SPECIAL_INSTRUCTIONS": "Handle with care",
+      "CURRENT_ASSIGNED_USER_ID": "1010101010",
+      "NO_SIGNATURE_REQUIRED": true,
+      "TAILGATE_AUTHORIZED": true,
+      "IS_PICKUP": false,
+      "APPOINTMENT_TIME": "1651763821",
       "CONSIGNEE": {
-        "COMPANY": "CEVA",
-        "NAME": "Mr. CEVA",
-        "ADDRESS": "123 CEVA Drive, Missisauga, ON, CA",
-        "POSTAL_CODE": "A1B 2C3",
-        "PHONE_NUMBER": "123-456-7890"
+        "COMPANY": "UWaterloo",
+        "NAME": "Feridun",
+        "ADDRESS": "1 University Avenue",
+        "POSTAL_CODE": "1AB2C3",
+        "PHONE_NUMBER": "1234567890"
       },
       "SHIPPER": {
         "COMPANY": "GymShark",
         "NAME": "Mr. Shark",
-        "ADDRESS": "123 Shark Drive, Toronto, ON, CA",
-        "POSTAL_CODE": "C3B 2A1",
-        "PHONE_NUMBER": "098-765-4321"
+        "ADDRESS": "123 Shark Way",
+        "POSTAL_CODE": "3C2B1A",
+        "PHONE_NUMBER": "0987654321"
       },
+      "MILESTONES": [
+        {
+          "TIMESTAMP": "1651763821",
+          "DESCRIPTION": "Arrived at Warehouse"
+        }
+      ],
+      "EDITS": [
+        {
+          "TIMESTAMP": "1651763821",
+          "USERNAME": "feridunlover69",
+          "CHANGES_MADE": [
+            {
+              "FIELD_TYPE": "NO_SIGNATURE_REQUIRED",
+              "ORIGINAL_VALUE": "false",
+              "NEW_VALUE": "true"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "FIRST_PARTY": "CEVA",
+      "STATUS": "DELIVERED",
+      "HOUSE_REF": "0000011111",
+      "BARCODE": "0000011111",
+      "PCS": [
+        {
+          "DESCRIPTION": "Treadmill"
+        },
+        {
+          "DESCRIPTION": "Treadmill"
+        }
+      ],
+      "NUM_PCS": "2",
+      "WEIGHT": "10kg",
+      "BOL_NUM": "2",
+      "SPECIAL_SERVICES": "",
+      "SPECIAL_INSTRUCTIONS": "Handle with care",
+      "CURRENT_ASSIGNED_USER_ID": "1010101010",
+      "NO_SIGNATURE_REQUIRED": true,
+      "TAILGATE_AUTHORIZED": true,
+      "IS_PICKUP": false,
+      "APPOINTMENT_TIME": "1651763821",
+      "CONSIGNEE": {
+        "COMPANY": "UWaterloo",
+        "NAME": "Feridun",
+        "ADDRESS": "1 University Avenue",
+        "POSTAL_CODE": "1AB2C3",
+        "PHONE_NUMBER": "1234567890"
+      },
+      "SHIPPER": {
+        "COMPANY": "GymShark",
+        "NAME": "Mr. Shark",
+        "ADDRESS": "123 Shark Way",
+        "POSTAL_CODE": "3C2B1A",
+        "PHONE_NUMBER": "0987654321"
+      },
+      "MILESTONES": [
+        {
+          "TIMESTAMP": "1651763821",
+          "DESCRIPTION": "Arrived at Warehouse"
+        }
+      ],
+      "EDITS": [
+        {
+          "TIMESTAMP": "1651763821",
+          "USERNAME": "feridunlover69",
+          "CHANGES_MADE": [
+            {
+              "FIELD_TYPE": "NO_SIGNATURE_REQUIRED",
+              "ORIGINAL_VALUE": "false",
+              "NEW_VALUE": "true"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "FIRST_PARTY": "CEVA",
       "STATUS": "INCOMPLETE",
-      "ASSIGNED_BROKER_ID": "1234567890"
-    },
-    {
-      "FIRST_PARTY": "CEVA",
       "HOUSE_REF": "0000011111",
       "BARCODE": "0000011111",
-      "PCS": ["Treadmill", "Mats"],
+      "PCS": [
+        {
+          "DESCRIPTION": "Treadmill"
+        },
+        {
+          "DESCRIPTION": "Treadmill"
+        }
+      ],
       "NUM_PCS": "2",
-      "WEIGHT": "21kg",
-      "BOL_NUM": "0000011111",
-      "SPECIAL_SERVICES": "Lift gate",
+      "WEIGHT": "10kg",
+      "BOL_NUM": "2",
+      "SPECIAL_SERVICES": "",
       "SPECIAL_INSTRUCTIONS": "Handle with care",
+      "CURRENT_ASSIGNED_USER_ID": "1010101010",
+      "NO_SIGNATURE_REQUIRED": true,
+      "TAILGATE_AUTHORIZED": true,
+      "IS_PICKUP": false,
+      "APPOINTMENT_TIME": "1651763821",
       "CONSIGNEE": {
-        "COMPANY": "CEVA",
-        "NAME": "Mr. CEVA",
-        "ADDRESS": "123 CEVA Drive, Missisauga, ON, CA",
-        "POSTAL_CODE": "A1B 2C3",
-        "PHONE_NUMBER": "123-456-7890"
+        "COMPANY": "UWaterloo",
+        "NAME": "Feridun",
+        "ADDRESS": "1 University Avenue",
+        "POSTAL_CODE": "1AB2C3",
+        "PHONE_NUMBER": "1234567890"
       },
       "SHIPPER": {
         "COMPANY": "GymShark",
         "NAME": "Mr. Shark",
-        "ADDRESS": "123 Shark Drive, Toronto, ON, CA",
-        "POSTAL_CODE": "C3B 2A1",
-        "PHONE_NUMBER": "098-765-4321"
+        "ADDRESS": "123 Shark Way",
+        "POSTAL_CODE": "3C2B1A",
+        "PHONE_NUMBER": "0987654321"
       },
-      "STATUS": "DELIVERED",
-      "ASSIGNED_BROKER_ID": "1234567890"
+      "MILESTONES": [
+        {
+          "TIMESTAMP": "1651763821",
+          "DESCRIPTION": "Arrived at Warehouse"
+        }
+      ],
+      "EDITS": [
+        {
+          "TIMESTAMP": "1651763821",
+          "USERNAME": "feridunlover69",
+          "CHANGES_MADE": [
+            {
+              "FIELD_TYPE": "NO_SIGNATURE_REQUIRED",
+              "ORIGINAL_VALUE": "false",
+              "NEW_VALUE": "true"
+            }
+          ]
+        }
+      ]
     },
     {
       "FIRST_PARTY": "CEVA",
+      "STATUS": "ASSIGNED",
       "HOUSE_REF": "0000011111",
       "BARCODE": "0000011111",
-      "PCS": ["Treadmill", "Mats"],
+      "PCS": [
+        {
+          "DESCRIPTION": "Treadmill"
+        },
+        {
+          "DESCRIPTION": "Treadmill"
+        }
+      ],
       "NUM_PCS": "2",
-      "WEIGHT": "21kg",
-      "BOL_NUM": "0000011111",
-      "SPECIAL_SERVICES": "Lift gate",
+      "WEIGHT": "10kg",
+      "BOL_NUM": "2",
+      "SPECIAL_SERVICES": "",
       "SPECIAL_INSTRUCTIONS": "Handle with care",
+      "CURRENT_ASSIGNED_USER_ID": "1010101010",
+      "NO_SIGNATURE_REQUIRED": true,
+      "TAILGATE_AUTHORIZED": true,
+      "IS_PICKUP": false,
+      "APPOINTMENT_TIME": "1651763821",
       "CONSIGNEE": {
-        "COMPANY": "CEVA",
-        "NAME": "Mr. CEVA",
-        "ADDRESS": "123 CEVA Drive, Missisauga, ON, CA",
-        "POSTAL_CODE": "A1B 2C3",
-        "PHONE_NUMBER": "123-456-7890"
+        "COMPANY": "UWaterloo",
+        "NAME": "Feridun",
+        "ADDRESS": "1 University Avenue",
+        "POSTAL_CODE": "1AB2C3",
+        "PHONE_NUMBER": "1234567890"
       },
       "SHIPPER": {
         "COMPANY": "GymShark",
         "NAME": "Mr. Shark",
-        "ADDRESS": "123 Shark Drive, Toronto, ON, CA",
-        "POSTAL_CODE": "C3B 2A1",
-        "PHONE_NUMBER": "098-765-4321"
+        "ADDRESS": "123 Shark Way",
+        "POSTAL_CODE": "3C2B1A",
+        "PHONE_NUMBER": "0987654321"
       },
+      "MILESTONES": [
+        {
+          "TIMESTAMP": "1651763821",
+          "DESCRIPTION": "Arrived at Warehouse"
+        }
+      ],
+      "EDITS": [
+        {
+          "TIMESTAMP": "1651763821",
+          "USERNAME": "feridunlover69",
+          "CHANGES_MADE": [
+            {
+              "FIELD_TYPE": "NO_SIGNATURE_REQUIRED",
+              "ORIGINAL_VALUE": "false",
+              "NEW_VALUE": "true"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "FIRST_PARTY": "CEVA",
+      "STATUS": "ASSIGNED",
+      "HOUSE_REF": "0000011111",
+      "BARCODE": "0000011111",
+      "PCS": [
+        {
+          "DESCRIPTION": "Treadmill"
+        },
+        {
+          "DESCRIPTION": "Treadmill"
+        }
+      ],
+      "NUM_PCS": "2",
+      "WEIGHT": "10kg",
+      "BOL_NUM": "2",
+      "SPECIAL_SERVICES": "",
+      "SPECIAL_INSTRUCTIONS": "Handle with care",
+      "CURRENT_ASSIGNED_USER_ID": "1010101010",
+      "NO_SIGNATURE_REQUIRED": true,
+      "TAILGATE_AUTHORIZED": true,
+      "IS_PICKUP": false,
+      "APPOINTMENT_TIME": "1651763821",
+      "CONSIGNEE": {
+        "COMPANY": "UWaterloo",
+        "NAME": "Feridun",
+        "ADDRESS": "1 University Avenue",
+        "POSTAL_CODE": "1AB2C3",
+        "PHONE_NUMBER": "1234567890"
+      },
+      "SHIPPER": {
+        "COMPANY": "GymShark",
+        "NAME": "Mr. Shark",
+        "ADDRESS": "123 Shark Way",
+        "POSTAL_CODE": "3C2B1A",
+        "PHONE_NUMBER": "0987654321"
+      },
+      "MILESTONES": [
+        {
+          "TIMESTAMP": "1651763821",
+          "DESCRIPTION": "Arrived at Warehouse"
+        }
+      ],
+      "EDITS": [
+        {
+          "TIMESTAMP": "1651763821",
+          "USERNAME": "feridunlover69",
+          "CHANGES_MADE": [
+            {
+              "FIELD_TYPE": "NO_SIGNATURE_REQUIRED",
+              "ORIGINAL_VALUE": "false",
+              "NEW_VALUE": "true"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "FIRST_PARTY": "CEVA",
+      "STATUS": "IN-PROGRESS",
+      "HOUSE_REF": "0000011111",
+      "BARCODE": "0000011111",
+      "PCS": [
+        {
+          "DESCRIPTION": "Treadmill"
+        },
+        {
+          "DESCRIPTION": "Treadmill"
+        }
+      ],
+      "NUM_PCS": "2",
+      "WEIGHT": "10kg",
+      "BOL_NUM": "2",
+      "SPECIAL_SERVICES": "",
+      "SPECIAL_INSTRUCTIONS": "Handle with care",
+      "CURRENT_ASSIGNED_USER_ID": "1010101010",
+      "NO_SIGNATURE_REQUIRED": true,
+      "TAILGATE_AUTHORIZED": true,
+      "IS_PICKUP": false,
+      "APPOINTMENT_TIME": "1651763821",
+      "CONSIGNEE": {
+        "COMPANY": "UWaterloo",
+        "NAME": "Feridun",
+        "ADDRESS": "1 University Avenue",
+        "POSTAL_CODE": "1AB2C3",
+        "PHONE_NUMBER": "1234567890"
+      },
+      "SHIPPER": {
+        "COMPANY": "GymShark",
+        "NAME": "Mr. Shark",
+        "ADDRESS": "123 Shark Way",
+        "POSTAL_CODE": "3C2B1A",
+        "PHONE_NUMBER": "0987654321"
+      },
+      "MILESTONES": [
+        {
+          "TIMESTAMP": "1651763821",
+          "DESCRIPTION": "Arrived at Warehouse"
+        }
+      ],
+      "EDITS": [
+        {
+          "TIMESTAMP": "1651763821",
+          "USERNAME": "feridunlover69",
+          "CHANGES_MADE": [
+            {
+              "FIELD_TYPE": "NO_SIGNATURE_REQUIRED",
+              "ORIGINAL_VALUE": "false",
+              "NEW_VALUE": "true"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "FIRST_PARTY": "CEVA",
+      "STATUS": "INCOMPLETE",
+      "HOUSE_REF": "0000011111",
+      "BARCODE": "0000011111",
+      "PCS": [
+        {
+          "DESCRIPTION": "Treadmill"
+        },
+        {
+          "DESCRIPTION": "Treadmill"
+        }
+      ],
+      "NUM_PCS": "2",
+      "WEIGHT": "10kg",
+      "BOL_NUM": "2",
+      "SPECIAL_SERVICES": "",
+      "SPECIAL_INSTRUCTIONS": "Handle with care",
+      "CURRENT_ASSIGNED_USER_ID": "1010101010",
+      "NO_SIGNATURE_REQUIRED": true,
+      "TAILGATE_AUTHORIZED": true,
+      "IS_PICKUP": false,
+      "APPOINTMENT_TIME": "1651763821",
+      "CONSIGNEE": {
+        "COMPANY": "UWaterloo",
+        "NAME": "Feridun",
+        "ADDRESS": "1 University Avenue",
+        "POSTAL_CODE": "1AB2C3",
+        "PHONE_NUMBER": "1234567890"
+      },
+      "SHIPPER": {
+        "COMPANY": "GymShark",
+        "NAME": "Mr. Shark",
+        "ADDRESS": "123 Shark Way",
+        "POSTAL_CODE": "3C2B1A",
+        "PHONE_NUMBER": "0987654321"
+      },
+      "MILESTONES": [
+        {
+          "TIMESTAMP": "1651763821",
+          "DESCRIPTION": "Arrived at Warehouse"
+        }
+      ],
+      "EDITS": [
+        {
+          "TIMESTAMP": "1651763821",
+          "USERNAME": "feridunlover69",
+          "CHANGES_MADE": [
+            {
+              "FIELD_TYPE": "NO_SIGNATURE_REQUIRED",
+              "ORIGINAL_VALUE": "false",
+              "NEW_VALUE": "true"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "FIRST_PARTY": "CEVA",
       "STATUS": "INVENTORY",
-      "ASSIGNED_BROKER_ID": "1234567890"
-    },
-    {
-      "FIRST_PARTY": "CEVA",
       "HOUSE_REF": "0000011111",
       "BARCODE": "0000011111",
-      "PCS": ["Treadmill", "Mats"],
+      "PCS": [
+        {
+          "DESCRIPTION": "Treadmill"
+        },
+        {
+          "DESCRIPTION": "Treadmill"
+        }
+      ],
       "NUM_PCS": "2",
-      "WEIGHT": "21kg",
-      "BOL_NUM": "0000011111",
-      "SPECIAL_SERVICES": "Lift gate",
+      "WEIGHT": "10kg",
+      "BOL_NUM": "2",
+      "SPECIAL_SERVICES": "",
       "SPECIAL_INSTRUCTIONS": "Handle with care",
+      "CURRENT_ASSIGNED_USER_ID": "1010101010",
+      "NO_SIGNATURE_REQUIRED": true,
+      "TAILGATE_AUTHORIZED": true,
+      "IS_PICKUP": false,
+      "APPOINTMENT_TIME": "1651763821",
       "CONSIGNEE": {
-        "COMPANY": "CEVA",
-        "NAME": "Mr. CEVA",
-        "ADDRESS": "123 CEVA Drive, Missisauga, ON, CA",
-        "POSTAL_CODE": "A1B 2C3",
-        "PHONE_NUMBER": "123-456-7890"
+        "COMPANY": "UWaterloo",
+        "NAME": "Feridun",
+        "ADDRESS": "1 University Avenue",
+        "POSTAL_CODE": "1AB2C3",
+        "PHONE_NUMBER": "1234567890"
       },
       "SHIPPER": {
         "COMPANY": "GymShark",
         "NAME": "Mr. Shark",
-        "ADDRESS": "123 Shark Drive, Toronto, ON, CA",
-        "POSTAL_CODE": "C3B 2A1",
-        "PHONE_NUMBER": "098-765-4321"
+        "ADDRESS": "123 Shark Way",
+        "POSTAL_CODE": "3C2B1A",
+        "PHONE_NUMBER": "0987654321"
       },
-      "STATUS": "ASSIGNED",
-      "ASSIGNED_BROKER_ID": "1234567890"
+      "MILESTONES": [
+        {
+          "TIMESTAMP": "1651763821",
+          "DESCRIPTION": "Arrived at Warehouse"
+        }
+      ],
+      "EDITS": [
+        {
+          "TIMESTAMP": "1651763821",
+          "USERNAME": "feridunlover69",
+          "CHANGES_MADE": [
+            {
+              "FIELD_TYPE": "NO_SIGNATURE_REQUIRED",
+              "ORIGINAL_VALUE": "false",
+              "NEW_VALUE": "true"
+            }
+          ]
+        }
+      ]
     },
     {
       "FIRST_PARTY": "CEVA",
+      "STATUS": "INVENTORY",
       "HOUSE_REF": "0000011111",
       "BARCODE": "0000011111",
-      "PCS": ["Treadmill", "Mats"],
+      "PCS": [
+        {
+          "DESCRIPTION": "Treadmill"
+        },
+        {
+          "DESCRIPTION": "Treadmill"
+        }
+      ],
       "NUM_PCS": "2",
-      "WEIGHT": "21kg",
-      "BOL_NUM": "0000011111",
-      "SPECIAL_SERVICES": "Lift gate",
+      "WEIGHT": "10kg",
+      "BOL_NUM": "2",
+      "SPECIAL_SERVICES": "",
       "SPECIAL_INSTRUCTIONS": "Handle with care",
+      "CURRENT_ASSIGNED_USER_ID": "1010101010",
+      "NO_SIGNATURE_REQUIRED": true,
+      "TAILGATE_AUTHORIZED": true,
+      "IS_PICKUP": false,
+      "APPOINTMENT_TIME": "1651763821",
       "CONSIGNEE": {
-        "COMPANY": "CEVA",
-        "NAME": "Mr. CEVA",
-        "ADDRESS": "123 CEVA Drive, Missisauga, ON, CA",
-        "POSTAL_CODE": "A1B 2C3",
-        "PHONE_NUMBER": "123-456-7890"
+        "COMPANY": "UWaterloo",
+        "NAME": "Feridun",
+        "ADDRESS": "1 University Avenue",
+        "POSTAL_CODE": "1AB2C3",
+        "PHONE_NUMBER": "1234567890"
       },
       "SHIPPER": {
         "COMPANY": "GymShark",
         "NAME": "Mr. Shark",
-        "ADDRESS": "123 Shark Drive, Toronto, ON, CA",
-        "POSTAL_CODE": "C3B 2A1",
-        "PHONE_NUMBER": "098-765-4321"
+        "ADDRESS": "123 Shark Way",
+        "POSTAL_CODE": "3C2B1A",
+        "PHONE_NUMBER": "0987654321"
       },
-      "STATUS": "ASSIGNED",
-      "ASSIGNED_BROKER_ID": "1234567890"
+      "MILESTONES": [
+        {
+          "TIMESTAMP": "1651763821",
+          "DESCRIPTION": "Arrived at Warehouse"
+        }
+      ],
+      "EDITS": [
+        {
+          "TIMESTAMP": "1651763821",
+          "USERNAME": "feridunlover69",
+          "CHANGES_MADE": [
+            {
+              "FIELD_TYPE": "NO_SIGNATURE_REQUIRED",
+              "ORIGINAL_VALUE": "false",
+              "NEW_VALUE": "true"
+            }
+          ]
+        }
+      ]
     },
     {
       "FIRST_PARTY": "CEVA",
-      "HOUSE_REF": "0000011111",
-      "BARCODE": "0000011111",
-      "PCS": ["Treadmill", "Mats"],
-      "NUM_PCS": "2",
-      "WEIGHT": "21kg",
-      "BOL_NUM": "0000011111",
-      "SPECIAL_SERVICES": "Lift gate",
-      "SPECIAL_INSTRUCTIONS": "Handle with care",
-      "CONSIGNEE": {
-        "COMPANY": "CEVA",
-        "NAME": "Mr. CEVA",
-        "ADDRESS": "123 CEVA Drive, Missisauga, ON, CA",
-        "POSTAL_CODE": "A1B 2C3",
-        "PHONE_NUMBER": "123-456-7890"
-      },
-      "SHIPPER": {
-        "COMPANY": "GymShark",
-        "NAME": "Mr. Shark",
-        "ADDRESS": "123 Shark Drive, Toronto, ON, CA",
-        "POSTAL_CODE": "C3B 2A1",
-        "PHONE_NUMBER": "098-765-4321"
-      },
       "STATUS": "DELIVERED",
-      "ASSIGNED_BROKER_ID": "1234567890"
+      "HOUSE_REF": "0000011111",
+      "BARCODE": "0000011111",
+      "PCS": [
+        {
+          "DESCRIPTION": "Treadmill"
+        },
+        {
+          "DESCRIPTION": "Treadmill"
+        }
+      ],
+      "NUM_PCS": "2",
+      "WEIGHT": "10kg",
+      "BOL_NUM": "2",
+      "SPECIAL_SERVICES": "",
+      "SPECIAL_INSTRUCTIONS": "Handle with care",
+      "CURRENT_ASSIGNED_USER_ID": "1010101010",
+      "NO_SIGNATURE_REQUIRED": true,
+      "TAILGATE_AUTHORIZED": true,
+      "IS_PICKUP": false,
+      "APPOINTMENT_TIME": "1651763821",
+      "CONSIGNEE": {
+        "COMPANY": "UWaterloo",
+        "NAME": "Feridun",
+        "ADDRESS": "1 University Avenue",
+        "POSTAL_CODE": "1AB2C3",
+        "PHONE_NUMBER": "1234567890"
+      },
+      "SHIPPER": {
+        "COMPANY": "GymShark",
+        "NAME": "Mr. Shark",
+        "ADDRESS": "123 Shark Way",
+        "POSTAL_CODE": "3C2B1A",
+        "PHONE_NUMBER": "0987654321"
+      },
+      "MILESTONES": [
+        {
+          "TIMESTAMP": "1651763821",
+          "DESCRIPTION": "Arrived at Warehouse"
+        }
+      ],
+      "EDITS": [
+        {
+          "TIMESTAMP": "1651763821",
+          "USERNAME": "feridunlover69",
+          "CHANGES_MADE": [
+            {
+              "FIELD_TYPE": "NO_SIGNATURE_REQUIRED",
+              "ORIGINAL_VALUE": "false",
+              "NEW_VALUE": "true"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "FIRST_PARTY": "CEVA",
+      "STATUS": "IN-PROGRESS",
+      "HOUSE_REF": "0000011111",
+      "BARCODE": "0000011111",
+      "PCS": [
+        {
+          "DESCRIPTION": "Treadmill"
+        },
+        {
+          "DESCRIPTION": "Treadmill"
+        }
+      ],
+      "NUM_PCS": "2",
+      "WEIGHT": "10kg",
+      "BOL_NUM": "2",
+      "SPECIAL_SERVICES": "",
+      "SPECIAL_INSTRUCTIONS": "Handle with care",
+      "CURRENT_ASSIGNED_USER_ID": "1010101010",
+      "NO_SIGNATURE_REQUIRED": true,
+      "TAILGATE_AUTHORIZED": true,
+      "IS_PICKUP": false,
+      "APPOINTMENT_TIME": "1651763821",
+      "CONSIGNEE": {
+        "COMPANY": "UWaterloo",
+        "NAME": "Feridun",
+        "ADDRESS": "1 University Avenue",
+        "POSTAL_CODE": "1AB2C3",
+        "PHONE_NUMBER": "1234567890"
+      },
+      "SHIPPER": {
+        "COMPANY": "GymShark",
+        "NAME": "Mr. Shark",
+        "ADDRESS": "123 Shark Way",
+        "POSTAL_CODE": "3C2B1A",
+        "PHONE_NUMBER": "0987654321"
+      },
+      "MILESTONES": [
+        {
+          "TIMESTAMP": "1651763821",
+          "DESCRIPTION": "Arrived at Warehouse"
+        }
+      ],
+      "EDITS": [
+        {
+          "TIMESTAMP": "1651763821",
+          "USERNAME": "feridunlover69",
+          "CHANGES_MADE": [
+            {
+              "FIELD_TYPE": "NO_SIGNATURE_REQUIRED",
+              "ORIGINAL_VALUE": "false",
+              "NEW_VALUE": "true"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "FIRST_PARTY": "CEVA",
+      "STATUS": "ASSIGNED",
+      "HOUSE_REF": "0000011111",
+      "BARCODE": "0000011111",
+      "PCS": [
+        {
+          "DESCRIPTION": "Treadmill"
+        },
+        {
+          "DESCRIPTION": "Treadmill"
+        }
+      ],
+      "NUM_PCS": "2",
+      "WEIGHT": "10kg",
+      "BOL_NUM": "2",
+      "SPECIAL_SERVICES": "",
+      "SPECIAL_INSTRUCTIONS": "Handle with care",
+      "CURRENT_ASSIGNED_USER_ID": "1010101010",
+      "NO_SIGNATURE_REQUIRED": true,
+      "TAILGATE_AUTHORIZED": true,
+      "IS_PICKUP": false,
+      "APPOINTMENT_TIME": "1651763821",
+      "CONSIGNEE": {
+        "COMPANY": "UWaterloo",
+        "NAME": "Feridun",
+        "ADDRESS": "1 University Avenue",
+        "POSTAL_CODE": "1AB2C3",
+        "PHONE_NUMBER": "1234567890"
+      },
+      "SHIPPER": {
+        "COMPANY": "GymShark",
+        "NAME": "Mr. Shark",
+        "ADDRESS": "123 Shark Way",
+        "POSTAL_CODE": "3C2B1A",
+        "PHONE_NUMBER": "0987654321"
+      },
+      "MILESTONES": [
+        {
+          "TIMESTAMP": "1651763821",
+          "DESCRIPTION": "Arrived at Warehouse"
+        }
+      ],
+      "EDITS": [
+        {
+          "TIMESTAMP": "1651763821",
+          "USERNAME": "feridunlover69",
+          "CHANGES_MADE": [
+            {
+              "FIELD_TYPE": "NO_SIGNATURE_REQUIRED",
+              "ORIGINAL_VALUE": "false",
+              "NEW_VALUE": "true"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
