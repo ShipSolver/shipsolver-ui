@@ -21,19 +21,16 @@ type MultiListProps<T> = {
 
 function Lists<T>(props: MultiListProps<T>): JSX.Element {
   const { title, listSpecifications, loading, error } = props;
-  console.log(listSpecifications);
 
   return (
-    <Paper className="multi-list-columns">
+    <Paper className="multi-list-all-lists-container">
       {listSpecifications.map(({ title, entries, entryRenderer }) => (
-        <div className="multi-list-column-container">
-          <Typography variant="h4" color="primary">
+        <div className="multi-list-list-container">
+          <Typography variant="h4" color="primary" gutterBottom>
             <strong>{title}</strong>
           </Typography>
-          <div className="multi-list-column">
-            <div className="multi-list-column-list">
-              {entries.map((entry) => entryRenderer(entry))}
-            </div>
+          <div className="multi-list-list">
+            {entries.map((entry) => entryRenderer(entry))}
           </div>
         </div>
       ))}

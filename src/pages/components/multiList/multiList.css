@@ -1,4 +1,4 @@
-.multi-list-columns {
+/* .multi-list-columns {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   grid-gap: 1rem;
@@ -20,4 +20,19 @@
   grid-gap: 0.5rem;
   gap: 0.5rem;
   margin: 0.5rem 0;
+} */
+
+.multi-list-all-lists-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-gap: 1rem;
+  gap: 1rem;
+}
+
+.multi-list-list {
+  display: flex;
+  flex-direction: column;
+  flex-grow: initial;
+  max-height: 40vh;
+  overflow-y: auto;
 }

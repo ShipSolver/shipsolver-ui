@@ -21,10 +21,15 @@ function entryRenderer(entry: Ticket): JSX.Element {
     error,
   } = useLoadable(fetchBroker, entry.CURRENT_ASSIGNED_USER_ID);
   return (
-    <Paper>
+    <Paper className="ss-ticket-renderer">
       <Typography>{entry.CONSIGNEE.ADDRESS}</Typography>
       <Typography>
-        Assigned to: {broker ? broker.NAME : "loading..."}
+        Assigned to:{" "}
+        {loading
+          ? "loading..."
+          : broker
+          ? broker.NAME
+          : error || "Error fetching broker"}
       </Typography>
     </Paper>
   );
