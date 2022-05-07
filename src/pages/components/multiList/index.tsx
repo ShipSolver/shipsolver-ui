@@ -1,5 +1,7 @@
 import React from "react";
 
+import Typography from "@mui/material/Typography";
+
 import Paper from "../roundedPaper";
 
 import "./multiList.css";
@@ -13,26 +15,28 @@ type List<T> = {
 type MultiListProps<T> = {
   title?: string;
   listSpecifications: List<T>[];
+  loading: boolean;
+  error: string | null;
 };
 
 function Lists<T>(props: MultiListProps<T>): JSX.Element {
-  const { title, listSpecifications } = props;
+  const { title, listSpecifications, loading, error } = props;
   console.log(listSpecifications);
 
   return (
     <Paper className="multi-list-columns">
-      {listSpecifications.map(({ title, entries, entryRenderer }) => {
-        console.log(entries);
-        return (
-          <div className="multi-list-column-container">
-            <div className="multi-list-column">
-              <div className="multi-list-column-list">
-                {entries.map((entry) => entryRenderer(entry))}
-              </div>
+      {listSpecifications.map(({ title, entries, entryRenderer }) => (
+        <div className="multi-list-column-container">
+          <Typography variant="h4" color="primary">
+            <strong>{title}</strong>
+          </Typography>
+          <div className="multi-list-column">
+            <div className="multi-list-column-list">
+              {entries.map((entry) => entryRenderer(entry))}
             </div>
           </div>
-        );
-      })}
+        </div>
+      ))}
     </Paper>
   );
 }

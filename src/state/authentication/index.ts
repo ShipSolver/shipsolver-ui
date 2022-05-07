@@ -1,8 +1,6 @@
-import type { User } from "./types";
-
 import { atom } from "recoil";
 
-export * from "./types";
+import { User } from "../../services/types";
 
 export const UserAtom = atom<User | null>({
   key: "authenticationUser",

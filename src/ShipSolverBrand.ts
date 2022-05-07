@@ -17,17 +17,37 @@ const ShipSolverBrand = createTheme({
         {
           props: { variant: "h1" },
           style: {
-            [theme.breakpoints.down("sm")]: {
-              fontSize: "3rem",
-            },
+            fontSize: "3rem",
+          },
+        },
+        {
+          props: { variant: "h2" },
+          style: {
+            fontSize: "2rem",
           },
         },
         {
           props: { variant: "h3" },
           style: {
-            [theme.breakpoints.down("sm")]: {
-              fontSize: "1.5rem",
-            },
+            fontSize: "1.5rem",
+          },
+        },
+        {
+          props: { variant: "h4" },
+          style: {
+            fontSize: "1.3rem",
+          },
+        },
+        {
+          props: { variant: "h5" },
+          style: {
+            fontSize: "1.2rem",
+          },
+        },
+        {
+          props: { variant: "h6" },
+          style: {
+            fontSize: "1rem",
           },
         },
       ],

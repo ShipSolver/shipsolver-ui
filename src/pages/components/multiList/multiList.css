@@ -1,13 +1,13 @@
 .multi-list-columns {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   grid-gap: 1rem;
   gap: 1rem;
   align-items: start;
 }
 
 .multi-list-column-container {
-  max-height: 50vh;
+  max-height: 40vh;
 }
 
 .multi-list-column {
