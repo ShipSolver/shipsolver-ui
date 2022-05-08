@@ -1,11 +1,9 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useState } from "react";
 
 export default function useLoadable<
-  fn extends (...args: any[]) => Promise<any>,
-  args extends Parameters<fn>,
-  retType extends ReturnType<fn>
->(fetcher: fn, ...args: args) {
-  const [val, setVal] = useState<Awaited<retType> | null>(null);
+  fn extends (...args: any[]) => Promise<any>
+>(fetcher: fn, ...args: Parameters<fn>) {
+  const [val, setVal] = useState<Awaited<ReturnType<fn>> | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
