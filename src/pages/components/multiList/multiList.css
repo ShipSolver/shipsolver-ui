@@ -1,23 +1,14 @@
-.multi-list-columns {
+.multi-list-all-lists-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   grid-gap: 1rem;
   gap: 1rem;
-  align-items: start;
 }
 
-.multi-list-column-container {
+.multi-list-list {
+  display: flex;
+  flex-direction: column;
+  flex-grow: initial;
   max-height: 50vh;
-}
-
-.multi-list-column {
-  position: relative;
-}
-
-.multi-list-column-list {
-  display: grid;
-  grid-template-rows: auto;
-  grid-gap: 0.5rem;
-  gap: 0.5rem;
-  margin: 0.5rem 0;
+  overflow-y: auto;
 }

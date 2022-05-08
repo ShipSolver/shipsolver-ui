@@ -1,17 +1,3 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
-}
-
 :root {
   --ss-brand-transition-time: 0.3s;
   --ss-brand-border-radius: 8px;
@@ -21,6 +7,24 @@ code {
   --ss-brand-box-shadow-hover: rgba(0, 0, 0, 0.4) 0px 4px 16px;
   --ss-brand-spacer-height: 64px;
   --ss-brand-spacer-height-small: 32px;
+  --ss-brand-scrollbar-foreground-color: rgba(153, 153, 153, 0.5);
+  --ss-brand-scrollbar-background-color: transparent;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scrollbar-color: var(--ss-brand-scrollbar-foreground-color)
+    var(--ss-brand-scrollbar-background-color);
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
 }
 
 .ss-brand-app-content {
@@ -43,4 +47,20 @@ code {
 
 .ss-brand-spacer-small {
   margin-top: var(--ss-brand-spacer-height-small);
+}
+
+::-webkit-scrollbar {
+  width: 8px; /* Mostly for vertical scrollbars */
+  height: 8px; /* Mostly for horizontal scrollbars */
+}
+
+::-webkit-scrollbar-thumb {
+  /* Foreground */
+  background: var(--ss-brand-scrollbar-foreground-color);
+  border-radius: var(--ss-brand-border-radius);
+}
+
+::-webkit-scrollbar-track {
+  /* Background */
+  background: var(--ss-brand-scrollbar-background-color);
 }

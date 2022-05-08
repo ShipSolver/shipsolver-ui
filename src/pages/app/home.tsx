@@ -1,79 +1,101 @@
-import React from "react";
+import React, { useMemo, useState } from "react";
 
 import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 
+import Paper from "../components/roundedPaper";
 import Lists from "../components/multiList";
 
+import { fetchOrgTodayTickets } from "../../services/ticketServices";
+import { fetchBroker } from "../../services/brokerServices";
+
+import { Broker, Ticket } from "../../services/types";
+
 import { useNavigate } from "react-router-dom";
+import useLoadable from "../../utils/useLoadable";
 
-import tickets from "../../mockData/tickets.json";
-
-type ticket = {
-  STATUS: string;
-  FIRST_PARTY: string;
-  HOUSE_REF: string;
-  BARCODE: string;
-  PCS: [
-    {
-      DESCRIPTION: string;
-    }
-  ];
-  NUM_PCS: string;
-  WEIGHT: string;
-  BOL_NUM: string;
-  SPECIAL_SERVICES: string;
-  SPECIAL_INSTRUCTIONS: string;
-  CURRENT_ASSIGNED_USER_ID: string;
-  NO_SIGNATURE_REQUIRED: boolean;
-  TAILGATE_AUTHORIZED: boolean;
-  IS_PICKUP: boolean;
-  APPOINTMENT_TIME: string;
-  CONSIGNEE: {
-    COMPANY: string;
-    NAME: string;
-    ADDRESS: string;
-    POSTAL_CODE: string;
-    PHONE_NUMBER: string;
-  };
-  SHIPPER: {
-    COMPANY: string;
-    NAME: string;
-    ADDRESS: string;
-    POSTAL_CODE: string;
-    PHONE_NUMBER: string;
-  };
-  MILESTONES: [
-    {
-      TIMESTAMP: string;
-      DESCRIPTION: string;
-    }
-  ];
-  EDITS: [
-    {
-      TIMESTAMP: string;
-      USERNAME: string;
-      CHANGES_MADE: [
-        {
-          FIELD_TYPE: string;
-          ORIGINAL_VALUE: string;
-          NEW_VALUE: string;
-        }
-      ];
-    }
-  ];
-};
+function entryRenderer(entry: Ticket): JSX.Element {
+  const {
+    val: broker,
+    loading,
+    error,
+  } = useLoadable(fetchBroker, entry.CURRENT_ASSIGNED_USER_ID);
+  return (
+    <Paper className="ss-ticket-renderer">
+      <Typography>{entry.CONSIGNEE.ADDRESS}</Typography>
+      <Typography>
+        Assigned to:{" "}
+        {loading
+          ? "loading..."
+          : broker
+          ? broker.NAME
+          : error || "Error fetching broker"}
+      </Typography>
+    </Paper>
+  );
+}
 
 function Home() {
   const navigate = useNavigate();
 
+  const {
+    val: tickets,
+    loading: ticketsLoading,
+    error: ticketsError,
+  } = useLoadable(fetchOrgTodayTickets);
+
+  const inventory = useMemo(
+    () => tickets && tickets.filter((ticket) => ticket.STATUS === "INVENTORY"),
+    [tickets]
+  );
+  const assigned = useMemo(
+    () => tickets && tickets.filter((ticket) => ticket.STATUS === "ASSIGNED"),
+    [tickets]
+  );
+  const inProgress = useMemo(
+    () =>
+      tickets && tickets.filter((ticket) => ticket.STATUS === "IN-PROGRESS"),
+    [tickets]
+  );
+  const incomplete = useMemo(
+    () => tickets && tickets.filter((ticket) => ticket.STATUS === "INCOMPLETE"),
+    [tickets]
+  );
+  const delivered = useMemo(
+    () => tickets && tickets.filter((ticket) => ticket.STATUS === "DELIVERED"),
+    [tickets]
+  );
+
   return (
     <div className="ss-space-children-vertically">
       <Lists
+        loading={ticketsLoading}
+        error={ticketsError}
         listSpecifications={[
           {
-            title: "Column",
-            entries: tickets.tickets as ticket[],
-            entryRenderer: (ticket: ticket) => <div>{ticket.FIRST_PARTY}</div>,
+            title: "Delivered",
+            entries: delivered ? delivered : [],
+            entryRenderer,
+          },
+          {
+            title: "Incomplete",
+            entries: incomplete ? incomplete : [],
+            entryRenderer,
+          },
+          {
+            title: "In Progress",
+            entries: inProgress ? inProgress : [],
+            entryRenderer,
+          },
+          {
+            title: "Assigned",
+            entries: assigned ? assigned : [],
+            entryRenderer,
+          },
+          {
+            title: "Inventory",
+            entries: inventory ? inventory : [],
+            entryRenderer,
           },
         ]}
       />

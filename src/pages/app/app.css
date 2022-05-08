@@ -7,3 +7,7 @@
   margin: calc(var(--ss-brand-spacing) * 2) 0 calc(var(--ss-brand-spacing) * 2)
     0;
 }
+
+.ss-ticket-renderer {
+  margin: var(--ss-brand-spacing);
+}

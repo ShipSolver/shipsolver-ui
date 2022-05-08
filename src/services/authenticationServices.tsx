@@ -1,7 +1,10 @@
 import axios from "axios";
 import decode from "jwt-decode";
 import { MEMORY_STORAGE_KEY, TOKEN_STORAGE_KEY, SERVER_URL } from "./constants";
-import { User } from "../state/authentication";
+import { User } from "./types";
+import authMockData from "../mockData/auth.json";
+
+const TestUser = authMockData.testUser;
 
 type decodedAccessToken = { user: User };
 
@@ -30,11 +33,6 @@ function anyToToken(data: any): Token {
 }
 
 axios.defaults.baseURL = SERVER_URL;
-
-const TestUser: User = {
-  name: "Sathira Katugaha",
-  email: "sathirakatugaha@gmail.com",
-};
 
 const delay = (time: number) => {
   return new Promise((resolve) => {
