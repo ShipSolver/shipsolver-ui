@@ -17,5 +17,9 @@ export default function useLoadable<
       setLoading(false);
     });
 
-  return { val, loading, error };
+  return {
+    val: val as Awaited<ReturnType<fn>> | null,
+    loading: loading as boolean,
+    error: error as string | null,
+  };
 }

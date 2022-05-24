@@ -14,7 +14,7 @@ import { Broker, Ticket } from "../../services/types";
 import { useNavigate } from "react-router-dom";
 import useLoadable from "../../utils/useLoadable";
 
-function entryRenderer(entry: Ticket): JSX.Element {
+function EntryRenderer(entry: Ticket): JSX.Element {
   const {
     val: broker,
     loading,
@@ -75,27 +75,27 @@ function Home() {
           {
             title: "Delivered",
             entries: delivered ? delivered : [],
-            entryRenderer,
+            entryRenderer: EntryRenderer,
           },
           {
             title: "Incomplete",
             entries: incomplete ? incomplete : [],
-            entryRenderer,
+            entryRenderer: EntryRenderer,
           },
           {
             title: "In Progress",
             entries: inProgress ? inProgress : [],
-            entryRenderer,
+            entryRenderer: EntryRenderer,
           },
           {
             title: "Assigned",
             entries: assigned ? assigned : [],
-            entryRenderer,
+            entryRenderer: EntryRenderer,
           },
           {
             title: "Inventory",
             entries: inventory ? inventory : [],
-            entryRenderer,
+            entryRenderer: EntryRenderer,
           },
         ]}
       />
