@@ -1,6 +1,7 @@
-## Contributers:
+## Contributors:
 
 - Sathira Katugaha : sghmk12
+- Derek Chen : derekchen745
 
 ## Get Started:
 
