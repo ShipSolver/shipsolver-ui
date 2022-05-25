@@ -2,6 +2,13 @@
 
 - Sathira Katugaha : sghmk12
 
+## Get Started:
+
+Run the following commands on your terminal in the root of this project
+
+- yarn install
+- yarn run
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
