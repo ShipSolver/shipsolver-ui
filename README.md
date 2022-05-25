@@ -1,6 +1,7 @@
-## Contributers:
+## Contributors:
 
 - Sathira Katugaha : sghmk12
+- Samuel Mpoloka : not my git account
 
 ## Get Started:
 
