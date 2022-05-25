@@ -1,4 +1,4 @@
-import { BrokerApp } from "../brokerApp";
+import BrokerApp from "../index";
 
 import React from "react";
 
