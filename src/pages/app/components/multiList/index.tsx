@@ -26,7 +26,7 @@ function Lists<T>(props: MultiListProps<T>): JSX.Element {
     <Paper className="multi-list-all-lists-container">
       {listSpecifications.map(({ title, entries, entryRenderer }) => (
         <div className="multi-list-list-container">
-          <Typography variant="h4" color="primary" gutterBottom>
+          <Typography variant="h4" color="black" gutterBottom>
             <strong>{title}</strong>
           </Typography>
           <div className="multi-list-list">
