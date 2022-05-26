@@ -62,6 +62,7 @@ export const TestRows: RowType<Keys>[] = [
     lastAssigned: "Rahul",
     barcode: "DG104-123456",
     shipper: "Amazon",
+    ticketID: "1",
   },
   {
     date: "2022/02/12",
@@ -71,6 +72,7 @@ export const TestRows: RowType<Keys>[] = [
     lastAssigned: "Rahul",
     barcode: "DG104-123456",
     shipper: "Amazon",
+    ticketID: "2",
   },
   {
     date: "2022/02/12",
@@ -80,6 +82,7 @@ export const TestRows: RowType<Keys>[] = [
     lastAssigned: "Rahul",
     barcode: "DG104-123456",
     shipper: "Amazon",
+    ticketID: "3",
   },
   {
     date: "2022/02/12",
@@ -89,6 +92,7 @@ export const TestRows: RowType<Keys>[] = [
     lastAssigned: "Rahul",
     barcode: "DG104-123456",
     shipper: "Amazon",
+    ticketID: "4",
   },
   {
     date: "2022/02/12",
@@ -98,6 +102,7 @@ export const TestRows: RowType<Keys>[] = [
     lastAssigned: "Rahul",
     barcode: "DG104-123456",
     shipper: "Amazon",
+    ticketID: "5",
   },
   {
     date: "2022/02/12",
@@ -107,5 +112,6 @@ export const TestRows: RowType<Keys>[] = [
     lastAssigned: "Rahul",
     barcode: "DG104-123456",
     shipper: "Amazon",
+    ticketID: "6",
   },
 ];

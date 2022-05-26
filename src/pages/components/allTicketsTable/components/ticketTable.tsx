@@ -6,7 +6,7 @@ import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import Paper from "@mui/material/Paper";
 import TableBody from "@mui/material/TableBody";
-import { DropdownButton } from './dropdownButton';
+import { DropdownButton } from "./dropdownButton";
 
 interface HeaderRowDataType {
   label: string;
@@ -19,7 +19,7 @@ export type HeaderRowType<T extends string> = {
 };
 
 export type RowType<T extends string> = {
-  [key in T]: any;
+  [key in T | "ticketID"]: string;
 };
 
 interface TicketTableProps<T extends string> {
@@ -31,14 +31,13 @@ export const TicketTable = <T extends string>({
   headerRow,
   rows,
 }: TicketTableProps<T>) => {
-
   const headerRowData: HeaderRowDataType[] = Object.values(headerRow);
   const headerFilters = headerRowData.map(
     ({ filterLabel, filterContent }, i) => {
       if (filterLabel && filterContent) {
         return (
           <TableCell key={i} align="left">
-            <DropdownButton buttonText={filterLabel} content={filterContent}/>
+            <DropdownButton buttonText={filterLabel} content={filterContent} />
           </TableCell>
         );
       }
