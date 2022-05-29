@@ -10,19 +10,19 @@ import useLoadable from "../../../../utils/useLoadable";
 function pickEntrySubtitle (status: Ticket["STATUS"]) {
   switch(status){
     case "DELIVERED":
-      return `Completed by: ${" "}`
+      return `Completed by: `
       break;
 
     case "INCOMPLETE":
-      return `Reported by: ${" "}`
+      return `Reported by: `
       break;
 
     case "IN-PROGRESS":
-      return `Assigned to: ${" "}`
+      return `Assigned to: `
       break;
 
     case "ASSIGNED":
-      return `Reported by: ${" "}`
+      return `Reported by: `
       break;
 
     case "INVENTORY":
