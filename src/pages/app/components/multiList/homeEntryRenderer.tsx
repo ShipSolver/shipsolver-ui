@@ -39,8 +39,8 @@ export default function EntryRenderer(entry: Ticket): JSX.Element {
   } = useLoadable(fetchBroker, entry.CURRENT_ASSIGNED_USER_ID);
   return (
     <Paper className="ss-ticket-renderer">
-      <Typography>{entry.CONSIGNEE.ADDRESS}</Typography>
-      <Typography>
+      <Typography variant="h6">{entry.CONSIGNEE.ADDRESS}</Typography>
+      <Typography color="gray">
         {pickEntrySubtitle(entry.STATUS)}
         {entry.STATUS === "INVENTORY"
           ? ""
