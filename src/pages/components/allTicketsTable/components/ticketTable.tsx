@@ -41,9 +41,6 @@ export const TicketTable = <T extends string>({
 
   const [allSelected, setAllSelected] = React.useState<boolean>(false);
 
-  console.log(selected);
-  console.log(rows);
-
   const handleSingleClick = (ticketID: string) => {
     console.log(ticketID, typeof ticketID);
     setSelected((prev) => ({
@@ -77,28 +74,26 @@ export const TicketTable = <T extends string>({
   );
   const headerLabels = headerRowData.map(({ label }) => (
     <TableCell align="left" sx={{ fontWeight: "bold" }}>
-      {label as string}{" "}
+      {label as string}
     </TableCell>
   ));
 
   const tableRows = useMemo(
     () =>
-      rows.map((row, i) => {
-        return (
-          <TableRow key={i} hover selected={selected[row.ticketID]}>
-            <TableCell padding="checkbox">
-              <Checkbox
-                checked={selected[row.ticketID]}
-                onClick={(event) => handleSingleClick(row.ticketID)}
-              />
-            </TableCell>
-            {Object.entries(row).map(([key, val]) => {
-              if (key === "ticketID") return null;
-              return <TableCell align="left">{val as any}</TableCell>;
-            })}
-          </TableRow>
-        );
-      }),
+      rows.map((row, i) => (
+        <TableRow key={i} hover selected={selected[row.ticketID]}>
+          <TableCell padding="checkbox">
+            <Checkbox
+              checked={selected[row.ticketID]}
+              onClick={() => handleSingleClick(row.ticketID)}
+            />
+          </TableCell>
+          {Object.entries(row).map(([key, val]) => {
+            if (key === "ticketID") return null;
+            return <TableCell align="left">{val as any}</TableCell>;
+          })}
+        </TableRow>
+      )),
     [rows, selected]
   );
 
