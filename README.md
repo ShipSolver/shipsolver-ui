@@ -2,6 +2,7 @@
 
 - Sathira Katugaha : sghmk12
 - Derek Chen : derekchen745
+- Samuel Mpoloka : not my git account
 
 ## Get Started:
 
