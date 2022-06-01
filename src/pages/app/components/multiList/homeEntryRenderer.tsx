@@ -7,6 +7,8 @@ import { Ticket } from "../../../../services/types";
 import { fetchBroker } from "../../../../services/brokerServices";
 import useLoadable from "../../../../utils/useLoadable";
 
+import "./homeEntryRender.css"
+
 function pickEntrySubtitle (status: Ticket["STATUS"]) {
   switch(status){
     case "DELIVERED":
@@ -37,8 +39,17 @@ export default function EntryRenderer(entry: Ticket): JSX.Element {
     loading,
     error,
   } = useLoadable(fetchBroker, entry.CURRENT_ASSIGNED_USER_ID);
+
+  const [selected, setSelected] = React.useState(false);
+
+  function handleClicks () {
+    setSelected(current => !current);
+  }
+
   return (
-    <Paper className="ss-ticket-renderer">
+    <Paper variant="outlined" className={`${selected ? "home-entry-renderer-paper-with-border" : "ss-ticket-renderer"}`}
+    onClick={handleClicks}
+    >
       <Typography variant="h6">{entry.CONSIGNEE.ADDRESS}</Typography>
       <Typography color="gray">
         {pickEntrySubtitle(entry.STATUS)}
