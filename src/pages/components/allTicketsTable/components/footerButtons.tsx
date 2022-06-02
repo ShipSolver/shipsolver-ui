@@ -1,7 +1,17 @@
 import React, { useState } from "react";
+import { useRecoilState } from "recoil";
 
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
+
+import {
+  ticketDetailsDisabledAtom,
+  podDisabledAtom,
+  enterIntoInventoryDisabledAtom,
+  assignToBrokerDisabledAtom,
+  deleteDisabledAtom,
+  exportDisabledAtom,
+} from "./state/tableState";
 
 const ButtonLabels = {
   ticketDetails: "View Ticket Details",
@@ -15,20 +25,24 @@ const ButtonLabels = {
 interface FooterButtonsProps {}
 
 export const FooterButtons = (props: FooterButtonsProps) => {
-  const [ticketDetailsDisabled, setTicketDetailsDisabled] =
-    useState<boolean>(false);
+  const [ticketDetailsDisabled, setTicketDetailsDisabled] = useRecoilState(
+    ticketDetailsDisabledAtom
+  );
 
-  const [podDisabled, setPodDisabled] = useState<boolean>(false);
+  const [podDisabled, setPodDisabled] = useRecoilState(podDisabledAtom);
 
-  const [enterIntoInventoryDisabled, setEnterIntoInventoryDisabled] =
-    useState<boolean>(false);
+  const [enterIntoInventoryDisabled, setEnterIntoInvetoryDisabled] =
+    useRecoilState(enterIntoInventoryDisabledAtom);
 
-  const [assignToBrokerDisabled, setAssignToBrokerDisabled] =
-    useState<boolean>(false);
+  const [assignToBrokerDisabled, setAssignToBrokerDisabled] = useRecoilState(
+    assignToBrokerDisabledAtom
+  );
 
-  const [deleteDisabled, setDeleteDisabled] = useState<boolean>(false);
+  const [deleteDisabled, setDeleteDisabled] =
+    useRecoilState(deleteDisabledAtom);
 
-  const [exportDisabled, setExportDisabled] = useState<boolean>(false);
+  const [exportDisabled, setExportDisabled] =
+    useRecoilState(exportDisabledAtom);
 
   return (
     <ButtonWrapper>
