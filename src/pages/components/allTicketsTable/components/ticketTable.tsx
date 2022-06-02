@@ -10,12 +10,14 @@ import TableBody from "@mui/material/TableBody";
 import { DropdownButton } from "./dropdownButton";
 import Checkbox from "@mui/material/Checkbox";
 import {
-  ticketDetailsDisabledAtom,
-  podDisabledAtom,
-  enterIntoInventoryDisabledAtom,
-  assignToBrokerDisabledAtom,
-  deleteDisabledAtom,
-  exportDisabledAtom,
+  // ticketDetailsDisabledAtom,
+  // podDisabledAtom,
+  // enterIntoInventoryDisabledAtom,
+  // assignToBrokerDisabledAtom,
+  // deleteDisabledAtom,
+  // exportDisabledAtom,
+  singleRowSelectedButtonDisabledAtom,
+  multiRowSelectedButtonDisabledAtom,
 } from "./state/tableState";
 
 interface HeaderRowDataType {
@@ -40,23 +42,25 @@ export const TicketTable = <T extends string>({
   headerRow,
   rows,
 }: TicketTableProps<T>) => {
-  const [ticketDetailsDisabled, setTicketDetailsDisabled] = useRecoilState(
-    ticketDetailsDisabledAtom
-  );
-  const [podDisabled, setPodDisabled] = useRecoilState(podDisabledAtom);
+  // const [ticketDetailsDisabled, setTicketDetailsDisabled] = useRecoilState(
+  //   ticketDetailsDisabledAtom
+  // );
+  // const [podDisabled, setPodDisabled] = useRecoilState(podDisabledAtom);
+  // const [enterIntoInventoryDisabled, setEnterIntoInvetoryDisabled] =
+  //   useRecoilState(enterIntoInventoryDisabledAtom);
+  // const [assignToBrokerDisabled, setAssignToBrokerDisabled] = useRecoilState(
+  //   assignToBrokerDisabledAtom
+  // );
+  // const [deleteDisabled, setDeleteDisabled] =
+  //   useRecoilState(deleteDisabledAtom);
+  // const [exportDisabled, setExportDisabled] =
+  //   useRecoilState(exportDisabledAtom);
 
-  const [enterIntoInventoryDisabled, setEnterIntoInvetoryDisabled] =
-    useRecoilState(enterIntoInventoryDisabledAtom);
+  const [singleRowSelectedButtonDisabled, setSingleRowSelectedButtonDisabled] =
+    useRecoilState(singleRowSelectedButtonDisabledAtom);
 
-  const [assignToBrokerDisabled, setAssignToBrokerDisabled] = useRecoilState(
-    assignToBrokerDisabledAtom
-  );
-
-  const [deleteDisabled, setDeleteDisabled] =
-    useRecoilState(deleteDisabledAtom);
-
-  const [exportDisabled, setExportDisabled] =
-    useRecoilState(exportDisabledAtom);
+  const [multiRowSelectedButtonDisabled, setMultiRowSelectedButtonDisabled] =
+    useRecoilState(multiRowSelectedButtonDisabledAtom);
 
   const [selected, setSelected] = React.useState<{ [key: string]: boolean }>(
     Object.values(rows).reduce(
@@ -135,26 +139,14 @@ export const TicketTable = <T extends string>({
 
     //Enable Buttons
     if (numSelected === 0) {
-      setTicketDetailsDisabled(true);
-      setPodDisabled(true);
-      setEnterIntoInvetoryDisabled(true);
-      setAssignToBrokerDisabled(true);
-      setDeleteDisabled(true);
-      setExportDisabled(true);
+      setSingleRowSelectedButtonDisabled(true);
+      setMultiRowSelectedButtonDisabled(true);
     } else if (numSelected === 1) {
-      setTicketDetailsDisabled(false);
-      setPodDisabled(false);
-      setEnterIntoInvetoryDisabled(false);
-      setAssignToBrokerDisabled(false);
-      setDeleteDisabled(false);
-      setExportDisabled(false);
+      setSingleRowSelectedButtonDisabled(false);
+      setMultiRowSelectedButtonDisabled(false);
     } else if (numSelected > 1) {
-      setTicketDetailsDisabled(true);
-      setPodDisabled(true);
-      setEnterIntoInvetoryDisabled(false);
-      setAssignToBrokerDisabled(false);
-      setDeleteDisabled(false);
-      setExportDisabled(false);
+      setSingleRowSelectedButtonDisabled(true);
+      setMultiRowSelectedButtonDisabled(false);
     }
 
     //Checks off select all if all rows are selected individually

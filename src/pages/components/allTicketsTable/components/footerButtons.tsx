@@ -5,12 +5,14 @@ import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 
 import {
-  ticketDetailsDisabledAtom,
-  podDisabledAtom,
-  enterIntoInventoryDisabledAtom,
-  assignToBrokerDisabledAtom,
-  deleteDisabledAtom,
-  exportDisabledAtom,
+  // ticketDetailsDisabledAtom,
+  // podDisabledAtom,
+  // enterIntoInventoryDisabledAtom,
+  // assignToBrokerDisabledAtom,
+  // deleteDisabledAtom,
+  // exportDisabledAtom,
+  singleRowSelectedButtonDisabledAtom,
+  multiRowSelectedButtonDisabledAtom,
 } from "./state/tableState";
 
 const ButtonLabels = {
@@ -25,43 +27,49 @@ const ButtonLabels = {
 interface FooterButtonsProps {}
 
 export const FooterButtons = (props: FooterButtonsProps) => {
-  const [ticketDetailsDisabled, setTicketDetailsDisabled] = useRecoilState(
-    ticketDetailsDisabledAtom
-  );
+  // const [ticketDetailsDisabled, setTicketDetailsDisabled] = useRecoilState(
+  //   ticketDetailsDisabledAtom
+  // );
 
-  const [podDisabled, setPodDisabled] = useRecoilState(podDisabledAtom);
+  // const [podDisabled, setPodDisabled] = useRecoilState(podDisabledAtom);
 
-  const [enterIntoInventoryDisabled, setEnterIntoInvetoryDisabled] =
-    useRecoilState(enterIntoInventoryDisabledAtom);
+  // const [enterIntoInventoryDisabled, setEnterIntoInvetoryDisabled] =
+  //   useRecoilState(enterIntoInventoryDisabledAtom);
 
-  const [assignToBrokerDisabled, setAssignToBrokerDisabled] = useRecoilState(
-    assignToBrokerDisabledAtom
-  );
+  // const [assignToBrokerDisabled, setAssignToBrokerDisabled] = useRecoilState(
+  //   assignToBrokerDisabledAtom
+  // );
 
-  const [deleteDisabled, setDeleteDisabled] =
-    useRecoilState(deleteDisabledAtom);
+  // const [deleteDisabled, setDeleteDisabled] =
+  //   useRecoilState(deleteDisabledAtom);
 
-  const [exportDisabled, setExportDisabled] =
-    useRecoilState(exportDisabledAtom);
+  // const [exportDisabled, setExportDisabled] =
+  //   useRecoilState(exportDisabledAtom);
+
+  const [singleRowSelectedButtonDisabled, setSingleRowSelectedButtonDisabled] =
+    useRecoilState(singleRowSelectedButtonDisabledAtom);
+
+  const [multiRowSelectedButtonDisabled, setMultiRowSelectedButtonDisabled] =
+    useRecoilState(multiRowSelectedButtonDisabledAtom);
 
   return (
     <ButtonWrapper>
-      <Button variant="contained" disabled={ticketDetailsDisabled}>
+      <Button variant="contained" disabled={singleRowSelectedButtonDisabled}>
         {ButtonLabels.ticketDetails}
       </Button>
-      <Button variant="contained" disabled={podDisabled}>
+      <Button variant="contained" disabled={singleRowSelectedButtonDisabled}>
         {ButtonLabels.pod}
       </Button>
-      <Button variant="contained" disabled={enterIntoInventoryDisabled}>
+      <Button variant="contained" disabled={multiRowSelectedButtonDisabled}>
         {ButtonLabels.enterIntoInventory}
       </Button>
-      <Button variant="contained" disabled={assignToBrokerDisabled}>
+      <Button variant="contained" disabled={multiRowSelectedButtonDisabled}>
         {ButtonLabels.assignToBroker}
       </Button>
-      <Button variant="contained" disabled={deleteDisabled}>
+      <Button variant="contained" disabled={multiRowSelectedButtonDisabled}>
         {ButtonLabels.delete}
       </Button>
-      <Button variant="contained" disabled={exportDisabled}>
+      <Button variant="contained" disabled={multiRowSelectedButtonDisabled}>
         {ButtonLabels.export}
       </Button>
     </ButtonWrapper>
