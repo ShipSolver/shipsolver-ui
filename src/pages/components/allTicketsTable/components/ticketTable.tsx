@@ -13,6 +13,7 @@ import {
   singleRowSelectedAtom,
   multiRowSelectedAtom,
 } from "./state/tableState";
+import { NumericLiteral } from "typescript";
 
 interface HeaderRowDataType {
   label: string;
@@ -140,6 +141,8 @@ export const TicketTable = <T extends string>({
     } else {
       setAllSelected(false);
     }
+
+    console.log("numSelected: " + numSelected);
   }, [selected]);
 
   return (
