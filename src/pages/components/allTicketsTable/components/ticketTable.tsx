@@ -13,7 +13,6 @@ import {
   singleRowSelectedAtom,
   multiRowSelectedAtom,
 } from "./state/tableState";
-import { NumericLiteral } from "typescript";
 
 interface HeaderRowDataType {
   label: string;
@@ -125,14 +124,14 @@ export const TicketTable = <T extends string>({
   useEffect(() => {
     //Enable Buttons
     if (numSelected === 0) {
-      setSingleRowSelected(true);
-      setMultiRowSelected(true);
-    } else if (numSelected === 1) {
       setSingleRowSelected(false);
       setMultiRowSelected(false);
-    } else if (numSelected > 1) {
+    } else if (numSelected === 1) {
       setSingleRowSelected(true);
-      setMultiRowSelected(false);
+      setMultiRowSelected(true);
+    } else if (numSelected > 1) {
+      setSingleRowSelected(false);
+      setMultiRowSelected(true);
     }
 
     //Checks off select all if all rows are selected individually
@@ -141,8 +140,6 @@ export const TicketTable = <T extends string>({
     } else {
       setAllSelected(false);
     }
-
-    console.log("numSelected: " + numSelected);
   }, [selected]);
 
   return (

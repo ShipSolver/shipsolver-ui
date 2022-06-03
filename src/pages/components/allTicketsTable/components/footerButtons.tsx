@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
@@ -21,31 +21,28 @@ const ButtonLabels = {
 interface FooterButtonsProps {}
 
 export const FooterButtons = (props: FooterButtonsProps) => {
-  const [singleRowSelected, setSingleRowSelected] = useRecoilState(
-    singleRowSelectedAtom
-  );
+  const singleRowSelected = useRecoilValue(singleRowSelectedAtom);
 
-  const [multiRowSelected, setMultiRowSelected] =
-    useRecoilState(multiRowSelectedAtom);
+  const multiRowSelected = useRecoilValue(multiRowSelectedAtom);
 
   return (
     <ButtonWrapper>
-      <Button variant="contained" disabled={singleRowSelected}>
+      <Button variant="contained" disabled={!singleRowSelected}>
         {ButtonLabels.ticketDetails}
       </Button>
-      <Button variant="contained" disabled={singleRowSelected}>
+      <Button variant="contained" disabled={!singleRowSelected}>
         {ButtonLabels.pod}
       </Button>
-      <Button variant="contained" disabled={multiRowSelected}>
+      <Button variant="contained" disabled={!multiRowSelected}>
         {ButtonLabels.enterIntoInventory}
       </Button>
-      <Button variant="contained" disabled={multiRowSelected}>
+      <Button variant="contained" disabled={!multiRowSelected}>
         {ButtonLabels.assignToBroker}
       </Button>
-      <Button variant="contained" disabled={multiRowSelected}>
+      <Button variant="contained" disabled={!multiRowSelected}>
         {ButtonLabels.delete}
       </Button>
-      <Button variant="contained" disabled={multiRowSelected}>
+      <Button variant="contained" disabled={!multiRowSelected}>
         {ButtonLabels.export}
       </Button>
     </ButtonWrapper>
