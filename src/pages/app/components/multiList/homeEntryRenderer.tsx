@@ -33,22 +33,20 @@ function pickEntrySubtitle (status: Ticket["STATUS"]) {
   }
 }
 
-export default function EntryRenderer(entry: Ticket): JSX.Element {
+export default function EntryRenderer({entry: Ticket, toggleSelection: toggleSelectionFn, selected}): JSX.Element {
   const {
     val: broker,
     loading,
     error,
   } = useLoadable(fetchBroker, entry.CURRENT_ASSIGNED_USER_ID);
 
-  const [selected, setSelected] = React.useState(false);
-
-  function handleClicks () {
-    setSelected(current => !current);
+  const handleEntryClick = () => {
+    toggleSelection(entry.ID, !selected)
   }
 
   return (
     <Paper variant="outlined" className={`${selected ? "home-entry-renderer-paper-with-border" : "ss-ticket-renderer"}`}
-    onClick={handleClicks}
+    onClick={handleEntryClick}
     >
       <Typography variant="h6">{entry.CONSIGNEE.ADDRESS}</Typography>
       <Typography color="gray">

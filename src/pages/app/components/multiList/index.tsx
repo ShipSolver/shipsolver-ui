@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useCallback, useMemo } from "react";
 
 import Typography from "@mui/material/Typography";
 
@@ -7,10 +7,16 @@ import Paper from "../../../components/roundedPaper";
 
 import "./multiList.css";
 
+export type toggleSelectionFn = (ID: string, selected: boolean) => void;
+
 type List<T> = {
   title: string;
   entries: T[];
-  entryRenderer: (entry: T) => JSX.Element;
+  entryRenderer: (props: {
+    entry: T, 
+    toggleSelection: toggleSelectionFn,
+    selected: boolean
+  }) => JSX.Element;
 };
 
 type MultiListProps<T> = {
@@ -20,8 +26,64 @@ type MultiListProps<T> = {
   error: string | null;
 };
 
+type IndexedEntry<T> = {
+  entry: T,
+  ID: string
+}
+
+type IndexedList<T> = {
+  title: string;
+  entries: IndexedEntry<T>[];
+  entryRenderer: (props: {
+    entry: IndexedEntry<T>, 
+    toggleSelection: toggleSelectionFn,
+    selected: boolean
+  }) => JSX.Element;
+};
+
+type ID = string;
+
+type selectedItemState = {
+  [key: ID]: boolean;
+}
+
+function initializeSelectedEntries (
+  indexedListSpecifications : IndexedList<T>[]
+) : selectedItemState {
+  const IDs = []
+  for(const list of indexedListSpecifications){
+    for(const entry of list.entries){
+      IDs.push(entry.ID)
+    }
+  }
+  return IDs.reduce(
+    (selectedEntryObject, ID) => ({...selectedEntryObject, [ID]: false}), 
+  {})
+}
+
 function Lists<T>(props: MultiListProps<T>): JSX.Element {
   const { title, listSpecifications, loading, error } = props;
+  
+  const indexedListSpecifications : IndexedList<T>[] = 
+    useMemo(() => {
+      return listSpecifications.map((listSpecification, indexOuter) => ({
+        ...listSpecification, 
+        entries: listSpecification.entries.map(
+          (entry, indexInner) => ({
+            entry, ID: indexOuter + "_" + indexInner
+          }))
+      }))
+    },[listSpecifications])
+
+  const [selectedItems, setSelectedItems] = useState<selectedItemState>(
+    initializeSelectedEntries(indexedListSpecifications)
+  ) 
+
+  const toggleSelection = useCallback((ID: string, selected: boolean) =>{
+    setSelectedItems(currentSelectedItems => ({
+      ...currentSelectedItems, [ID]: selected
+    }))
+  }, [setSelectedItems]) 
 
   return (
     <Paper className="multi-list-all-lists-container">
@@ -38,7 +100,10 @@ function Lists<T>(props: MultiListProps<T>): JSX.Element {
             </Typography>
           </div>
           <div className="multi-list-list">
-            {entries.map((entry) => entryRenderer(entry))}
+            {entries.map((indexedEntry, indexInnerLoop) => entryRenderer(
+                    {entry: indexedEntry, toggleSelection, selected}
+                  )
+                )}
           </div>
         </div>
       ))}
