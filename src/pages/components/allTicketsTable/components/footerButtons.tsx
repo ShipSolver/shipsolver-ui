@@ -5,14 +5,8 @@ import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 
 import {
-  // ticketDetailsDisabledAtom,
-  // podDisabledAtom,
-  // enterIntoInventoryDisabledAtom,
-  // assignToBrokerDisabledAtom,
-  // deleteDisabledAtom,
-  // exportDisabledAtom,
-  singleRowSelectedButtonDisabledAtom,
-  multiRowSelectedButtonDisabledAtom,
+  singleRowSelectedAtom,
+  multiRowSelectedAtom,
 } from "./state/tableState";
 
 const ButtonLabels = {
@@ -27,49 +21,31 @@ const ButtonLabels = {
 interface FooterButtonsProps {}
 
 export const FooterButtons = (props: FooterButtonsProps) => {
-  // const [ticketDetailsDisabled, setTicketDetailsDisabled] = useRecoilState(
-  //   ticketDetailsDisabledAtom
-  // );
+  const [singleRowSelected, setSingleRowSelected] = useRecoilState(
+    singleRowSelectedAtom
+  );
 
-  // const [podDisabled, setPodDisabled] = useRecoilState(podDisabledAtom);
-
-  // const [enterIntoInventoryDisabled, setEnterIntoInvetoryDisabled] =
-  //   useRecoilState(enterIntoInventoryDisabledAtom);
-
-  // const [assignToBrokerDisabled, setAssignToBrokerDisabled] = useRecoilState(
-  //   assignToBrokerDisabledAtom
-  // );
-
-  // const [deleteDisabled, setDeleteDisabled] =
-  //   useRecoilState(deleteDisabledAtom);
-
-  // const [exportDisabled, setExportDisabled] =
-  //   useRecoilState(exportDisabledAtom);
-
-  const [singleRowSelectedButtonDisabled, setSingleRowSelectedButtonDisabled] =
-    useRecoilState(singleRowSelectedButtonDisabledAtom);
-
-  const [multiRowSelectedButtonDisabled, setMultiRowSelectedButtonDisabled] =
-    useRecoilState(multiRowSelectedButtonDisabledAtom);
+  const [multiRowSelected, setMultiRowSelected] =
+    useRecoilState(multiRowSelectedAtom);
 
   return (
     <ButtonWrapper>
-      <Button variant="contained" disabled={singleRowSelectedButtonDisabled}>
+      <Button variant="contained" disabled={singleRowSelected}>
         {ButtonLabels.ticketDetails}
       </Button>
-      <Button variant="contained" disabled={singleRowSelectedButtonDisabled}>
+      <Button variant="contained" disabled={singleRowSelected}>
         {ButtonLabels.pod}
       </Button>
-      <Button variant="contained" disabled={multiRowSelectedButtonDisabled}>
+      <Button variant="contained" disabled={multiRowSelected}>
         {ButtonLabels.enterIntoInventory}
       </Button>
-      <Button variant="contained" disabled={multiRowSelectedButtonDisabled}>
+      <Button variant="contained" disabled={multiRowSelected}>
         {ButtonLabels.assignToBroker}
       </Button>
-      <Button variant="contained" disabled={multiRowSelectedButtonDisabled}>
+      <Button variant="contained" disabled={multiRowSelected}>
         {ButtonLabels.delete}
       </Button>
-      <Button variant="contained" disabled={multiRowSelectedButtonDisabled}>
+      <Button variant="contained" disabled={multiRowSelected}>
         {ButtonLabels.export}
       </Button>
     </ButtonWrapper>

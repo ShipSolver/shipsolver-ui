@@ -10,15 +10,10 @@ import TableBody from "@mui/material/TableBody";
 import { DropdownButton } from "./dropdownButton";
 import Checkbox from "@mui/material/Checkbox";
 import {
-  // ticketDetailsDisabledAtom,
-  // podDisabledAtom,
-  // enterIntoInventoryDisabledAtom,
-  // assignToBrokerDisabledAtom,
-  // deleteDisabledAtom,
-  // exportDisabledAtom,
-  singleRowSelectedButtonDisabledAtom,
-  multiRowSelectedButtonDisabledAtom,
+  singleRowSelectedAtom,
+  multiRowSelectedAtom,
 } from "./state/tableState";
+import { NumericLiteral } from "typescript";
 
 interface HeaderRowDataType {
   label: string;
@@ -42,25 +37,12 @@ export const TicketTable = <T extends string>({
   headerRow,
   rows,
 }: TicketTableProps<T>) => {
-  // const [ticketDetailsDisabled, setTicketDetailsDisabled] = useRecoilState(
-  //   ticketDetailsDisabledAtom
-  // );
-  // const [podDisabled, setPodDisabled] = useRecoilState(podDisabledAtom);
-  // const [enterIntoInventoryDisabled, setEnterIntoInvetoryDisabled] =
-  //   useRecoilState(enterIntoInventoryDisabledAtom);
-  // const [assignToBrokerDisabled, setAssignToBrokerDisabled] = useRecoilState(
-  //   assignToBrokerDisabledAtom
-  // );
-  // const [deleteDisabled, setDeleteDisabled] =
-  //   useRecoilState(deleteDisabledAtom);
-  // const [exportDisabled, setExportDisabled] =
-  //   useRecoilState(exportDisabledAtom);
+  const [singleRowSelected, setSingleRowSelected] = useRecoilState(
+    singleRowSelectedAtom
+  );
 
-  const [singleRowSelectedButtonDisabled, setSingleRowSelectedButtonDisabled] =
-    useRecoilState(singleRowSelectedButtonDisabledAtom);
-
-  const [multiRowSelectedButtonDisabled, setMultiRowSelectedButtonDisabled] =
-    useRecoilState(multiRowSelectedButtonDisabledAtom);
+  const [multiRowSelected, setMultiRowSelected] =
+    useRecoilState(multiRowSelectedAtom);
 
   const [selected, setSelected] = React.useState<{ [key: string]: boolean }>(
     Object.values(rows).reduce(
@@ -71,7 +53,14 @@ export const TicketTable = <T extends string>({
 
   const [allSelected, setAllSelected] = React.useState<boolean>(false);
 
+  const [numSelected, setNumSelected] = React.useState<number>(0);
+
   const handleSingleClick = (ticketID: string) => {
+    if (selected[ticketID] === false) {
+      setNumSelected(numSelected + 1);
+    } else if (selected[ticketID] === true) {
+      setNumSelected(numSelected - 1);
+    }
     setSelected((prev) => ({
       ...prev,
       [ticketID]: !prev[ticketID],
@@ -79,6 +68,11 @@ export const TicketTable = <T extends string>({
   };
 
   const handleSelectAllClick = (rows: RowType<T>[]) => {
+    if (allSelected === false) {
+      setNumSelected(rows.length);
+    } else if (allSelected === true) {
+      setNumSelected(0);
+    }
     setAllSelected(!allSelected);
     setSelected(
       Object.values(rows).reduce(
@@ -129,24 +123,16 @@ export const TicketTable = <T extends string>({
   );
 
   useEffect(() => {
-    //Compute selected rows
-    var numSelected: number = 0;
-    for (const row of rows) {
-      if (selected[row.ticketID] === true) {
-        numSelected += 1;
-      }
-    }
-
     //Enable Buttons
     if (numSelected === 0) {
-      setSingleRowSelectedButtonDisabled(true);
-      setMultiRowSelectedButtonDisabled(true);
+      setSingleRowSelected(true);
+      setMultiRowSelected(true);
     } else if (numSelected === 1) {
-      setSingleRowSelectedButtonDisabled(false);
-      setMultiRowSelectedButtonDisabled(false);
+      setSingleRowSelected(false);
+      setMultiRowSelected(false);
     } else if (numSelected > 1) {
-      setSingleRowSelectedButtonDisabled(true);
-      setMultiRowSelectedButtonDisabled(false);
+      setSingleRowSelected(true);
+      setMultiRowSelected(false);
     }
 
     //Checks off select all if all rows are selected individually
@@ -155,6 +141,8 @@ export const TicketTable = <T extends string>({
     } else {
       setAllSelected(false);
     }
+
+    console.log("numSelected: " + numSelected);
   }, [selected]);
 
   return (
