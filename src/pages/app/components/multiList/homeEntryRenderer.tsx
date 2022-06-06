@@ -7,6 +7,8 @@ import { Ticket } from "../../../../services/types";
 import { fetchBroker } from "../../../../services/brokerServices";
 import useLoadable from "../../../../utils/useLoadable";
 
+import { toggleSelectionFn, IndexedEntry } from './index';
+
 import "./homeEntryRender.css"
 
 function pickEntrySubtitle (status: Ticket["STATUS"]) {
@@ -33,7 +35,7 @@ function pickEntrySubtitle (status: Ticket["STATUS"]) {
   }
 }
 
-export default function EntryRenderer({entry: Ticket, toggleSelection: toggleSelectionFn, selected}): JSX.Element {
+export default function EntryRenderer({entry: IndexedEntry, toggleSelection: toggleSelectionFn, selected}): JSX.Element {
   const {
     val: broker,
     loading,

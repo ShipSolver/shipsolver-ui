@@ -26,7 +26,7 @@ type MultiListProps<T> = {
   error: string | null;
 };
 
-type IndexedEntry<T> = {
+export type IndexedEntry<T> = {
   entry: T,
   ID: string
 }
@@ -85,7 +85,7 @@ function Lists<T>(props: MultiListProps<T>): JSX.Element {
     }))
   }, [setSelectedItems]) 
 
-  const selected: boolean = selectedItems
+  const selected = useMemo((ID: string) => selectedItems['ID'] , [selectedItems] )
 
   return (
     <Paper className="multi-list-all-lists-container">
