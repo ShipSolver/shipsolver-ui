@@ -85,7 +85,9 @@ function Lists<T>(props: MultiListProps<T>): JSX.Element {
     }))
   }, [setSelectedItems]) 
 
-  const selected = useMemo((ID: string) => selectedItems['ID'] , [selectedItems] )
+  function selecteded(index: number): boolean {
+    return selectedItems[index] 
+  }
 
   return (
     <Paper className="multi-list-all-lists-container">
@@ -102,9 +104,11 @@ function Lists<T>(props: MultiListProps<T>): JSX.Element {
             </Typography>
           </div>
           <div className="multi-list-list">
-            {entries.map((indexedEntry, indexInnerLoop) => entryRenderer(
+            {entries.map((indexedEntry, indexInnerLoop) => {
+                  const selected = selecteded(indexInnerLoop)
+                  entryRenderer(
                     {entry: indexedEntry, toggleSelection, selected}
-                  )
+                  )}
                 )}
           </div>
         </div>

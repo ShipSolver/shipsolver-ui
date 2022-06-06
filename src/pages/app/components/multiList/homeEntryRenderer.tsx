@@ -35,7 +35,7 @@ function pickEntrySubtitle (status: Ticket["STATUS"]) {
   }
 }
 
-export default function EntryRenderer({entry: IndexedEntry, toggleSelection: toggleSelectionFn, selected}): JSX.Element {
+export default function EntryRenderer({entry: IndexedEntry, toggleSelection: toggleSelectionFn, selected: boolean}): JSX.Element {
   const {
     val: broker,
     loading,
