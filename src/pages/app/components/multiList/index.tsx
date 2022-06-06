@@ -85,6 +85,8 @@ function Lists<T>(props: MultiListProps<T>): JSX.Element {
     }))
   }, [setSelectedItems]) 
 
+  const selected: boolean = selectedItems
+
   return (
     <Paper className="multi-list-all-lists-container">
       {listSpecifications.map(({ title, entries, entryRenderer }) => (
