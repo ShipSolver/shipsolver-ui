@@ -1,7 +1,13 @@
 import React, { useState } from "react";
+import { useRecoilValue } from "recoil";
 
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
+
+import {
+  singleRowSelectedAtom,
+  multiRowSelectedAtom,
+} from "./state/tableState";
 
 const ButtonLabels = {
   ticketDetails: "View Ticket Details",
@@ -15,39 +21,28 @@ const ButtonLabels = {
 interface FooterButtonsProps {}
 
 export const FooterButtons = (props: FooterButtonsProps) => {
-  const [ticketDetailsDisabled, setTicketDetailsDisabled] =
-    useState<boolean>(false);
+  const singleRowSelected = useRecoilValue(singleRowSelectedAtom);
 
-  const [podDisabled, setPodDisabled] = useState<boolean>(false);
-
-  const [enterIntoInventoryDisabled, setEnterIntoInventoryDisabled] =
-    useState<boolean>(false);
-
-  const [assignToBrokerDisabled, setAssignToBrokerDisabled] =
-    useState<boolean>(false);
-
-  const [deleteDisabled, setDeleteDisabled] = useState<boolean>(false);
-
-  const [exportDisabled, setExportDisabled] = useState<boolean>(false);
+  const multiRowSelected = useRecoilValue(multiRowSelectedAtom);
 
   return (
     <ButtonWrapper>
-      <Button variant="contained" disabled={ticketDetailsDisabled}>
+      <Button variant="contained" disabled={!singleRowSelected}>
         {ButtonLabels.ticketDetails}
       </Button>
-      <Button variant="contained" disabled={podDisabled}>
+      <Button variant="contained" disabled={!singleRowSelected}>
         {ButtonLabels.pod}
       </Button>
-      <Button variant="contained" disabled={enterIntoInventoryDisabled}>
+      <Button variant="contained" disabled={!multiRowSelected}>
         {ButtonLabels.enterIntoInventory}
       </Button>
-      <Button variant="contained" disabled={assignToBrokerDisabled}>
+      <Button variant="contained" disabled={!multiRowSelected}>
         {ButtonLabels.assignToBroker}
       </Button>
-      <Button variant="contained" disabled={deleteDisabled}>
+      <Button variant="contained" disabled={!multiRowSelected}>
         {ButtonLabels.delete}
       </Button>
-      <Button variant="contained" disabled={exportDisabled}>
+      <Button variant="contained" disabled={!multiRowSelected}>
         {ButtonLabels.export}
       </Button>
     </ButtonWrapper>
