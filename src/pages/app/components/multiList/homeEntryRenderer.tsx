@@ -35,7 +35,7 @@ function pickEntrySubtitle (status: Ticket["STATUS"]) {
   }
 }
 
-export default function EntryRenderer({entry: IndexedEntry, toggleSelection: toggleSelectionFn, selected: boolean}): JSX.Element {
+export default function EntryRenderer({entry, toggleSelection, selected}:{entry: Ticket, toggleSelection: toggleSelectionFn, selected: boolean}): JSX.Element {
   const {
     val: broker,
     loading,
@@ -43,7 +43,7 @@ export default function EntryRenderer({entry: IndexedEntry, toggleSelection: tog
   } = useLoadable(fetchBroker, entry.CURRENT_ASSIGNED_USER_ID);
 
   const handleEntryClick = () => {
-    toggleSelection(entry.ID, !selected)
+    toggleSelection()
   }
 
   return (

@@ -7,16 +7,18 @@ import Paper from "../../../components/roundedPaper";
 
 import "./multiList.css";
 
-export type toggleSelectionFn = (ID: string, selected: boolean) => void;
+export type toggleSelectionFn = () => void;
+
+type entryRendererFn<T> = (props: {
+  entry: T, 
+  toggleSelection: toggleSelectionFn,
+  selected: boolean
+}) => JSX.Element;
 
 type List<T> = {
   title: string;
   entries: T[];
-  entryRenderer: (props: {
-    entry: T, 
-    toggleSelection: toggleSelectionFn,
-    selected: boolean
-  }) => JSX.Element;
+  entryRenderer: entryRendererFn<T>;
 };
 
 type MultiListProps<T> = {
@@ -34,11 +36,7 @@ export type IndexedEntry<T> = {
 type IndexedList<T> = {
   title: string;
   entries: IndexedEntry<T>[];
-  entryRenderer: (props: {
-    entry: IndexedEntry<T>, 
-    toggleSelection: toggleSelectionFn,
-    selected: boolean
-  }) => JSX.Element;
+  entryRenderer:entryRendererFn<T>;
 };
 
 type ID = string;
@@ -47,7 +45,7 @@ type selectedItemState = {
   [key: ID]: boolean;
 }
 
-function initializeSelectedEntries (
+function initializeSelectedEntries<T> (
   indexedListSpecifications : IndexedList<T>[]
 ) : selectedItemState {
   const IDs = []
@@ -79,20 +77,17 @@ function Lists<T>(props: MultiListProps<T>): JSX.Element {
     initializeSelectedEntries(indexedListSpecifications)
   ) 
 
-  const toggleSelection = useCallback((ID: string, selected: boolean) =>{
+  const toggleSelection = useCallback((ID: string) =>{
     setSelectedItems(currentSelectedItems => ({
-      ...currentSelectedItems, [ID]: selected
+      ...currentSelectedItems, [ID]: !currentSelectedItems[ID]
     }))
   }, [setSelectedItems]) 
 
-  function selecteded(index: number): boolean {
-    return selectedItems[index] 
-  }
-
   return (
     <Paper className="multi-list-all-lists-container">
-      {listSpecifications.map(({ title, entries, entryRenderer }) => (
-        <div className="multi-list-list-container">
+      {indexedListSpecifications.map(({ title, entries, entryRenderer }) => {
+         const EntryRenderer = entryRenderer
+        return <div className="multi-list-list-container">
           <div className="ss-flexbox">
             <span className="multi-list-header">
               <Typography display="inline" variant="h4" color="black" gutterBottom>
@@ -104,16 +99,15 @@ function Lists<T>(props: MultiListProps<T>): JSX.Element {
             </Typography>
           </div>
           <div className="multi-list-list">
-            {entries.map((indexedEntry, indexInnerLoop) => {
-                  const selected = selecteded(indexInnerLoop)
-                  entryRenderer(
-                    {entry: indexedEntry, toggleSelection, selected}
-                  )}
+            {entries.map((indexedEntry, indexInnerLoop) => <EntryRenderer
+                    entry= {indexedEntry.entry} toggleSelection={() => toggleSelection(indexedEntry.ID)} selected={selectedItems[indexedEntry.ID]}
+                  />
                 )}
           </div>
         </div>
-      ))}
+      })}
     </Paper>
+ 
   );
 }
 
