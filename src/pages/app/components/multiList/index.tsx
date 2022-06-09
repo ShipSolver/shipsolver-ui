@@ -41,22 +41,28 @@ type IndexedList<T> = {
 
 type ID = string;
 
-type selectedItemState = {
-  [key: ID]: boolean;
+type EntryID = string; // this string will look like ListID_EntryIndexInList
+
+type ListID = string; // this string will be the index of the list in our list specifications
+
+type ListSelectedItemsState = {
+	[key: EntryID]: boolean
+}
+
+type AllSelectedItemsState = {
+	[key: ListID]: ListSelectedItemsState
 }
 
 function initializeSelectedEntries<T> (
   indexedListSpecifications : IndexedList<T>[]
-) : selectedItemState {
-  const IDs = []
+) : ListSelectedItemsState {
+  const IDs: ListSelectedItemsState = {}
   for(const list of indexedListSpecifications){
     for(const entry of list.entries){
-      IDs.push(entry.ID)
+      IDs[entry.ID] = false
     }
   }
-  return IDs.reduce(
-    (selectedEntryObject, ID) => ({...selectedEntryObject, [ID]: false}), 
-  {})
+  return IDs
 }
 
 function Lists<T>(props: MultiListProps<T>): JSX.Element {
@@ -73,7 +79,7 @@ function Lists<T>(props: MultiListProps<T>): JSX.Element {
       }))
     },[listSpecifications])
 
-  const [selectedItems, setSelectedItems] = useState<selectedItemState>(
+  const [selectedItems, setSelectedItems] = useState<AllSelectedItemsState>(
     initializeSelectedEntries(indexedListSpecifications)
   ) 
 
