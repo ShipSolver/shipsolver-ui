@@ -51,6 +51,15 @@ function Stuff(){
     event.preventDefault()
   }
 
+  function clearForm(event:any){
+    setFormData(prevFormData => {
+      return {
+        company: "", Name: "", Address:"", PhoneNumber:"", PostalCode:"", HouseRef: "", Barcode: "", pieces:"",Weight: "", BOL:"", 
+        Special:"", Company1: "", Name1:"", Address1:"", PhoneNumber1:"", PostalCode1:"" 
+      }
+  })
+  }
+
   function Column1(){
     return(
       <div>
@@ -146,7 +155,7 @@ function Stuff(){
         <div className = "buttons">
           <Button onClick = {handleSubmit} variant="contained" sx = {{ height: 32, backgroundColor: "yellow", color: "black", fontSize: 24, mr: 2}}>Add to Inventory</Button>
           <OneButton name = "Delete" color = "red"/>
-          <OneButton name = "Clear" color = "indigo[500]"/>
+          <Button onClick = {clearForm} variant="contained" sx = {{ height: 32, backgroundColor: "indigo[500]", color: "black", fontSize: 24, mr: 2}}>Clear</Button>
         </div>
       
       </form>
