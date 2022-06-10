@@ -75,7 +75,7 @@ function Lists<T>(props: MultiListProps<T>): JSX.Element {
         ...listSpecification, 
         entries: listSpecification.entries.map(
           (entry, indexInner) => ({
-            entry, listID: indexOuter + "_" + indexInner, ID: indexInner + "_" + indexOuter
+            entry, listID: indexOuter+ "_", ID: indexInner + "_" + indexOuter
           }))
       }))
     },[listSpecifications])
@@ -86,13 +86,13 @@ function Lists<T>(props: MultiListProps<T>): JSX.Element {
 
   const toggleSelection = useCallback((listID: string ,ID: string) =>{
     setSelectedItems(currentSelectedItems => ({
-      ...currentSelectedItems, [ID]: currentSelectedItems[ID]
+      ...currentSelectedItems, [listID]: {...currentSelectedItems[listID], [ID]: !currentSelectedItems[listID][ID]}
     }))
   }, [setSelectedItems]) 
 
   return (
     <Paper className="multi-list-all-lists-container">
-      {indexedListSpecifications.map(({ title, entries, entryRenderer }) => {
+      {indexedListSpecifications.map(({ title, entries, entryRenderer }, indexOuterLoop) => {
          const EntryRenderer = entryRenderer
         return <div className="multi-list-list-container">
           <div className="ss-flexbox">
