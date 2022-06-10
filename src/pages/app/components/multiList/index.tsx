@@ -58,11 +58,9 @@ function initializeSelectedEntries<T> (
   indexedListSpecifications : IndexedList<T>[]
 ) : AllSelectedItemsState {
   const IDs: AllSelectedItemsState = {}
-  for(const list of indexedListSpecifications){
-    for(const entry of list.entries){
-      IDs[entry.listID][entry.ID] = false
-    }
-  }
+  for(var i = 0; i < indexedListSpecifications.length; i++)
+    for (var i2 = 0; i2 < indexedListSpecifications[i].entries.length; i2++)
+      IDs[indexedListSpecifications[i].entries[i].listID][indexedListSpecifications[i].entries[i2]?.ID] = false
   return IDs
 }
 
@@ -83,7 +81,7 @@ function Lists<T>(props: MultiListProps<T>): JSX.Element {
   const [selectedItems, setSelectedItems] = useState<AllSelectedItemsState>(
     initializeSelectedEntries(indexedListSpecifications)
   ) 
-
+console.log(initializeSelectedEntries(indexedListSpecifications))
   const toggleSelection = useCallback((listID: string ,ID: string) =>{
     setSelectedItems(currentSelectedItems => ({
       ...currentSelectedItems, [listID]: {...currentSelectedItems[listID], [ID]: !currentSelectedItems[listID][ID]}
@@ -107,7 +105,7 @@ function Lists<T>(props: MultiListProps<T>): JSX.Element {
           </div>
           <div className="multi-list-list">
             {entries.map((indexedEntry, indexInnerLoop) => <EntryRenderer
-                    entry= {indexedEntry.entry} toggleSelection={() => toggleSelection(indexedEntry.listID ,indexedEntry.ID)} selected={selectedItems[indexedEntry.listID][indexedEntry.ID]}
+                    entry= {indexedEntry.entry} toggleSelection={() => toggleSelection(indexedEntry.listID ,indexedEntry?.ID)} selected={selectedItems[indexedEntry.listID][indexedEntry?.ID]}
                   />
                 )}
           </div>
