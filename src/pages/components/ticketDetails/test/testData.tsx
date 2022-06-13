@@ -1,0 +1,81 @@
+import { EventHistoryType } from "../components/eventHistory";
+
+export const TestEventHistory: EventHistoryType[] = [
+  {
+    user: "Hector",
+    userRole: "Manager",
+    action: "Approve POD",
+    date: "2022-02-18",
+    time: "17:04:15",
+  },
+  {
+    user: "Hector",
+    userRole: "Manager",
+    action: "Approve POD",
+    date: "2022-02-18",
+    time: "17:04:15",
+  },
+  {
+    user: "Hector",
+    userRole: "Manager",
+    action: "Approve POD",
+    date: "2022-02-18",
+    time: "17:04:15",
+  },
+  {
+    user: "Hector",
+    userRole: "Manager",
+    action: "Approve POD",
+    date: "2022-02-18",
+    time: "17:04:15",
+  },
+  {
+    user: "Hector",
+    userRole: "Manager",
+    action: "Approve POD",
+    date: "2022-02-18",
+    time: "17:04:15",
+  },
+  {
+    user: "Hector",
+    userRole: "Manager",
+    action: "Approve POD",
+    date: "2022-02-18",
+    time: "17:04:15",
+  },
+  {
+    user: "Hector",
+    userRole: "Manager",
+    action: "Approve POD",
+    date: "2022-02-18",
+    time: "17:04:15",
+  },
+  {
+    user: "Hector",
+    userRole: "Manager",
+    action: "Approve POD",
+    date: "2022-02-18",
+    time: "17:04:15",
+  },
+  {
+    user: "Hector",
+    userRole: "Manager",
+    action: "Approve POD",
+    date: "2022-02-18",
+    time: "17:04:15",
+  },
+  {
+    user: "Hector",
+    userRole: "Manager",
+    action: "Approve POD",
+    date: "2022-02-18",
+    time: "17:04:15",
+  },
+  {
+    user: "Hector",
+    userRole: "Manager",
+    action: "Approve POD",
+    date: "2022-02-18",
+    time: "17:04:15",
+  },
+];
