@@ -60,7 +60,9 @@ function initializeSelectedEntries<T> (
   const IDs: AllSelectedItemsState = {}
   for(var i = 0; i < indexedListSpecifications.length; i++)
     for (var i2 = 0; i2 < indexedListSpecifications[i].entries.length; i2++){
-      IDs[indexedListSpecifications[i].entries[i].listID][indexedListSpecifications[i].entries[i2]?.ID] = false
+      if (IDs) {
+        IDs[indexedListSpecifications[i]?.entries[i]?.listID][indexedListSpecifications[i]?.entries[i2]?.ID] = false
+      }
     }
   return IDs
 }
