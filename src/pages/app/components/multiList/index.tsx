@@ -57,14 +57,13 @@ type AllSelectedItemsState = {
 function initializeSelectedEntries<T> (
   indexedListSpecifications : IndexedList<T>[]
 ) : AllSelectedItemsState {
-  const IDs: AllSelectedItemsState = {}
+
+  const ListIDs: AllSelectedItemsState = {}
+
   for(var i = 0; i < indexedListSpecifications.length; i++)
-    for (var i2 = 0; i2 < indexedListSpecifications[i].entries.length; i2++){
-      if (IDs) {
-        IDs[indexedListSpecifications[i]?.entries[i]?.listID][indexedListSpecifications[i]?.entries[i2]?.ID] = false
-      }
-    }
-  return IDs
+    for (var i2 = 0; i2 < indexedListSpecifications[i].entries.length; i2++)
+      ListIDs[indexedListSpecifications[i].entries[i].listID][indexedListSpecifications[i]?.entries[i2]?.ID] = false
+  return ListIDs
 }
 
 function Lists<T>(props: MultiListProps<T>): JSX.Element {
