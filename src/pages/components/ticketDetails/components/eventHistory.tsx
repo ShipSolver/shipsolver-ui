@@ -3,13 +3,13 @@ import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
 import Paper from "../../roundedPaper";
-import { useTheme } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 
 export type EventHistoryType = {
   user: string;
   userRole: string;
   action: string;
-  date: string;
+  date: Date;
   time: string;
 };
 interface EventHistoryProps {
@@ -17,71 +17,42 @@ interface EventHistoryProps {
 }
 
 export const EventHistory = ({ events }: EventHistoryProps) => {
-  const theme = useTheme();
   const eventHistoryCards = useMemo(
     () =>
       events.map((event) => (
-        <Card
-          sx={{
-            padding: 1,
-            margin: 2,
-          }}
-        >
+        <EventHistoryCard>
           <Typography>
             <b>User:</b> {event.user}
           </Typography>
           <Typography>
-            <b> User Role:</b> {event.userRole}
+            <b>User Role:</b> {event.userRole}
           </Typography>
           <Typography>
             <b>Action:</b> {event.action}
           </Typography>
           <Typography>
-            <b>Date:</b> {event.date} <b>Time:</b> {event.time}
+            <b>Date:</b> {event.date.toLocaleDateString("en-CA")}
+            {"  "}
+            <b>Time:</b> {event.time}
           </Typography>
-        </Card>
+        </EventHistoryCard>
       )),
     []
   );
 
   return (
-    <div
-      className="event-history-container"
-      style={{
-        borderRadius: "var(--ss-brand-border-radius)",
-        backgroundColor: theme.palette.secondary.main,
-        flexGrow: 1,
-      }}
-    >
+    <EventHistoryContainer>
       <Grid container direction="column" alignItems="center">
         <Grid item>
-          <Paper
-            style={{
-              display: "inline-block",
-            }}
-            sx={{
-              padding: 2,
-              paddingLeft: 4,
-              paddingRight: 4,
-              marginTop: 2,
-              marginBottom: 0,
-            }}
-          >
+          <TitlePaper>
             <Typography variant="h2" fontWeight="bold">
               Event History
             </Typography>
-          </Paper>
+          </TitlePaper>
         </Grid>
       </Grid>
 
-      <Paper
-        style={{
-          maxHeight: "80vh",
-          backgroundColor: theme.palette.secondary.light,
-          margin: 20,
-          padding: 10,
-          overflowY: "scroll",
-        }}
+      <CardContainerPaper
         sx={{
           "&::-webkit-scrollbar": {
             display: "none",
@@ -89,7 +60,35 @@ export const EventHistory = ({ events }: EventHistoryProps) => {
         }}
       >
         {eventHistoryCards}
-      </Paper>
-    </div>
+      </CardContainerPaper>
+    </EventHistoryContainer>
   );
 };
+
+const EventHistoryContainer = styled("div")(({ theme }) => ({
+  borderRadius: "var(--ss-brand-border-radius)",
+  backgroundColor: theme.palette.secondary.main,
+  flexGrow: 1,
+}));
+
+const TitlePaper = styled(Paper)({
+  display: "inline-block",
+  padding: 15,
+  paddingLeft: 25,
+  paddingRight: 25,
+  marginTop: 20,
+  marginBottom: 0,
+});
+
+const CardContainerPaper = styled(Paper)(({ theme }) => ({
+  height: "80vh",
+  backgroundColor: theme.palette.secondary.light,
+  margin: 20,
+  padding: 10,
+  overflowY: "scroll",
+}));
+
+const EventHistoryCard = styled(Card)({
+  padding: 10,
+  margin: 15,
+});
