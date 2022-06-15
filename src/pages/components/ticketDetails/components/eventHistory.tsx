@@ -10,7 +10,7 @@ export type EventHistoryType = {
   userRole: string;
   action: string;
   date: Date;
-  time: string;
+  time: Date;
 };
 interface EventHistoryProps {
   events: EventHistoryType[];
@@ -19,21 +19,22 @@ interface EventHistoryProps {
 export const EventHistory = ({ events }: EventHistoryProps) => {
   const eventHistoryCards = useMemo(
     () =>
-      events.map((event) => (
+      events.map(({ user, userRole, action, date, time }) => (
         <EventHistoryCard>
           <Typography>
-            <b>User:</b> {event.user}
+            <b>User:</b> {user}
           </Typography>
           <Typography>
-            <b>User Role:</b> {event.userRole}
+            <b>User Role:</b> {userRole}
           </Typography>
           <Typography>
-            <b>Action:</b> {event.action}
+            <b>Action:</b> {action}
           </Typography>
-          <Typography>
-            <b>Date:</b> {event.date.toLocaleDateString("en-CA")}
-            {"  "}
-            <b>Time:</b> {event.time}
+          <Typography display="inline" marginRight="5px">
+            <b>Date:</b> {date.toLocaleDateString("en-CA")}
+          </Typography>
+          <Typography display="inline">
+            <b>Time:</b> {time.toLocaleTimeString("en-CA", { hour12: false })}
           </Typography>
         </EventHistoryCard>
       )),
@@ -42,15 +43,11 @@ export const EventHistory = ({ events }: EventHistoryProps) => {
 
   return (
     <EventHistoryContainer>
-      <Grid container direction="column" alignItems="center">
-        <Grid item>
-          <TitlePaper>
-            <Typography variant="h2" fontWeight="bold">
-              Event History
-            </Typography>
-          </TitlePaper>
-        </Grid>
-      </Grid>
+      <TitlePaper>
+        <Typography variant="h2" fontWeight="bold">
+          Event History
+        </Typography>
+      </TitlePaper>
 
       <CardContainerPaper
         sx={{
@@ -69,15 +66,18 @@ const EventHistoryContainer = styled("div")(({ theme }) => ({
   borderRadius: "var(--ss-brand-border-radius)",
   backgroundColor: theme.palette.secondary.main,
   flexGrow: 1,
+  padding: 5,
 }));
 
 const TitlePaper = styled(Paper)({
   display: "inline-block",
+  position: "relative",
+  left: "50%",
+  transform: "translateX(-50%)",
   padding: 15,
   paddingLeft: 25,
   paddingRight: 25,
-  marginTop: 20,
-  marginBottom: 0,
+  marginTop: 15,
 });
 
 const CardContainerPaper = styled(Paper)(({ theme }) => ({

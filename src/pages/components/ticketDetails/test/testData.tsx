@@ -1,6 +1,6 @@
 import { EventHistoryType } from "../components/eventHistory";
 
-const date = new Date("2022-02-18");
+const date = new Date("2022-02-18 17:04:15");
 
 export const TestEventHistory: EventHistoryType[] = [
   {
@@ -8,63 +8,49 @@ export const TestEventHistory: EventHistoryType[] = [
     userRole: "Manager",
     action: "Approve POD",
     date: date,
-    time: "17:04:15",
+    time: date,
   },
   {
     user: "Hector",
     userRole: "Manager",
     action: "Approve POD",
     date: date,
-    time: "17:04:15",
+    time: date,
   },
   {
     user: "Hector",
     userRole: "Manager",
     action: "Approve POD",
     date: date,
-    time: "17:04:15",
+    time: date,
   },
   {
     user: "Hector",
     userRole: "Manager",
     action: "Approve POD",
     date: date,
-    time: "17:04:15",
+    time: date,
   },
   {
     user: "Hector",
     userRole: "Manager",
     action: "Approve POD",
     date: date,
-    time: "17:04:15",
+    time: date,
   },
   {
     user: "Hector",
     userRole: "Manager",
     action: "Approve POD",
     date: date,
-    time: "17:04:15",
+    time: date,
   },
   {
     user: "Hector",
     userRole: "Manager",
     action: "Approve POD",
     date: date,
-    time: "17:04:15",
-  },
-  {
-    user: "Hector",
-    userRole: "Manager",
-    action: "Approve POD",
-    date: date,
-    time: "17:04:15",
-  },
-  {
-    user: "Hector",
-    userRole: "Manager",
-    action: "Approve POD",
-    date: date,
-    time: "17:04:15",
+    time: date,
   },
 ];
 
