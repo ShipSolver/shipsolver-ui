@@ -69,12 +69,17 @@ function initializeSelectedEntries<T> (
     _2: listThree,
     _3: listFour,
     _4: listFive
-  }
-
+  };
+  console.log(indexedListSpecifications)
+  let index = 0;
+  let index2 =0;
   for(var i = 0; i < indexedListSpecifications.length; i++){
     for (var i2 = 0; i2 < indexedListSpecifications[i].entries.length; i2++){
-      ListIDs[indexedListSpecifications[i]?.entries[i]?.listID][indexedListSpecifications[i]?.entries[i2]?.ID] = false
+      console.log(indexedListSpecifications[index]?.entries[index]?.listID)
+      ListIDs[indexedListSpecifications[index]?.entries[index]?.listID][indexedListSpecifications[index]?.entries[index2]?.ID] = false
+      index2++;
     }
+    index++;
   }
   return ListIDs
 }
@@ -93,10 +98,12 @@ function Lists<T>(props: MultiListProps<T>): JSX.Element {
       }))
     },[listSpecifications])
 
+  
+
   const [selectedItems, setSelectedItems] = useState<AllSelectedItemsState>(
     initializeSelectedEntries(indexedListSpecifications)
   ) 
-console.log(initializeSelectedEntries(indexedListSpecifications))
+
   const toggleSelection = useCallback((listID: string ,ID: string) =>{
     setSelectedItems(currentSelectedItems => ({
       ...currentSelectedItems, [listID]: {...currentSelectedItems[listID], [ID]: !currentSelectedItems[listID][ID]}
