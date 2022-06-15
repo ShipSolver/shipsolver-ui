@@ -58,11 +58,24 @@ function initializeSelectedEntries<T> (
   indexedListSpecifications : IndexedList<T>[]
 ) : AllSelectedItemsState {
 
-  const ListIDs: AllSelectedItemsState = {}
+  const listOne: ListSelectedItemsState = {};
+  const listTwo: ListSelectedItemsState = {};
+  const listThree: ListSelectedItemsState = {};
+  const listFour: ListSelectedItemsState = {};
+  const listFive: ListSelectedItemsState = {};
+  const ListIDs: AllSelectedItemsState = {
+    _0: listOne,
+    _1: listTwo,
+    _2: listThree,
+    _3: listFour,
+    _4: listFive
+  }
 
-  for(var i = 0; i < indexedListSpecifications.length; i++)
-    for (var i2 = 0; i2 < indexedListSpecifications[i].entries.length; i2++)
-      ListIDs[indexedListSpecifications[i].entries[i].listID][indexedListSpecifications[i]?.entries[i2]?.ID] = false
+  for(var i = 0; i < indexedListSpecifications.length; i++){
+    for (var i2 = 0; i2 < indexedListSpecifications[i].entries.length; i2++){
+      ListIDs[indexedListSpecifications[i]?.entries[i]?.listID][indexedListSpecifications[i]?.entries[i2]?.ID] = false
+    }
+  }
   return ListIDs
 }
 
@@ -75,7 +88,7 @@ function Lists<T>(props: MultiListProps<T>): JSX.Element {
         ...listSpecification, 
         entries: listSpecification.entries.map(
           (entry, indexInner) => ({
-            entry, listID: indexOuter+ "_", ID: indexInner + "_" + indexOuter
+            entry, listID: "_"+indexOuter, ID: indexInner + "_" + indexOuter
           }))
       }))
     },[listSpecifications])
