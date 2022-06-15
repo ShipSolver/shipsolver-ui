@@ -70,13 +70,12 @@ function initializeSelectedEntries<T> (
     _3: listFour,
     _4: listFive
   };
-  console.log(indexedListSpecifications)
   let index = 0;
   let index2 =0;
   for(var i = 0; i < indexedListSpecifications.length; i++){
-    for (var i2 = 0; i2 < indexedListSpecifications[i].entries.length; i2++){
-      console.log(indexedListSpecifications[index]?.entries[index]?.listID)
-      ListIDs[indexedListSpecifications[index]?.entries[index]?.listID][indexedListSpecifications[index]?.entries[index2]?.ID] = false
+    index2 =0;
+    for (var i2 = 0; i2 < indexedListSpecifications[index].entries.length; i2++){
+      ListIDs[indexedListSpecifications[index]?.entries[index2]?.listID][indexedListSpecifications[index]?.entries[index2]?.ID] = false
       index2++;
     }
     index++;
