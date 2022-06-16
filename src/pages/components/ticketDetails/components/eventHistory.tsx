@@ -15,8 +15,8 @@ interface EventHistoryProps {
 }
 
 export const EventHistory = ({ events }: EventHistoryProps) => {
-  const eventHistoryCards = () =>
-    events.map(({ user, userRole, action, dateAndTime }) => (
+  const eventHistoryCards = events.map(
+    ({ user, userRole, action, dateAndTime }) => (
       <EventHistoryCard>
         <Typography>
           <b>User:</b> {user}
@@ -35,7 +35,8 @@ export const EventHistory = ({ events }: EventHistoryProps) => {
             <b>Time:</b> {dateAndTime.toLocaleTimeString("en-CA", { hour12: false })}
         </Typography>
       </EventHistoryCard>
-    ));
+    )
+  );
 
   return (
     <EventHistoryContainer>
@@ -52,7 +53,7 @@ export const EventHistory = ({ events }: EventHistoryProps) => {
           },
         }}
       >
-        {eventHistoryCards()}
+        {eventHistoryCards}
       </CardContainerPaper>
     </EventHistoryContainer>
   );
