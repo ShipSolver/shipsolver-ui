@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React from "react";
 import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
 import Paper from "../../roundedPaper";
