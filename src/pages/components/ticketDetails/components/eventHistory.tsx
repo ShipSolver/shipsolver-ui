@@ -9,37 +9,34 @@ export type EventHistoryType = {
   user: string;
   userRole: string;
   action: string;
-  date: Date;
-  time: Date;
+  dateAndTime: Date;
 };
 interface EventHistoryProps {
   events: EventHistoryType[];
 }
 
 export const EventHistory = ({ events }: EventHistoryProps) => {
-  const eventHistoryCards = useMemo(
-    () =>
-      events.map(({ user, userRole, action, date, time }) => (
-        <EventHistoryCard>
-          <Typography>
-            <b>User:</b> {user}
-          </Typography>
-          <Typography>
-            <b>User Role:</b> {userRole}
-          </Typography>
-          <Typography>
-            <b>Action:</b> {action}
-          </Typography>
-          <Typography display="inline" marginRight="5px">
-            <b>Date:</b> {date.toLocaleDateString("en-CA")}
-          </Typography>
-          <Typography display="inline">
-            <b>Time:</b> {time.toLocaleTimeString("en-CA", { hour12: false })}
-          </Typography>
-        </EventHistoryCard>
-      )),
-    []
-  );
+  const eventHistoryCards = () =>
+    events.map(({ user, userRole, action, dateAndTime }) => (
+      <EventHistoryCard>
+        <Typography>
+          <b>User:</b> {user}
+        </Typography>
+        <Typography>
+          <b>User Role:</b> {userRole}
+        </Typography>
+        <Typography>
+          <b>Action:</b> {action}
+        </Typography>
+        <Typography display="inline" marginRight="5px">
+          <b>Date:</b> {dateAndTime.toLocaleDateString("en-CA")}
+        </Typography>
+        {/* prettier-ignore */}
+        <Typography display="inline">
+            <b>Time:</b> {dateAndTime.toLocaleTimeString("en-CA", { hour12: false })}
+        </Typography>
+      </EventHistoryCard>
+    ));
 
   return (
     <EventHistoryContainer>
@@ -56,7 +53,7 @@ export const EventHistory = ({ events }: EventHistoryProps) => {
           },
         }}
       >
-        {eventHistoryCards}
+        {eventHistoryCards()}
       </CardContainerPaper>
     </EventHistoryContainer>
   );
