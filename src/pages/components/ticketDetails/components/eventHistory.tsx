@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo } from "react";
 import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
-import Grid from "@mui/material/Grid";
 import Paper from "../../roundedPaper";
 import { styled } from "@mui/material/styles";
 
