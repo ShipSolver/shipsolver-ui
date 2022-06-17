@@ -36,6 +36,7 @@ export type IndexedEntry<T> = {
 
 type IndexedList<T> = {
   title: string;
+  listID: string;
   entries: IndexedEntry<T>[];
   entryRenderer:entryRendererFn<T>;
 };
@@ -58,29 +59,23 @@ function initializeSelectedEntries<T> (
   indexedListSpecifications : IndexedList<T>[]
 ) : AllSelectedItemsState {
 
-  const listOne: ListSelectedItemsState = {};
-  const listTwo: ListSelectedItemsState = {};
-  const listThree: ListSelectedItemsState = {};
-  const listFour: ListSelectedItemsState = {};
-  const listFive: ListSelectedItemsState = {};
-  const ListIDs: AllSelectedItemsState = {
-    _0: listOne,
-    _1: listTwo,
-    _2: listThree,
-    _3: listFour,
-    _4: listFive
-  };
-  let index = 0;
-  let index2 =0;
-  for(var i = 0; i < indexedListSpecifications.length; i++){
-    index2 =0;
-    for (var i2 = 0; i2 < indexedListSpecifications[index].entries.length; i2++){
-      ListIDs[indexedListSpecifications[index]?.entries[index2]?.listID][indexedListSpecifications[index]?.entries[index2]?.ID] = false
-      index2++;
+  const allSelectedItemState : AllSelectedItemsState = {}
+
+  for(const indexedListSpecification of indexedListSpecifications){
+    for(const indexedEntry of indexedListSpecification.entries){
+      if(indexedListSpecification.listID in allSelectedItemState){
+        allSelectedItemState[
+          indexedListSpecification.listID
+        ][indexedEntry.ID] = false
+      } else {
+        allSelectedItemState[indexedListSpecification.listID] = {
+          [indexedEntry.ID]: false
+        }
+      }
     }
-    index++;
   }
-  return ListIDs
+  console.log(allSelectedItemState)
+  return allSelectedItemState
 }
 
 function Lists<T>(props: MultiListProps<T>): JSX.Element {
@@ -93,7 +88,8 @@ function Lists<T>(props: MultiListProps<T>): JSX.Element {
         entries: listSpecification.entries.map(
           (entry, indexInner) => ({
             entry, listID: "_"+indexOuter, ID: indexInner + "_" + indexOuter
-          }))
+          })),
+        listID: "_"+indexOuter
       }))
     },[listSpecifications])
 
@@ -107,7 +103,10 @@ function Lists<T>(props: MultiListProps<T>): JSX.Element {
     setSelectedItems(currentSelectedItems => ({
       ...currentSelectedItems, [listID]: {...currentSelectedItems[listID], [ID]: !currentSelectedItems[listID][ID]}
     }))
+    console.log('This callback was called')
   }, [setSelectedItems]) 
+
+  console.log(selectedItems)
 
   return (
     <Paper className="multi-list-all-lists-container">
@@ -125,10 +124,10 @@ function Lists<T>(props: MultiListProps<T>): JSX.Element {
             </Typography>
           </div>
           <div className="multi-list-list">
-            {entries.map((indexedEntry, indexInnerLoop) => <EntryRenderer
-                    entry= {indexedEntry.entry} toggleSelection={() => toggleSelection(indexedEntry.listID ,indexedEntry?.ID)} selected={selectedItems[indexedEntry.listID][indexedEntry?.ID]}
+            {entries.map((indexedEntry, indexInnerLoop) => {<EntryRenderer
+                    entry= {indexedEntry.entry} toggleSelection={() => toggleSelection(indexedEntry?.listID ,indexedEntry?.ID)} selected={selectedItems[indexedEntry?.listID][indexedEntry?.ID]}
                   />
-                )}
+            })}
           </div>
         </div>
       })}
