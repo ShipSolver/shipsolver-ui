@@ -124,10 +124,10 @@ function Lists<T>(props: MultiListProps<T>): JSX.Element {
             </Typography>
           </div>
           <div className="multi-list-list">
-            {entries.map((indexedEntry, indexInnerLoop) => {<EntryRenderer
+            {entries.map((indexedEntry, indexInnerLoop) => <EntryRenderer
                     entry= {indexedEntry.entry} toggleSelection={() => toggleSelection(indexedEntry?.listID ,indexedEntry?.ID)} selected={selectedItems[indexedEntry?.listID][indexedEntry?.ID]}
                   />
-            })}
+            )}
           </div>
         </div>
       })}
