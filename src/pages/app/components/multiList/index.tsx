@@ -96,12 +96,12 @@ function Lists<T>(props: MultiListProps<T>): JSX.Element {
   
 
   const [selectedItems, setSelectedItems] = useState<AllSelectedItemsState>(
-    initializeSelectedEntries(indexedListSpecifications)
+    {}
   ) 
 
   const toggleSelection = useCallback((listID: string ,ID: string) =>{
     setSelectedItems(currentSelectedItems => ({
-      ...currentSelectedItems, [listID]: {...currentSelectedItems[listID], [ID]: !currentSelectedItems[listID][ID]}
+      ...currentSelectedItems, [listID]: {...currentSelectedItems[listID], [ID]: !currentSelectedItems[listID]?.[ID]}
     }))
     console.log('This callback was called')
   }, [setSelectedItems]) 
