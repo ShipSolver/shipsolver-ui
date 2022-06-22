@@ -4,6 +4,9 @@ import Typography from "@mui/material/Typography";
 
 import Paper from "../../../components/roundedPaper";
 
+import useLoadable from "../../../../utils/useLoadable";
+import { fetchBroker } from "../../../../services/brokerServices";
+import { Ticket } from "../../../../services/types";
 
 import "./multiList.css";
 
@@ -15,10 +18,20 @@ type entryRendererFn<T> = (props: {
   selected: boolean
 }) => JSX.Element;
 
+
+
+type menuRendererFn<T> = (props: {
+  selectedListEntries: EntryID[],
+  isMultiSelected: boolean,
+  brokerName: string,
+  entries: IndexedEntry<T>[]; 
+}) => JSX.Element;
+
 type List<T> = {
   title: string;
   entries: T[];
   entryRenderer: entryRendererFn<T>;
+  menuRenderer: menuRendererFn<T>;
 };
 
 type MultiListProps<T> = {
@@ -38,12 +51,13 @@ type IndexedList<T> = {
   title: string;
   listID: string;
   entries: IndexedEntry<T>[];
-  entryRenderer:entryRendererFn<T>;
+  entryRenderer: entryRendererFn<T>;
+  menuRenderer: menuRendererFn<T>;
 };
 
 type ID = string;
 
-type EntryID = string; // this string will look like ListID_EntryIndexInList
+export type EntryID = string; // this string will look like ListID_EntryIndexInList
 
 type ListID = string; // this string will be the index of the list in our list specifications
 
@@ -103,15 +117,45 @@ function Lists<T>(props: MultiListProps<T>): JSX.Element {
     setSelectedItems(currentSelectedItems => ({
       ...currentSelectedItems, [listID]: {...currentSelectedItems[listID], [ID]: !currentSelectedItems[listID]?.[ID]}
     }))
-    console.log('This callback was called')
   }, [setSelectedItems]) 
 
   console.log(selectedItems)
 
+  const pullSelectedEntries = function(selectedItems: AllSelectedItemsState, listID: ListID) {
+    let array: EntryID[] = [];
+
+    for (let key in selectedItems) {
+      if (key.includes(listID)) {
+        for (let entryID in selectedItems[listID]) {
+          if (selectedItems[listID][entryID] = true) {
+            array.push(entryID)
+          }
+        }
+      }
+    }
+    return array;
+  }
+
+  const GetBrokerName = function(selectedEntries: EntryID[], entries: IndexedEntry<Ticket>[])  {
+    let brokerID = entries.find(entry => entry.ID == selectedEntries[0])?.entry.CURRENT_ASSIGNED_USER_ID ?? ''
+          const {
+            val: broker,
+            loading,
+            error,
+          } = useLoadable(fetchBroker, brokerID);
+
+          return (loading
+          ? "loading..."
+          : broker
+          ? broker.NAME
+          : error || "Error fetching broker")
+  }
+
   return (
     <Paper className="multi-list-all-lists-container">
-      {indexedListSpecifications.map(({ title, entries, entryRenderer }, indexOuterLoop) => {
+      {indexedListSpecifications.map(({ title, listID, entries, entryRenderer, menuRenderer }, indexOuterLoop) => {
          const EntryRenderer = entryRenderer
+         const MenuRenderer = menuRenderer
         return <div className="multi-list-list-container">
           <div className="ss-flexbox">
             <span className="multi-list-header">
@@ -128,6 +172,11 @@ function Lists<T>(props: MultiListProps<T>): JSX.Element {
                     entry= {indexedEntry.entry} toggleSelection={() => toggleSelection(indexedEntry?.listID ,indexedEntry?.ID)} selected={selectedItems[indexedEntry?.listID]?.[indexedEntry?.ID] ?? false}
                   />
             )}
+          </div>
+          <div>
+            {pullSelectedEntries(selectedItems, listID).length > 0 && <MenuRenderer
+                  selectedListEntries= {pullSelectedEntries(selectedItems, listID)} isMultiSelected= {pullSelectedEntries(selectedItems, listID).length > 1} brokerName = 'dog' entries={entries} />
+            }
           </div>
         </div>
       })}
