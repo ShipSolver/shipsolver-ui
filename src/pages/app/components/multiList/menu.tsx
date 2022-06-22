@@ -13,6 +13,8 @@ import { Ticket } from "../../../../services/types";
 import { EntryID, IndexedEntry } from './index'
 import { Typography } from "@mui/material";
 
+import "./menu.css"
+
 const GetBrokerName = function(selectedEntries: EntryID[], entries: IndexedEntry<Ticket>[])  {
     let brokerID = entries.find(entry => entry.ID == selectedEntries[0])?.entry.CURRENT_ASSIGNED_USER_ID ?? ''
           const {
@@ -30,30 +32,30 @@ const GetBrokerName = function(selectedEntries: EntryID[], entries: IndexedEntry
 
 export function DeliveredMenu({selectedListEntries, isMultiSelected, brokerName, entries}:{selectedListEntries: EntryID[], isMultiSelected: boolean, brokerName: string, entries: IndexedEntry<Ticket>[]}): JSX.Element {
   return (
-    <Box sx={{maxWidth: 360, bgcolor: 'gray', zIndex: 2, position: 'relative', top: '70px'}}>
+    <Box className="menu-container">
         <List>
             {!isMultiSelected && (
             <List>
               <ListItemButton>
-                 <Typography>Go to ${GetBrokerName(selectedListEntries, entries)} tickets</Typography>
+                 <Typography className="menu-text-typography">Go to {GetBrokerName(selectedListEntries, entries)}'s Tickets</Typography>
               </ListItemButton>
-            <Divider />
+            <Divider sx={{ borderBottomWidth: 2 }}/>
             </List>
             )}
             <ListItemButton>
-                 <Typography>Approve POD</Typography>
+                 <Typography className="menu-text-typography">Approve POD</Typography>
               </ListItemButton>
-            <Divider />
+            <Divider sx={{ borderBottomWidth: 2 }}/>
             {!isMultiSelected && (
             <List>
               <ListItemButton>
-                  <Typography>Review</Typography>
+                  <Typography className="menu-text-typography">Review</Typography>
               </ListItemButton>
-            <Divider />
+            <Divider sx={{ borderBottomWidth: 2 }}/>
             </List>
             )}
               <ListItemButton>
-                <Typography>Delete</Typography>
+                <Typography className="menu-text-typography">Delete</Typography>
               </ListItemButton>
         </List>
     </Box>
@@ -62,30 +64,30 @@ export function DeliveredMenu({selectedListEntries, isMultiSelected, brokerName,
 
 export function IncompleteMenu({selectedListEntries, isMultiSelected, brokerName, entries}:{selectedListEntries: EntryID[], isMultiSelected: boolean, brokerName: string, entries: IndexedEntry<Ticket>[]}): JSX.Element {
   return (
-    <Box>
+    <Box className="menu-container">
         <List>
             {!isMultiSelected && (
             <List>
               <ListItemButton>
-                 <Typography>Go to ${GetBrokerName(selectedListEntries, entries)} tickets</Typography>
+                 <Typography className="menu-text-typography">Go to {GetBrokerName(selectedListEntries, entries)}'s Tickets</Typography>
               </ListItemButton>
-            <Divider />
+            <Divider sx={{ borderBottomWidth: 2 }}/>
             </List>
             )}
             <ListItemButton>
-                 <Typography>Move to Inventory</Typography>
+                 <Typography className="menu-text-typography">Move to Inventory</Typography>
               </ListItemButton>
-            <Divider />
+            <Divider sx={{ borderBottomWidth: 2 }}/>
             {!isMultiSelected && (
             <List>
               <ListItemButton>
-                  <Typography>Review</Typography>
+                  <Typography className="menu-text-typography">Review</Typography>
               </ListItemButton>
-            <Divider />
+            <Divider sx={{ borderBottomWidth: 2 }}/>
             </List>
             )}
               <ListItemButton>
-                  <Typography>Delete</Typography>
+                  <Typography className="menu-text-typography">Delete</Typography>
               </ListItemButton>
         </List>
     </Box>
@@ -94,22 +96,22 @@ export function IncompleteMenu({selectedListEntries, isMultiSelected, brokerName
 
 export function InProgressMenu({selectedListEntries, isMultiSelected, brokerName, entries}:{selectedListEntries: EntryID[], isMultiSelected: boolean, brokerName: string, entries: IndexedEntry<Ticket>[]}): JSX.Element {
   return (
-    <Box>
+    <Box className="menu-container">
         <List>
             {!isMultiSelected && (
             <List>
               <ListItemButton>
-                 <Typography>Go to ${GetBrokerName(selectedListEntries, entries)} tickets</Typography>
+                 <Typography className="menu-text-typography">Go to {GetBrokerName(selectedListEntries, entries)}'s Tickets</Typography>
               </ListItemButton>
-            <Divider />
+            <Divider sx={{ borderBottomWidth: 2 }}/>
               <ListItemButton>
-                  <Typography>View Details</Typography>
+                  <Typography className="menu-text-typography">View Details</Typography>
               </ListItemButton>
-            <Divider />
+            <Divider sx={{ borderBottomWidth: 2 }}/>
             </List>
             )}
               <ListItemButton>
-                <Typography>Delete</Typography>
+                <Typography className="menu-text-typography">Delete</Typography>
               </ListItemButton>
         </List>
     </Box>
@@ -118,22 +120,22 @@ export function InProgressMenu({selectedListEntries, isMultiSelected, brokerName
 
 export function AssignedMenu({selectedListEntries, isMultiSelected, brokerName, entries}:{selectedListEntries: EntryID[], isMultiSelected: boolean, brokerName: string, entries: IndexedEntry<Ticket>[]}): JSX.Element {
     return (
-        <Box>
+      <Box className="menu-container">
             <List>
                 {!isMultiSelected && (
                 <List>
                 <ListItemButton>
-                    <Typography>Go to ${GetBrokerName(selectedListEntries, entries)} tickets</Typography>
+                    <Typography className="menu-text-typography">Go to {GetBrokerName(selectedListEntries, entries)}'s Tickets</Typography>
                 </ListItemButton>
-                <Divider />
+                <Divider sx={{ borderBottomWidth: 2 }}/>
                 <ListItemButton>
-                    <Typography>View Details</Typography>
+                    <Typography className="menu-text-typography">View Details</Typography>
                 </ListItemButton>
-                <Divider />
+                <Divider sx={{ borderBottomWidth: 2 }}/>
                 </List>
                 )}
                 <ListItemButton>
-                    <Typography>Delete</Typography>
+                    <Typography className="menu-text-typography">Delete</Typography>
                 </ListItemButton>
             </List>
         </Box>
@@ -142,24 +144,26 @@ export function AssignedMenu({selectedListEntries, isMultiSelected, brokerName, 
 
 export function InventoryMenu({selectedListEntries, isMultiSelected, brokerName, entries}:{selectedListEntries: EntryID[], isMultiSelected: boolean, brokerName: string, entries: IndexedEntry<Ticket>[]}): JSX.Element {
     return(
-        <Box>
+      <Box className="menu-container">
             <List>
                 <ListItemButton>
-                    <Typography>Assign to Brocker</Typography>
+                    <Typography className="menu-text-typography">Assign to Brocker</Typography>
                 </ListItemButton>
+                <Divider sx={{ borderBottomWidth: 2 }}/>
                 <ListItemButton>
-                    <Typography>Mark Incomplete</Typography>
+                    <Typography className="menu-text-typography">Mark Incomplete</Typography>
                 </ListItemButton>
+                <Divider sx={{ borderBottomWidth: 2 }}/>
                 {!isMultiSelected && (
                 <List>
                 <ListItemButton>
-                    <Typography>View Details</Typography>
+                    <Typography className="menu-text-typography">View Details</Typography>
                 </ListItemButton>
-                <Divider />
+                <Divider sx={{ borderBottomWidth: 2 }}/>
                 </List>
                 )}
                 <ListItemButton>
-                    <Typography>Delete</Typography>
+                    <Typography className="menu-text-typography">Delete</Typography>
                 </ListItemButton>
             </List>
         </Box>

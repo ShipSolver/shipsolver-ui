@@ -127,7 +127,7 @@ function Lists<T>(props: MultiListProps<T>): JSX.Element {
     for (let key in selectedItems) {
       if (key.includes(listID)) {
         for (let entryID in selectedItems[listID]) {
-          if (selectedItems[listID][entryID] = true) {
+          if (selectedItems[listID][entryID] == true) {
             array.push(entryID)
           }
         }
