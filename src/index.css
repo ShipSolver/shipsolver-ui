@@ -9,6 +9,9 @@
   --ss-brand-spacer-height-small: 32px;
   --ss-brand-scrollbar-foreground-color: rgba(153, 153, 153, 0.5);
   --ss-brand-scrollbar-background-color: transparent;
+  --ss-brand-theme-color: rgb(197,220,250);
+  --ss-entry-border-color: rgb(10,57,119);
+  --ss-entry-border-width: 4px;
 }
 
 body {
@@ -63,4 +66,10 @@ code {
 ::-webkit-scrollbar-track {
   /* Background */
   background: var(--ss-brand-scrollbar-background-color);
+}
+
+.ss-flexbox {
+  display: flex;
+  padding-left: var(--ss-brand-spacing);
+  padding-right: var(--ss-brand-spacing);
 }

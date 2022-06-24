@@ -4,6 +4,7 @@ import Typography from "@mui/material/Typography";
 
 import Paper from "../../../components/roundedPaper";
 
+
 import "./multiList.css";
 
 type List<T> = {
@@ -26,9 +27,16 @@ function Lists<T>(props: MultiListProps<T>): JSX.Element {
     <Paper className="multi-list-all-lists-container">
       {listSpecifications.map(({ title, entries, entryRenderer }) => (
         <div className="multi-list-list-container">
-          <Typography variant="h4" color="black" gutterBottom>
-            <strong>{title}</strong>
-          </Typography>
+          <div className="ss-flexbox">
+            <span className="multi-list-header">
+              <Typography display="inline" variant="h4" color="black" gutterBottom>
+                {title}
+              </Typography>
+            </span>
+            <Typography display="inline" variant="h4" align="right" color="black" gutterBottom>
+              <strong>{entries.length}</strong>
+            </Typography>
+          </div>
           <div className="multi-list-list">
             {entries.map((entry) => entryRenderer(entry))}
           </div>

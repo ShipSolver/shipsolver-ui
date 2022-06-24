@@ -12,3 +12,8 @@
   max-height: 50vh;
   overflow-y: auto;
 }
+
+.multi-list-header {
+  display: flex;
+  flex-grow: 1;
+}
