@@ -1,15 +1,27 @@
 import React from "react";
 
-import Paper from "../components/roundedPaper";
+import Tab from '@mui/material/Tab';
+import Tabs from  '@mui/material/Tabs';
+import CreateTicket from "./createTicket"
+import UploadTix from "./manualUpload"
+const Home =() => {
+  const [selectedTab, setSelectedTab] = React.useState(0);
 
+  const handleChange = (event:any, newValue:any) =>{
+    setSelectedTab(newValue);
+  }
 
-function Home() {
+ return (
+   <>
+  <Tabs value = {selectedTab} onChange = {handleChange} centered >
+    <Tab label = "Create from Delivery Receipts"/>
+    <Tab label = "Create Manually"/>
+  </Tabs>
 
-  return (
-    <Paper>
-      App
-    </Paper>
-  );
+{selectedTab === 0 &&  <CreateTicket/>}
+{selectedTab === 1 &&  <UploadTix/> }  
+</>
+);
 }
 
 export default Home;
