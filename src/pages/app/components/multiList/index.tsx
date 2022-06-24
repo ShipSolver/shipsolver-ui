@@ -68,29 +68,6 @@ type AllSelectedItemsState = {
 	[key: ListID]: ListSelectedItemsState
 }
 
-function initializeSelectedEntries<T> (
-  indexedListSpecifications : IndexedList<T>[]
-) : AllSelectedItemsState {
-
-  const allSelectedItemState : AllSelectedItemsState = {}
-
-  for(const indexedListSpecification of indexedListSpecifications){
-    for(const indexedEntry of indexedListSpecification.entries){
-      if(indexedListSpecification.listID in allSelectedItemState){
-        allSelectedItemState[
-          indexedListSpecification.listID
-        ][indexedEntry.ID] = false
-      } else {
-        allSelectedItemState[indexedListSpecification.listID] = {
-          [indexedEntry.ID]: false
-        }
-      }
-    }
-  }
-  console.log(allSelectedItemState)
-  return allSelectedItemState
-}
-
 function Lists<T>(props: MultiListProps<T>): JSX.Element {
   const { title, listSpecifications, loading, error } = props;
   
