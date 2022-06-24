@@ -23,7 +23,6 @@ type entryRendererFn<T> = (props: {
 type menuRendererFn<T> = (props: {
   selectedListEntries: EntryID[],
   isMultiSelected: boolean,
-  brokerName: string,
   entries: IndexedEntry<T>[]; 
 }) => JSX.Element;
 
@@ -136,26 +135,12 @@ function Lists<T>(props: MultiListProps<T>): JSX.Element {
     return array;
   }
 
-  const GetBrokerName = function(selectedEntries: EntryID[], entries: IndexedEntry<Ticket>[])  {
-    let brokerID = entries.find(entry => entry.ID == selectedEntries[0])?.entry.CURRENT_ASSIGNED_USER_ID ?? ''
-          const {
-            val: broker,
-            loading,
-            error,
-          } = useLoadable(fetchBroker, brokerID);
-
-          return (loading
-          ? "loading..."
-          : broker
-          ? broker.NAME
-          : error || "Error fetching broker")
-  }
-
   return (
     <Paper className="multi-list-all-lists-container">
       {indexedListSpecifications.map(({ title, listID, entries, entryRenderer, menuRenderer }, indexOuterLoop) => {
          const EntryRenderer = entryRenderer
          const MenuRenderer = menuRenderer
+         const selectedPulledEntries = pullSelectedEntries(selectedItems, listID)
         return <div className="multi-list-list-container">
           <div className="ss-flexbox">
             <span className="multi-list-header">
@@ -175,7 +160,7 @@ function Lists<T>(props: MultiListProps<T>): JSX.Element {
           </div>
           <div>
             {pullSelectedEntries(selectedItems, listID).length > 0 && <MenuRenderer
-                  selectedListEntries= {pullSelectedEntries(selectedItems, listID)} isMultiSelected= {pullSelectedEntries(selectedItems, listID).length > 1} brokerName = 'dog' entries={entries} />
+                  selectedListEntries= {selectedPulledEntries} isMultiSelected= {selectedPulledEntries.length > 1} entries={entries} />
             }
           </div>
         </div>

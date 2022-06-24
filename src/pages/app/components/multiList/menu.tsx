@@ -30,7 +30,7 @@ const GetBrokerName = function(selectedEntries: EntryID[], entries: IndexedEntry
           : error || "Error fetching broker")
   }
 
-export function DeliveredMenu({selectedListEntries, isMultiSelected, brokerName, entries}:{selectedListEntries: EntryID[], isMultiSelected: boolean, brokerName: string, entries: IndexedEntry<Ticket>[]}): JSX.Element {
+export function DeliveredMenu({selectedListEntries, isMultiSelected, entries}:{selectedListEntries: EntryID[], isMultiSelected: boolean, entries: IndexedEntry<Ticket>[]}): JSX.Element {
   return (
     <Box className="menu-container">
         <List>
@@ -62,7 +62,7 @@ export function DeliveredMenu({selectedListEntries, isMultiSelected, brokerName,
   )
 }
 
-export function IncompleteMenu({selectedListEntries, isMultiSelected, brokerName, entries}:{selectedListEntries: EntryID[], isMultiSelected: boolean, brokerName: string, entries: IndexedEntry<Ticket>[]}): JSX.Element {
+export function IncompleteMenu({selectedListEntries, isMultiSelected, entries}:{selectedListEntries: EntryID[], isMultiSelected: boolean, entries: IndexedEntry<Ticket>[]}): JSX.Element {
   return (
     <Box className="menu-container">
         <List>
@@ -94,7 +94,7 @@ export function IncompleteMenu({selectedListEntries, isMultiSelected, brokerName
   )
 }
 
-export function InProgressMenu({selectedListEntries, isMultiSelected, brokerName, entries}:{selectedListEntries: EntryID[], isMultiSelected: boolean, brokerName: string, entries: IndexedEntry<Ticket>[]}): JSX.Element {
+export function InProgressMenu({selectedListEntries, isMultiSelected, entries}:{selectedListEntries: EntryID[], isMultiSelected: boolean, entries: IndexedEntry<Ticket>[]}): JSX.Element {
   return (
     <Box className="menu-container">
         <List>
@@ -118,7 +118,7 @@ export function InProgressMenu({selectedListEntries, isMultiSelected, brokerName
   )
 }
 
-export function AssignedMenu({selectedListEntries, isMultiSelected, brokerName, entries}:{selectedListEntries: EntryID[], isMultiSelected: boolean, brokerName: string, entries: IndexedEntry<Ticket>[]}): JSX.Element {
+export function AssignedMenu({selectedListEntries, isMultiSelected, entries}:{selectedListEntries: EntryID[], isMultiSelected: boolean, entries: IndexedEntry<Ticket>[]}): JSX.Element {
     return (
       <Box className="menu-container">
             <List>
@@ -142,7 +142,7 @@ export function AssignedMenu({selectedListEntries, isMultiSelected, brokerName, 
     )
 }
 
-export function InventoryMenu({selectedListEntries, isMultiSelected, brokerName, entries}:{selectedListEntries: EntryID[], isMultiSelected: boolean, brokerName: string, entries: IndexedEntry<Ticket>[]}): JSX.Element {
+export function InventoryMenu({selectedListEntries, isMultiSelected, entries}:{selectedListEntries: EntryID[], isMultiSelected: boolean, entries: IndexedEntry<Ticket>[]}): JSX.Element {
     return(
       <Box className="menu-container">
             <List>
