@@ -1,7 +1,3 @@
-import React from 'react';
+import React, { useMemo, useState } from "react";
 
-
-export const TicketDetails = () =>
-<div>
-    
-</div>
+export const TicketDetails = () => <div>Hello</div>;
