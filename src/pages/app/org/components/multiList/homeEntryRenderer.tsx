@@ -1,11 +1,11 @@
 import React from "react";
 
 import Typography from "@mui/material/Typography";
-import Paper from "../../../components/roundedPaper";
+import Paper from "../../../../components/roundedPaper";
 
-import { Ticket } from "../../../../services/types";
-import { fetchBroker } from "../../../../services/brokerServices";
-import useLoadable from "../../../../utils/useLoadable";
+import { Ticket } from "../../../../../services/types";
+import { fetchBroker } from "../../../../../services/brokerServices";
+import useLoadable from "../../../../../utils/useLoadable";
 
 import "./homeEntryRender.css"
 

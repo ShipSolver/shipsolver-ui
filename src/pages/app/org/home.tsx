@@ -3,9 +3,9 @@ import React, { useMemo } from "react";
 import Button from "@mui/material/Button";
 import Lists from "./components/multiList";
 
-import { fetchOrgTodayTickets } from "../../services/ticketServices";
+import { fetchOrgTodayTickets } from "../../../services/ticketServices";
 import EntryRenderer from "./components/multiList/homeEntryRenderer";
-import useLoadable from "../../utils/useLoadable";
+import useLoadable from "../../../utils/useLoadable";
 
 import { useNavigate } from "react-router-dom";
 
