@@ -6,6 +6,7 @@ const ShipSolverBrand = createTheme({
   palette: {
     primary: {
       main: "#435C7C",
+      light: "#E3F2FD",
     },
     secondary: {
       main: "#CBDFEB",

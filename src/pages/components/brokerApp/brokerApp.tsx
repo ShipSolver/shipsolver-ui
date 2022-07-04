@@ -7,9 +7,9 @@ import Box from "@mui/material/Box";
 import Paper from "../roundedPaper";
 import OuterBlueDivBox from "../outerBlueDivBox";
 import InnerBlueDivBox from "../innerBlueDivBox";
+import LargeButton from "../largeButton";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
-import { SlideUp } from "../transitions";
 import Fade from "@mui/material/Fade";
 
 import {
@@ -21,9 +21,9 @@ import { Ticket } from "../../../services/types";
 
 import useLoadable from "../../../utils/useLoadable";
 
-import { useTheme } from "@mui/material/styles";
 import { styled } from "@mui/material/styles";
 import { Slide } from "@mui/material";
+import { CompletionPopUp } from "./components/completionPopUp";
 
 const Tickets = ({
   viewAllTickets,
@@ -178,6 +178,11 @@ export const BrokerApp = () => {
 
   const { val: currentTicket } = useLoadable(fetchOrgCurrentDelivery);
 
+  const [closeDelivery, setCloseDelivery] = useState<boolean>(false);
+
+  const handleCloseDeliveryOpen = () => setCloseDelivery(true);
+  const handleCloseDeliveryClose = () => setCloseDelivery(false);
+
   const assigned = useMemo(
     () => tickets && tickets.filter((ticket) => ticket.STATUS === "ASSIGNED"),
     [tickets]
@@ -228,6 +233,15 @@ export const BrokerApp = () => {
               minute: "2-digit",
             })}
           </Typography>
+          <Box textAlign="center" onClick={handleCloseDeliveryOpen}>
+            <LargeButton variant="contained">Close Delivery</LargeButton>
+          </Box>
+          <Modal open={closeDelivery} onClose={handleCloseDeliveryClose}>
+            <CompletionPopUp
+              modal={closeDelivery}
+              setModal={setCloseDelivery}
+            ></CompletionPopUp>
+          </Modal>
         </>
       );
     }
@@ -242,9 +256,6 @@ export const BrokerApp = () => {
           </Typography>
           <CurrentDeliveryInnerContainer>
             {currentDelivery()}
-            <Box textAlign="center">
-              <LargeButton variant="contained">Close Delivery</LargeButton>
-            </Box>
           </CurrentDeliveryInnerContainer>
         </OuterBlueDivBox>
 
@@ -326,35 +337,6 @@ const CurrentDeliveryInnerContainer = styled("div")(({ theme }) => ({
   margin: 10,
   padding: 25,
 }));
-
-const TicketsContainer = styled("div")(({ theme }) => ({
-  borderRadius: "var(--ss-brand-border-radius)",
-  backgroundColor: theme.palette.secondary.main,
-  padding: 5,
-  marginBottom: 10,
-}));
-
-const AssignedCompletedContainer = styled("div")(({ theme }) => ({
-  borderRadius: "var(--ss-brand-border-radius)",
-  backgroundColor: theme.palette.secondary.light,
-  margin: 10,
-  padding: 10,
-  maxHeight: "25vh",
-  overflowY: "scroll",
-}));
-
-const RequestedPickupContainer = styled("div")(({ theme }) => ({
-  borderRadius: "var(--ss-brand-border-radius)",
-  backgroundColor: "#FFF",
-  margin: 10,
-  padding: 10,
-}));
-
-const LargeButton = styled(Button)({
-  width: "75vw",
-  padding: 5,
-  marginTop: 5,
-});
 
 const TicketCard = styled(Card)({
   padding: 10,
