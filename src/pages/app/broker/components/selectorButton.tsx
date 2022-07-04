@@ -19,14 +19,12 @@ const SelectorButton = ({
       variant={selected ? "contained" : "outlined"}
       color="primary"
       size="large"
-      startIcon={selected ? <BookmarkIcon /> : <BookmarkBorderIcon />}
       style={{
-        borderRadius: "30px",
-        justifyContent: "space-between",
+        borderRadius: "10px",
         marginBottom: "10px",
         paddingTop: 0,
         paddingBottom: 0,
-        fontSize: "1.2rem",
+        fontSize: "1.7rem",
       }}
     >
       {label}

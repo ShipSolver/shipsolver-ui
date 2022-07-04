@@ -254,11 +254,13 @@ const Home = () => {
           <Typography variant="h3" color="#000" align="center" padding="10px">
             Current Delivery
           </Typography>
-          <InnerWhiteDivBox>{currentDelivery()}</InnerWhiteDivBox>
+          <InnerWhiteDivBox style={{ padding: 25 }}>
+            {currentDelivery()}
+          </InnerWhiteDivBox>
         </OuterBlueDivBox>
 
         <OuterBlueDivBox>
-          <InnerBlueDivBox>
+          <InnerBlueDivBox style={{ maxHeight: "90vh" }}>
             <Grid container justifyContent="space-between">
               <Typography variant="h2" alignContent="left">
                 Assigned
@@ -276,7 +278,7 @@ const Home = () => {
             ></Tickets>
           </InnerBlueDivBox>
 
-          <InnerBlueDivBox>
+          <InnerBlueDivBox style={{ maxHeight: "90vh" }}>
             <Grid container justifyContent="space-between">
               <Typography variant="h2" color="#000" alignContent="left">
                 Completed
@@ -294,7 +296,7 @@ const Home = () => {
             ></Tickets>
           </InnerBlueDivBox>
 
-          <InnerBlueDivBox>
+          <InnerBlueDivBox style={{ maxHeight: "90vh" }}>
             <Grid container justifyContent="space-between">
               <Typography variant="h2" color="#000" alignContent="left">
                 Requested Pickups
