@@ -1,5 +1,7 @@
 import Home from "../home";
 
+import { DeliveryCompletion } from "../deliveryCompletion";
+
 import React from "react";
 
 import { ComponentStory, ComponentMeta } from "@storybook/react";
@@ -13,5 +15,13 @@ export default {
 export const Primary: ComponentStory<typeof Home> = () => (
   <StoryBookThemeProvider>
     <Home />
+  </StoryBookThemeProvider>
+);
+
+export const DeliveryCompletionStory: ComponentStory<
+  typeof DeliveryCompletion
+> = () => (
+  <StoryBookThemeProvider>
+    <DeliveryCompletion />
   </StoryBookThemeProvider>
 );
