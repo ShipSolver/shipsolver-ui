@@ -5,6 +5,7 @@ import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
 import { RecoilRoot } from "recoil";
+import StoryBookThemeProvider from "../../../../tests/storybookThemeProvider";
 
 export default {
   title: "AllTicketsTable",
@@ -12,7 +13,7 @@ export default {
 } as ComponentMeta<typeof AllTicketsTable>;
 
 export const Primary: ComponentStory<typeof AllTicketsTable> = () => (
-  <RecoilRoot>
+  <StoryBookThemeProvider>
     <AllTicketsTable />
-  </RecoilRoot>
+  </StoryBookThemeProvider>
 );

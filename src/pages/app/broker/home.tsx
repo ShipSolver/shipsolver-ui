@@ -4,10 +4,11 @@ import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import Paper from "../../components/roundedPaper";
-import OuterBlueDivBox from "../../components/outerBlueDivBox";
-import InnerBlueDivBox from "../../components/innerBlueDivBox";
-//import LargeButton from "../../largeButton";
+
+import OuterBlueDivBox from "./components/outerBlueDivBox";
+import InnerBlueDivBox from "./components/innerBlueDivBox";
+import InnerWhiteDivBox from "./components/innerWhiteDivBox";
+import LargeButton from "./components/largeButton";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
@@ -22,8 +23,7 @@ import { Ticket } from "../../../services/types";
 import useLoadable from "../../../utils/useLoadable";
 
 import { styled } from "@mui/material/styles";
-import { Slide } from "@mui/material";
-//import { CompletionPopUp } from "./components/completionPopUp";
+import { CompletionPopUp } from "./components/completionPopUp";
 
 const Tickets = ({
   viewAllTickets,
@@ -167,7 +167,7 @@ const Tickets = ({
   }
 };
 
-export const BrokerApp = () => {
+const Home = () => {
   const [viewAllAssigned, setViewAllAssigned] = useState<boolean>(false);
 
   const [viewAllCompleted, setViewAllCompleted] = useState<boolean>(false);
@@ -234,14 +234,14 @@ export const BrokerApp = () => {
             })}
           </Typography>
           <Box textAlign="center" onClick={handleCloseDeliveryOpen}>
-            {/* <LargeButton variant="contained">Close Delivery</LargeButton> */}
+            <LargeButton variant="contained">Close Delivery</LargeButton>
           </Box>
-          {/* <Modal open={closeDelivery} onClose={handleCloseDeliveryClose}>
+          <Modal open={closeDelivery} onClose={handleCloseDeliveryClose}>
             <CompletionPopUp
               modal={closeDelivery}
               setModal={setCloseDelivery}
             ></CompletionPopUp>
-          </Modal> */}
+          </Modal>
         </>
       );
     }
@@ -254,9 +254,7 @@ export const BrokerApp = () => {
           <Typography variant="h3" color="#000" align="center" padding="10px">
             Current Delivery
           </Typography>
-          <CurrentDeliveryInnerContainer>
-            {currentDelivery()}
-          </CurrentDeliveryInnerContainer>
+          <InnerWhiteDivBox>{currentDelivery()}</InnerWhiteDivBox>
         </OuterBlueDivBox>
 
         <OuterBlueDivBox>
@@ -315,7 +313,7 @@ export const BrokerApp = () => {
           </InnerBlueDivBox>
         </OuterBlueDivBox>
         <Box textAlign="center">
-          {/* <LargeButton variant="contained">Complete Shift</LargeButton> */}
+          <LargeButton variant="contained">Complete Shift</LargeButton>
         </Box>
       </div>
     );
@@ -324,12 +322,7 @@ export const BrokerApp = () => {
   }
 };
 
-const CurrentDeliveryContainer = styled("div")(({ theme }) => ({
-  borderRadius: "var(--ss-brand-border-radius)",
-  backgroundColor: theme.palette.secondary.main,
-  padding: 5,
-  marginBottom: 10,
-}));
+export default Home;
 
 const CurrentDeliveryInnerContainer = styled("div")(({ theme }) => ({
   borderRadius: "var(--ss-brand-border-radius)",

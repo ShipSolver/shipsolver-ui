@@ -1,19 +1,17 @@
-import BrokerApp from "../index";
+import Home from "../home";
 
 import React from "react";
 
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import StoryBookThemeProvider from "../../../../tests/storybookThemeProvider";
 
-import StorybookThemeProvider from "../../../../tests/storybookThemeProvider";
-
 export default {
-  title: "BrokerApp",
-  component: BrokerApp,
-} as ComponentMeta<typeof BrokerApp>;
+  title: "Home",
+  component: Home,
+} as ComponentMeta<typeof Home>;
 
-export const Primary: ComponentStory<typeof BrokerApp> = () => (
+export const Primary: ComponentStory<typeof Home> = () => (
   <StoryBookThemeProvider>
-    <BrokerApp />
+    <Home />
   </StoryBookThemeProvider>
 );

@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material";
 import React, { useMemo, useState } from "react";
-import OuterBlueDivBox from "../../outerBlueDivBox";
+import OuterBlueDivBox from "./outerBlueDivBox";
 import DoneIcon from "@mui/icons-material/Done";
 import DoNotDisturbAltIcon from "@mui/icons-material/DoNotDisturb";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
@@ -11,8 +11,8 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import Box from "@mui/material/Box";
-import LargeButton from "../../largeButton";
-import SelectorButton from "../../selectorButton";
+import LargeButton from "./largeButton";
+import SelectorButton from "./selectorButton";
 import { useTheme } from "@mui/material/styles";
 
 export const CompletionPopUp = ({
