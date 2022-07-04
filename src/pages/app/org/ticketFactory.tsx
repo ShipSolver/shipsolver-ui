@@ -1,7 +1,7 @@
 import React from "react";
 import Box from '@mui/material/Box';
 import { sizing } from '@mui/system';
-import Paper from "../components/roundedPaper";
+import Paper from "../../components/roundedPaper";
 import { blue } from "@mui/material/colors";
 import Button from '@mui/material/Button';
 import { buttonBaseClasses } from "@mui/material";
