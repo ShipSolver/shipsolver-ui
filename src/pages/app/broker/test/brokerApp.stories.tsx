@@ -1,6 +1,6 @@
 import Home from "../home";
 
-import { DeliveryCompletion } from "../deliveryCompletion";
+import  DeliveryCompletion  from "../deliveryCompletion";
 
 import React from "react";
 
