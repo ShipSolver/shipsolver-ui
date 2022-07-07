@@ -1,6 +1,7 @@
 import { Typography } from "@mui/material";
 import React, { useMemo, useState } from "react";
 import OuterBlueDivBox from "./outerBlueDivBox";
+import InnerWhiteDivBox from "./innerWhiteDivBox";
 import DoneIcon from "@mui/icons-material/Done";
 import DoNotDisturbAltIcon from "@mui/icons-material/DoNotDisturb";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
@@ -11,9 +12,11 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import Box from "@mui/material/Box";
-import LargeButton from "./largeButton";
+import { LargeButton } from "./largeButton";
 import SelectorButton from "./selectorButton";
 import { useTheme } from "@mui/material/styles";
+import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export const CompletionPopUp = ({
   modal,
@@ -23,16 +26,26 @@ export const CompletionPopUp = ({
   setModal: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const theme = useTheme();
+  const navigate = useNavigate();
   const [yesSelected, setYesSelected] = useState<boolean>(false);
   const [noSelected, setNoSelected] = useState<boolean>(false);
+
+  const handleSubmit = () => {
+    if (yesSelected === true && noSelected === true) {
+      alert("Error! Cannot select more than one option");
+    } else if (noSelected === true) {
+      navigate("/incomplete-delivery");
+    }
+  };
 
   return (
     <OuterBlueDivBox
       sx={{
         position: "relative",
         top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
+        left: "30%",
+        transform: "translate(-30%, -50%)",
+        // margin: "auto",
         width: "90vw",
         border: "2px solid #000",
         boxShadow: 24,
@@ -51,23 +64,15 @@ export const CompletionPopUp = ({
         <Typography variant="h1" fontWeight="bold" textAlign="center">
           Did you complete the order?
         </Typography>
-        {/* <Typography variant="h1" fontWeight="bold" textAlign="center">
-          complete
-        </Typography>
-        <Typography variant="h1" fontWeight="bold" textAlign="center">
-          the order?
-        </Typography> */}
       </div>
-      <div
+      <InnerWhiteDivBox
         style={{
-          backgroundColor: "#FFF",
           marginTop: 30,
           margin: 20,
           padding: 35,
           paddingBottom: 25,
           paddingLeft: 50,
           paddingRight: 50,
-          borderRadius: 8,
         }}
       >
         <Box
@@ -78,25 +83,19 @@ export const CompletionPopUp = ({
         >
           <SelectorButton
             selected={yesSelected}
-            setSelected={setYesSelected}
+            handleClick={() => setYesSelected((yesSelected) => !yesSelected)}
             label="YES"
           />
 
           <SelectorButton
             selected={noSelected}
-            setSelected={setNoSelected}
+            handleClick={() => setNoSelected((noSelected) => !noSelected)}
             label="NO"
           />
         </Box>
-      </div>
-      <Box textAlign="center" sx={{ paddingBottom: 1 }}>
-        <LargeButton variant="contained">Submit</LargeButton>
-      </Box>
-      <Box textAlign="center">
-        <LargeButton variant="contained" onClick={() => setModal(!modal)}>
-          Cancel
-        </LargeButton>
-      </Box>
+      </InnerWhiteDivBox>
+      <LargeButton label="Submit" action={() => handleSubmit()} />
+      <LargeButton label="Cancel" action={() => setModal((modal) => !modal)} />
     </OuterBlueDivBox>
   );
 };
