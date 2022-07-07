@@ -12,11 +12,14 @@ import Copyright from "../components/copyright";
 import { UserAtom, ErrorAtom } from "../../state/authentication";
 import { refreshUser } from "../../services/authenticationServices";
 
+import { useRecoilState, useSetRecoilState } from "recoil";
+
 import Login from "./login";
 import SignupStandardUser from "./signup";
 import Home from "./home";
-import SignupConfirmation from "./signupConfirmation";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import SignupThankYou from "./signupThankYou";
+import SignupCodeEntry from "./signupCodeEntry";
+import { Alert } from "@mui/material";
 
 function AuthenticationRouter() {
   const location = useLocation();
@@ -25,7 +28,7 @@ function AuthenticationRouter() {
   const referer = (state && state.referer) || "/";
 
   const [user, setUser] = useRecoilState(UserAtom);
-  const setError = useSetRecoilState(ErrorAtom);
+  const [error, setError] = useRecoilState(ErrorAtom);
   const [isLoading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -44,8 +47,10 @@ function AuthenticationRouter() {
     <Loading />
   ) : (
     <Container component="main" maxWidth="sm" className="ss-brand-app-content">
+      {error !== null && error !== "" && <Alert severity="error">{error}</Alert>}
       <Routes>
-        <Route path="signup-confirmation" element={<SignupConfirmation />} />
+        <Route path="signup-thank-you" element={<SignupThankYou />} />
+        <Route path="signup-code-confirmation" element={<SignupCodeEntry />} />
         <Route path="signup" element={<SignupStandardUser />} />
         <Route path="login" element={<Login />} />
         <Route index element={<Home />} />

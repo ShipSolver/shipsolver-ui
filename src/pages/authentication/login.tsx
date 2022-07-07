@@ -8,13 +8,18 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Alert from "@mui/material/Alert";
 import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
-import { ErrorAtom, UserAtom } from "../../state/authentication";
+import { ErrorAtom, UnconfirmedUsernameAtom, UserAtom } from "../../state/authentication";
 import { login } from "../../services/authenticationServices";
 import Loading from "../components/loading";
 import { validateEmail } from "../../utils/regex";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
-  const [error, setError] = useRecoilState(ErrorAtom);
+  const navigate = useNavigate()
+
+  const setUnconfirmedUsername = useSetRecoilState(UnconfirmedUsernameAtom)
+
+  const setError = useSetRecoilState(ErrorAtom);
   const resetError = useResetRecoilState(ErrorAtom);
   const setUser = useSetRecoilState(UserAtom);
 
@@ -35,14 +40,20 @@ function Login() {
     if (validateEmail(email) && password != "") {
       setFormError(null);
       setLoading(true);
-      const { user: u, error: e } = await login({
+      const { user, error: err, unconfirmedUser } = await login({
         email,
         password,
         rememberMe,
       });
-      setError(e);
-      setUser(u);
-      setLoading(true);
+      setLoading(false);
+
+      if(unconfirmedUser === true){
+        setUnconfirmedUsername(email)
+        navigate("/authentication/signup-code-confirmation")
+      }
+
+      setError(err);
+      setUser(user);
     } else {
       setFormError("Please enter a valid email and password");
     }
@@ -52,11 +63,9 @@ function Login() {
     <Loading />
   ) : (
     <>
-      {(error && error != "") || (formError && formError != "") ? (
-        <Alert severity="error">
-          {error && error != "" ? error : formError}
-        </Alert>
-      ) : null}
+      {(formError && formError != "" && <Alert severity="error">
+          {formError}
+      </Alert>)}
       <div className="ss-brand-spacer" />
       <Typography component="h1" variant="h2" color="primary" align="center">
         <b>Log in</b>
@@ -97,7 +106,7 @@ function Login() {
         autoComplete="current-password"
         onChange={(event) => setPassword(event.target.value)}
         onKeyPress={(e) => {
-          if (e.charCode == 13) handleLogin();
+          if (e.key == 'Enter') handleLogin();
         }}
       />
       <FormControlLabel

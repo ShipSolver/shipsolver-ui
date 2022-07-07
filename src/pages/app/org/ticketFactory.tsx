@@ -27,7 +27,6 @@ function Stuff(){
 
 
   function handleChange(event:any) {
-    console.log(event.target.value)
     setFormData(prevFormData => {
         return {
             ...prevFormData,
@@ -47,7 +46,6 @@ function Stuff(){
   }
 
   function handleSubmit(event:any){
-    console.log(formData)
     event.preventDefault()
   }
 
@@ -170,7 +168,6 @@ function Home() {
      <Button variant="contained" sx = {{left: 75, width: 550, height: 53, backgroundColor: "blue[800]", color: "black", fontSize: 25, mt: -10}}>Create From Delivery Receipts</Button>
      <Button variant="contained" sx = {{left: 75, width: 550, height: 53, backgroundColor: "blue[800]", color: "black", fontSize: 25, mt: -10}}>Create Manually</Button>
   <Paper sx = {{width: 1200, backgroundColor: "blue", mt:-2, top: -60}}>
-    {console.log('aaa')}
     <div className = "paper2">
       <Paper sx = {{width: 850, elevation: 0,}}>
       <div className = "fparty">

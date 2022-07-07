@@ -1,8 +1,9 @@
 import React from "react";
 import { Navigate, useLocation } from "react-router-dom";
-import { UserAtom } from "../state/authentication";
 import { useRecoilValue } from "recoil";
+
 import { User } from "../services/types";
+import { UserAtom } from "../state/authentication";
 
 type UserKeys = keyof User
 
@@ -25,12 +26,13 @@ function RouteProtector({
   let renderRoute : JSX.Element | null = null
   if(UserState !== null){
     const extraRouteFlags = Object.keys(extraRoutes ?? {}) as UserKeys[]
-    for(const flag of extraRouteFlags){
-      if(UserState[flag] === true){
-        renderRoute = extraRoutes?.[flag] ?? null
-        break;
-      }
-    }
+    // TODO: Make compatible with amazon cognito
+    // for(const flag of extraRouteFlags){
+    //   if(UserState[flag] === true){
+    //     renderRoute = extraRoutes?.[flag] ?? null
+    //     break;
+    //   }
+    // }
     if(renderRoute === null) renderRoute = defaultRoute
   }
 
