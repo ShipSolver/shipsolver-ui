@@ -2,11 +2,7 @@ import React, { useState, useCallback, useMemo } from "react";
 
 import Typography from "@mui/material/Typography";
 
-import Paper from "../../../components/roundedPaper";
-
-import useLoadable from "../../../../utils/useLoadable";
-import { fetchBroker } from "../../../../services/brokerServices";
-import { Ticket } from "../../../../services/types";
+import Paper from "../../../../components/roundedPaper";
 
 import "./multiList.css";
 

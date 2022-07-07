@@ -6,9 +6,9 @@ import ListItem from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 
-import useLoadable from "../../../../utils/useLoadable";
-import { fetchBroker } from "../../../../services/brokerServices";
-import { Ticket } from "../../../../services/types";
+import useLoadable from "../../../../../utils/useLoadable";
+import { fetchBroker } from "../../../../../services/brokerServices";
+import { Ticket } from "../../../../../services/types";
 
 import { EntryID, IndexedEntry } from './index'
 import { Typography } from "@mui/material";

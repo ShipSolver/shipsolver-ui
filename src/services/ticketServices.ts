@@ -21,3 +21,11 @@ export const fetchOrgTodayTickets = () => {
   };
   return mockServerTicketFetch();
 };
+
+export const fetchOrgCurrentDelivery = () => {
+  const mockServerTicketFetch = async () => {
+    await delay(250);
+    return tickets.tickets[0] as Ticket;
+  };
+  return mockServerTicketFetch();
+};

@@ -11,7 +11,8 @@ import ShipSolverBrand from "./ShipSolverBrand";
 import ScrollReset from "./utils/ScrollReset";
 
 import AuthenticationRoutes from "./pages/authentication";
-import AppRoutes from "./pages/app";
+import AppRoutes from "./pages/app/org";
+import BrokerRoutes from "./pages/app/broker";
 import RouteProtector from "./utils/routeProtector";
 
 function App() {
@@ -29,9 +30,12 @@ function App() {
             <Route
               path="/*"
               element={
-                <RouteProtector>
-                  <AppRoutes />
-                </RouteProtector>
+                <RouteProtector
+                  defaultRoute={<AppRoutes/>}
+                  extraRoutes={{
+                    BROKER: <BrokerRoutes/>
+                  }}
+                  />
               }
             />
           </Routes>

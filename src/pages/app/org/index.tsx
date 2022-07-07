@@ -4,7 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 
-import Copyright from "../components/copyright";
+import Copyright from "../../components/copyright";
 import Header from "./components/header";
 
 import Home from "./home";

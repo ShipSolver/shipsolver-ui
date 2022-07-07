@@ -1,0 +1,94 @@
+.ss-space-children-vertically {
+  display: flex;
+  flex-direction: column;
+}
+
+.ss-space-children-vertically > * {
+  margin: calc(var(--ss-brand-spacing) * 2) 0 calc(var(--ss-brand-spacing) * 2)
+    0;
+}
+
+.ss-ticket-renderer {
+  margin: var(--ss-brand-spacing);
+}
+
+.Ticketlabel{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 415px;
+  margin-top: -21px;
+  margin-bottom: -21px;
+}
+
+.topRow{
+  display:flex; 
+  flex-direction:row;
+  justify-content: space-between;
+}
+
+.paper{
+  position: relative; 
+  top: 65px; 
+  left: -50px;
+}
+
+.paper2{
+  position: relative; 
+  top: -5px; 
+  left: 152px;
+  margin-bottom: -5px;
+}
+
+.unbold{
+  font-weight: normal;
+  margin-bottom: 13px;
+}
+
+.unbold1{
+  font-weight: normal;
+  font-size: 35;
+  margin-bottom: -10px;
+}
+
+
+.label-header{
+  font-size: 30;
+}
+
+.di{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 415px;
+}
+
+.buttons{
+  display: flex;
+  align-items: left;
+}
+
+.fparty{
+  display: flex;
+  align-items: left;
+  font-weight: normal;
+  margin-bottom: -10px;
+}
+
+.column1{
+  display:flex; 
+  flex-direction:row;
+  justify-content: space-between;
+}
+
+ /* return (
+  // <Paper sx = {{width: 1000, height: 600, backgroundColor: "blue"}}>
+    <Paper sx = {{width: 850, height: 500, elevation: 0}}>
+      <div className = "topRow">
+        <Column1/>
+        <Column2/>
+      </div>
+    </Paper>
+  // </Paper>
+
+); */

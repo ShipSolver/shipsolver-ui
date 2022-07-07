@@ -1,11 +1,11 @@
 import React from "react";
 
 import Typography from "@mui/material/Typography";
-import Paper from "../../../components/roundedPaper";
+import Paper from "../../../../components/roundedPaper";
 
-import { Ticket } from "../../../../services/types";
-import { fetchBroker } from "../../../../services/brokerServices";
-import useLoadable from "../../../../utils/useLoadable";
+import { Ticket } from "../../../../../services/types";
+import { fetchBroker } from "../../../../../services/brokerServices";
+import useLoadable from "../../../../../utils/useLoadable";
 
 import { toggleSelectionFn, IndexedEntry } from './index';
 
@@ -35,7 +35,8 @@ function pickEntrySubtitle (status: Ticket["STATUS"]) {
   }
 }
 
-export default function EntryRenderer({entry, toggleSelection, selected}:{entry: Ticket, toggleSelection: toggleSelectionFn, selected: boolean}): JSX.Element {
+export default function EntryRenderer(props :{entry: Ticket, toggleSelection: toggleSelectionFn, selected: boolean}): JSX.Element {
+  const {entry, toggleSelection, selected} = props
   const {
     val: broker,
     loading,

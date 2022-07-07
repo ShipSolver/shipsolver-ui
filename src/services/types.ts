@@ -2,6 +2,7 @@ export type User = {
   NAME: string;
   EMAIL: string;
   PHONE?: string;
+  BROKER?: boolean;
 };
 
 export type Ticket = {
@@ -28,6 +29,8 @@ export type Ticket = {
     COMPANY: string;
     NAME: string;
     ADDRESS: string;
+    CITY: string;
+    PROVINCE: string;
     POSTAL_CODE: string;
     PHONE_NUMBER: string;
   };
@@ -35,6 +38,8 @@ export type Ticket = {
     COMPANY: string;
     NAME: string;
     ADDRESS: string;
+    CITY: string;
+    PROVINCE: string;
     POSTAL_CODE: string;
     PHONE_NUMBER: string;
   };

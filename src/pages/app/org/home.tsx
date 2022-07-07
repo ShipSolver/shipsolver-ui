@@ -3,10 +3,10 @@ import React, { useMemo } from "react";
 import Button from "@mui/material/Button";
 import Lists from "./components/multiList";
 
-import { fetchOrgTodayTickets } from "../../services/ticketServices";
+import { fetchOrgTodayTickets } from "../../../services/ticketServices";
 import EntryRenderer from "./components/multiList/homeEntryRenderer";
 import { DeliveredMenu, IncompleteMenu, InProgressMenu, AssignedMenu, InventoryMenu } from './components/multiList/menu'
-import useLoadable from "../../utils/useLoadable";
+import useLoadable from "../../../utils/useLoadable";
 
 import { useNavigate } from "react-router-dom";
 
