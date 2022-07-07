@@ -45,7 +45,6 @@ export const CompletionPopUp = ({
         top: "50%",
         left: "30%",
         transform: "translate(-30%, -50%)",
-        // margin: "auto",
         width: "90vw",
         border: "2px solid #000",
         boxShadow: 24,

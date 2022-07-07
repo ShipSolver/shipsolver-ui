@@ -29,5 +29,4 @@ const StyledButton = styled(Button)(({ theme }) => ({
   padding: 5,
   marginTop: 5,
   fontSize: "1.25rem",
-  //backgroundColor: "#C5DCFA",
 }));
