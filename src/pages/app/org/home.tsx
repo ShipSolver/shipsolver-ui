@@ -19,6 +19,7 @@ import {
   inProgressMenu
  } from './components/multiList/menus'
 import useLoadable from "../../../utils/useLoadable";
+import { styled } from "@mui/material/styles";
 
 import { useNavigate } from "react-router-dom";
 
@@ -107,11 +108,28 @@ function Home() {
           },
         ]}
       />
-      <Button variant="contained" onClick={() => navigate("/ticket-factory")}>
-        Create Tickets
-      </Button>
+      <FlexDiv>
+      <Button variant="contained" onClick={() => navigate("/pod-review")}>
+          Review PODs
+        </Button>
+        <Button variant="contained" onClick={() => {}}>
+          Inventory Re-entry
+        </Button>
+        <Button variant="contained" onClick={() => navigate("/all-tickets")}>
+          View All Tickets
+        </Button>
+        <Button variant="contained" onClick={() => navigate("/ticket-factory")}>
+          Create Tickets
+        </Button>
+
+      </FlexDiv>
     </div>
   );
 }
 
 export default Home;
+
+const FlexDiv = styled("div")`
+  display: flex;
+  justify-content: space-between;
+`

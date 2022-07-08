@@ -32,7 +32,7 @@ export const login: loginFn = async ({ email, password, rememberMe }) => {
 
     cognitoUser.getSession((error : Error | null, session: CognitoUserSession | null) => {
       if(session !== null){
-        axios.defaults.headers.common["Authorization"] = session.getAccessToken().toString();
+        axios.defaults.headers.common["Authorization"] = session.getAccessToken().getJwtToken();
       }
     })
   } catch (err: any) {
@@ -99,7 +99,7 @@ export const refreshUser: refreshFn = async () => {
       user = cognitoUser.getUsername()
       cognitoUser.getSession((error : Error | null, session: CognitoUserSession | null) => {
         if(session !== null){
-          axios.defaults.headers.common["Authorization"] = session.getAccessToken().toString();
+          axios.defaults.headers.common["Authorization"] = session.getAccessToken().getJwtToken();
         }
       })
     }else{
