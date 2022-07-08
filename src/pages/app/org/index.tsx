@@ -10,16 +10,19 @@ import Header from "./components/header";
 import Home from "./home";
 import TicketFactory from "./ticketFactory";
 
+import { AllTicketsTable } from './components/allTicketsTable/allTicketsTable';
+
 import "./app.css";
 
 function AppRouter() {
   return (
     <>
       <Header />
-      <Container component="main" maxWidth="lg">
+      <Container component="main" maxWidth="xl">
         <Routes>
           <Route index element={<Home />} />
           <Route path="ticket-factory" element={<TicketFactory />} />
+          <Route path="all-tickets" element={<AllTicketsTable/>}/>
         </Routes>
         <Box mt={4}>
           <Copyright />
