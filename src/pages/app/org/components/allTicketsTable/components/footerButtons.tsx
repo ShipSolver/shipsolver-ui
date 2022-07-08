@@ -3,10 +3,13 @@ import { useRecoilValue } from "recoil";
 
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
-
+import { useNavigate } from "react-router-dom";
 import {
   singleRowSelectedAtom,
   multiRowSelectedAtom,
+} from "./state/tableState";
+
+ import { selectedTicketIdAtom,
 } from "./state/tableState";
 
 const ButtonLabels = {
@@ -21,13 +24,16 @@ const ButtonLabels = {
 interface FooterButtonsProps {}
 
 export const FooterButtons = (props: FooterButtonsProps) => {
+  const navigate = useNavigate();
   const singleRowSelected = useRecoilValue(singleRowSelectedAtom);
 
   const multiRowSelected = useRecoilValue(multiRowSelectedAtom);
 
+  const ticketID = useRecoilValue(selectedTicketIdAtom);
+
   return (
     <ButtonWrapper>
-      <Button variant="contained" disabled={!singleRowSelected}>
+      <Button variant="contained" disabled={!singleRowSelected} onClick={() => navigate(`/ticket-details/${ticketID}`)}>
         {ButtonLabels.ticketDetails}
       </Button>
       <Button variant="contained" disabled={!singleRowSelected}>

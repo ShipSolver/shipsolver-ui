@@ -13,6 +13,7 @@ import Checkbox from "@mui/material/Checkbox";
 import {
   singleRowSelectedAtom,
   multiRowSelectedAtom,
+  selectedTicketIdAtom,
 } from "./state/tableState";
 
 interface HeaderRowDataType {
@@ -38,6 +39,7 @@ export const TicketTable = <T extends string>({
   rows,
 }: TicketTableProps<T>) => {
   const setSingleRowSelected = useSetRecoilState(singleRowSelectedAtom);
+  const setSelectedTicketId = useSetRecoilState(selectedTicketIdAtom);
 
   const setMultiRowSelected = useSetRecoilState(multiRowSelectedAtom);
 
@@ -136,6 +138,12 @@ export const TicketTable = <T extends string>({
     } else if (numSelected === 1) {
       setSingleRowSelected(true);
       setMultiRowSelected(true);
+
+      // Figure out which one was selected
+      const rowId = Object.entries(selected)
+        .filter(([key, val]) => val == true)
+        .map(([key, val]) => key);
+      setSelectedTicketId(rowId[0]);
     } else if (numSelected > 1) {
       setSingleRowSelected(false);
       setMultiRowSelected(true);

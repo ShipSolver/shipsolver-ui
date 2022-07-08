@@ -23,8 +23,6 @@ export const AllTicketsTable = () => {
   const [headerRow, setHeaderRow] = useState<HeaderRowType<Keys>>();
   const { val, loading, error } = useLoadable(fetchAllTickets);
 
-  console.log("tickets: ", val);
-
   const filterData = (key: Keys, value: string | Date[]) => {
     console.log("key", key);
     console.log("value", value);
