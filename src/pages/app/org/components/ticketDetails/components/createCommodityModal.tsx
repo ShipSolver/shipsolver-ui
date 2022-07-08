@@ -7,6 +7,8 @@ import { CommodityType } from "./commodities";
 import { InputField, InputContainer } from "./ticketInformation";
 import InputLabel from "@mui/material/InputLabel";
 import { Spacer } from "../../../../../components/spacer";
+import { useSetRecoilState } from "recoil";
+import { commoditiesAtom } from "../state/commodityState";
 
 interface CreateCommodityModalProps {
   open: boolean;
@@ -17,6 +19,8 @@ export const CreateCommodityModal = ({
   open,
   handleClose,
 }: CreateCommodityModalProps) => {
+  const setCommodities = useSetRecoilState(commoditiesAtom);
+
   const [commodity, setCommodity] = useState<CommodityType>({
     description: "",
     // weight: "",
@@ -24,6 +28,12 @@ export const CreateCommodityModal = ({
   });
 
   const handleCreateCommodity = () => {
+    setCommodities((prev) => {
+      if (prev) {
+        return [...prev, commodity];
+      }
+      return [commodity];
+    });
     handleClose();
   };
 

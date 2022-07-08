@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Typography,
   Box,
@@ -12,6 +12,9 @@ import { styled } from "@mui/material/styles";
 import { Edit as EditIcon } from "@mui/icons-material";
 import { Spacer } from "../../../../../components/spacer";
 import { CommodityType, Commodities } from "./commodities";
+import { useRecoilValue, useRecoilState } from "recoil";
+import { commoditiesAtom } from "../state/commodityState";
+import { createTicket } from "../../../../../../services/ticketServices";
 
 type SectionTypes = "shipper" | "shipmentDetails" | "consignee";
 
@@ -59,15 +62,17 @@ export type TicketInformationStateType = {
   enterIntoInventory?: boolean;
 };
 
+export interface TicketType extends TicketInformationStateType {
+  pieces?: string;
+}
+
 interface TicketInformationProps {
   data?: TicketInformationStateType;
-  commodities?: CommodityType[];
   newTicket?: boolean;
 }
 
 export const TicketInformation = ({
   data,
-  commodities,
   newTicket,
 }: TicketInformationProps) => {
   const [isEditable, setIsEditable] = useState<boolean>(newTicket ?? false);
@@ -80,8 +85,24 @@ export const TicketInformation = ({
     }
   );
 
+  const [commodities, setcommodities] = useRecoilState(commoditiesAtom);
+
+  useEffect(() => {
+    return () => {
+      setcommodities(null);
+    };
+  }, []);
+
   const handleSave = () => {
     if (newTicket) {
+      let ticket: TicketType = { ...formData };
+      if (commodities) {
+        ticket.pieces = commodities
+          .map(({ description }) => description)
+          .join();
+      }
+
+      createTicket(ticket);
     } else {
       setIsEditable(false);
     }
@@ -208,7 +229,7 @@ export const TicketInformation = ({
             </InputContainer>
           ))}
           <SectionTitle variant="h3">Commodities</SectionTitle>
-          <Commodities commodities={commodities} isEditable={isEditable} />
+          <Commodities isEditable={isEditable} />
         </Grid>
         <Grid item xs={2}>
           <ActionColumn>
