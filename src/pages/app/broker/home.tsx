@@ -26,10 +26,6 @@ import { styled } from "@mui/material/styles";
 import { CompletionPopUp } from "./components/completionPopUp";
 import { useNavigate } from "react-router-dom";
 
-type TicketStatusMap = {
-  [key in TicketStatus]: Ticket[]
-}
-
 const Tickets = ({
   viewAllTickets,
   tickets,
@@ -63,10 +59,10 @@ const Tickets = ({
           <b>{ticket.consigneeAddress}</b>
         </Typography>
         <Typography variant="h3" align="center">
-          REF#: {ticket.houseReferenceNumber}
+          REF#: {String(ticket.houseReferenceNumber)}
         </Typography>
         <InnerBlueDivBox>
-          <Typography color="#00000099">Weight: {ticket.weight}</Typography>
+          <Typography color="#00000099">Weight: {String(ticket.weight)}</Typography>
           <Typography color="#00000099">
             First Party: {ticket.customer}
           </Typography>
@@ -100,8 +96,8 @@ const Tickets = ({
           <Typography variant="h4" marginBottom="5px">
             <b>{ticket.consigneeAddress}</b>
           </Typography>
-          <Typography color="#00000099">Weight: {ticket.weight}</Typography>
-          <Typography color="#00000099">REF#: {ticket.houseReferenceNumber}</Typography>
+          <Typography color="#00000099">Weight: {String(ticket.weight)}</Typography>
+          <Typography color="#00000099">REF#: {String(ticket.houseReferenceNumber)}</Typography>
           <Typography color="#00000099">
             First Party: {ticket.customer}
           </Typography>
@@ -116,7 +112,7 @@ const Tickets = ({
               hour: "numeric",
               minute: "2-digit",
             })}
-            <Typography color="#00000099">Barcode: {ticket.barcodeNumber}</Typography>
+            <Typography color="#00000099">Barcode: {String(ticket.barcodeNumber)}</Typography>
           </Typography>
         </InnerWhiteDivBox>
         <LargeButton label="Accept" action={() => alert("action")} />
@@ -152,7 +148,7 @@ const Tickets = ({
         <Typography variant="h4" marginBottom="5px">
             <b>{ticket.consigneeAddress}</b>
           </Typography>
-          <Typography>REF#: {ticket.houseReferenceNumber}</Typography>
+          <Typography>REF#: {String(ticket.houseReferenceNumber)}</Typography>
         </TicketCard>
         {(isPickupStatus) && (
           <Modal open={openTicketModal} onClose={handleTicketModalClose}>
@@ -177,7 +173,7 @@ const Tickets = ({
           <Typography variant="h5">
             <b>{ticket.consigneeAddress}</b>
           </Typography>
-          <Typography>REF#: {ticket.houseReferenceNumber}</Typography>
+          <Typography>REF#: {String(ticket.houseReferenceNumber)}</Typography>
         </TicketCard>
       </>
     ));
@@ -213,6 +209,7 @@ const Tickets = ({
 };
 
 const Home = () => {
+  console.log('here')
   const navigate = useNavigate();
   const [viewAllAssigned, setViewAllAssigned] = useState<boolean>(false);
 
@@ -289,6 +286,8 @@ const Home = () => {
       );
     }
   };
+
+  console.log('now here')
 
   if (assigned != null && completed != null && pickup != null) {
     return (

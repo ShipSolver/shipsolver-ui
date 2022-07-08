@@ -95,13 +95,13 @@ function Home() {
             menuRenderer: inventoryMenu,
           },
           {
-            title: "Unassigned Pickups",
+            title: "Assigned",
             entries: assignedTickets?.tickets ?? [],
             entryRenderer: assignedEntryRenderer,
             menuRenderer: assignedMenu,
           },
           {
-            title: "Unassigned Pickups",
+            title: "In Progress",
             entries: inProgressTickets?.tickets ?? [],
             entryRenderer: inProgressEntryRenderer,
             menuRenderer: inProgressMenu,
