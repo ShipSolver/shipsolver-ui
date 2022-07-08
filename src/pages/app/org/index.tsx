@@ -11,6 +11,7 @@ import Home from "./home";
 import TicketFactory from "./ticketFactory";
 
 import { AllTicketsTable } from './components/allTicketsTable/allTicketsTable';
+import { TicketDetails } from './components/ticketDetails/ticketDetails';
 
 import "./app.css";
 
@@ -23,6 +24,7 @@ function AppRouter() {
           <Route index element={<Home />} />
           <Route path="ticket-factory" element={<TicketFactory />} />
           <Route path="all-tickets" element={<AllTicketsTable/>}/>
+          <Route path="ticket-details/:ticketId" element={<TicketDetails />} />
         </Routes>
         <Box mt={4}>
           <Copyright />

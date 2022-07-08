@@ -5,6 +5,11 @@ export const singleRowSelectedAtom = atom<boolean>({
   default: false,
 });
 
+export const selectedTicketIdAtom = atom<string>({
+  key: "selectedTicketId",
+  default: ""
+})
+
 export const multiRowSelectedAtom = atom<boolean>({
   key: "multiRowSelected",
   default: false,
