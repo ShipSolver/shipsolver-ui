@@ -15,9 +15,7 @@ import Loading from "../components/loading";
 import { SlideUp } from "../components/transitions";
 
 import { useRecoilState } from "recoil";
-import { ErrorAtom } from "../../state/authentication/index.js";
-
-import { resetPassword } from "../../services/authenticationServices";
+import { ErrorAtom } from "../../state/authentication.js";
 
 function NewPasswordPage() {
   const location = useLocation();
@@ -49,10 +47,7 @@ function NewPasswordPage() {
       passwordStrengthError == "" &&
       passwordHelp == ""
     ) {
-      setLoading(true);
-      let { error: e } = await resetPassword({ password, resetToken });
-      setError(e);
-      setSuccess(!error);
+      console.log("TODO: reset password API functionality")
     } else {
       setError("Please correctly fill in password fields");
     }
