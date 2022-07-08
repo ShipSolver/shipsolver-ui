@@ -23,13 +23,22 @@ function Home() {
           <b>LOGIN</b>
         </Button>
       </Link>
-      <Link to="signup">
+      <Link to="signup-org">
         <Button
           variant="contained"
           fullWidth
           className="ss-brand-margin-vertical ss-brand-padding-large"
         >
-          <b>SIGN UP</b>
+          <b>SIGN UP AS AN ORGANIZATION</b>
+        </Button>
+      </Link>
+      <Link to="signup-broker">
+        <Button
+          variant="contained"
+          fullWidth
+          className="ss-brand-margin-vertical ss-brand-padding-large"
+        >
+          <b>SIGN UP AS A BROKER</b>
         </Button>
       </Link>
     </>

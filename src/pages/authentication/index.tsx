@@ -15,7 +15,8 @@ import { refreshUser } from "../../services/authenticationServices";
 import { useRecoilState, useSetRecoilState } from "recoil";
 
 import Login from "./login";
-import SignupStandardUser from "./signup";
+import OrgSignup from "./orgSignup";
+import BrokerSignup from "./brokerSignup";
 import Home from "./home";
 import SignupThankYou from "./signupThankYou";
 import SignupCodeEntry from "./signupCodeEntry";
@@ -51,7 +52,8 @@ function AuthenticationRouter() {
       <Routes>
         <Route path="signup-thank-you" element={<SignupThankYou />} />
         <Route path="signup-code-confirmation" element={<SignupCodeEntry />} />
-        <Route path="signup" element={<SignupStandardUser />} />
+        <Route path="signup-org" element={<OrgSignup />} />
+        <Route path="signup-broker" element={<BrokerSignup />} />
         <Route path="login" element={<Login />} />
         <Route index element={<Home />} />
       </Routes>

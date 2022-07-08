@@ -11,10 +11,10 @@ import { useNavigate } from "react-router-dom";
 import Loading from "../components/loading";
 import { validateEmail } from "../../utils/regex";
 import { signup } from "../../services/authenticationServices";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { ErrorAtom, UnconfirmedUsernameAtom } from "../../state/authentication";
 
-function Signup() {
+function OrgSignup() {
   const setUnconfirmedUsername = useSetRecoilState(UnconfirmedUsernameAtom)
   const setError = useSetRecoilState(ErrorAtom);
 
@@ -48,6 +48,7 @@ function Signup() {
         email,
         password,
         phone: "+1" + phone.replaceAll("-", ""),
+        type: "manager"
       });
       setError(err);
       setLoading(false);
@@ -257,4 +258,4 @@ function Signup() {
   );
 }
 
-export default Signup;
+export default OrgSignup;

@@ -41,18 +41,20 @@ type signupInfo = {
   password: string;
   name: string;
   phone: string;
+  type?: string;
 };
 type signupResponse = Promise<{ error: string | null }>;
 type signupFn = (info: signupInfo) => signupResponse;
 
-export const signup: signupFn = async ({ email, password, name, phone }) => {
+export const signup: signupFn = async ({ email, password, name, phone, type }) => {
   let error = null;
 
   try{
     await Auth.signUp({username: email, password, attributes:{
       email: email,
       name,
-      phone_number : phone
+      phone_number : phone,
+      ...(type && {UserType: type})
     }})
   } catch (err: any){
     error = err.toString != null ? err.toString() : "error signing up user"
