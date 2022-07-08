@@ -6,27 +6,27 @@ export type User = {
 };
 
 export type PickupTicketStatus =  
-  "TICKET_CREATED" |
-  "UNASSIGNED_PICKUP" |
-  "REQUESTED_PICKUP" |
-  "ACCEPTED_PICKUP" | 
-  "DECLINED_PICKUP" |
-  "COMPLETE_PICKUP" | 
-  "INCOMPLETE_PICKUP"
+  "ticket_created" |
+  "unassigned_pickup" |
+  "requested_pickup" |
+  "accepted_pickup" | 
+  "declined_pickup" |
+  "complete_pickup" | 
+  "incomplete_pickup"
   ;
 
 export type InventoryTicketStatus = 
-  "TICKET_CREATED" |
-  "CHECKED_INTO_INVENTORY" |
-  "INCOMPLETE_DELIVERY" |
-  "COMPLETE_DELIVERY" |
-  "APPROVED_POD"
+  "ticket_created" |
+  "checked_into_inventory" |
+  "incomplete_delivery" |
+  "complete_delivery" |
+  "approve_pod"
   ;
 
 export type TicketAssignmentStatus = 
-  "CHECKED_INTO_INVENTORY" |
-  "ASSIGNED" |
-  "IN_TRANSIT"
+  "checked_into_inventory" |
+  "assigned" |
+  "in_transit"
   ;
 
 export type TicketStatus = 

@@ -246,7 +246,7 @@
     },
     {
       "FIRST_PARTY": "CEVA",
-      "STATUS": "ASSIGNED",
+      "STATUS": "assigned",
       "HOUSE_REF": "0000011111",
       "BARCODE": "0000011111",
       "PCS": [
@@ -307,7 +307,7 @@
     },
     {
       "FIRST_PARTY": "CEVA",
-      "STATUS": "ASSIGNED",
+      "STATUS": "assigned",
       "HOUSE_REF": "0000011111",
       "BARCODE": "0000011111",
       "PCS": [
@@ -734,7 +734,7 @@
     },
     {
       "FIRST_PARTY": "CEVA",
-      "STATUS": "ASSIGNED",
+      "STATUS": "assigned",
       "HOUSE_REF": "0000011111",
       "BARCODE": "0000011111",
       "PCS": [

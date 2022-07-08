@@ -130,12 +130,12 @@ const Tickets = ({
   };
 
   const isPickupStatus = 
-    status === "UNASSIGNED_PICKUP" || 
-    status === "REQUESTED_PICKUP" ||
-    status === "ACCEPTED_PICKUP" ||
-    status === "DECLINED_PICKUP" ||
-    status === "COMPLETE_PICKUP" ||
-    status === "INCOMPLETE_PICKUP"
+    status === "unassigned_pickup" || 
+    status === "requested_pickup" ||
+    status === "accepted_pickup" ||
+    status === "declined_pickup" ||
+    status === "complete_pickup" ||
+    status === "incomplete_pickup"
 
   var tempTickets = [];
   if (tickets != null) {
@@ -220,9 +220,9 @@ const Home = () => {
 
   const [viewAllPickup, setViewAllPickup] = useState<boolean>(false);
 
-  const { val: assignedInfo } = useLoadable(fetchTicketsForStatus, "ASSIGNED");
-  const { val: completedInfo } = useLoadable(fetchTicketsForStatus, "COMPLETE_DELIVERY");
-  const { val: pickupInfo } = useLoadable(fetchTicketsForStatus, "REQUESTED_PICKUP");
+  const { val: assignedInfo } = useLoadable(fetchTicketsForStatus, "assigned");
+  const { val: completedInfo } = useLoadable(fetchTicketsForStatus, "complete_delivery");
+  const { val: pickupInfo } = useLoadable(fetchTicketsForStatus, "requested_pickup");
 
   const assigned = assignedInfo?.tickets
   const completed = completedInfo?.tickets
@@ -315,7 +315,7 @@ const Home = () => {
             <Tickets
               viewAllTickets={viewAllAssigned}
               tickets={assigned}
-              status="ASSIGNED"
+              status="assigned"
               setViewAllTickets={setViewAllAssigned}
               title="Assigned"
               items={assigned.length}
@@ -334,7 +334,7 @@ const Home = () => {
             <Tickets
               viewAllTickets={viewAllCompleted}
               tickets={completed}
-              status="COMPLETE_DELIVERY"
+              status="complete_delivery"
               setViewAllTickets={setViewAllCompleted}
               title="Completed"
               items={completed.length}
@@ -353,7 +353,7 @@ const Home = () => {
             <Tickets
               viewAllTickets={viewAllPickup}
               tickets={pickup}
-              status="REQUESTED_PICKUP"
+              status="requested_pickup"
               setViewAllTickets={setViewAllPickup}
               title="Requested Pickups"
               items={pickup.length}

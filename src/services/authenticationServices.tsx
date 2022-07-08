@@ -119,6 +119,7 @@ export const logout: logoutFn = async () => {
   let error = null
   try{
     await Auth.signOut()
+    delete axios.defaults.headers.common["Authorization"]
   } catch (err: any){
     error = err.toString != null ? err.toString() : "Error logging user out"
   }
