@@ -6,6 +6,7 @@ const OuterBlueDivBox = styled("div")(({ theme }) => ({
   borderRadius: "var(--ss-brand-border-radius)",
   backgroundColor: theme.palette.secondary.main,
   padding: 5,
+  margin: 15,
   marginBottom: 10,
 }));
 export default OuterBlueDivBox;

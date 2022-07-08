@@ -4,12 +4,14 @@ import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import Paper from "../roundedPaper";
-import OuterBlueDivBox from "../outerBlueDivBox";
-import InnerBlueDivBox from "../innerBlueDivBox";
+
+import OuterBlueDivBox from "./components/outerBlueDivBox";
+import InnerBlueDivBox from "./components/innerBlueDivBox";
+import InnerWhiteDivBox from "./components/innerWhiteDivBox";
+import ModalContainer from "./components/modalContainer";
+import { LargeButton } from "./components/largeButton";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
-import { SlideUp } from "../transitions";
 import Fade from "@mui/material/Fade";
 
 import {
@@ -21,9 +23,9 @@ import { Ticket } from "../../../services/types";
 
 import useLoadable from "../../../utils/useLoadable";
 
-import { useTheme } from "@mui/material/styles";
 import { styled } from "@mui/material/styles";
-import { Slide } from "@mui/material";
+import { CompletionPopUp } from "./components/completionPopUp";
+import { useNavigate } from "react-router-dom";
 
 const Tickets = ({
   viewAllTickets,
@@ -38,6 +40,7 @@ const Tickets = ({
   title: string;
   items: number;
 }) => {
+  const navigate = useNavigate();
   const [openTicketModal, setOpenTicketModal] = useState<boolean>(false);
 
   const handleTicketModalOpen = () => setOpenTicketModal(true);
@@ -79,6 +82,53 @@ const Tickets = ({
     );
   };
 
+  const PickupModal = (ticket: Ticket) => {
+    const timestamp = Number(ticket.APPOINTMENT_TIME);
+    const date = new Date(timestamp);
+    return (
+      <>
+        <Typography variant="h2" align="center" padding="40px">
+          Accept Pickup?
+        </Typography>
+
+        <InnerWhiteDivBox style={{ padding: 25, marginBottom: 30 }}>
+          <Typography marginBottom="5px">
+            {ticket.CONSIGNEE.CITY.toUpperCase()}{" "}
+            {ticket.CONSIGNEE.PROVINCE.toUpperCase()}{" "}
+            {ticket.CONSIGNEE.POSTAL_CODE.toUpperCase()}
+          </Typography>
+          <Typography variant="h4" marginBottom="5px">
+            <b>{ticket.CONSIGNEE.ADDRESS}</b>
+          </Typography>
+          <Typography color="#00000099">Weight: {ticket.WEIGHT}</Typography>
+          <Typography color="#00000099">REF#: {ticket.HOUSE_REF}</Typography>
+          <Typography color="#00000099">
+            First Party: {ticket.FIRST_PARTY}
+          </Typography>
+          <Typography color="#00000099">
+            Date/Time Assigned:{" "}
+            {date.toLocaleString("en-CA", {
+              month: "long",
+              day: "numeric",
+              year: "numeric",
+            })}{" "}
+            {date.toLocaleTimeString("en-CA", {
+              hour: "numeric",
+              minute: "2-digit",
+            })}
+            <Typography color="#00000099">Barcode: {ticket.BARCODE}</Typography>
+          </Typography>
+        </InnerWhiteDivBox>
+        <LargeButton label="Accept" action={() => alert("action")} />
+        <LargeButton
+          label="Decline"
+          action={() => navigate("/decline-pickup")}
+        />
+        <LargeButton label="Go Back" action={() => handleTicketModalClose()} />
+      </>
+    );
+  };
+
   var tempTickets = [];
   if (tickets != null) {
     if (tickets.length < 2) {
@@ -87,6 +137,7 @@ const Tickets = ({
       tempTickets[0] = tickets[0];
       tempTickets[1] = tickets[1];
     }
+
     const reducedTicketsInfo = tempTickets.map((tickets) => (
       <>
         <TicketCard onClick={handleTicketModalOpen}>
@@ -95,24 +146,20 @@ const Tickets = ({
           </Typography>
           <Typography>REF#: {tickets.HOUSE_REF}</Typography>
         </TicketCard>
-
-        <Modal open={openTicketModal} onClose={handleTicketModalClose}>
-          <Fade in={openTicketModal}>
-            <OuterBlueDivBox
-              sx={{
-                position: "relative",
-                top: "50%",
-                left: "50%",
-                transform: "translate(-50%, -50%)",
-                width: "93vw",
-                border: "2px solid #000",
-                boxShadow: 24,
-              }}
-            >
-              {TicketPopUpContent(tickets)}
-            </OuterBlueDivBox>
-          </Fade>
-        </Modal>
+        {tickets.STATUS === "PICKUP" && (
+          <Modal open={openTicketModal} onClose={handleTicketModalClose}>
+            <ModalContainer style={{ paddingBottom: 10 }}>
+              {PickupModal(tickets)}
+            </ModalContainer>
+          </Modal>
+        )}
+        {tickets.STATUS != "PICKUP" && (
+          <Modal open={openTicketModal} onClose={handleTicketModalClose}>
+            <Fade in={openTicketModal}>
+              <ModalContainer>{TicketPopUpContent(tickets)}</ModalContainer>
+            </Fade>
+          </Modal>
+        )}
       </>
     ));
 
@@ -138,17 +185,7 @@ const Tickets = ({
           View All
         </Button>
         <Modal open={viewAllTickets} onClose={handleViewAllClose}>
-          <OuterBlueDivBox
-            sx={{
-              position: "relative",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              width: "95vw",
-              border: "2px solid #000",
-              boxShadow: 24,
-            }}
-          >
+          <ModalContainer style={{ maxHeight: "90vh" }}>
             <Grid container justifyContent="space-between">
               <Typography variant="h2" alignContent="left">
                 {title}
@@ -158,7 +195,7 @@ const Tickets = ({
               </Typography>
             </Grid>
             <InnerBlueDivBox>{ticketsInfo}</InnerBlueDivBox>
-          </OuterBlueDivBox>
+          </ModalContainer>
         </Modal>
       </>
     );
@@ -167,7 +204,8 @@ const Tickets = ({
   }
 };
 
-export const BrokerApp = () => {
+const Home = () => {
+  const navigate = useNavigate();
   const [viewAllAssigned, setViewAllAssigned] = useState<boolean>(false);
 
   const [viewAllCompleted, setViewAllCompleted] = useState<boolean>(false);
@@ -177,6 +215,11 @@ export const BrokerApp = () => {
   const { val: tickets } = useLoadable(fetchOrgTodayTickets);
 
   const { val: currentTicket } = useLoadable(fetchOrgCurrentDelivery);
+
+  const [closeDelivery, setCloseDelivery] = useState<boolean>(false);
+
+  const handleCloseDeliveryOpen = () => setCloseDelivery(true);
+  const handleCloseDeliveryClose = () => setCloseDelivery(false);
 
   const assigned = useMemo(
     () => tickets && tickets.filter((ticket) => ticket.STATUS === "ASSIGNED"),
@@ -192,6 +235,16 @@ export const BrokerApp = () => {
     () => tickets && tickets.filter((ticket) => ticket.STATUS === "PICKUP"),
     [tickets]
   );
+
+  const handleCompleteShift = () => {
+    if (assigned != null) {
+      if (assigned.length > 0) {
+        navigate("shift-complete");
+      } else {
+        alert("nice");
+      }
+    }
+  };
 
   const currentDelivery = () => {
     if (currentTicket != null) {
@@ -228,6 +281,16 @@ export const BrokerApp = () => {
               minute: "2-digit",
             })}
           </Typography>
+          <LargeButton
+            label="Close Delivery"
+            action={() => handleCloseDeliveryOpen()}
+          />
+          <Modal open={closeDelivery} onClose={handleCloseDeliveryClose}>
+            <CompletionPopUp
+              modal={closeDelivery}
+              setModal={setCloseDelivery}
+            />
+          </Modal>
         </>
       );
     }
@@ -240,12 +303,9 @@ export const BrokerApp = () => {
           <Typography variant="h3" color="#000" align="center" padding="10px">
             Current Delivery
           </Typography>
-          <CurrentDeliveryInnerContainer>
+          <InnerWhiteDivBox style={{ padding: 25 }}>
             {currentDelivery()}
-            <Box textAlign="center">
-              <LargeButton variant="contained">Close Delivery</LargeButton>
-            </Box>
-          </CurrentDeliveryInnerContainer>
+          </InnerWhiteDivBox>
         </OuterBlueDivBox>
 
         <OuterBlueDivBox>
@@ -303,9 +363,11 @@ export const BrokerApp = () => {
             ></Tickets>
           </InnerBlueDivBox>
         </OuterBlueDivBox>
-        <Box textAlign="center">
-          <LargeButton variant="contained">Complete Shift</LargeButton>
-        </Box>
+
+        <LargeButton
+          label="Complete Shift"
+          action={() => handleCompleteShift()}
+        />
       </div>
     );
   } else {
@@ -313,48 +375,7 @@ export const BrokerApp = () => {
   }
 };
 
-const CurrentDeliveryContainer = styled("div")(({ theme }) => ({
-  borderRadius: "var(--ss-brand-border-radius)",
-  backgroundColor: theme.palette.secondary.main,
-  padding: 5,
-  marginBottom: 10,
-}));
-
-const CurrentDeliveryInnerContainer = styled("div")(({ theme }) => ({
-  borderRadius: "var(--ss-brand-border-radius)",
-  backgroundColor: "#FFF",
-  margin: 10,
-  padding: 25,
-}));
-
-const TicketsContainer = styled("div")(({ theme }) => ({
-  borderRadius: "var(--ss-brand-border-radius)",
-  backgroundColor: theme.palette.secondary.main,
-  padding: 5,
-  marginBottom: 10,
-}));
-
-const AssignedCompletedContainer = styled("div")(({ theme }) => ({
-  borderRadius: "var(--ss-brand-border-radius)",
-  backgroundColor: theme.palette.secondary.light,
-  margin: 10,
-  padding: 10,
-  maxHeight: "25vh",
-  overflowY: "scroll",
-}));
-
-const RequestedPickupContainer = styled("div")(({ theme }) => ({
-  borderRadius: "var(--ss-brand-border-radius)",
-  backgroundColor: "#FFF",
-  margin: 10,
-  padding: 10,
-}));
-
-const LargeButton = styled(Button)({
-  width: "75vw",
-  padding: 5,
-  marginTop: 5,
-});
+export default Home;
 
 const TicketCard = styled(Card)({
   padding: 10,

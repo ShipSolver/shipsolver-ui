@@ -1,6 +1,8 @@
 import React from "react";
 import { ThemeProvider } from "@mui/material";
 import CssBaseline from "@mui/material/ScopedCssBaseline";
+import { RecoilRoot } from "recoil";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ShipSolverBrand from "../ShipSolverBrand";
 import "../index.css";
 
@@ -10,9 +12,11 @@ export default function StoryBookThemeProvider({
   children: JSX.Element;
 }) {
   return (
-    <ThemeProvider theme={ShipSolverBrand}>
-      <CssBaseline />
-      {children}
-    </ThemeProvider>
+    <RecoilRoot>
+      <ThemeProvider theme={ShipSolverBrand}>
+        <CssBaseline />
+        {children}
+      </ThemeProvider>
+    </RecoilRoot>
   );
 }
