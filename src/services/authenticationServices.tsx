@@ -2,7 +2,7 @@ import axios from "axios";
 import { SERVER_URL, MEMORY_STORAGE_KEY } from "./constants";
 import awsConfig from './aws-exports';
 import { Auth, Amplify } from 'aws-amplify';
-import { CognitoUser } from 'amazon-cognito-identity-js';
+import { CognitoUser, CognitoUserSession } from 'amazon-cognito-identity-js';
 
 Amplify.configure(awsConfig)
 
@@ -26,9 +26,15 @@ export const login: loginFn = async ({ email, password, rememberMe }) => {
   let unconfirmedUser = false
 
   try {
-    await Auth.signIn({username: email, password}) as CognitoUser
+    const cognitoUser = await Auth.signIn({username: email, password}) as CognitoUser
     user = email
     localStorage.setItem(MEMORY_STORAGE_KEY, String(rememberMe))
+
+    cognitoUser.getSession((error : Error | null, session: CognitoUserSession | null) => {
+      if(session !== null){
+        axios.defaults.headers.common["Authorization"] = session.getAccessToken().toString();
+      }
+    })
   } catch (err: any) {
     if(err.code && err.code === "UserNotConfirmedException") unconfirmedUser = true
     error = err.toString != null ? err.toString() : "error signing up user"
@@ -89,8 +95,13 @@ export const refreshUser: refreshFn = async () => {
   try{
     const rememberMe = localStorage.getItem(MEMORY_STORAGE_KEY) == 'true'
     if(rememberMe){
-      const cogintoUser = await Auth.currentUserPoolUser() as CognitoUser
-      user = cogintoUser.getUsername()
+      const cognitoUser = await Auth.currentUserPoolUser() as CognitoUser
+      user = cognitoUser.getUsername()
+      cognitoUser.getSession((error : Error | null, session: CognitoUserSession | null) => {
+        if(session !== null){
+          axios.defaults.headers.common["Authorization"] = session.getAccessToken().toString();
+        }
+      })
     }else{
       Auth.signOut()
     }

@@ -1,6 +1,10 @@
-.home-entry-renderer-paper-with-border {
+.entry-renderer-selected {
     margin: var(--ss-brand-spacing) ;
     border-width: var(--ss-entry-border-width) !important;
     background-color: var(--ss-brand-theme-color) !important;
     border-color: var(--ss-entry-border-color) !important;
 }
+
+.entry-renderer {
+    margin: var(--ss-brand-spacing);
+  }

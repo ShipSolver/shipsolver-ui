@@ -3,7 +3,6 @@ import React, { useMemo, useState } from "react";
 import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
 
 import OuterBlueDivBox from "./components/outerBlueDivBox";
 import InnerBlueDivBox from "./components/innerBlueDivBox";
@@ -15,11 +14,11 @@ import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 
 import {
-  fetchOrgTodayTickets,
+  fetchTicketsForStatus,
   fetchOrgCurrentDelivery,
 } from "../../../services/ticketServices";
 
-import { Ticket } from "../../../services/types";
+import { Ticket, TicketStatus } from "../../../services/types";
 
 import useLoadable from "../../../utils/useLoadable";
 
@@ -27,15 +26,21 @@ import { styled } from "@mui/material/styles";
 import { CompletionPopUp } from "./components/completionPopUp";
 import { useNavigate } from "react-router-dom";
 
+type TicketStatusMap = {
+  [key in TicketStatus]: Ticket[]
+}
+
 const Tickets = ({
   viewAllTickets,
   tickets,
+  status,
   setViewAllTickets,
   title,
   items,
 }: {
   viewAllTickets: boolean;
   tickets: Ticket[] | null;
+  status: TicketStatus;
   setViewAllTickets: React.Dispatch<React.SetStateAction<boolean>>;
   title: string;
   items: number;
@@ -50,20 +55,20 @@ const Tickets = ({
   const handleViewAllClose = () => setViewAllTickets(false);
 
   const TicketPopUpContent = (ticket: Ticket) => {
-    const timestamp = Number(ticket.APPOINTMENT_TIME);
+    const timestamp = Number(ticket.timestamp);
     const date = new Date(timestamp);
     return (
       <>
         <Typography variant="h3" align="center">
-          <b>{ticket.CONSIGNEE.ADDRESS}</b>
+          <b>{ticket.consigneeAddress}</b>
         </Typography>
         <Typography variant="h3" align="center">
-          REF#: {ticket.HOUSE_REF}
+          REF#: {ticket.houseReferenceNumber}
         </Typography>
         <InnerBlueDivBox>
-          <Typography color="#00000099">Weight: {ticket.WEIGHT}</Typography>
+          <Typography color="#00000099">Weight: {ticket.weight}</Typography>
           <Typography color="#00000099">
-            First Party: {ticket.FIRST_PARTY}
+            First Party: {ticket.customer}
           </Typography>
           <Typography color="#00000099">
             Date/Time Assigned:{" "}
@@ -83,7 +88,7 @@ const Tickets = ({
   };
 
   const PickupModal = (ticket: Ticket) => {
-    const timestamp = Number(ticket.APPOINTMENT_TIME);
+    const timestamp = Number(ticket.timestamp);
     const date = new Date(timestamp);
     return (
       <>
@@ -92,18 +97,13 @@ const Tickets = ({
         </Typography>
 
         <InnerWhiteDivBox style={{ padding: 25, marginBottom: 30 }}>
-          <Typography marginBottom="5px">
-            {ticket.CONSIGNEE.CITY.toUpperCase()}{" "}
-            {ticket.CONSIGNEE.PROVINCE.toUpperCase()}{" "}
-            {ticket.CONSIGNEE.POSTAL_CODE.toUpperCase()}
-          </Typography>
           <Typography variant="h4" marginBottom="5px">
-            <b>{ticket.CONSIGNEE.ADDRESS}</b>
+            <b>{ticket.consigneeAddress}</b>
           </Typography>
-          <Typography color="#00000099">Weight: {ticket.WEIGHT}</Typography>
-          <Typography color="#00000099">REF#: {ticket.HOUSE_REF}</Typography>
+          <Typography color="#00000099">Weight: {ticket.weight}</Typography>
+          <Typography color="#00000099">REF#: {ticket.houseReferenceNumber}</Typography>
           <Typography color="#00000099">
-            First Party: {ticket.FIRST_PARTY}
+            First Party: {ticket.customer}
           </Typography>
           <Typography color="#00000099">
             Date/Time Assigned:{" "}
@@ -116,7 +116,7 @@ const Tickets = ({
               hour: "numeric",
               minute: "2-digit",
             })}
-            <Typography color="#00000099">Barcode: {ticket.BARCODE}</Typography>
+            <Typography color="#00000099">Barcode: {ticket.barcodeNumber}</Typography>
           </Typography>
         </InnerWhiteDivBox>
         <LargeButton label="Accept" action={() => alert("action")} />
@@ -129,6 +129,14 @@ const Tickets = ({
     );
   };
 
+  const isPickupStatus = 
+    status === "UNASSIGNED_PICKUP" || 
+    status === "REQUESTED_PICKUP" ||
+    status === "ACCEPTED_PICKUP" ||
+    status === "DECLINED_PICKUP" ||
+    status === "COMPLETE_PICKUP" ||
+    status === "INCOMPLETE_PICKUP"
+
   var tempTickets = [];
   if (tickets != null) {
     if (tickets.length < 2) {
@@ -138,38 +146,38 @@ const Tickets = ({
       tempTickets[1] = tickets[1];
     }
 
-    const reducedTicketsInfo = tempTickets.map((tickets) => (
+    const reducedTicketsInfo = tempTickets.map((ticket) => (
       <>
         <TicketCard onClick={handleTicketModalOpen}>
-          <Typography variant="h5">
-            <b>{tickets.CONSIGNEE.ADDRESS}</b>
+        <Typography variant="h4" marginBottom="5px">
+            <b>{ticket.consigneeAddress}</b>
           </Typography>
-          <Typography>REF#: {tickets.HOUSE_REF}</Typography>
+          <Typography>REF#: {ticket.houseReferenceNumber}</Typography>
         </TicketCard>
-        {tickets.STATUS === "PICKUP" && (
+        {(isPickupStatus) && (
           <Modal open={openTicketModal} onClose={handleTicketModalClose}>
             <ModalContainer style={{ paddingBottom: 10 }}>
-              {PickupModal(tickets)}
+              {PickupModal(ticket)}
             </ModalContainer>
           </Modal>
         )}
-        {tickets.STATUS != "PICKUP" && (
+        {!isPickupStatus && (
           <Modal open={openTicketModal} onClose={handleTicketModalClose}>
             <Fade in={openTicketModal}>
-              <ModalContainer>{TicketPopUpContent(tickets)}</ModalContainer>
+              <ModalContainer>{TicketPopUpContent(ticket)}</ModalContainer>
             </Fade>
           </Modal>
         )}
       </>
     ));
 
-    const ticketsInfo = tickets.map((tickets) => (
+    const ticketsInfo = tickets.map((ticket) => (
       <>
         <TicketCard onClick={handleTicketModalOpen}>
           <Typography variant="h5">
-            <b>{tickets.CONSIGNEE.ADDRESS}</b>
+            <b>{ticket.consigneeAddress}</b>
           </Typography>
-          <Typography>REF#: {tickets.HOUSE_REF}</Typography>
+          <Typography>REF#: {ticket.houseReferenceNumber}</Typography>
         </TicketCard>
       </>
     ));
@@ -212,7 +220,9 @@ const Home = () => {
 
   const [viewAllPickup, setViewAllPickup] = useState<boolean>(false);
 
-  const { val: tickets } = useLoadable(fetchOrgTodayTickets);
+  const { val: assigned } = useLoadable(fetchTicketsForStatus, "ASSIGNED");
+  const { val: completed } = useLoadable(fetchTicketsForStatus, "COMPLETE_DELIVERY");
+  const { val: pickup } = useLoadable(fetchTicketsForStatus, "REQUESTED_PICKUP");
 
   const { val: currentTicket } = useLoadable(fetchOrgCurrentDelivery);
 
@@ -220,21 +230,6 @@ const Home = () => {
 
   const handleCloseDeliveryOpen = () => setCloseDelivery(true);
   const handleCloseDeliveryClose = () => setCloseDelivery(false);
-
-  const assigned = useMemo(
-    () => tickets && tickets.filter((ticket) => ticket.STATUS === "ASSIGNED"),
-    [tickets]
-  );
-
-  const completed = useMemo(
-    () => tickets && tickets.filter((ticket) => ticket.STATUS === "DELIVERED"),
-    [tickets]
-  );
-
-  const pickup = useMemo(
-    () => tickets && tickets.filter((ticket) => ticket.STATUS === "PICKUP"),
-    [tickets]
-  );
 
   const handleCompleteShift = () => {
     if (assigned != null) {
@@ -248,26 +243,21 @@ const Home = () => {
 
   const currentDelivery = () => {
     if (currentTicket != null) {
-      const timestamp = Number(currentTicket.APPOINTMENT_TIME);
+      const timestamp = Number(currentTicket.timestamp);
       const date = new Date(timestamp);
       return (
         <>
           <Typography marginBottom="5px">
-            {currentTicket.CONSIGNEE.CITY.toUpperCase()}{" "}
-            {currentTicket.CONSIGNEE.PROVINCE.toUpperCase()}{" "}
-            {currentTicket.CONSIGNEE.POSTAL_CODE.toUpperCase()}
-          </Typography>
-          <Typography variant="h4" marginBottom="5px">
-            <b>{currentTicket.CONSIGNEE.ADDRESS}</b>
+            {currentTicket.consigneeAddress}
           </Typography>
           <Typography color="#00000099">
-            Weight: {currentTicket.WEIGHT}
+            Weight: {currentTicket.weight}
           </Typography>
           <Typography color="#00000099">
-            REF#: {currentTicket.HOUSE_REF}
+            REF#: {currentTicket.houseReferenceNumber}
           </Typography>
           <Typography color="#00000099">
-            First Party: {currentTicket.FIRST_PARTY}
+            First Party: {currentTicket.customer}
           </Typography>
           <Typography color="#00000099">
             Date/Time Assigned:{" "}
@@ -321,6 +311,7 @@ const Home = () => {
             <Tickets
               viewAllTickets={viewAllAssigned}
               tickets={assigned}
+              status="ASSIGNED"
               setViewAllTickets={setViewAllAssigned}
               title="Assigned"
               items={assigned.length}
@@ -339,6 +330,7 @@ const Home = () => {
             <Tickets
               viewAllTickets={viewAllCompleted}
               tickets={completed}
+              status="COMPLETE_DELIVERY"
               setViewAllTickets={setViewAllCompleted}
               title="Completed"
               items={completed.length}
@@ -357,6 +349,7 @@ const Home = () => {
             <Tickets
               viewAllTickets={viewAllPickup}
               tickets={pickup}
+              status="REQUESTED_PICKUP"
               setViewAllTickets={setViewAllPickup}
               title="Requested Pickups"
               items={pickup.length}

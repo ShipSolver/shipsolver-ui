@@ -1,8 +1,11 @@
 import axios from "axios";
+
 import { SERVER_URL } from "./constants";
 
+import ticketsByStatus from "../mockData/todaysTickets.json";
 import tickets from "../mockData/tickets.json";
-import { Ticket } from "./types";
+
+import { Ticket, TicketStatus } from "./types";
 
 axios.defaults.baseURL = SERVER_URL;
 
@@ -14,10 +17,16 @@ const delay = (time: number) => {
   });
 };
 
-export const fetchOrgTodayTickets = () => {
+type statusTicketMap = {
+  [key in TicketStatus]?: Ticket[]
+}
+
+const ticketsByStatusAsMap = ticketsByStatus as statusTicketMap
+
+export const fetchTicketsForStatus = (status: TicketStatus) => {
   const mockServerTicketFetch = async () => {
     await delay(250);
-    return tickets.tickets as Ticket[];
+    return ticketsByStatusAsMap[status] as Ticket[];
   };
   return mockServerTicketFetch();
 };

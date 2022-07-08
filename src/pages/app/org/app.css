@@ -8,10 +8,6 @@
     0;
 }
 
-.ss-ticket-renderer {
-  margin: var(--ss-brand-spacing);
-}
-
 .Ticketlabel{
   display: flex;
   align-items: center;
@@ -80,15 +76,3 @@
   flex-direction:row;
   justify-content: space-between;
 }
-
- /* return (
-  // <Paper sx = {{width: 1000, height: 600, backgroundColor: "blue"}}>
-    <Paper sx = {{width: 850, height: 500, elevation: 0}}>
-      <div className = "topRow">
-        <Column1/>
-        <Column2/>
-      </div>
-    </Paper>
-  // </Paper>
-
-); */
