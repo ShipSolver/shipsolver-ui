@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 export default function useLoadable<
   fn extends (...args: any[]) => Promise<any>
@@ -7,15 +7,17 @@ export default function useLoadable<
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  fetcher(...args)
-    .then((val) => {
-      setVal(val);
-      setLoading(false);
-    })
-    .catch((e) => {
-      setError(e.toString());
-      setLoading(false);
-    });
+  useEffect(() => {
+    fetcher(...args)
+      .then((val) => {
+        setVal(val);
+        setLoading(false);
+      })
+      .catch((e) => {
+        setError(e.toString());
+        setLoading(false);
+      });
+  }, []);
 
   return {
     val: val as Awaited<ReturnType<fn>> | null,

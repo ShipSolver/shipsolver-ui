@@ -5,8 +5,15 @@ import Lists from "./components/multiList";
 
 import { fetchOrgTodayTickets } from "../../../services/ticketServices";
 import EntryRenderer from "./components/multiList/homeEntryRenderer";
-import { DeliveredMenu, IncompleteMenu, InProgressMenu, AssignedMenu, InventoryMenu } from './components/multiList/menu'
+import {
+  DeliveredMenu,
+  IncompleteMenu,
+  InProgressMenu,
+  AssignedMenu,
+  InventoryMenu,
+} from "./components/multiList/menu";
 import useLoadable from "../../../utils/useLoadable";
+import { styled } from "@mui/material/styles";
 
 import { useNavigate } from "react-router-dom";
 
@@ -79,11 +86,28 @@ function Home() {
           },
         ]}
       />
-      <Button variant="contained" onClick={() => navigate("/ticket-factory")}>
-        Create Tickets
-      </Button>
+      <FlexDiv>
+      <Button variant="contained" onClick={() => navigate("/pod-review")}>
+          Review PODs
+        </Button>
+        <Button variant="contained" onClick={() => {}}>
+          Inventory Re-entry
+        </Button>
+        <Button variant="contained" onClick={() => navigate("/all-tickets")}>
+          View All Tickets
+        </Button>
+        <Button variant="contained" onClick={() => navigate("/ticket-factory")}>
+          Create Tickets
+        </Button>
+
+      </FlexDiv>
     </div>
   );
 }
 
 export default Home;
+
+const FlexDiv = styled("div")`
+  display: flex;
+  justify-content: space-between;
+`
