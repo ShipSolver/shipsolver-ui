@@ -9,7 +9,7 @@ import Box from "@mui/material/Box";
 import Loading from "../components/loading";
 import Copyright from "../components/copyright";
 
-import { UserAtom, ErrorAtom } from "../../state/authentication";
+import { AuthenticatedUsernameAtom, ErrorAtom } from "../../state/authentication";
 import { refreshUser } from "../../services/authenticationServices";
 
 import { useRecoilState, useSetRecoilState } from "recoil";
@@ -27,7 +27,7 @@ function AuthenticationRouter() {
     location.state != null ? (location.state as NavRedirectState) : null;
   const referer = (state && state.referer) || "/";
 
-  const [user, setUser] = useRecoilState(UserAtom);
+  const [user, setUser] = useRecoilState(AuthenticatedUsernameAtom);
   const [error, setError] = useRecoilState(ErrorAtom);
   const [isLoading, setLoading] = useState<boolean>(false);
 

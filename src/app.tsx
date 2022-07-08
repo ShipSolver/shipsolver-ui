@@ -33,7 +33,7 @@ function App() {
                 <RouteProtector
                   defaultRoute={<AppRoutes/>}
                   extraRoutes={{
-                    BROKER: <BrokerRoutes/>
+                    driver: <BrokerRoutes/>
                   }}
                   />
               }

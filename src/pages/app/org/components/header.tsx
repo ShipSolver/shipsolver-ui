@@ -14,13 +14,13 @@ import MenuItem from "@mui/material/MenuItem";
 
 import { logout } from "../../../../services/authenticationServices";
 import { useResetRecoilState } from "recoil";
-import { UserAtom } from "../../../../state/authentication";
+import { AuthenticatedUsernameAtom } from "../../../../state/authentication";
 
 const pages = ["Home"];
 const settings = ["Settings", "Logout"];
 
 const Header = () => {
-  const resetUser = useResetRecoilState(UserAtom)
+  const resetUser = useResetRecoilState(AuthenticatedUsernameAtom)
 
   const [anchorElNav, setAnchorElNav] = React.useState<
     (EventTarget & HTMLButtonElement) | null

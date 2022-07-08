@@ -8,7 +8,7 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Alert from "@mui/material/Alert";
 import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
-import { ErrorAtom, UnconfirmedUsernameAtom, UserAtom } from "../../state/authentication";
+import { ErrorAtom, UnconfirmedUsernameAtom, AuthenticatedUsernameAtom } from "../../state/authentication";
 import { login } from "../../services/authenticationServices";
 import Loading from "../components/loading";
 import { validateEmail } from "../../utils/regex";
@@ -21,7 +21,7 @@ function Login() {
 
   const setError = useSetRecoilState(ErrorAtom);
   const resetError = useResetRecoilState(ErrorAtom);
-  const setUser = useSetRecoilState(UserAtom);
+  const setUser = useSetRecoilState(AuthenticatedUsernameAtom);
 
   const [loading, setLoading] = useState<boolean>(false);
 
