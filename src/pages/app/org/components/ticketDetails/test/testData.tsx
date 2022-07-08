@@ -79,33 +79,33 @@ export const TestTicketInformation: TicketInformationStateType = {
 export const TestCommodities: CommodityType[] = [
   {
     description: "SWIFTLYFTE LION COMPETITIO",
-    weight: "148.815 lbs",
-    dimensions: "N/A",
+    // weight: "148.815 lbs",
+    // dimensions: "N/A",
   },
   {
     description: "SWIFTLYFTE LION COMPETITIO",
-    weight: "148.815 lbs",
-    dimensions: "N/A",
+    // weight: "148.815 lbs",
+    // dimensions: "N/A",
   },
   {
     description: "SWIFTLYFTE LION COMPETITIO",
-    weight: "148.815 lbs",
-    dimensions: "N/A",
+    // weight: "148.815 lbs",
+    // dimensions: "N/A",
   },
   {
     description: "SWIFTLYFTE LION COMPETITIO",
-    weight: "148.815 lbs",
-    dimensions: "N/A",
+    // weight: "148.815 lbs",
+    // dimensions: "N/A",
   },
   {
     description: "SWIFTLYFTE LION COMPETITIO",
-    weight: "148.815 lbs",
-    dimensions: "N/A",
+    // weight: "148.815 lbs",
+    // dimensions: "N/A",
   },
   {
     description: "SWIFTLYFTE LION COMPETITIO",
-    weight: "148.815 lbs",
-    dimensions: "N/A",
+    // weight: "148.815 lbs",
+    // dimensions: "N/A",
   },
 ];
 
