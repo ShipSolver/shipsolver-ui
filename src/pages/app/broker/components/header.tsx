@@ -12,10 +12,16 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 
+import { logout } from "../../../../services/authenticationServices";
+import { useResetRecoilState } from "recoil";
+import { AuthenticatedUsernameAtom } from "../../../../state/authentication";
+
 const pages = ["Home"];
 const settings = ["Settings", "Logout"];
 
 const Header = () => {
+  const resetUser = useResetRecoilState(AuthenticatedUsernameAtom)
+
   const [anchorElNav, setAnchorElNav] = React.useState<
     (EventTarget & HTMLButtonElement) | null
   >(null);
@@ -41,6 +47,11 @@ const Header = () => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  const handleLogout = async () => {
+    const {error} = await logout()
+    if(error == null) resetUser()
+  }
 
   return (
     <AppBar position="static" color="transparent">
@@ -136,11 +147,9 @@ const Header = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+                <MenuItem onClick={handleLogout}>
+                  <Typography textAlign="center">Logout</Typography>
                 </MenuItem>
-              ))}
             </Menu>
           </Box>
         </Toolbar>

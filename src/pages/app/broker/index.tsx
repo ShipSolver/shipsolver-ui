@@ -21,8 +21,7 @@ import Header from "../org/components/header";
 function BrokerRouter() {
   return (
     <>
-      {/* <Header /> */}
-
+      <Header />
       <Routes>
         <Route index element={<Home />} />
         <Route
