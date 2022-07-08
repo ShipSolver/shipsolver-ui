@@ -145,9 +145,20 @@ export const fetchTicket = async (ticketId: string) => {
 
 export const fetchMilestones = async (ticketId: string) => {
   try {
-    const response: any = await axios.get(`/api/milestones/${ticketId}`, {
+    const response: any = await axios.get(`/api/creationmilestones/${ticketId}`, {
       withCredentials: false,
     });
+
+    console.log("response", response);
+
+    const { newStatus, createdAt } = response.data[0];
+
+    const data = {
+      description: newStatus,
+      dateAndTime: new Date(createdAt)
+    }
+
+    return data;
   } catch (e) {
     console.error(e);
     throw e;

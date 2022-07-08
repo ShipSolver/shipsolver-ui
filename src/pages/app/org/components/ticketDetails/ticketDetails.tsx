@@ -89,7 +89,7 @@ export const TicketDetails = () => {
         <Grid item xs={5}>
           <EventHistory events={TestEventHistory} />
           <Spacer height="8px" />
-          <Milestones milestones={TestMilestones} />
+          <Milestones ticketId={ticketId} />
         </Grid>
       </Grid>
     </Container>
