@@ -45,7 +45,7 @@ type ShipmmentDetailsFields = keyof typeof ShipmentDetailsFieldLabels;
 type ConsigneeFields = keyof typeof ConsigneeFieldLabels;
 
 export type TicketInformationStateType = {
-  firstParty: string;
+  firstParty?: string;
   shipper: {
     [key in ShipperFields]?: string;
   };
@@ -55,25 +55,37 @@ export type TicketInformationStateType = {
   consignee: {
     [key in ConsigneeFields]?: string;
   };
-  isPickup: boolean;
-  enterIntoInventory: boolean;
+  isPickup?: boolean;
+  enterIntoInventory?: boolean;
 };
 
 interface TicketInformationProps {
-  data: TicketInformationStateType;
-  commodities: CommodityType[];
+  data?: TicketInformationStateType;
+  commodities?: CommodityType[];
+  newTicket?: boolean;
 }
 
 export const TicketInformation = ({
   data,
   commodities,
+  newTicket,
 }: TicketInformationProps) => {
-  const [isEditable, setIsEditable] = useState<boolean>(false);
+  const [isEditable, setIsEditable] = useState<boolean>(newTicket ?? false);
 
-  const [formData, setFormData] = useState<TicketInformationStateType>(data);
+  const [formData, setFormData] = useState<TicketInformationStateType>(
+    data ?? {
+      shipper: {},
+      shipmentDetails: {},
+      consignee: {},
+    }
+  );
 
   const handleSave = () => {
-    setIsEditable(false);
+    if (newTicket) {
+    } else {
+      setIsEditable(false);
+    }
+
     console.log(formData);
   };
 
@@ -207,28 +219,40 @@ export const TicketInformation = ({
                 width: "100%",
               }}
             >
-              <Button
-                size="small"
-                sx={{
-                  width: "100px",
-                  float: "right",
-                }}
-                onClick={() =>
-                  isEditable ? handleSave() : setIsEditable(true)
-                }
-              >
-                {isEditable ? (
-                  "Save"
-                ) : (
-                  <>
-                    Edit <EditIcon sx={{ marginLeft: "8px" }} />
-                  </>
-                )}
-              </Button>
+              {newTicket ? null : (
+                <Button
+                  size="small"
+                  sx={{
+                    width: "100px",
+                    float: "right",
+                  }}
+                  onClick={() =>
+                    isEditable ? handleSave() : setIsEditable(true)
+                  }
+                >
+                  {isEditable ? (
+                    "Save"
+                  ) : (
+                    <>
+                      Edit <EditIcon sx={{ marginLeft: "8px" }} />
+                    </>
+                  )}
+                </Button>
+              )}
             </div>
-            <FullWidthButton variant="contained" size="small">
-              View DR
-            </FullWidthButton>
+            {newTicket ? (
+              <FullWidthButton
+                variant="contained"
+                size="small"
+                onClick={() => handleSave()}
+              >
+                Create Ticket
+              </FullWidthButton>
+            ) : (
+              <FullWidthButton variant="contained" size="small">
+                View DR
+              </FullWidthButton>
+            )}
           </ActionColumn>
         </Grid>
       </Grid>

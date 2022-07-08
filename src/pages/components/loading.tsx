@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
 import Container from "@mui/material/Container";
 
-function Loading() {
+export const Loading = () => {
   return (
     <Container
       sx={{
