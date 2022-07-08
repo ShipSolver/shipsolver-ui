@@ -1,4 +1,4 @@
-import { AllTicketsTable } from "../allTicketsTable";
+import { AllTicketsTable } from "..";
 import StorybookThemeProvider from "../../../../../../tests/storybookThemeProvider";
 
 import React from "react";

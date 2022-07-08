@@ -8,7 +8,7 @@ import { Ticket, TicketStatus } from "./types";
 import moment from "moment";
 import { DateFormat } from "../pages/app/org/components/allTicketsTable/components/filters/dateRangeFilter";
 
-import { AllTicketsTableRows } from "../pages/app/org/components/allTicketsTable/allTicketsTable";
+import { AllTicketsTableRows } from "../pages/app/org/components/allTicketsTable";
 import { TicketInformationStateType } from "../pages/app/org/components/ticketDetails/components/ticketInformation";
 
 axios.defaults.baseURL = SERVER_URL;

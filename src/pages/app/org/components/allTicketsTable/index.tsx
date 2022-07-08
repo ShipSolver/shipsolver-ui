@@ -16,6 +16,7 @@ import { HeaderRowType } from "./components/ticketTable";
 import { fetchAllTickets } from "../../../../../services/ticketServices";
 
 import { RowType } from "./components/ticketTable";
+import { Typography } from "@mui/material";
 
 export type AllTicketsTableRows = RowType<Keys>;
 
@@ -36,9 +37,10 @@ export const AllTicketsTable = () => {
     <Wrapper>
       <TicketSearch handleSearchRequest={() => null} />
       <Spacer height="24px" />
-      {loading || val == null ? (
+      {loading ? (
         <Loading />
-      ) : (
+      ) : ( val == null || error != null ? 
+        <Typography>{error || "Error fetching ticket information"}</Typography> :
         <TicketTable headerRow={headerRow} rows={val} />
       )}
       <Spacer height="24px" />

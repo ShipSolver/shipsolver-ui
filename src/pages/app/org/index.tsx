@@ -10,7 +10,7 @@ import Header from "./components/header";
 import Home from "./home";
 import { TicketFactory } from "./components/ticketFactory/ticketFactory";
 
-import { AllTicketsTable } from './components/allTicketsTable/allTicketsTable';
+import { AllTicketsTable } from './components/allTicketsTable';
 import { TicketDetails } from './components/ticketDetails/ticketDetails';
 
 import "./app.css";
