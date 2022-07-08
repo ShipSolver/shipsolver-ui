@@ -21,18 +21,14 @@ const delay = (time: number) => {
   });
 };
 
-type statusTicketMap = {
-  [key in TicketStatus]?: Ticket[]
+type TicketForStatusRes = {
+  count: number,
+  tickets: Ticket[]
 }
-
-const ticketsByStatusAsMap = ticketsByStatus as statusTicketMap
-
 export const fetchTicketsForStatus = (status: TicketStatus) => {
-  const mockServerTicketFetch = async () => {
-    await delay(250);
-    return ticketsByStatusAsMap[status] as Ticket[];
-  };
-  return mockServerTicketFetch();
+  return axios.get(`/api/ticket/status/${status}`, {params:{
+    limit: 10
+  }}) as Promise<TicketForStatusRes>
 };
 
 export const fetchOrgCurrentDelivery = () => {

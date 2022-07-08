@@ -78,31 +78,31 @@ function Home() {
         listSpecifications={[
           {
             title: "Unassigned Pickups",
-            entries: unassignedPickupTickets ?? [],
+            entries: unassignedPickupTickets?.tickets ?? [],
             entryRenderer: unassignedPickupEntryRenderer,
             menuRenderer: unassignedPickupMenu,
           },
           {
             title: "Requested Pickups",
-            entries: pickupRequestTickets ?? [],
+            entries: pickupRequestTickets?.tickets ?? [],
             entryRenderer: requestedPickupEntryRenderer,
             menuRenderer: requestedPickupMenu,
           },
           {
             title: "Inventory",
-            entries: inventoryTickets ?? [],
+            entries: inventoryTickets?.tickets ?? [],
             entryRenderer: inventoryEntryRenderer,
             menuRenderer: inventoryMenu,
           },
           {
             title: "Unassigned Pickups",
-            entries: assignedTickets ?? [],
+            entries: assignedTickets?.tickets ?? [],
             entryRenderer: assignedEntryRenderer,
             menuRenderer: assignedMenu,
           },
           {
             title: "Unassigned Pickups",
-            entries: inProgressTickets ?? [],
+            entries: inProgressTickets?.tickets ?? [],
             entryRenderer: inProgressEntryRenderer,
             menuRenderer: inProgressMenu,
           },

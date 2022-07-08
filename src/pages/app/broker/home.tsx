@@ -220,9 +220,13 @@ const Home = () => {
 
   const [viewAllPickup, setViewAllPickup] = useState<boolean>(false);
 
-  const { val: assigned } = useLoadable(fetchTicketsForStatus, "ASSIGNED");
-  const { val: completed } = useLoadable(fetchTicketsForStatus, "COMPLETE_DELIVERY");
-  const { val: pickup } = useLoadable(fetchTicketsForStatus, "REQUESTED_PICKUP");
+  const { val: assignedInfo } = useLoadable(fetchTicketsForStatus, "ASSIGNED");
+  const { val: completedInfo } = useLoadable(fetchTicketsForStatus, "COMPLETE_DELIVERY");
+  const { val: pickupInfo } = useLoadable(fetchTicketsForStatus, "REQUESTED_PICKUP");
+
+  const assigned = assignedInfo?.tickets
+  const completed = completedInfo?.tickets
+  const pickup = pickupInfo?.tickets
 
   const { val: currentTicket } = useLoadable(fetchOrgCurrentDelivery);
 
