@@ -15,8 +15,6 @@ import DialogTitle from "@mui/material/DialogTitle";
 
 import Loading from "../components/loading";
 import { SlideUp } from "../components/transitions";
-
-import { forgotPassword } from "../../services/authenticationServices";
 import { validateEmail } from "../../utils/regex";
 
 function ForgotPassword() {
@@ -30,11 +28,7 @@ function ForgotPassword() {
 
   const handleSubmit = async () => {
     if (validateEmail(email)) {
-      setLoading(true);
-      const { error } = await forgotPassword({ email });
-      setSuccess(!error);
-      setError(error);
-      setLoading(false);
+      console.log("TODO: forgot password API")
     } else {
       setError("Please enter a valid email");
     }

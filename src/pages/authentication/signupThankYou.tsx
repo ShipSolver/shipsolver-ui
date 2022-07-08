@@ -3,13 +3,12 @@ import React from "react";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import DraftsIcon from "@mui/icons-material/Drafts";
+import Check from "@mui/icons-material/Check";
 import Avatar from "@mui/material/Avatar";
-import { indigo } from "@mui/material/colors";
 
 import Link from "../components/plainLink";
 
-function SignupConfirmation() {
+function SignupTHankYou() {
   return (
     <Paper
       sx={{
@@ -22,17 +21,16 @@ function SignupConfirmation() {
       }}
     >
       <Typography sx={{ marginBottom: "32px" }} color="primary" variant="h2">
-        Check your email for a confirmation letter!
+        Thank you for signing up with ShipSolver!
       </Typography>
       <Avatar
         sx={{
           width: "64px",
           height: "64px",
           marginBottom: "32px",
-          bgcolor: indigo[500],
         }}
       >
-        <DraftsIcon />
+        <Check />
       </Avatar>
       <Link to="/authentication/login" style={{ width: "100%" }}>
         <Button fullWidth variant="contained" color="primary">
@@ -43,4 +41,4 @@ function SignupConfirmation() {
   );
 }
 
-export default SignupConfirmation;
+export default SignupTHankYou;

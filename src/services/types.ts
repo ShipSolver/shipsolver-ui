@@ -1,8 +1,8 @@
 export type User = {
-  NAME: string;
-  EMAIL: string;
-  PHONE?: string;
-  BROKER?: boolean;
+  name: string;
+  email: string;
+  phone: string;
+  type?: string;
 };
 
 export type Ticket = {
