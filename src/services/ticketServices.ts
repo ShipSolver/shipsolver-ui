@@ -1,8 +1,10 @@
 import axios from "axios";
+
 import { SERVER_URL } from "./constants";
 
+import ticketsByStatus from "../mockData/todaysTickets.json";
 import tickets from "../mockData/tickets.json";
-import { Ticket } from "./types";
+import { Ticket, TicketStatus } from "./types";
 import moment from "moment";
 import { DateFormat } from "../pages/app/org/components/allTicketsTable/components/filters/dateRangeFilter";
 
@@ -19,12 +21,14 @@ const delay = (time: number) => {
   });
 };
 
-export const fetchOrgTodayTickets = () => {
-  const mockServerTicketFetch = async () => {
-    await delay(250);
-    return tickets.tickets as Ticket[];
-  };
-  return mockServerTicketFetch();
+type TicketForStatusRes = {
+  count: number,
+  tickets: Ticket[]
+}
+export const fetchTicketsForStatus = (status: TicketStatus) => {
+  return axios.get(`/api/ticket/status/${status}`, {params:{
+    limit: 10
+  }}) as Promise<TicketForStatusRes>
 };
 
 export const fetchOrgCurrentDelivery = () => {
@@ -94,8 +98,6 @@ export const fetchTicket = async (ticketId: string) => {
       consigneePhoneNumber,
       consigneePostalCode,
     } = response.data;
-
-    console.log(response.data);
 
     const data: TicketInformationStateType = {
       firstParty: customer.name,

@@ -58,16 +58,12 @@ export const ReasonsPage = ({
     if (numSelected == 1) {
       for (const id in selected) {
         if (selected[id] === true) {
-          console.log(id);
         }
       }
     } else {
       alert("Please Select ONE Option");
     }
   };
-
-  console.log(selected);
-  console.log(numSelected);
 
   const reasonsList = useMemo(
     () =>

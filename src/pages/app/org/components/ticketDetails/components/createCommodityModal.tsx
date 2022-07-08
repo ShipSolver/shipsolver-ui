@@ -24,7 +24,6 @@ export const CreateCommodityModal = ({
   });
 
   const handleCreateCommodity = () => {
-    console.log(commodity);
     handleClose();
   };
 
