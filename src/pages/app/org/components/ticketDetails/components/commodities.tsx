@@ -10,7 +10,7 @@ export interface CommodityType {
 }
 
 interface CommoditiesProps {
-  commodities: CommodityType[];
+  commodities?: CommodityType[];
   isEditable: boolean;
 }
 
@@ -18,7 +18,7 @@ export const Commodities = ({ commodities, isEditable }: CommoditiesProps) => {
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const commoditiesCards = commodities.map(
+  const commoditiesCards = commodities?.map(
     (description) => (
       <div>
         <Typography>

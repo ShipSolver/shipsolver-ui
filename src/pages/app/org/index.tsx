@@ -8,7 +8,7 @@ import Copyright from "../../components/copyright";
 import Header from "./components/header";
 
 import Home from "./home";
-import TicketFactory from "./ticketFactory";
+import { TicketFactory } from "./components/ticketFactory/ticketFactory";
 
 import { AllTicketsTable } from './components/allTicketsTable/allTicketsTable';
 import { TicketDetails } from './components/ticketDetails/ticketDetails';

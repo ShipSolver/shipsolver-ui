@@ -8,7 +8,7 @@ import AddIcon from "@mui/icons-material/Add";
 
 interface EventHistoryProps {
   title?: string;
-  cardContents: React.ReactNode[];
+  cardContents?: React.ReactNode[];
   customHeight?: string;
   isEditable?: boolean;
   action?: () => void;
@@ -23,7 +23,7 @@ export const CardColumn = ({
 }: EventHistoryProps) => {
 
   const cards = useMemo(
-    () => cardContents.map((content) => <StyledCard>{content}</StyledCard>),
+    () => cardContents?.map((content) => <StyledCard>{content}</StyledCard>),
     [cardContents]
   );
 
