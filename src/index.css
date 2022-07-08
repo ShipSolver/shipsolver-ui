@@ -12,6 +12,8 @@
   --ss-brand-theme-color: rgb(197,220,250);
   --ss-entry-border-color: rgb(10,57,119);
   --ss-entry-border-width: 4px;
+  --ss-menu-text-color: #0A3977;
+  --ss-menu-box-width: 200px;
 }
 
 body {

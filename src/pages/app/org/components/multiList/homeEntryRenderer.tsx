@@ -7,6 +7,8 @@ import { Ticket } from "../../../../../services/types";
 import { fetchBroker } from "../../../../../services/brokerServices";
 import useLoadable from "../../../../../utils/useLoadable";
 
+import { toggleSelectionFn, IndexedEntry } from './index';
+
 import "./homeEntryRender.css"
 
 function pickEntrySubtitle (status: Ticket["STATUS"]) {
@@ -33,22 +35,21 @@ function pickEntrySubtitle (status: Ticket["STATUS"]) {
   }
 }
 
-export default function EntryRenderer(entry: Ticket): JSX.Element {
+export default function EntryRenderer(props :{entry: Ticket, toggleSelection: toggleSelectionFn, selected: boolean}): JSX.Element {
+  const {entry, toggleSelection, selected} = props
   const {
     val: broker,
     loading,
     error,
   } = useLoadable(fetchBroker, entry.CURRENT_ASSIGNED_USER_ID);
 
-  const [selected, setSelected] = React.useState(false);
-
-  function handleClicks () {
-    setSelected(current => !current);
+  const handleEntryClick = () => {
+    toggleSelection()
   }
 
   return (
     <Paper variant="outlined" className={`${selected ? "home-entry-renderer-paper-with-border" : "ss-ticket-renderer"}`}
-    onClick={handleClicks}
+    onClick={handleEntryClick}
     >
       <Typography variant="h6">{entry.CONSIGNEE.ADDRESS}</Typography>
       <Typography color="gray">
