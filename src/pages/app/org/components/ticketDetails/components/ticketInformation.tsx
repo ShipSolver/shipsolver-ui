@@ -85,8 +85,6 @@ export const TicketInformation = ({
     } else {
       setIsEditable(false);
     }
-
-    console.log(formData);
   };
 
   const handleChange = (

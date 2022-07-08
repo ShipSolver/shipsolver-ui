@@ -99,8 +99,6 @@ export const fetchTicket = async (ticketId: string) => {
       consigneePostalCode,
     } = response.data;
 
-    console.log(response.data);
-
     const data: TicketInformationStateType = {
       firstParty: customer.name,
       shipper: {

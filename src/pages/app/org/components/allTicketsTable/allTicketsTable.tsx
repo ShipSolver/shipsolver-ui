@@ -24,8 +24,6 @@ export const AllTicketsTable = () => {
   const { val, loading, error } = useLoadable(fetchAllTickets);
 
   const filterData = (key: Keys, value: string | Date[]) => {
-    console.log("key", key);
-    console.log("value", value);
   };
 
   useEffect(() => {
@@ -36,7 +34,7 @@ export const AllTicketsTable = () => {
 
   return (
     <Wrapper>
-      <TicketSearch handleSearchRequest={() => console.log("search")} />
+      <TicketSearch handleSearchRequest={() => null} />
       <Spacer height="24px" />
       {loading || val == null ? (
         <Loading />

@@ -91,8 +91,6 @@ function Lists<T>(props: MultiListProps<T>): JSX.Element {
     }))
   }, [setSelectedItems]) 
 
-  console.log(selectedItems)
-
   const pullSelectedEntries = function(selectedItems: AllSelectedItemsState, listID: ListID) {
     let array: EntryID[] = [];
 

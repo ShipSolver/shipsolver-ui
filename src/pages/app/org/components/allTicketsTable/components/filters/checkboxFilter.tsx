@@ -20,8 +20,6 @@ export const CheckboxFilter = ({
   const [checked, setChecked] = useState<string>(
     typeof savedFilterState === "string" ? savedFilterState : ""
   );
-
-  console.log(filterKey);
   return (
     <Container>
       {options.map((option) => (
