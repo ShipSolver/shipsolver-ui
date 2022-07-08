@@ -19,7 +19,7 @@ export type InventoryTicketStatus =
   "ticket_created" |
   "checked_into_inventory" |
   "incomplete_delivery" |
-  "complete_delivery" |
+  "completed_delivery" |
   "approve_pod"
   ;
 

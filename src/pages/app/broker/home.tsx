@@ -221,7 +221,7 @@ const Home = () => {
   const [viewAllPickup, setViewAllPickup] = useState<boolean>(false);
 
   const { val: assignedInfo } = useLoadable(fetchTicketsForStatus, "assigned");
-  const { val: completedInfo } = useLoadable(fetchTicketsForStatus, "complete_delivery");
+  const { val: completedInfo } = useLoadable(fetchTicketsForStatus, "completed_delivery");
   const { val: pickupInfo } = useLoadable(fetchTicketsForStatus, "requested_pickup");
 
   const assigned = assignedInfo?.tickets
@@ -334,7 +334,7 @@ const Home = () => {
             <Tickets
               viewAllTickets={viewAllCompleted}
               tickets={completed}
-              status="complete_delivery"
+              status="completed_delivery"
               setViewAllTickets={setViewAllCompleted}
               title="Completed"
               items={completed.length}

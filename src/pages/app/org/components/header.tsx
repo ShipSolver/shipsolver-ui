@@ -54,7 +54,6 @@ const Header = () => {
 
   const handleLogout = async () => {
     const {error} = await logout()
-    console.log({error})
     if(error === null){
       resetUser()
       navigate('/authentication')
