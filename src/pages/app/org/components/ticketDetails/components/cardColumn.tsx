@@ -21,7 +21,6 @@ export const CardColumn = ({
   isEditable,
   action
 }: EventHistoryProps) => {
-  console.log(cardContents);
 
   const cards = useMemo(
     () => cardContents.map((content) => <StyledCard>{content}</StyledCard>),

@@ -19,8 +19,8 @@ export const CreateCommodityModal = ({
 }: CreateCommodityModalProps) => {
   const [commodity, setCommodity] = useState<CommodityType>({
     description: "",
-    weight: "",
-    dimensions: "",
+    // weight: "",
+    // dimensions: "",
   });
 
   const handleCreateCommodity = () => {
@@ -56,7 +56,7 @@ export const CreateCommodityModal = ({
             onChange={(e) => handleChange("description", e.target.value)}
           />
         </InputContainer>
-        <InputContainer>
+        {/* <InputContainer>
           <InputLabel>Weight</InputLabel>
           <InputField
             size="small"
@@ -71,7 +71,7 @@ export const CreateCommodityModal = ({
             value={commodity.dimensions}
             onChange={(e) => handleChange("dimensions", e.target.value)}
           />
-        </InputContainer>
+        </InputContainer> */}
         <Spacer height="32px" />
 
         <Button

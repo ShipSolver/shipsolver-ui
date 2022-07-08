@@ -1,13 +1,10 @@
 import React from "react";
 import { styled } from "@mui/material/styles";
-import {
-  Typography,
-  Grid
-} from "@mui/material";
+import { Typography, Grid } from "@mui/material";
 import Brand from "../../../../../ShipSolverBrand";
 import { Spacer } from "../../../../components/spacer";
-import { useParams } from 'react-router-dom';
-
+import { useParams } from "react-router-dom";
+import { fetchTicket } from "../../../../../services/ticketServices";
 import {
   TitlePaper,
   CommodityType,
@@ -20,8 +17,9 @@ import {
   EventHistoryType,
   TicketInformation,
   TicketInformationStateType,
-  FormWrap
+  FormWrap,
 } from "./components";
+import useLoadable from "../../../../../utils/useLoadable";
 
 import {
   TestEventHistory,
@@ -29,12 +27,24 @@ import {
   TestMilestones,
   TestCommodities,
 } from "./test/testData";
+import Loading from "../../../../components/loading";
 
 export const TicketDetails = () => {
-
   let { ticketId } = useParams();
 
-  console.log("ticketId: ", ticketId);
+  const {
+    val: ticketInfo,
+    loading,
+    error,
+  } = useLoadable(fetchTicket, ticketId ?? "");
+
+  if (loading || ticketInfo == null) {
+    return (
+      <Container>
+        <Loading />
+      </Container>
+    );
+  }
 
   return (
     <Container>
@@ -46,7 +56,10 @@ export const TicketDetails = () => {
                 Ticket Information
               </Typography>
             </TitlePaper>
-            <TicketInformation data={TestTicketInformation} commodities={TestCommodities} />
+            <TicketInformation
+              data={ticketInfo[0]}
+              commodities={ticketInfo[1]}
+            />
             <Spacer height="18px" />
             <Grid container spacing={6}>
               <Grid item xs={4}>
