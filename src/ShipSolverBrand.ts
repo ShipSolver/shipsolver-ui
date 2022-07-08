@@ -5,10 +5,14 @@ const theme = createTheme();
 const ShipSolverBrand = createTheme({
   palette: {
     primary: {
-      main: blue[800],
+      main: "#435C7C",
+      light: "#C5DCFA",
+      //contrastText: "#000",
+      //#42A5F5
     },
     secondary: {
-      main: indigo[500],
+      main: "#CBDFEB",
+      light: "#FFFFFFA1",
     },
   },
   components: {
