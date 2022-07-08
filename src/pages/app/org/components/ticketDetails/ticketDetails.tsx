@@ -20,6 +20,8 @@ import {
   FormWrap,
 } from "./components";
 import useLoadable from "../../../../../utils/useLoadable";
+import { useSetRecoilState } from "recoil";
+import { commoditiesAtom } from "./state/commodityState";
 
 import {
   TestEventHistory,
@@ -30,6 +32,7 @@ import {
 import Loading from "../../../../components/loading";
 
 export const TicketDetails = () => {
+  const setCommodities = useSetRecoilState(commoditiesAtom);
   let { ticketId } = useParams();
 
   const {
@@ -46,6 +49,8 @@ export const TicketDetails = () => {
     );
   }
 
+  setCommodities(ticketInfo[1]);
+
   return (
     <Container>
       <Grid container spacing={4} columns={24}>
@@ -58,7 +63,6 @@ export const TicketDetails = () => {
             </TitlePaper>
             <TicketInformation
               data={ticketInfo[0]}
-              commodities={ticketInfo[1]}
             />
             <Spacer height="18px" />
             <Grid container spacing={6}>

@@ -9,7 +9,10 @@ import moment from "moment";
 import { DateFormat } from "../pages/app/org/components/allTicketsTable/components/filters/dateRangeFilter";
 
 import { AllTicketsTableRows } from "../pages/app/org/components/allTicketsTable";
-import { TicketInformationStateType } from "../pages/app/org/components/ticketDetails/components/ticketInformation";
+import {
+  TicketInformationStateType,
+  TicketType,
+} from "../pages/app/org/components/ticketDetails/components/ticketInformation";
 
 axios.defaults.baseURL = SERVER_URL;
 
@@ -22,13 +25,15 @@ const delay = (time: number) => {
 };
 
 type TicketForStatusRes = {
-  count: number,
-  tickets: Ticket[]
-}
+  count: number;
+  tickets: Ticket[];
+};
 export const fetchTicketsForStatus = (status: TicketStatus) => {
-  return axios.get(`/api/ticket/status/${status}`, {params:{
-    limit: 10
-  }}) as Promise<TicketForStatusRes>
+  return axios.get(`/api/ticket/status/${status}`, {
+    params: {
+      limit: 10,
+    },
+  }) as Promise<TicketForStatusRes>;
 };
 
 export const fetchOrgCurrentDelivery = () => {
@@ -127,7 +132,9 @@ export const fetchTicket = async (ticketId: string) => {
       enterIntoInventory: true,
     };
 
-    const commodities = response.data.pieces.split(",");
+    const commodities = response.data.pieces
+      .split(",")
+      .map((commodity: string) => ({ description: commodity }));
 
     return [data, commodities];
   } catch (e) {
@@ -141,5 +148,51 @@ export const fetchMilestones = async (ticketId: string) => {
     const response: any = await axios.get(`/api/milestones/${ticketId}`, {
       withCredentials: false,
     });
-  } catch (e) {}
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
+};
+
+export const createTicket = async ({
+  shipper,
+  shipmentDetails,
+  consignee,
+  pieces,
+  firstParty,
+}: TicketType) => {
+  const payload = JSON.stringify({
+    customer: {
+      name: firstParty,
+    },
+    shipperCompany: shipper.company,
+    shipperName: shipper.name,
+    shipperAddress: shipper.address,
+    shipperPhoneNumber: shipper.phoneNum,
+    shipperPostalCode: shipper.postalCode,
+    BOLNumber: shipmentDetails.bolNum,
+    specialInstructions: shipmentDetails.specialInst,
+    weight: shipmentDetails.weight,
+    claimedNumberOfPieces: shipmentDetails.numPieces,
+    pieces,
+    barcodeNumber: shipmentDetails.barcode,
+    houseReferenceNumber: shipmentDetails.refNum,
+    consigneeCompany: consignee.company,
+    consigneeName: consignee.name,
+    consigneeAddress: consignee.address,
+    consigneePhoneNumber: consignee.phoneNum,
+    consigneePostalCode: consignee.postalCode,
+  });
+
+  console.log("PAYLOAD", payload);
+
+  try {
+    const response: any = await axios.post(`/api/ticket/`, {
+      withCredentials: false,
+      data: payload,
+    });
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
 };
