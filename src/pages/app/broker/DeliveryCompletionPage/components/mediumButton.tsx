@@ -3,6 +3,7 @@ import { styled } from "@mui/material/styles";
 
 const MediumButton = styled(Button)(({ theme }) => ({
   width: "55vw",
+  height: '45px',
   padding: 10,
   marginTop: 10,
   fontSize: "1.25rem",

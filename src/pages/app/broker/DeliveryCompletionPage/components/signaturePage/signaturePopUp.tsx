@@ -44,7 +44,7 @@ export const SignaturePopUp = ({
         border: "2px solid #000",
         boxShadow: 24,
         paddingBottom: 10,
-        paddingTop: 5,
+        paddingTop: 2,
       }}
     >
       <div
@@ -63,7 +63,7 @@ export const SignaturePopUp = ({
         style={{
           backgroundColor: "#FFF",
           marginTop: 30,
-          margin: 20,
+          margin: 5,
           padding: 35,
           paddingBottom: 25,
           paddingLeft: 50,

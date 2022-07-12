@@ -32,7 +32,7 @@ export const FileUpload = ({ signFiles, setSignFiles, removeFile, name, modal, s
 
     return (
         <>
-        <Box textAlign="center" sx={{ paddingBottom: 1 }}>
+        <Box textAlign="center">
             <MediumButton onClick={uploadHandler} variant="contained">Submit</MediumButton>
         </Box>
         </>
