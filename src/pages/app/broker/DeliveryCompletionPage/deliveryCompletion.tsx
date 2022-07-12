@@ -23,7 +23,7 @@ export type pictureFile = {
   imgSrc: string
 }
 
-function DeliveryCompletion() {
+export function DeliveryCompletion() {
   const [podFiles, setPoDFiles] = useState<Array<files>>([
     {
       name: 'POD-Rahul-2022-02-18-15-41-54.jpg'
@@ -111,4 +111,3 @@ function DeliveryCompletion() {
   )
 }
 
-export default DeliveryCompletion
