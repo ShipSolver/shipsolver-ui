@@ -11,10 +11,15 @@ import { useNavigate } from "react-router-dom";
 import Loading from "../components/loading";
 import { validateEmail } from "../../utils/regex";
 import { signup } from "../../services/authenticationServices";
-import { useRecoilState } from "recoil";
-import { ErrorAtom } from "../../state/authentication";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { ErrorAtom, UnconfirmedUsernameAtom } from "../../state/authentication";
 
 function Signup() {
+  const setUnconfirmedUsername = useSetRecoilState(UnconfirmedUsernameAtom)
+  const setError = useSetRecoilState(ErrorAtom);
+
+  const [loading, setLoading] = useState<boolean>(false);
+  
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
@@ -28,9 +33,6 @@ function Signup() {
   const [passwordHelp, setPasswordHelp] = useState<string>("");
   const [invalidForm, setInvalidForm] = useState<string | null>(null);
 
-  const [error, setError] = useRecoilState(ErrorAtom);
-  const [loading, setLoading] = useState<boolean>(false);
-
   const navigate = useNavigate();
 
   const handleSignup = async () => {
@@ -41,15 +43,18 @@ function Signup() {
     if (validEmail && passwordMatch && passwordStrength && phoneExists) {
       setInvalidForm(null);
       setLoading(true);
-      const { error: e } = await signup({
+      const { error: err } = await signup({
         name: firstName + " " + lastName,
         email,
         password,
-        phone,
+        phone: "+1" + phone.replaceAll("-", ""),
       });
-      setError(e);
+      setError(err);
       setLoading(false);
-      if (!e) navigate("/authentication/signup-confirmation");
+      if (err == null){
+        setUnconfirmedUsername(email)
+        navigate("/authentication/signup-code-confirmation")
+      };
     } else {
       if (!passwordMatch) {
         setPasswordHelp("Passwords do not match");
@@ -72,7 +77,6 @@ function Signup() {
       {invalidForm !== null ? (
         <Alert severity="error">{invalidForm}</Alert>
       ) : null}
-      {error != "" ? <Alert severity="error">{error}</Alert> : null}
       <Typography component="h1" variant="h2" color="primary" align="center">
         <b>Sign up as a user</b>
       </Typography>

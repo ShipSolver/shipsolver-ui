@@ -1,11 +1,13 @@
 import Home from "../home";
 
-import  DeliveryCompletion  from "../DeliveryCompletionPage/deliveryCompletion";
+import { DeliveryCompletion } from "../deliveryCompletion";
+import { IncompleteDelivery } from "../incompleteDelivery";
 
 import React from "react";
 
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import StoryBookThemeProvider from "../../../../tests/storybookThemeProvider";
+import StoryBookThemeProvider from "../../../../utils/storybookThemeProvider";
+import { IncompleteDeliveryReasons } from "../incompleteDelivery";
 
 export default {
   title: "Home",
@@ -23,5 +25,13 @@ export const DeliveryCompletionStory: ComponentStory<
 > = () => (
   <StoryBookThemeProvider>
     <DeliveryCompletion />
+  </StoryBookThemeProvider>
+);
+
+export const IncompleteDeliveryStory: ComponentStory<
+  typeof IncompleteDelivery
+> = () => (
+  <StoryBookThemeProvider>
+    <IncompleteDelivery reasons={IncompleteDeliveryReasons} />
   </StoryBookThemeProvider>
 );

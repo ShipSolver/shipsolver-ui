@@ -1,8 +1,10 @@
 .multi-list-all-lists-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   grid-gap: 1rem;
   gap: 1rem;
+  border-radius: 15px;
+  background-color: #CBDFEB !important;
 }
 
 .multi-list-list {
@@ -11,6 +13,8 @@
   flex-grow: initial;
   max-height: 50vh;
   overflow-y: auto;
+  border-radius: 15px;
+  background-color: #ECF3F8;
 }
 
 .multi-list-header {

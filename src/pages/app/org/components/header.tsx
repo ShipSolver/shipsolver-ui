@@ -12,10 +12,16 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 
-const pages = ["Home"];
-const settings = ["Settings", "Logout"];
+import { logout } from "../../../../services/authenticationServices";
+import { useResetRecoilState } from "recoil";
+import { AuthenticatedUsernameAtom } from "../../../../state/authentication";
+import Link from "@mui/material/Link";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
+  const resetUser = useResetRecoilState(AuthenticatedUsernameAtom)
+  const navigate = useNavigate()
+
   const [anchorElNav, setAnchorElNav] = React.useState<
     (EventTarget & HTMLButtonElement) | null
   >(null);
@@ -42,6 +48,18 @@ const Header = () => {
     setAnchorElUser(null);
   };
 
+  const goHome = () => {
+    navigate('/')
+  }
+
+  const handleLogout = async () => {
+    const {error} = await logout()
+    if(error === null){
+      resetUser()
+      navigate('/authentication')
+    }
+  }
+
   return (
     <AppBar position="static" color="transparent">
       <Container maxWidth="xl">
@@ -51,10 +69,10 @@ const Header = () => {
             noWrap
             component="div"
             sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
+            onClick={goHome}
           >
             <strong>LOGO</strong>
           </Typography>
-
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
@@ -84,13 +102,11 @@ const Header = () => {
                 display: { xs: "block", md: "none" },
               }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                <MenuItem onClick={goHome}>
                   <Typography variant="h5" textAlign="center">
-                    {page}
+                    Home
                   </Typography>
                 </MenuItem>
-              ))}
             </Menu>
           </Box>
           <Typography
@@ -98,20 +114,18 @@ const Header = () => {
             noWrap
             component="div"
             sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}
+            onClick={goHome}
           >
             LOGO
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
               <Button
-                key={page}
-                onClick={handleCloseNavMenu}
+                onClick={goHome}
                 sx={{ my: 2, display: "block" }}
                 color="inherit"
               >
-                {page}
+                Home
               </Button>
-            ))}
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
@@ -136,11 +150,9 @@ const Header = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+                <MenuItem onClick={handleLogout}>
+                  <Typography textAlign="center">Logout</Typography>
                 </MenuItem>
-              ))}
             </Menu>
           </Box>
         </Toolbar>

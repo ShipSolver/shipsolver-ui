@@ -3,41 +3,45 @@ import React, { useMemo, useState } from "react";
 import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
 
 import OuterBlueDivBox from "./components/outerBlueDivBox";
 import InnerBlueDivBox from "./components/innerBlueDivBox";
 import InnerWhiteDivBox from "./components/innerWhiteDivBox";
-import LargeButton from "./components/largeButton";
+import ModalContainer from "./components/modalContainer";
+import { LargeButton } from "./components/largeButton";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 
 import {
-  fetchOrgTodayTickets,
+  fetchTicketsForStatus,
   fetchOrgCurrentDelivery,
 } from "../../../services/ticketServices";
 
-import { Ticket } from "../../../services/types";
+import { Ticket, TicketStatus } from "../../../services/types";
 
 import useLoadable from "../../../utils/useLoadable";
 
 import { styled } from "@mui/material/styles";
 import { CompletionPopUp } from "./components/completionPopUp";
+import { useNavigate } from "react-router-dom";
 
 const Tickets = ({
   viewAllTickets,
   tickets,
+  status,
   setViewAllTickets,
   title,
   items,
 }: {
   viewAllTickets: boolean;
   tickets: Ticket[] | null;
+  status: TicketStatus;
   setViewAllTickets: React.Dispatch<React.SetStateAction<boolean>>;
   title: string;
   items: number;
 }) => {
+  const navigate = useNavigate();
   const [openTicketModal, setOpenTicketModal] = useState<boolean>(false);
 
   const handleTicketModalOpen = () => setOpenTicketModal(true);
@@ -47,20 +51,20 @@ const Tickets = ({
   const handleViewAllClose = () => setViewAllTickets(false);
 
   const TicketPopUpContent = (ticket: Ticket) => {
-    const timestamp = Number(ticket.APPOINTMENT_TIME);
+    const timestamp = Number(ticket.timestamp);
     const date = new Date(timestamp);
     return (
       <>
         <Typography variant="h3" align="center">
-          <b>{ticket.CONSIGNEE.ADDRESS}</b>
+          <b>{ticket.consigneeAddress}</b>
         </Typography>
         <Typography variant="h3" align="center">
-          REF#: {ticket.HOUSE_REF}
+          REF#: {String(ticket.houseReferenceNumber)}
         </Typography>
         <InnerBlueDivBox>
-          <Typography color="#00000099">Weight: {ticket.WEIGHT}</Typography>
+          <Typography color="#00000099">Weight: {String(ticket.weight)}</Typography>
           <Typography color="#00000099">
-            First Party: {ticket.FIRST_PARTY}
+            First Party: {ticket.customer}
           </Typography>
           <Typography color="#00000099">
             Date/Time Assigned:{" "}
@@ -79,6 +83,56 @@ const Tickets = ({
     );
   };
 
+  const PickupModal = (ticket: Ticket) => {
+    const timestamp = Number(ticket.timestamp);
+    const date = new Date(timestamp);
+    return (
+      <>
+        <Typography variant="h2" align="center" padding="40px">
+          Accept Pickup?
+        </Typography>
+
+        <InnerWhiteDivBox style={{ padding: 25, marginBottom: 30 }}>
+          <Typography variant="h4" marginBottom="5px">
+            <b>{ticket.consigneeAddress}</b>
+          </Typography>
+          <Typography color="#00000099">Weight: {String(ticket.weight)}</Typography>
+          <Typography color="#00000099">REF#: {String(ticket.houseReferenceNumber)}</Typography>
+          <Typography color="#00000099">
+            First Party: {ticket.customer}
+          </Typography>
+          <Typography color="#00000099">
+            Date/Time Assigned:{" "}
+            {date.toLocaleString("en-CA", {
+              month: "long",
+              day: "numeric",
+              year: "numeric",
+            })}{" "}
+            {date.toLocaleTimeString("en-CA", {
+              hour: "numeric",
+              minute: "2-digit",
+            })}
+            <Typography color="#00000099">Barcode: {String(ticket.barcodeNumber)}</Typography>
+          </Typography>
+        </InnerWhiteDivBox>
+        <LargeButton label="Accept" action={() => alert("action")} />
+        <LargeButton
+          label="Decline"
+          action={() => navigate("/decline-pickup")}
+        />
+        <LargeButton label="Go Back" action={() => handleTicketModalClose()} />
+      </>
+    );
+  };
+
+  const isPickupStatus = 
+    status === "unassigned_pickup" || 
+    status === "requested_pickup" ||
+    status === "accepted_pickup" ||
+    status === "declined_pickup" ||
+    status === "complete_pickup" ||
+    status === "incomplete_pickup"
+
   var tempTickets = [];
   if (tickets != null) {
     if (tickets.length < 2) {
@@ -87,42 +141,39 @@ const Tickets = ({
       tempTickets[0] = tickets[0];
       tempTickets[1] = tickets[1];
     }
-    const reducedTicketsInfo = tempTickets.map((tickets) => (
+
+    const reducedTicketsInfo = tempTickets.map((ticket) => (
       <>
         <TicketCard onClick={handleTicketModalOpen}>
-          <Typography variant="h5">
-            <b>{tickets.CONSIGNEE.ADDRESS}</b>
+        <Typography variant="h4" marginBottom="5px">
+            <b>{ticket.consigneeAddress}</b>
           </Typography>
-          <Typography>REF#: {tickets.HOUSE_REF}</Typography>
+          <Typography>REF#: {String(ticket.houseReferenceNumber)}</Typography>
         </TicketCard>
-
-        <Modal open={openTicketModal} onClose={handleTicketModalClose}>
-          <Fade in={openTicketModal}>
-            <OuterBlueDivBox
-              sx={{
-                position: "relative",
-                top: "50%",
-                left: "50%",
-                transform: "translate(-50%, -50%)",
-                width: "93vw",
-                border: "2px solid #000",
-                boxShadow: 24,
-              }}
-            >
-              {TicketPopUpContent(tickets)}
-            </OuterBlueDivBox>
-          </Fade>
-        </Modal>
+        {(isPickupStatus) && (
+          <Modal open={openTicketModal} onClose={handleTicketModalClose}>
+            <ModalContainer style={{ paddingBottom: 10 }}>
+              {PickupModal(ticket)}
+            </ModalContainer>
+          </Modal>
+        )}
+        {!isPickupStatus && (
+          <Modal open={openTicketModal} onClose={handleTicketModalClose}>
+            <Fade in={openTicketModal}>
+              <ModalContainer>{TicketPopUpContent(ticket)}</ModalContainer>
+            </Fade>
+          </Modal>
+        )}
       </>
     ));
 
-    const ticketsInfo = tickets.map((tickets) => (
+    const ticketsInfo = tickets.map((ticket) => (
       <>
         <TicketCard onClick={handleTicketModalOpen}>
           <Typography variant="h5">
-            <b>{tickets.CONSIGNEE.ADDRESS}</b>
+            <b>{ticket.consigneeAddress}</b>
           </Typography>
-          <Typography>REF#: {tickets.HOUSE_REF}</Typography>
+          <Typography>REF#: {String(ticket.houseReferenceNumber)}</Typography>
         </TicketCard>
       </>
     ));
@@ -138,17 +189,7 @@ const Tickets = ({
           View All
         </Button>
         <Modal open={viewAllTickets} onClose={handleViewAllClose}>
-          <OuterBlueDivBox
-            sx={{
-              position: "relative",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              width: "95vw",
-              border: "2px solid #000",
-              boxShadow: 24,
-            }}
-          >
+          <ModalContainer style={{ maxHeight: "90vh" }}>
             <Grid container justifyContent="space-between">
               <Typography variant="h2" alignContent="left">
                 {title}
@@ -158,7 +199,7 @@ const Tickets = ({
               </Typography>
             </Grid>
             <InnerBlueDivBox>{ticketsInfo}</InnerBlueDivBox>
-          </OuterBlueDivBox>
+          </ModalContainer>
         </Modal>
       </>
     );
@@ -168,13 +209,21 @@ const Tickets = ({
 };
 
 const Home = () => {
+  console.log('here')
+  const navigate = useNavigate();
   const [viewAllAssigned, setViewAllAssigned] = useState<boolean>(false);
 
   const [viewAllCompleted, setViewAllCompleted] = useState<boolean>(false);
 
   const [viewAllPickup, setViewAllPickup] = useState<boolean>(false);
 
-  const { val: tickets } = useLoadable(fetchOrgTodayTickets);
+  const { val: assignedInfo } = useLoadable(fetchTicketsForStatus, "assigned");
+  const { val: completedInfo } = useLoadable(fetchTicketsForStatus, "completed_delivery");
+  const { val: pickupInfo } = useLoadable(fetchTicketsForStatus, "requested_pickup");
+
+  const assigned = assignedInfo?.tickets
+  const completed = completedInfo?.tickets
+  const pickup = pickupInfo?.tickets
 
   const { val: currentTicket } = useLoadable(fetchOrgCurrentDelivery);
 
@@ -183,43 +232,33 @@ const Home = () => {
   const handleCloseDeliveryOpen = () => setCloseDelivery(true);
   const handleCloseDeliveryClose = () => setCloseDelivery(false);
 
-  const assigned = useMemo(
-    () => tickets && tickets.filter((ticket) => ticket.STATUS === "ASSIGNED"),
-    [tickets]
-  );
-
-  const completed = useMemo(
-    () => tickets && tickets.filter((ticket) => ticket.STATUS === "DELIVERED"),
-    [tickets]
-  );
-
-  const pickup = useMemo(
-    () => tickets && tickets.filter((ticket) => ticket.STATUS === "PICKUP"),
-    [tickets]
-  );
+  const handleCompleteShift = () => {
+    if (assigned != null) {
+      if (assigned.length > 0) {
+        navigate("shift-complete");
+      } else {
+        alert("nice");
+      }
+    }
+  };
 
   const currentDelivery = () => {
     if (currentTicket != null) {
-      const timestamp = Number(currentTicket.APPOINTMENT_TIME);
+      const timestamp = Number(currentTicket.timestamp);
       const date = new Date(timestamp);
       return (
         <>
           <Typography marginBottom="5px">
-            {currentTicket.CONSIGNEE.CITY.toUpperCase()}{" "}
-            {currentTicket.CONSIGNEE.PROVINCE.toUpperCase()}{" "}
-            {currentTicket.CONSIGNEE.POSTAL_CODE.toUpperCase()}
-          </Typography>
-          <Typography variant="h4" marginBottom="5px">
-            <b>{currentTicket.CONSIGNEE.ADDRESS}</b>
+            {currentTicket.consigneeAddress}
           </Typography>
           <Typography color="#00000099">
-            Weight: {currentTicket.WEIGHT}
+            Weight: {currentTicket.weight}
           </Typography>
           <Typography color="#00000099">
-            REF#: {currentTicket.HOUSE_REF}
+            REF#: {currentTicket.houseReferenceNumber}
           </Typography>
           <Typography color="#00000099">
-            First Party: {currentTicket.FIRST_PARTY}
+            First Party: {currentTicket.customer}
           </Typography>
           <Typography color="#00000099">
             Date/Time Assigned:{" "}
@@ -233,19 +272,22 @@ const Home = () => {
               minute: "2-digit",
             })}
           </Typography>
-          <Box textAlign="center" onClick={handleCloseDeliveryOpen}>
-            <LargeButton variant="contained">Close Delivery</LargeButton>
-          </Box>
+          <LargeButton
+            label="Close Delivery"
+            action={() => handleCloseDeliveryOpen()}
+          />
           <Modal open={closeDelivery} onClose={handleCloseDeliveryClose}>
             <CompletionPopUp
               modal={closeDelivery}
               setModal={setCloseDelivery}
-            ></CompletionPopUp>
+            />
           </Modal>
         </>
       );
     }
   };
+
+  console.log('now here')
 
   if (assigned != null && completed != null && pickup != null) {
     return (
@@ -272,6 +314,7 @@ const Home = () => {
             <Tickets
               viewAllTickets={viewAllAssigned}
               tickets={assigned}
+              status="assigned"
               setViewAllTickets={setViewAllAssigned}
               title="Assigned"
               items={assigned.length}
@@ -290,6 +333,7 @@ const Home = () => {
             <Tickets
               viewAllTickets={viewAllCompleted}
               tickets={completed}
+              status="completed_delivery"
               setViewAllTickets={setViewAllCompleted}
               title="Completed"
               items={completed.length}
@@ -308,15 +352,18 @@ const Home = () => {
             <Tickets
               viewAllTickets={viewAllPickup}
               tickets={pickup}
+              status="requested_pickup"
               setViewAllTickets={setViewAllPickup}
               title="Requested Pickups"
               items={pickup.length}
             ></Tickets>
           </InnerBlueDivBox>
         </OuterBlueDivBox>
-        <Box textAlign="center">
-          <LargeButton variant="contained">Complete Shift</LargeButton>
-        </Box>
+
+        <LargeButton
+          label="Complete Shift"
+          action={() => handleCompleteShift()}
+        />
       </div>
     );
   } else {
@@ -325,13 +372,6 @@ const Home = () => {
 };
 
 export default Home;
-
-const CurrentDeliveryInnerContainer = styled("div")(({ theme }) => ({
-  borderRadius: "var(--ss-brand-border-radius)",
-  backgroundColor: "#FFF",
-  margin: 10,
-  padding: 25,
-}));
 
 const TicketCard = styled(Card)({
   padding: 10,

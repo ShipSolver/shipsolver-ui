@@ -8,7 +8,10 @@ import Copyright from "../../components/copyright";
 import Header from "./components/header";
 
 import Home from "./home";
-import TicketFactory from "./ticketFactory";
+import { TicketFactory } from "./components/ticketFactory/ticketFactory";
+
+import { AllTicketsTable } from './components/allTicketsTable';
+import { TicketDetails } from './components/ticketDetails/ticketDetails';
 
 import "./app.css";
 
@@ -16,10 +19,12 @@ function AppRouter() {
   return (
     <>
       <Header />
-      <Container component="main" maxWidth="lg">
+      <Container component="main" maxWidth="xl">
         <Routes>
           <Route index element={<Home />} />
           <Route path="ticket-factory" element={<TicketFactory />} />
+          <Route path="all-tickets" element={<AllTicketsTable/>}/>
+          <Route path="ticket-details/:ticketId" element={<TicketDetails />} />
         </Routes>
         <Box mt={4}>
           <Copyright />
