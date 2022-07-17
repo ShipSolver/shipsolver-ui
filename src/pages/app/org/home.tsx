@@ -9,15 +9,15 @@ import {
   requestedPickupEntryRenderer,
   inventoryEntryRenderer,
   assignedEntryRenderer,
-  inProgressEntryRenderer
+  inProgressEntryRenderer,
 } from "./components/multiList/entryRenderers";
-import { 
+import {
   unassignedPickupMenu,
   requestedPickupMenu,
   inventoryMenu,
   assignedMenu,
-  inProgressMenu
- } from './components/multiList/menus'
+  inProgressMenu,
+} from "./components/multiList/menus";
 import useLoadable from "../../../utils/useLoadable";
 import { styled } from "@mui/material/styles";
 
@@ -56,15 +56,15 @@ function Home() {
     error: inProgressTicketsError,
   } = useLoadable(fetchTicketsForStatus, "in_transit");
 
-  const ticketsLoading = 
+  const ticketsLoading =
     unassignedPickupTicketsLoading ||
     pickupRequestTicketsLoading ||
     inventoryTicketsLoading ||
     assignedTicketsLoading ||
     inProgressTicketsLoading;
 
-  const ticketsError = 
-    unassignedPickupTicketsError || 
+  const ticketsError =
+    unassignedPickupTicketsError ||
     pickupRequestTicketsError ||
     inventoryTicketsError ||
     assignedTicketsError ||
@@ -108,8 +108,8 @@ function Home() {
           },
         ]}
       />
-      <FlexDiv>
-      <Button variant="contained" onClick={() => navigate("/pod-review")}>
+      <div className="ss-flexbox" style={{ justifyContent: "space-between" }}>
+        <Button variant="contained" onClick={() => navigate("/pod-review")}>
           Review PODs
         </Button>
         <Button variant="contained" onClick={() => {}}>
@@ -121,15 +121,9 @@ function Home() {
         <Button variant="contained" onClick={() => navigate("/ticket-factory")}>
           Create Tickets
         </Button>
-
-      </FlexDiv>
+      </div>
     </div>
   );
 }
 
 export default Home;
-
-const FlexDiv = styled("div")`
-  display: flex;
-  justify-content: space-between;
-`

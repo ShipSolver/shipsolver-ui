@@ -1,13 +1,13 @@
-.menu-text-typography{
-    color: var(--ss-menu-text-color);
+.menu-text-typography {
+  color: var(--ss-menu-text-color);
 }
 
-.menu-container{
-    width: var(--ss-menu-box-width);
-    background-color: white;
-    z-index: 2;
-    position: fixed;
-    box-shadow: var(--ss-brand-box-shadow);
-    border-radius: var(--ss-brand-border-radius);
-    top: 625px;
+.menu-container {
+  width: var(--ss-menu-box-width);
+  background-color: white;
+  z-index: 2;
+  position: fixed;
+  box-shadow: var(--ss-brand-box-shadow);
+  border-radius: var(--ss-brand-border-radius);
+  margin-top: var(--ss-brand-spacing);
 }

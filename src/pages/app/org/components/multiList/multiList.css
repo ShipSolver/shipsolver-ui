@@ -4,7 +4,7 @@
   grid-gap: 1rem;
   gap: 1rem;
   border-radius: 15px;
-  background-color: #CBDFEB !important;
+  background-color: #cbdfeb !important;
 }
 
 .multi-list-list {
@@ -14,7 +14,7 @@
   max-height: 50vh;
   overflow-y: auto;
   border-radius: 15px;
-  background-color: #ECF3F8;
+  background-color: #ecf3f8;
 }
 
 .multi-list-header {
