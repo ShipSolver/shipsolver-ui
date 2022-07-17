@@ -12,8 +12,8 @@ import { Typography } from "@mui/material";
 import "./menu.css"
 
 export default function Menu(
-  {selectedListEntries, isMultiSelected, entries} : 
-  {selectedListEntries: EntryID[], isMultiSelected: boolean, entries: IndexedEntry<Ticket>[]}
+  {selectedListEntries, entries} : 
+  {selectedListEntries: EntryID[], entries: IndexedEntry<Ticket>[]}
 ): JSX.Element {
   return (
     <Box className="menu-container">

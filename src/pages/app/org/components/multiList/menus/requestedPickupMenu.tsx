@@ -13,7 +13,16 @@ import { Typography } from "@mui/material";
 
 import "./menu.css"
 
-export default function Menu({selectedListEntries, isMultiSelected, entries}:{selectedListEntries: EntryID[], isMultiSelected: boolean, entries: IndexedEntry<Ticket>[]}): JSX.Element {
+export default function Menu({
+    selectedListEntries,
+    entries
+}:{
+    selectedListEntries: EntryID[], 
+    entries: IndexedEntry<Ticket>[]
+}): JSX.Element {
+    const isMultiSelected = selectedListEntries.length > 1
+
+
     let brokerID = String(entries.find(entry => entry.ID == selectedListEntries[0])?.entry.userId) ?? ''
     const {
       val: broker,

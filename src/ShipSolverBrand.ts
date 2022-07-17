@@ -1,5 +1,4 @@
 import { createTheme } from "@mui/material/styles";
-import { blue, indigo } from "@mui/material/colors";
 
 const theme = createTheme();
 const ShipSolverBrand = createTheme({
@@ -7,8 +6,6 @@ const ShipSolverBrand = createTheme({
     primary: {
       main: "#435C7C",
       light: "#C5DCFA",
-      //contrastText: "#000",
-      //#42A5F5
     },
     secondary: {
       main: "#CBDFEB",

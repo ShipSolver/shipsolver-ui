@@ -5,6 +5,8 @@ import Typography from "@mui/material/Typography";
 import Paper from "../../../../components/roundedPaper";
 
 import "./multiList.css";
+import Loading from "../../../../components/loading";
+import FlexBox from "../../../../components/flexBox";
 
 export type toggleSelectionFn = () => void;
 
@@ -14,11 +16,8 @@ type entryRendererFn<T> = (props: {
   selected: boolean
 }) => JSX.Element;
 
-
-
 type menuRendererFn<T> = (props: {
   selectedListEntries: EntryID[],
-  isMultiSelected: boolean,
   entries: IndexedEntry<T>[]; 
 }) => JSX.Element;
 
@@ -49,8 +48,6 @@ type IndexedList<T> = {
   entryRenderer: entryRendererFn<T>;
   menuRenderer: menuRendererFn<T>;
 };
-
-type ID = string;
 
 export type EntryID = string; // this string will look like ListID_EntryIndexInList
 
@@ -108,34 +105,52 @@ function Lists<T>(props: MultiListProps<T>): JSX.Element {
 
   return (
     <Paper className="multi-list-all-lists-container">
-      {indexedListSpecifications.map(({ title, listID, entries, entryRenderer, menuRenderer }, indexOuterLoop) => {
-         const EntryRenderer = entryRenderer
-         const MenuRenderer = menuRenderer
-         const selectedPulledEntries = pullSelectedEntries(selectedItems, listID)
-        return <div className="multi-list-list-container">
-          <div className="ss-flexbox">
-            <span className="multi-list-header">
-              <Typography display="inline" variant="h4" color="black" gutterBottom>
-                {title}
+      { loading ? <Loading/> : error ? <FlexBox>
+        <Typography variant="h1" color='red' sx={{
+          marginBottom: 2
+        }}>Error loading Today's tickets:</Typography>
+        <Typography variant="h4" color='red'>{error}</Typography>
+      </FlexBox> : <FlexBox>
+        {title && <Typography variant="h2" color='primary'>{title}</Typography>}
+        {indexedListSpecifications.map(({ title, listID, entries, entryRenderer, menuRenderer }) => {
+          const EntryRenderer = entryRenderer
+          const MenuRenderer = menuRenderer
+          const selectedPulledEntries = pullSelectedEntries(selectedItems, listID)
+          return <div className="multi-list-list-container">
+            <div className="ss-flexbox">
+              <span className="multi-list-header">
+                <Typography display="inline" variant="h4" color="black" gutterBottom>
+                  {title}
+                </Typography>
+              </span>
+              <Typography display="inline" variant="h4" align="right" color="black" gutterBottom>
+                <strong>{entries.length}</strong>
               </Typography>
-            </span>
-            <Typography display="inline" variant="h4" align="right" color="black" gutterBottom>
-              <strong>{entries.length}</strong>
-            </Typography>
-          </div>
-          <div className="multi-list-list">
-            {entries.map((indexedEntry, indexInnerLoop) => <EntryRenderer
-                    entry= {indexedEntry.entry} toggleSelection={() => toggleSelection(indexedEntry?.listID ,indexedEntry?.ID)} selected={selectedItems[indexedEntry?.listID]?.[indexedEntry?.ID] ?? false}
+            </div>
+            <div className="multi-list-list">
+              {entries.map((indexedEntry) => (
+              <EntryRenderer
+                entry= {indexedEntry.entry} 
+                toggleSelection={
+                  () => toggleSelection(indexedEntry?.listID ,indexedEntry?.ID)
+                } 
+                selected={
+                  selectedItems[indexedEntry?.listID]?.[indexedEntry?.ID] ?? false
+                }
+                />
+              ))}
+            </div>
+            <div>
+              {pullSelectedEntries(selectedItems, listID).length > 0 && (
+                <MenuRenderer
+                  selectedListEntries= {selectedPulledEntries}
+                  entries={entries} 
                   />
-            )}
+              )}
+            </div>
           </div>
-          <div>
-            {pullSelectedEntries(selectedItems, listID).length > 0 && <MenuRenderer
-                  selectedListEntries= {selectedPulledEntries} isMultiSelected= {selectedPulledEntries.length > 1} entries={entries} />
-            }
-          </div>
-        </div>
-      })}
+        })}
+      </FlexBox>}
     </Paper>
  
   );
