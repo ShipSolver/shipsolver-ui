@@ -1,5 +1,5 @@
 import { Typography, TextField } from "@mui/material";
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useRef } from "react";
 
 import OuterBlueDivBox from "../../../components/outerBlueDivBox";
 import Box from "@mui/material/Box";
@@ -8,7 +8,7 @@ import MediumButton from "../mediumButton";
 import Canvas from './canvasComponents/Canvas';
 import { FileUpload } from "./Components/fileUpload";
 
-import { files } from "../../deliveryCompletion";
+import { pictureFile } from "../../deliveryCompletion";
 
 type removeFileFn = (filename: string) => void
 
@@ -21,16 +21,25 @@ export const SignaturePopUp = ({
   }: {
     modal: boolean;
     setModal: React.Dispatch<React.SetStateAction<boolean>>;
-    files: files[];
-    setFiles: React.Dispatch<React.SetStateAction<files[]>>;
+    files: pictureFile[];
+    setFiles: React.Dispatch<React.SetStateAction<pictureFile[]>>;
     removeFiles: removeFileFn;
   }) => {
 
     const [customerName, setCustomerName] = useState<string>('');
+    const [customerSignature, setCustomerSignature] = useState<string>('');
+    const [clearBoolean, setClearBoolean] = useState<boolean>(false)
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setCustomerName( event.target.value);
     };
+
+    const onSaveImageFn = (image: string) => {
+      setCustomerSignature(image)
+      console.log('triggered')
+    }
+
+    const ref = useRef<HTMLDivElement>(null)
 
   return (
     <OuterBlueDivBox
@@ -71,10 +80,12 @@ export const SignaturePopUp = ({
           borderRadius: 8,
         }}
       >
-        <Box sx={{alignItems: 'center' }}>
+        <Box ref={ref} sx={{alignItems: 'center' }}>
             <Canvas
                 width={'70%'}
                 height={'50%'}
+                onSaveImage={onSaveImageFn}
+                onClearTrigger={clearBoolean}
             />
             <Box sx={{display: 'flex', alignItems: 'center', width: 1, marginTop: '20px'}}>
                 <Typography sx={{paddingRight: '5px'}}>Customer Name</Typography>
@@ -83,8 +94,8 @@ export const SignaturePopUp = ({
         </Box>
       </div>
       <Box textAlign="center" sx={{ paddingBottom: 1 }}>
-        <FileUpload signFiles={files} setSignFiles={setFiles} removeFile={removeFiles} name={customerName} modal={modal} setModal={setModal}/>
-        <MediumButton variant="contained">
+        <FileUpload signFiles={files} setSignFiles={setFiles} removeFile={removeFiles} name={customerName} imageSrc={customerSignature} modal={modal} setModal={setModal} />
+        <MediumButton onClick={() => setClearBoolean(!clearBoolean)} variant="contained">
           Clear
         </MediumButton>
         <MediumButton variant="contained" onClick={() => setModal(!modal)}>

@@ -1,10 +1,10 @@
 import React from 'react'
 import { files, pictureFile } from '../deliveryCompletion'
-import { FileItem, PictureFileItem } from './FileItem'
+import { FileItem, PictureFileItem, SignatureFileItem } from './FileItem'
 
 type removeFileFn = (filename: string) => void
 
-export const PODFileList = ({files, removeFile}:{ files: files[], removeFile: removeFileFn }) => {
+export const PODFileList = ({files, removeFile}:{ files: pictureFile[], removeFile: removeFileFn }) => {
     const deleteFileHandler = (_name: string) => {
         removeFile(_name)
         // remove from backend as well
@@ -14,6 +14,24 @@ export const PODFileList = ({files, removeFile}:{ files: files[], removeFile: re
             {
                 files &&
                 files.map(f => (<FileItem
+                    key={f.name}
+                    file={f}
+                    deleteFile={deleteFileHandler} />))
+            }
+        </ul>
+    )
+}
+
+export const SignatureFileList = ({files, removeFile}:{ files: pictureFile[], removeFile: removeFileFn }) => {
+    const deleteFileHandler = (_name: string) => {
+        removeFile(_name)
+        // remove from backend as well
+    }
+    return (
+        <ul className="file-list">
+            {
+                files &&
+                files.map(f => (<SignatureFileItem
                     key={f.name}
                     file={f}
                     deleteFile={deleteFileHandler} />))
