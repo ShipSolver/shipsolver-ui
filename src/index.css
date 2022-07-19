@@ -70,9 +70,16 @@ code {
   background: var(--ss-brand-scrollbar-background-color);
 }
 
-.ss-flexbox {
+.ss-flexbox-column {
   display: flex;
   flex-direction: column;
+  padding-left: var(--ss-brand-spacing);
+  padding-right: var(--ss-brand-spacing);
+}
+
+.ss-flexbox-row {
+  display: flex;
+  flex-direction: row;
   padding-left: var(--ss-brand-spacing);
   padding-right: var(--ss-brand-spacing);
 }

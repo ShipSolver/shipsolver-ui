@@ -1,6 +1,10 @@
-import React, { useMemo } from "react";
+import React from "react";
+
+import { useNavigate } from "react-router-dom";
 
 import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
+
 import Lists from "./components/multiList";
 
 import { fetchTicketsForStatus } from "../../../services/ticketServices";
@@ -18,10 +22,8 @@ import {
   assignedMenu,
   inProgressMenu,
 } from "./components/multiList/menus";
-import useLoadable from "../../../utils/useLoadable";
-import { styled } from "@mui/material/styles";
 
-import { useNavigate } from "react-router-dom";
+import useLoadable from "../../../utils/useLoadable";
 
 function Home() {
   const navigate = useNavigate();
@@ -108,20 +110,47 @@ function Home() {
           },
         ]}
       />
-      <div className="ss-flexbox" style={{ justifyContent: "space-between" }}>
-        <Button variant="contained" onClick={() => navigate("/pod-review")}>
-          Review PODs
-        </Button>
-        <Button variant="contained" onClick={() => {}}>
-          Inventory Re-entry
-        </Button>
-        <Button variant="contained" onClick={() => navigate("/all-tickets")}>
-          View All Tickets
-        </Button>
-        <Button variant="contained" onClick={() => navigate("/ticket-factory")}>
-          Create Tickets
-        </Button>
-      </div>
+      <Grid
+        container
+        xs={12}
+        spacing={2}
+        sx={{
+          marginLeft: 0,
+        }}
+      >
+        <Grid item xs={3}>
+          <Button
+            fullWidth
+            variant="contained"
+            onClick={() => navigate("/pod-review")}
+          >
+            Review PODs
+          </Button>
+        </Grid>
+        <Grid item xs={3}>
+          <Button fullWidth variant="contained" onClick={() => {}}>
+            Inventory Re-entry
+          </Button>
+        </Grid>
+        <Grid item xs={3}>
+          <Button
+            fullWidth
+            variant="contained"
+            onClick={() => navigate("/all-tickets")}
+          >
+            View All Tickets
+          </Button>
+        </Grid>
+        <Grid item xs={3}>
+          <Button
+            fullWidth
+            variant="contained"
+            onClick={() => navigate("/ticket-factory")}
+          >
+            Create Tickets
+          </Button>
+        </Grid>
+      </Grid>
     </div>
   );
 }

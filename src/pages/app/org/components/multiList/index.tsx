@@ -109,7 +109,7 @@ function Lists<T>(props: MultiListProps<T>): JSX.Element {
   };
 
   return (
-    <div className="ss-flexbox" style={{ width: "100%" }}>
+    <div className="ss-flexbox-column" style={{ width: "100%" }}>
       {title && (
         <Typography
           variant="h2"
@@ -127,7 +127,7 @@ function Lists<T>(props: MultiListProps<T>): JSX.Element {
         {loading ? (
           <Loading />
         ) : error ? (
-          <div className="ss-flexbox">
+          <div className="ss-flexbox-column">
             <Typography
               variant="h1"
               color="red"
@@ -152,7 +152,7 @@ function Lists<T>(props: MultiListProps<T>): JSX.Element {
               );
               return (
                 <div className="multi-list-list-container">
-                  <div className="ss-flexbox">
+                  <div className="ss-flexbox-row">
                     <span className="multi-list-header">
                       <Typography
                         display="inline"
