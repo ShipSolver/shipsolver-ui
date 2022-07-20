@@ -36,7 +36,10 @@ export const SignaturePopUp = ({
 
     const onSaveImageFn = (image: string) => {
       setCustomerSignature(image)
-      console.log('triggered')
+    }
+
+    const onSaveBitDataFn = (bitData: ImageData | undefined) => {
+      // save bit datasomewhere
     }
 
     const ref = useRef<HTMLDivElement>(null)
@@ -85,6 +88,7 @@ export const SignaturePopUp = ({
                 width={'70%'}
                 height={'50%'}
                 onSaveImage={onSaveImageFn}
+                onSaveBitData={onSaveBitDataFn}
                 onClearTrigger={clearBoolean}
             />
             <Box sx={{display: 'flex', alignItems: 'center', width: 1, marginTop: '20px'}}>

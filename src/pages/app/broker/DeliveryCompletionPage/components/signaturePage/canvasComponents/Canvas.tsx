@@ -6,11 +6,13 @@ const Canvas = ({
   width,
   height,
   onSaveImage,
+  onSaveBitData,
   onClearTrigger
 }: {
   width: string;
   height: string;
   onSaveImage?: (imageURL: string) => void;
+  onSaveBitData?: (bitData: ImageData | undefined) => void;
   onClearTrigger?: boolean;
 }) => {
   function drawLine(
@@ -43,7 +45,7 @@ const Canvas = ({
     drawLine(prevPoint, point, ctx, "#000000", 5);
   }
 
-  const { canvasRef, onCanvasMouseDown, onClear } = useOnDraw(onDraw, onSaveImage);
+  const { canvasRef, triggerOnDraw, onClear } = useOnDraw(onDraw, onSaveImage, onSaveBitData);
 
   useEffect(() => {
     onClear()
@@ -58,7 +60,8 @@ const Canvas = ({
       className="canvas"
       width={sizeWidth}
       height={sizeHeight}
-      onMouseDown={onCanvasMouseDown}
+      onMouseDown={triggerOnDraw}
+      onTouchStart={triggerOnDraw}
       style={canvasStyle}
     />
   );

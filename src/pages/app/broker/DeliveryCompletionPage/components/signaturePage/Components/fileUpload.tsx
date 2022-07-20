@@ -35,7 +35,6 @@ export const FileUpload = (props: SignFileUploadProps) => {
         const date = `${current.getFullYear()}-${current.getMonth()+1}-${current.getDate()}-${current.getHours()}-${current.getMinutes()}-${current.getSeconds()}`;
         signFileName = signFileName + '-' + date
         signFileName = signFileName + '.jpg'
-        console.log(imageSrc)
 
         // html-png
         

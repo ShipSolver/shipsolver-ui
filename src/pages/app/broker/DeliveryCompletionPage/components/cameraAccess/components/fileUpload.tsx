@@ -22,13 +22,11 @@ export const PODFileUpload = ({ files, setFiles, removeFile, image, modal, setMo
         const date = `${current.getFullYear()}-${current.getMonth()+1}-${current.getDate()}-${current.getHours()}-${current.getMinutes()}-${current.getSeconds()}`;
         PodFileName = PodFileName + '-' + date
         PodFileName = PodFileName + '.jpg'
-        console.log(PodFileName)
         const file: pictureFile =  {
             name: PodFileName,
             imgSrc: image
         }
         setFiles([ ...files, file]);
-        console.log(files)
         setModal(!modal)
         // upload to backend
         };
