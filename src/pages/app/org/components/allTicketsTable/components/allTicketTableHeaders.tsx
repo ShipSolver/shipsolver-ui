@@ -4,6 +4,7 @@ import { HandleFilterType } from "./filters";
 import { DateRangeFilter, CheckboxFilter } from "./filters";
 
 import { HeaderRowType } from "./ticketTable";
+import { AllTicketsTableRows } from "../";
 
 const STATUS_OPTIONS = [
   "In-progress",
@@ -12,6 +13,8 @@ const STATUS_OPTIONS = [
   "Incomplete",
   "Delivered",
 ];
+
+const PICKUP_OPTIONS = ["Yes", "No"];
 
 export type Keys =
   | "date"
@@ -24,19 +27,33 @@ export type Keys =
   | "shipper"
   | "pickup";
 
+const getUnique = async (rowData: AllTicketsTableRows[], filter: Keys) => {
+  const unique: { [key: string]: boolean } = {};
+
+  rowData.forEach((row) => {
+    if (!unique[row[filter]]) {
+      unique[row[filter]] = true;
+    }
+  });
+
+  return Object.keys(unique).sort((a, b) => a.localeCompare(b));
+};
+
 export const createAllTicketTableHeaders = async (
-  handleFilter: HandleFilterType
+  handleFilter: HandleFilterType,
+  rowData: AllTicketsTableRows[]
 ): Promise<HeaderRowType<Keys>> => {
-  const fetchFirstParties = () => {};
-  const FIRST_PARTY_OPTIONS: string[] = ["test1", "test2", "test3"];
-  const fetchConsigneeNames = () => {};
-  const CONSIGNEE_NAMES_OPTIONS: string[] = ["test1", "test2", "test3"];
-  const fetchConsigneeAddresses = () => {};
-  const CONSIGNEE_ADDRESSES_OPTIONS: string[] = ["test1", "test2", "test3"];
-  const fetchDriverNames = () => {};
-  const DRIVER_NAMES_OPTIONS: string[] = ["test1", "test2", "test3"];
-  const fetchShipperNames = () => {};
-  const SHIPPER_NAMES_OPTIONS: string[] = ["test1", "test2", "test3"];
+  const [
+    FIRST_PARTY_OPTIONS,
+    CONSIGNEE_NAMES_OPTIONS,
+    CONSIGNEE_ADDRESSES_OPTIONS,
+    SHIPPER_NAMES_OPTIONS,
+  ] = await Promise.all([
+    getUnique(rowData, "firstParty"),
+    getUnique(rowData, "consigneeName"),
+    getUnique(rowData, "consigneeAddress"),
+    getUnique(rowData, "shipper"),
+  ]);
 
   return {
     date: {
@@ -115,6 +132,14 @@ export const createAllTicketTableHeaders = async (
     },
     pickup: {
       label: "Pickup",
+      filterLabel: "Filter by pickup status",
+      filterContent: (
+        <CheckboxFilter
+          handleFilter={handleFilter}
+          options={PICKUP_OPTIONS}
+          filterKey="pickup"
+        />
+      ),
     },
   };
 };

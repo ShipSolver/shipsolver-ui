@@ -1,8 +1,7 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState, useRef } from "react";
 import { useSetRecoilState } from "recoil";
 import Table from "@mui/material/Table";
 import TableContainer from "@mui/material/TableContainer";
-import Container from "@mui/material/Container";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
@@ -31,7 +30,7 @@ export type RowType<T extends string> = {
 };
 interface TicketTableProps<T extends string> {
   headerRow?: HeaderRowType<T>;
-  rows: RowType<T>[];
+  rows?: RowType<T>[];
 }
 
 export const TicketTable = <T extends string>({
@@ -43,16 +42,25 @@ export const TicketTable = <T extends string>({
 
   const setMultiRowSelected = useSetRecoilState(multiRowSelectedAtom);
 
-  const [selected, setSelected] = React.useState<{ [key: string]: boolean }>(
-    Object.values(rows).reduce(
-      (selected, row) => ({ ...selected, [row.ticketId]: false }),
-      {}
-    )
+  const [selected, setSelected] = useState<{ [key: string]: boolean }>(
+    rows
+      ? Object.values(rows).reduce(
+          (selected, row) => ({ ...selected, [row.ticketId]: false }),
+          {}
+        )
+      : {}
   );
 
-  const [allSelected, setAllSelected] = React.useState<boolean>(false);
+  const filterButton = useRef<HTMLElement>(null);
+  const [topStyle, setTopStyle] = useState<number | undefined>();
 
-  const [numSelected, setNumSelected] = React.useState<number>(0);
+  useEffect(() => {
+    setTopStyle(filterButton.current?.clientHeight);
+  }, [filterButton]);
+
+  const [allSelected, setAllSelected] = useState<boolean>(false);
+
+  const [numSelected, setNumSelected] = useState<number>(0);
 
   const handleSingleClick = (ticketID: string) => {
     if (selected[ticketID] === false) {
@@ -66,19 +74,21 @@ export const TicketTable = <T extends string>({
     }));
   };
 
-  const handleSelectAllClick = (rows: RowType<T>[]) => {
-    if (allSelected === false) {
-      setNumSelected(rows.length);
-    } else if (allSelected === true) {
-      setNumSelected(0);
+  const handleSelectAllClick = (rows?: RowType<T>[]) => {
+    if (rows) {
+      if (allSelected === false) {
+        setNumSelected(rows.length);
+      } else if (allSelected === true) {
+        setNumSelected(0);
+      }
+      setAllSelected(!allSelected);
+      setSelected(
+        Object.values(rows).reduce(
+          (selected, row) => ({ ...selected, [row.ticketId]: !allSelected }),
+          {}
+        )
+      );
     }
-    setAllSelected(!allSelected);
-    setSelected(
-      Object.values(rows).reduce(
-        (selected, row) => ({ ...selected, [row.ticketId]: !allSelected }),
-        {}
-      )
-    );
   };
 
   const headerRowData: HeaderRowDataType[] = Object.values(headerRow ?? {});
@@ -87,7 +97,7 @@ export const TicketTable = <T extends string>({
     ({ filterLabel, filterContent }, i) => {
       if (filterLabel && filterContent) {
         return (
-          <TableCell key={i} align="left">
+          <TableCell key={i} align="left" ref={filterButton}>
             <DropdownButton buttonText={filterLabel} content={filterContent} />
           </TableCell>
         );
@@ -97,14 +107,19 @@ export const TicketTable = <T extends string>({
   );
 
   const headerLabels = headerRowData.map(({ label }, i) => (
-    <TableCell key={i} align="left" sx={{ fontWeight: "bold" }}>
+    <TableCell
+      key={i}
+      align="left"
+      sx={{ fontWeight: "bold" }}
+      style={{ top: topStyle }}
+    >
       {label as string}
     </TableCell>
   ));
 
   const tableRows = useMemo(
     () =>
-      rows.map((row, i) => (
+      rows?.map((row, i) => (
         <TableRow key={i} hover selected={selected[row.ticketId]}>
           <TableCell padding="checkbox">
             <Checkbox
@@ -114,11 +129,12 @@ export const TicketTable = <T extends string>({
           </TableCell>
           {Object.entries(row).map(([key, val], i) => {
             if (key === "ticketId") return null;
-            if (key === "pickup") return (
-              <TableCell key={i} align="left">
-                {val === "1" ? "Yes" : "No"}
-              </TableCell>
-            );
+            if (key === "pickup")
+              return (
+                <TableCell key={i} align="left">
+                  {val === "1" ? "Yes" : "No"}
+                </TableCell>
+              );
             return (
               <TableCell key={i} align="left">
                 {val as any}
@@ -150,7 +166,7 @@ export const TicketTable = <T extends string>({
     }
 
     //Checks off select all if all rows are selected individually
-    if (numSelected === rows.length) {
+    if (rows && numSelected === rows.length) {
       setAllSelected(true);
     } else {
       setAllSelected(false);
@@ -159,8 +175,8 @@ export const TicketTable = <T extends string>({
 
   // #TODO sticky header
   return (
-    <TableContainer component={Paper}>
-      <Table>
+    <TableContainer component={Paper} sx={{ height: "550px", top: "32px" }}>
+      <Table stickyHeader>
         <colgroup>
           <col width="5%" />
           <col width="10%" />
@@ -179,7 +195,7 @@ export const TicketTable = <T extends string>({
             {headerFilters}
           </TableRow>
           <TableRow>
-            <TableCell padding="checkbox">
+            <TableCell padding="checkbox" style={{ top: topStyle }}>
               <Checkbox
                 checked={allSelected}
                 onClick={() => handleSelectAllClick(rows)}
