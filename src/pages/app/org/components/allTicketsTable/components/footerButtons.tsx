@@ -46,9 +46,6 @@ export const FooterButtons = (props: FooterButtonsProps) => {
         {ButtonLabels.assignToBroker}
       </Button>
       <Button variant="contained" disabled={!multiRowSelected}>
-        {ButtonLabels.delete}
-      </Button>
-      <Button variant="contained" disabled={!multiRowSelected}>
         {ButtonLabels.export}
       </Button>
     </ButtonWrapper>

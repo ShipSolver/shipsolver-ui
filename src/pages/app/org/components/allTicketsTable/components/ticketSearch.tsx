@@ -6,7 +6,7 @@ import Brand from "../../../../../../ShipSolverBrand";
 
 const SearchBarBase: any = SearchBarBaseBase;
 interface TicketSearchProps {
-  handleSearchRequest: (query: string) => void;
+  handleSearchRequest: (query?: string) => void;
 }
 
 export const TicketSearch = ({ handleSearchRequest }: TicketSearchProps) => {
@@ -18,6 +18,7 @@ export const TicketSearch = ({ handleSearchRequest }: TicketSearchProps) => {
       onChange={(query: string) => setSearchValue(query)}
       onRequestSearch={() => handleSearchRequest(searchValue)}
       searchIcon={<SearchIcon>GO</SearchIcon>}
+      onCancelSearch={() => handleSearchRequest()}
     />
   );
 };
@@ -30,7 +31,7 @@ const SearchBar = styled(SearchBarBase)`
   .MuiIconButton-root {
     height: 32px;
     width: 44px;
-    margin: auto -16px auto 0;
+    margin-top: 8px;
 
     :hover {
       background-color: ${Brand.palette.secondary.main};

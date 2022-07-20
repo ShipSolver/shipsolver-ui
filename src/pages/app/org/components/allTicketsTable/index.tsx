@@ -6,7 +6,8 @@ import Loading from "../../../../components/loading";
 import { TicketSearch } from "./components/ticketSearch";
 import { FooterButtons } from "./components/footerButtons";
 import { TicketTable } from "./components/ticketTable";
-import { TestRows } from "./test/testData";
+import moment from "moment";
+import { DateFormat } from './components/filters/dateRangeFilter';
 import {
   createAllTicketTableHeaders,
   Keys,
@@ -17,31 +18,74 @@ import { fetchAllTickets } from "../../../../../services/ticketServices";
 
 import { RowType } from "./components/ticketTable";
 import { Typography } from "@mui/material";
+import { isUndefined } from "util";
 
 export type AllTicketsTableRows = RowType<Keys>;
 
 export const AllTicketsTable = () => {
-  const [headerRow, setHeaderRow] = useState<HeaderRowType<Keys>>();
   const { val, loading, error } = useLoadable(fetchAllTickets);
+  const [headerRows, setHeaderRows] = useState<HeaderRowType<Keys>>();
 
-  const filterData = (key: Keys, value: string | Date[]) => {
+  const [searchedRows, setSearchedRows] = useState<AllTicketsTableRows[]>();
+  const [filteredRows, setFilteredRows] = useState<AllTicketsTableRows[]>();
+  const [rowsToDisplay, setRowsToDisplay] = useState<AllTicketsTableRows[]>();
+
+  const filterData = (key: Keys, value?: string | Date[]) => {
+    if (val) {
+      let filterData = searchedRows;
+
+      if (value && filterData && filterData.length > 0) {
+        if (typeof value === "string") {
+          filterData = filterData.filter((row) => row[key] === value);
+        } else {
+          filterData = filterData.filter((row) => {
+            const date = moment(row[key], DateFormat).toDate();
+            return date > value[0] && date < value[1];
+          });
+        }
+      }
+
+      setFilteredRows(filterData);
+      setRowsToDisplay(filterData);
+    }
+  };
+
+  const search = (query?: string) => {
+    if (val) {
+      let searchData = filteredRows ?? val;
+
+      if (query && searchData && searchData.length > 0) {
+        searchData = searchData.filter((row) =>
+          Object.values(row).includes(query)
+        );
+      }
+
+      setSearchedRows(searchData);
+      setRowsToDisplay(searchData);
+    }
   };
 
   useEffect(() => {
-    createAllTicketTableHeaders(filterData)
-      .then((response) => setHeaderRow(response))
-      .catch((e) => console.error(e.toString()));
-  }, []);
+    if (val != null) {
+      createAllTicketTableHeaders(filterData, val).then((data) => {
+        setHeaderRows(data);
+        setFilteredRows(val);
+        setSearchedRows(val);
+        setRowsToDisplay(val);
+      });
+    }
+  }, [val]);
 
   return (
     <Wrapper>
-      <TicketSearch handleSearchRequest={() => null} />
+      <TicketSearch handleSearchRequest={search} />
       <Spacer height="24px" />
-      {loading ? (
+      {loading || headerRows == null ? (
         <Loading />
-      ) : ( val == null || error != null ? 
-        <Typography>{error || "Error fetching ticket information"}</Typography> :
-        <TicketTable headerRow={headerRow} rows={val} />
+      ) : error != null ? (
+        <Typography>{error || "Error fetching ticket information"}</Typography>
+      ) : (
+        <TicketTable headerRow={headerRows} rows={rowsToDisplay} />
       )}
       <Spacer height="24px" />
       <FooterButtons />
