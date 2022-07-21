@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react'
 import Webcam from "react-webcam";
 
-import OuterBlueDivBox from "../../../components/outerBlueDivBox";
+import OuterBlueDivBox from "../../../../driver/components/outerBlueDivBox";
 import { Button, Stack, Box } from '@mui/material'
 import { pictureFile } from "../../deliveryCompletion";
 import { PODFileUpload } from './components/fileUpload'

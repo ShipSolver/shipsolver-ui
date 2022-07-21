@@ -1,14 +1,9 @@
-<<<<<<< HEAD
 import React, { useRef } from 'react'
 import { toPng } from 'html-to-image';
-=======
-import React from 'react'
->>>>>>> main
 
 import Box from "@mui/material/Box";
 import MediumButton from "../../mediumButton";
 
-<<<<<<< HEAD
 import { signatureFile } from '../../../deliveryCompletion' 
 import { SignatureFileList } from '../../FileLists';
 
@@ -28,15 +23,6 @@ type removeFileFn = (filename: string) => void
 export const FileUpload = (props: SignFileUploadProps) => {
     const {signFiles, setSignFiles, bitData, name, imageSrc, modal, setModal} = props
     
-=======
-import { files } from '../../../deliveryCompletion' 
-
-type removeFileFn = (filename: string) => void
-
-export const FileUpload = ({ signFiles, setSignFiles, removeFile, name, modal, setModal }:
-    {signFiles: files[], setSignFiles: React.Dispatch<React.SetStateAction<files[]>>, removeFile: removeFileFn, name: string, modal: boolean, setModal: React.Dispatch<React.SetStateAction<boolean>>}) => {
-
->>>>>>> main
     function uploadHandler () {   
         const nameArry: string[] = name.split(' ');
         let signFileName: string = 'signature'
@@ -48,7 +34,6 @@ export const FileUpload = ({ signFiles, setSignFiles, removeFile, name, modal, s
         const date = `${current.getFullYear()}-${current.getMonth()+1}-${current.getDate()}-${current.getHours()}-${current.getMinutes()}-${current.getSeconds()}`;
         signFileName = signFileName + '-' + date
         signFileName = signFileName + '.jpg'
-<<<<<<< HEAD
 
         if (bitData){const file: signatureFile =  {
             name: signFileName,
@@ -62,16 +47,6 @@ export const FileUpload = ({ signFiles, setSignFiles, removeFile, name, modal, s
         }else{
             console.log('Blob data is undefined')
         }}
-=======
-        console.log(signFileName)
-        const file: files =  {
-            name: signFileName,
-        }
-        setSignFiles([ ...signFiles, file]);
-        setModal(!modal)
-        // upload to backend
-        };
->>>>>>> main
 
     return (
         <>
