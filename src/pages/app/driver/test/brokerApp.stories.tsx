@@ -1,4 +1,4 @@
-import Home from "../home";
+import Home, { Tickets } from "../home";
 
 import { DeliveryCompletion } from "../deliveryCompletion";
 import { IncompleteDelivery } from "../incompleteDelivery";
@@ -6,32 +6,41 @@ import { IncompleteDelivery } from "../incompleteDelivery";
 import React from "react";
 
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import StoryBookThemeProvider from "../../../../utils/storybookThemeProvider";
+import MockAppRoot from "../../../../utils/mockAppRoot";
 import { IncompleteDeliveryReasons } from "../incompleteDelivery";
 
+import ticketsJSON from "../../../../mockData/tickets.json";
+
 export default {
-  title: "Home",
+  title: "Broker App",
   component: Home,
 } as ComponentMeta<typeof Home>;
 
-export const Primary: ComponentStory<typeof Home> = () => (
-  <StoryBookThemeProvider>
-    <Home />
-  </StoryBookThemeProvider>
+export const TicketsList: ComponentStory<typeof Tickets> = () => (
+  <MockAppRoot>
+    <Tickets
+      viewAllTickets={true}
+      tickets={ticketsJSON.tickets}
+      status="ticket_created"
+      setViewAllTickets={() => {}}
+      title="Created Tickets"
+      items={ticketsJSON.tickets.length}
+    />
+  </MockAppRoot>
 );
 
 export const DeliveryCompletionStory: ComponentStory<
   typeof DeliveryCompletion
 > = () => (
-  <StoryBookThemeProvider>
+  <MockAppRoot>
     <DeliveryCompletion />
-  </StoryBookThemeProvider>
+  </MockAppRoot>
 );
 
 export const IncompleteDeliveryStory: ComponentStory<
   typeof IncompleteDelivery
 > = () => (
-  <StoryBookThemeProvider>
+  <MockAppRoot>
     <IncompleteDelivery reasons={IncompleteDeliveryReasons} />
-  </StoryBookThemeProvider>
+  </MockAppRoot>
 );

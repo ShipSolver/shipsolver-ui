@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 
 import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
@@ -26,7 +26,7 @@ import { styled } from "@mui/material/styles";
 import { CompletionPopUp } from "./components/completionPopUp";
 import { useNavigate } from "react-router-dom";
 
-const Tickets = ({
+export const Tickets = ({
   viewAllTickets,
   tickets,
   status,
@@ -66,7 +66,7 @@ const Tickets = ({
             Weight: {String(ticket.weight)}
           </Typography>
           <Typography color="#00000099">
-            First Party: {ticket.customer}
+            First Party: {ticket.customer.name}
           </Typography>
           <Typography color="#00000099">
             Date/Time Assigned:{" "}
@@ -175,17 +175,6 @@ const Tickets = ({
       </>
     ));
 
-    const ticketsInfo = tickets.map((ticket) => (
-      <>
-        <TicketCard onClick={handleTicketModalOpen}>
-          <Typography variant="h5">
-            <b>{ticket.consigneeAddress}</b>
-          </Typography>
-          <Typography>REF#: {String(ticket.houseReferenceNumber)}</Typography>
-        </TicketCard>
-      </>
-    ));
-
     return (
       <>
         {reducedTicketsInfo}
@@ -203,10 +192,21 @@ const Tickets = ({
                 {title}
               </Typography>
               <Typography variant="h2" alignContent="right">
-                {items}
+                {String(items)}
               </Typography>
             </Grid>
-            <InnerBlueDivBox>{ticketsInfo}</InnerBlueDivBox>
+            <InnerBlueDivBox>
+              {tickets.map((ticket) => (
+                <TicketCard onClick={handleTicketModalOpen}>
+                  <Typography variant="h5">
+                    <b>{ticket.consigneeAddress}</b>
+                  </Typography>
+                  <Typography>
+                    REF#: {String(ticket.houseReferenceNumber)}
+                  </Typography>
+                </TicketCard>
+              ))}
+            </InnerBlueDivBox>
           </ModalContainer>
         </Modal>
       </>
@@ -250,7 +250,7 @@ const Home = () => {
       if (assigned.length > 0) {
         navigate("shift-complete");
       } else {
-        alert("nice");
+        alert("No outstanding deliveries left to mark");
       }
     }
   };
@@ -265,13 +265,13 @@ const Home = () => {
           {currentTicket.consigneeAddress}
         </Typography>
         <Typography color="#00000099">
-          Weight: {currentTicket.weight}
+          Weight: {String(currentTicket.weight)}
         </Typography>
         <Typography color="#00000099">
-          REF#: {currentTicket.houseReferenceNumber}
+          REF#: {String(currentTicket.houseReferenceNumber)}
         </Typography>
         <Typography color="#00000099">
-          First Party: {currentTicket.customer}
+          First Party: {currentTicket.customer.name}
         </Typography>
         <Typography color="#00000099">
           Date/Time Assigned:{" "}
@@ -313,7 +313,7 @@ const Home = () => {
                 Assigned
               </Typography>
               <Typography variant="h2" alignContent="right">
-                {assigned.length}
+                {String(assigned.length)}
               </Typography>
             </Grid>
             <Tickets
@@ -333,7 +333,7 @@ const Home = () => {
                 Completed
               </Typography>
               <Typography variant="h2" color="#000" alignContent="right">
-                {completed.length}
+                {String(completed.length)}
               </Typography>
             </Grid>
             <Tickets
@@ -353,7 +353,7 @@ const Home = () => {
                 Requested Pickups
               </Typography>
               <Typography variant="h2" color="#000" alignContent="right">
-                {pickup.length}
+                {String(pickup.length)}
               </Typography>
             </Grid>
             <Tickets
@@ -364,6 +364,22 @@ const Home = () => {
               title="Requested Pickups"
               items={pickup.length}
             ></Tickets>
+          </InnerBlueDivBox>
+        )}
+        {assigned == null && completed == null && pickup == null && (
+          <InnerBlueDivBox>
+            <Typography
+              variant="h1"
+              color="red"
+              sx={{
+                marginBottom: "calc(var(--ss-brand-spacing)*2)",
+              }}
+            >
+              Sorry! We couldn't find any tickets for your
+            </Typography>
+            <Typography variant="h4" color="red">
+              Please ask your organization manager to assign some tickets to you
+            </Typography>
           </InnerBlueDivBox>
         )}
       </OuterBlueDivBox>
