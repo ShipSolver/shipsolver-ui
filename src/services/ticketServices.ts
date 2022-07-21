@@ -59,11 +59,14 @@ export const fetchAllTickets = async () => {
         timestamp,
         consigneeAddress,
         consigneeName,
+        ticketStatus
       }: any) => ({
         date: moment(new Date(timestamp)).format(DateFormat),
+        status: ticketStatus.currentStatus,
         firstParty: customer.name,
         consigneeName,
         consigneeAddress,
+        lastAssigned: ticketStatus.assignedTo,
         barcodeNumber,
         shipper: shipperCompany,
         pickup: "1",
@@ -71,7 +74,7 @@ export const fetchAllTickets = async () => {
       })
     );
 
-    return data;
+    return data.slice(0,25);
   } catch (e) {
     console.error(e);
     throw e;
@@ -145,18 +148,19 @@ export const fetchTicket = async (ticketId: string) => {
 
 export const fetchMilestones = async (ticketId: string) => {
   try {
-    const response: any = await axios.get(`/api/creationmilestones/${ticketId}`, {
-      withCredentials: false,
-    });
-
-    console.log("response", response);
+    const response: any = await axios.get(
+      `/api/creationmilestones/${ticketId}`,
+      {
+        withCredentials: false,
+      }
+    );
 
     const { newStatus, createdAt } = response.data[0];
 
     const data = {
       description: newStatus,
-      dateAndTime: new Date(createdAt)
-    }
+      dateAndTime: new Date(createdAt),
+    };
 
     return data;
   } catch (e) {
@@ -194,8 +198,6 @@ export const createTicket = async ({
     consigneePhoneNumber: consignee.phoneNum,
     consigneePostalCode: consignee.postalCode,
   });
-
-  console.log("PAYLOAD", payload);
 
   try {
     const response: any = await axios.post(`/api/ticket/`, {
