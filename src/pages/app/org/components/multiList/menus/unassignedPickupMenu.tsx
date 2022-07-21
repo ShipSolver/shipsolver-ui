@@ -19,7 +19,7 @@ export default function Menu(
     <Box className="menu-container">
         <List>
             <ListItemButton>
-                 <Typography className="menu-text-typography">Request pickup from broker</Typography>
+                 <Typography className="menu-text-typography">Request pickup from driver</Typography>
               </ListItemButton>
             <Divider sx={{ borderBottomWidth: 2 }}/>
             <ListItemButton>
