@@ -8,7 +8,7 @@ import MediumButton from "../mediumButton";
 import Canvas from './canvasComponents/Canvas';
 import { FileUpload } from "./Components/fileUpload";
 
-import { pictureFile } from "../../deliveryCompletion";
+import { signatureFile } from "../../deliveryCompletion";
 
 type removeFileFn = (filename: string) => void
 
@@ -21,13 +21,14 @@ export const SignaturePopUp = ({
   }: {
     modal: boolean;
     setModal: React.Dispatch<React.SetStateAction<boolean>>;
-    files: pictureFile[];
-    setFiles: React.Dispatch<React.SetStateAction<pictureFile[]>>;
+    files: signatureFile[];
+    setFiles: React.Dispatch<React.SetStateAction<signatureFile[]>>;
     removeFiles: removeFileFn;
   }) => {
 
     const [customerName, setCustomerName] = useState<string>('');
     const [customerSignature, setCustomerSignature] = useState<string>('');
+    const [signatureBlobData, setSignatureBlobData] = useState<ImageData>()
     const [clearBoolean, setClearBoolean] = useState<boolean>(false)
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,7 +40,7 @@ export const SignaturePopUp = ({
     }
 
     const onSaveBitDataFn = (bitData: ImageData | undefined) => {
-      // save bit datasomewhere
+      setSignatureBlobData(bitData)
     }
 
     const ref = useRef<HTMLDivElement>(null)
@@ -98,7 +99,7 @@ export const SignaturePopUp = ({
         </Box>
       </div>
       <Box textAlign="center" sx={{ paddingBottom: 1 }}>
-        <FileUpload signFiles={files} setSignFiles={setFiles} removeFile={removeFiles} name={customerName} imageSrc={customerSignature} modal={modal} setModal={setModal} />
+        <FileUpload signFiles={files} setSignFiles={setFiles} removeFile={removeFiles} name={customerName} imageSrc={customerSignature} bitData={signatureBlobData} modal={modal} setModal={setModal} />
         <MediumButton onClick={() => setClearBoolean(!clearBoolean)} variant="contained">
           Clear
         </MediumButton>

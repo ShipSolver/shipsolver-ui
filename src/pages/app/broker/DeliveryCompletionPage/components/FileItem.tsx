@@ -2,7 +2,7 @@ import React from 'react'
 import Typography from "@mui/material/Typography";
 import IconButton from '@mui/material/IconButton';
 import ClearIcon from '@mui/icons-material/Clear';
-import { files, pictureFile } from '../deliveryCompletion'
+import { signatureFile, pictureFile } from '../deliveryCompletion'
 
 import './FileItem.css'
 
@@ -24,7 +24,7 @@ export function FileItem({file, deleteFile}: {file:pictureFile, deleteFile: dele
   )
 }
 
-export function SignatureFileItem({file, deleteFile}: {file:pictureFile, deleteFile: deleteFileFn}) {
+export function SignatureFileItem({file, deleteFile}: {file:signatureFile, deleteFile: deleteFileFn}) {
   return (
     <>
         <div

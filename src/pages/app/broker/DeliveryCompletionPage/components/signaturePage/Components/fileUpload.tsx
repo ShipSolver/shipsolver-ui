@@ -4,15 +4,16 @@ import { toPng } from 'html-to-image';
 import Box from "@mui/material/Box";
 import MediumButton from "../../mediumButton";
 
-import { pictureFile } from '../../../deliveryCompletion' 
+import { signatureFile } from '../../../deliveryCompletion' 
 import { SignatureFileList } from '../../FileLists';
 
 type SignFileUploadProps = {
-    signFiles: pictureFile[];
-    setSignFiles: React.Dispatch<React.SetStateAction<pictureFile[]>>;
+    signFiles: signatureFile[];
+    setSignFiles: React.Dispatch<React.SetStateAction<signatureFile[]>>;
     removeFile: removeFileFn;
     name: string;
     imageSrc: string;
+    bitData: ImageData | undefined;
     modal: boolean;
     setModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -20,9 +21,7 @@ type SignFileUploadProps = {
 type removeFileFn = (filename: string) => void
 
 export const FileUpload = (props: SignFileUploadProps) => {
-    const {signFiles, setSignFiles, removeFile, name, imageSrc, modal, setModal} = props
-
-    //const imageSrc = useRef<string>('');
+    const {signFiles, setSignFiles, bitData, name, imageSrc, modal, setModal} = props
     
     function uploadHandler () {   
         const nameArry: string[] = name.split(' ');
@@ -36,18 +35,18 @@ export const FileUpload = (props: SignFileUploadProps) => {
         signFileName = signFileName + '-' + date
         signFileName = signFileName + '.jpg'
 
-        // html-png
-        
-
-            const file: pictureFile =  {
-                name: signFileName,
-                imgSrc: imageSrc
-            }
+        if (bitData){const file: signatureFile =  {
+            name: signFileName,
+            imgSrc: imageSrc,
+            blobData: bitData,
+        }
 
         setSignFiles([ ...signFiles, file]);
         setModal(!modal)
         // upload to backend
-        };
+        }else{
+            console.log('Blob data is undefined')
+        }}
 
     return (
         <>

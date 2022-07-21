@@ -88,9 +88,7 @@ export function useOnDraw(onDraw: onDrawFn, onSaveImage?: (imageURL: string) => 
           const boundingRect = canvasRef.current.getBoundingClientRect();
           const image = canvasRef.current.toDataURL("image/png");
           onSaveImage?.(image);
-          //  this method saves the internal application URL to the image on the canvas
-          //  for attaching the image to an API request, you will need to get the 'blob'
-          //  the blob is the bit data corresponding to an image on an application
+          
           var sizeWidth = (60 * window.innerWidth) / 100,
             sizeHeight = (50 * window.innerHeight) / 100;
 

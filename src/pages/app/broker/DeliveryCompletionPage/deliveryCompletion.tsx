@@ -19,41 +19,25 @@ import Divider from "@mui/material/Divider";
 import { SignaturePopUp } from "./components/signaturePage/signaturePopUp";
 import { CameraCapture } from "./components/cameraAccess/webcamAccess";
 
-export type files = {
-  name: string;
-};
-
 export type pictureFile = {
   name: string;
   imgSrc: string;
 };
 
+export type signatureFile = {
+  name: string;
+  imgSrc: string;
+  blobData: ImageData
+}
+
 export function DeliveryCompletion() {
-  const [podFiles, setPoDFiles] = useState<Array<pictureFile>>([
-    {
-      name: "POD-Rahul-2022-02-18-15-41-54.jpg",
-      imgSrc: "https://via.placeholder.com/170x120",
-    },
-  ]);
-  const [signFiles, setSignFiles] = useState<Array<pictureFile>>([
-    {
-      name: "signature-Am-Sith-2022-02-18-15-41-54.jpg",
-      imgSrc: "https://via.placeholder.com/170x120",
-    },
-  ]);
-  const [pictureFiles, setPictureFiles] = useState<Array<pictureFile>>([
-    {
-      name: "placeholder",
-      imgSrc: "https://via.placeholder.com/170x120",
-    },
-  ]);
+  const [podFiles, setPoDFiles] = useState<Array<pictureFile>>([]);
+  const [signFiles, setSignFiles] = useState<Array<signatureFile>>([]);
+  const [pictureFiles, setPictureFiles] = useState<Array<pictureFile>>([]);
 
   const removePoDFile = useCallback(
     (filename: string) => {
-      const filteredArry: pictureFile[] = podFiles.filter(
-        (file) => file.name !== filename
-      );
-      setPoDFiles(filteredArry);
+      setPoDFiles(podFiles.filter((file) => file.name !== filename));
     },
     [podFiles, setPoDFiles]
   );
