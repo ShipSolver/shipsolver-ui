@@ -18,7 +18,7 @@ import { ShiftCompletion, IncompleteShiftReasons } from "./shiftCompletion";
 import { DeclinePickup, DeclinePickupReasons } from "./declinePickup";
 import Header from "../org/components/header";
 
-function BrokerRouter() {
+function DriverRouter() {
   return (
     <>
       <Header />
@@ -48,4 +48,4 @@ function BrokerRouter() {
   );
 }
 
-export default BrokerRouter;
+export default DriverRouter;

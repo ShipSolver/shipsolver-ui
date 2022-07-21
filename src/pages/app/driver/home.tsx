@@ -62,7 +62,9 @@ const Tickets = ({
           REF#: {String(ticket.houseReferenceNumber)}
         </Typography>
         <InnerBlueDivBox>
-          <Typography color="#00000099">Weight: {String(ticket.weight)}</Typography>
+          <Typography color="#00000099">
+            Weight: {String(ticket.weight)}
+          </Typography>
           <Typography color="#00000099">
             First Party: {ticket.customer}
           </Typography>
@@ -96,8 +98,12 @@ const Tickets = ({
           <Typography variant="h4" marginBottom="5px">
             <b>{ticket.consigneeAddress}</b>
           </Typography>
-          <Typography color="#00000099">Weight: {String(ticket.weight)}</Typography>
-          <Typography color="#00000099">REF#: {String(ticket.houseReferenceNumber)}</Typography>
+          <Typography color="#00000099">
+            Weight: {String(ticket.weight)}
+          </Typography>
+          <Typography color="#00000099">
+            REF#: {String(ticket.houseReferenceNumber)}
+          </Typography>
           <Typography color="#00000099">
             First Party: {ticket.customer}
           </Typography>
@@ -112,7 +118,9 @@ const Tickets = ({
               hour: "numeric",
               minute: "2-digit",
             })}
-            <Typography color="#00000099">Barcode: {String(ticket.barcodeNumber)}</Typography>
+            <Typography color="#00000099">
+              Barcode: {String(ticket.barcodeNumber)}
+            </Typography>
           </Typography>
         </InnerWhiteDivBox>
         <LargeButton label="Accept" action={() => alert("action")} />
@@ -125,13 +133,13 @@ const Tickets = ({
     );
   };
 
-  const isPickupStatus = 
-    status === "unassigned_pickup" || 
+  const isPickupStatus =
+    status === "unassigned_pickup" ||
     status === "requested_pickup" ||
     status === "accepted_pickup" ||
     status === "declined_pickup" ||
     status === "complete_pickup" ||
-    status === "incomplete_pickup"
+    status === "incomplete_pickup";
 
   var tempTickets = [];
   if (tickets != null) {
@@ -145,12 +153,12 @@ const Tickets = ({
     const reducedTicketsInfo = tempTickets.map((ticket) => (
       <>
         <TicketCard onClick={handleTicketModalOpen}>
-        <Typography variant="h4" marginBottom="5px">
+          <Typography variant="h4" marginBottom="5px">
             <b>{ticket.consigneeAddress}</b>
           </Typography>
           <Typography>REF#: {String(ticket.houseReferenceNumber)}</Typography>
         </TicketCard>
-        {(isPickupStatus) && (
+        {isPickupStatus && (
           <Modal open={openTicketModal} onClose={handleTicketModalClose}>
             <ModalContainer style={{ paddingBottom: 10 }}>
               {PickupModal(ticket)}
@@ -209,7 +217,6 @@ const Tickets = ({
 };
 
 const Home = () => {
-  console.log('here')
   const navigate = useNavigate();
   const [viewAllAssigned, setViewAllAssigned] = useState<boolean>(false);
 
@@ -218,12 +225,18 @@ const Home = () => {
   const [viewAllPickup, setViewAllPickup] = useState<boolean>(false);
 
   const { val: assignedInfo } = useLoadable(fetchTicketsForStatus, "assigned");
-  const { val: completedInfo } = useLoadable(fetchTicketsForStatus, "completed_delivery");
-  const { val: pickupInfo } = useLoadable(fetchTicketsForStatus, "requested_pickup");
+  const { val: completedInfo } = useLoadable(
+    fetchTicketsForStatus,
+    "completed_delivery"
+  );
+  const { val: pickupInfo } = useLoadable(
+    fetchTicketsForStatus,
+    "requested_pickup"
+  );
 
-  const assigned = assignedInfo?.tickets
-  const completed = completedInfo?.tickets
-  const pickup = pickupInfo?.tickets
+  const assigned = assignedInfo?.tickets;
+  const completed = completedInfo?.tickets;
+  const pickup = pickupInfo?.tickets;
 
   const { val: currentTicket } = useLoadable(fetchOrgCurrentDelivery);
 
@@ -286,8 +299,6 @@ const Home = () => {
       );
     }
   };
-
-  console.log('now here')
 
   if (assigned != null && completed != null && pickup != null) {
     return (

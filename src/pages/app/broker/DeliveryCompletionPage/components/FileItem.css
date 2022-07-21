@@ -6,7 +6,6 @@
 .picture-item{
     position: relative;
     display:inline-block;
-    margin: 10px !important;
 }
 
 .picture-item img {
@@ -21,26 +20,4 @@
     transform: translate(-50%, -50%);
     -ms-transform: translate(-50%, -50%);
     cursor: pointer;
-}
-
-.image-container {
-    width: 170px !important;
-    height: 120px !important;
-}
-
-/* Resize images */
-.image-container img {
-    width: 100% !important;
-    height: 100% !important;
-}
-
-.signature-container {
-    width: 42px !important;
-    height: 30px !important;
-}
-
-/* Resize signatures */
-.signature-container img {
-    width: 100% !important;
-    height: 100% !important;
 }

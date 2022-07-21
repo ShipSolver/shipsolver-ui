@@ -136,7 +136,7 @@ export type Ticket = {
 //   ];
 // };
 
-export type Broker = {
+export type Driver = {
   NAME: string;
   EMAIL: string;
   PHONE: string;

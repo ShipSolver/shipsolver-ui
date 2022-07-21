@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography";
 import Paper from "../../../../../components/roundedPaper";
 
 import useLoadable from "../../../../../../utils/useLoadable";
-import { fetchBroker } from "../../../../../../services/brokerServices";
+import { fetchDriver } from "../../../../../../services/driverServices";
 
 import { Ticket } from "../../../../../../services/types";
 import { toggleSelectionFn } from '../index';
@@ -12,7 +12,7 @@ import { toggleSelectionFn } from '../index';
 export default function EntryRenderer(props :{entry: Ticket, toggleSelection: toggleSelectionFn, selected: boolean}): JSX.Element {
   const {entry, toggleSelection, selected} = props
 
-  const {val: broker, loading, error} = useLoadable(fetchBroker, String(entry.userId))
+  const {val: driver, loading, error} = useLoadable(fetchDriver, String(entry.userId))
 
   const handleEntryClick = () => {
     toggleSelection()
@@ -23,9 +23,9 @@ export default function EntryRenderer(props :{entry: Ticket, toggleSelection: to
     onClick={handleEntryClick}
     >
       <Typography variant="h6">{entry.consigneeAddress}</Typography>
-      <Typography color="gray">{broker ? 
-        `Request sent to ${broker.NAME}` : loading ? "loading..." :
-        error ?? "Error fetching broker name"
+      <Typography color="gray">{driver ? 
+        `Request sent to ${driver.NAME}` : loading ? "loading..." :
+        error ?? "Error fetching driver name"
       }</Typography>
     </Paper>
   );
