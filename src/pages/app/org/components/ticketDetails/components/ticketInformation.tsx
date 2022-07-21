@@ -177,7 +177,7 @@ export const TicketInformation = ({
     <FormWrap>
       <Grid container spacing={3}>
         <Grid container item xs={12}>
-          <Grid item xs={12} lg={6}>
+          <Grid item xs={12} lg={viewSize}>
             <InputContainer>
               <SpecialInputField>
                 <Typography sx={{ margin: "auto 0" }} variant="h3">
@@ -199,7 +199,7 @@ export const TicketInformation = ({
               </SpecialInputField>
             </InputContainer>
           </Grid>
-          <Grid item xs={12} lg={6}>
+          <Grid item xs={12} lg={viewSize}>
             <InputContainer>
               {newTicket == null && (
                 <SpecialInputField>
@@ -330,7 +330,7 @@ export const TicketInformation = ({
         </Grid>
         {(newTicket == null || newTicket == false) &&
           (deliveryReceipt == null || deliveryReceipt == false) && (
-            <Grid item lg={2}>
+            <Grid item xs={2} lg={2}>
               <ActionColumn>
                 <div
                   style={{
