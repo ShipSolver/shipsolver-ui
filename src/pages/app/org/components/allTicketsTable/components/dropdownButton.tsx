@@ -59,6 +59,8 @@ export const DropdownButton = ({
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
         endIcon={<ExpandMoreIcon />}
+        fullWidth
+        sx={{paddingTop: 0, paddingBottom: 0}}
       >
         <div>
           <Typography variant="subtitle1">{buttonText}</Typography>

@@ -24,7 +24,7 @@ import { Typography } from "@mui/material";
 export type AllTicketsTableRows = RowType<Keys>;
 
 export const AllTicketsTable = () => {
-  const { val, loading, error } = useLoadable(fetchAllTickets);
+  const { val, loading, error, triggerRefetch } = useLoadable(fetchAllTickets);
   const setAllDrivers = useSetRecoilState(allDriversAtom);
   const [headerRows, setHeaderRows] = useState<HeaderRowType<Keys>>();
 
@@ -91,7 +91,7 @@ export const AllTicketsTable = () => {
         <TicketTable headerRow={headerRows} rows={rowsToDisplay} />
       )}
       <Spacer height="24px" />
-      <FooterButtons />
+      <FooterButtons triggerRefetch={triggerRefetch}/>
     </Wrapper>
   );
 };

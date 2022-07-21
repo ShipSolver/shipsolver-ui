@@ -43,32 +43,36 @@ const getUnique = async (rowData: AllTicketsTableRows[], filter: Keys) => {
 export const createAllTicketTableHeaders = async (
   handleFilter: HandleFilterType,
   rowData: AllTicketsTableRows[]
-): Promise<[string[], HeaderRowType<Keys>]> => {
+): Promise<[{username: string, userId: string}[], HeaderRowType<Keys>]> => {
   const [
     FIRST_PARTY_OPTIONS,
     CONSIGNEE_NAMES_OPTIONS,
     CONSIGNEE_ADDRESSES_OPTIONS,
     SHIPPER_NAMES_OPTIONS,
-    DRIVER_NAMES_OPTIONS,
+    BARCODE_OPTIONS,
+    DRIVER_NAMES_OPTIONS_BASE,
   ] = await Promise.all([
     getUnique(rowData, "firstParty"),
     getUnique(rowData, "consigneeName"),
     getUnique(rowData, "consigneeAddress"),
     getUnique(rowData, "shipper"),
+    getUnique(rowData, "barcodeNumber"),
     fetchAllDrivers(),
   ]);
 
+  const DRIVER_NAMES_OPTIONS = DRIVER_NAMES_OPTIONS_BASE.map(({ username }: any) => username);
+
   return [
-    DRIVER_NAMES_OPTIONS,
+    DRIVER_NAMES_OPTIONS_BASE,
     {
       date: {
         label: "Date",
-        filterLabel: "Filter Date range",
+        filterLabel: "Filter",
         filterContent: <DateRangeFilter handleFilter={handleFilter} />,
       },
       status: {
         label: "Status",
-        filterLabel: "Filter Status type",
+        filterLabel: "Filter",
         filterContent: (
           <CheckboxFilter
             handleFilter={handleFilter}
@@ -79,7 +83,7 @@ export const createAllTicketTableHeaders = async (
       },
       firstParty: {
         label: "First Party",
-        filterLabel: "Filter First Party",
+        filterLabel: "Filter",
         filterContent: (
           <CheckboxFilter
             handleFilter={handleFilter}
@@ -90,7 +94,7 @@ export const createAllTicketTableHeaders = async (
       },
       consigneeName: {
         label: "Consignee Name",
-        filterLabel: "Filter Consignee Names",
+        filterLabel: "Filter",
         filterContent: (
           <CheckboxFilter
             handleFilter={handleFilter}
@@ -101,7 +105,7 @@ export const createAllTicketTableHeaders = async (
       },
       consigneeAddress: {
         label: "Consignee Address",
-        filterLabel: "Filter Consignee Addresses",
+        filterLabel: "Filter",
         filterContent: (
           <CheckboxFilter
             handleFilter={handleFilter}
@@ -112,7 +116,7 @@ export const createAllTicketTableHeaders = async (
       },
       lastAssigned: {
         label: "Last Assigned Driver",
-        filterLabel: "Filter Driver",
+        filterLabel: "Filter",
         filterContent: (
           <CheckboxFilter
             handleFilter={handleFilter}
@@ -123,10 +127,18 @@ export const createAllTicketTableHeaders = async (
       },
       barcodeNumber: {
         label: "Barcode",
+        filterLabel: "Filter",
+        filterContent: (
+          <CheckboxFilter
+            handleFilter={handleFilter}
+            options={BARCODE_OPTIONS}
+            filterKey="barcodeNumber"
+          />
+        ),
       },
       shipper: {
         label: "Shipper",
-        filterLabel: "Filter Shipper",
+        filterLabel: "Filter",
         filterContent: (
           <CheckboxFilter
             handleFilter={handleFilter}
@@ -137,7 +149,7 @@ export const createAllTicketTableHeaders = async (
       },
       pickup: {
         label: "Pickup",
-        filterLabel: "Filter by pickup status",
+        filterLabel: "Filter",
         filterContent: (
           <CheckboxFilter
             handleFilter={handleFilter}

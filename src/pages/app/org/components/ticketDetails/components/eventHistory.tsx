@@ -39,5 +39,5 @@ export const EventHistory = ({ events }: EventHistoryProps) => {
     )
   );
 
-  return <CardColumn title="Event History" cardContents={eventHistoryCards} />;
+  return <CardColumn title="Edits" cardContents={eventHistoryCards} />;
 };

@@ -21,9 +21,9 @@ const ButtonLabels = {
   export: "Export",
 };
 
-interface FooterButtonsProps {}
+interface FooterButtonsProps { triggerRefetch: () => void}
 
-export const FooterButtons = (props: FooterButtonsProps) => {
+export const FooterButtons = ({triggerRefetch}: FooterButtonsProps) => {
   const navigate = useNavigate();
   const singleRowSelected = useRecoilValue(singleRowSelectedAtom);
 
@@ -50,6 +50,7 @@ export const FooterButtons = (props: FooterButtonsProps) => {
         disabled={!multiRowSelected}
         ticketIDs={ticketIDs}
         buttonText={ButtonLabels.assignToDriver}
+        triggerRefetch={triggerRefetch}
       />
       <Button variant="contained" disabled={!multiRowSelected}>
         {ButtonLabels.export}
