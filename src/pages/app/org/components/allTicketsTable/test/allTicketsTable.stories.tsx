@@ -6,7 +6,7 @@ import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
 import { RecoilRoot } from "recoil";
-import StoryBookThemeProvider from "../../../../tests/storybookThemeProvider";
+import StoryBookThemeProvider from "../../../../../../utils/storybookThemeProvider";
 
 export default {
   title: "AllTicketsTable",

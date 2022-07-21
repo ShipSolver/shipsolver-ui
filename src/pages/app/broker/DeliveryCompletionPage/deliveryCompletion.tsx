@@ -7,8 +7,8 @@ import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import TextField from '@mui/material/TextField';
 
-import OuterBlueDivBox from "../components/outerBlueDivBox";
-import InnerWhiteDivBox from "../components/innerWhiteDivBox";
+import OuterBlueDivBox from "../../driver/components/outerBlueDivBox";
+import InnerWhiteDivBox from "../../driver/components/innerWhiteDivBox";
 import MediumButton from "./components/mediumButton";
 import Divider from '@mui/material/Divider';
 
