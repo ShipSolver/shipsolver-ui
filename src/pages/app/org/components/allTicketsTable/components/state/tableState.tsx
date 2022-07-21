@@ -15,7 +15,7 @@ export const multiRowSelectedAtom = atom<boolean>({
   default: false,
 });
 
-export const allDriversAtom = atom<string[]>({
+export const allDriversAtom = atom<{username: string, userId: string}[]>({
   key: "allDrivers",
   default: [],
 });

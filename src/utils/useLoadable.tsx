@@ -6,8 +6,14 @@ export default function useLoadable<
   const [val, setVal] = useState<Awaited<ReturnType<fn>> | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [trigger, setTrigger] = useState<boolean>(false);
+
+  const triggerRefetch = () => {
+    setTrigger((prev) => !prev);
+  };
 
   useEffect(() => {
+    setLoading(true);
     fetcher(...args)
       .then((val) => {
         setVal(val);
@@ -17,11 +23,12 @@ export default function useLoadable<
         setError(e.toString());
         setLoading(false);
       });
-  }, []);
+  }, [trigger]);
 
   return {
     val: val as Awaited<ReturnType<fn>> | null,
     loading: loading as boolean,
     error: error as string | null,
+    triggerRefetch,
   };
 }
