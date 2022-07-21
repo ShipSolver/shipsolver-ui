@@ -1,22 +1,22 @@
-import React, { useState } from "react";
+import React from "react";
 import { useRecoilValue } from "recoil";
 
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
+import { AssignToDriverModal } from "./assignToDriverModal";
 import {
   singleRowSelectedAtom,
   multiRowSelectedAtom,
 } from "./state/tableState";
 
- import { selectedTicketIdAtom,
-} from "./state/tableState";
+import { selectedTicketIdsAtom } from "./state/tableState";
 
 const ButtonLabels = {
   ticketDetails: "View Ticket Details",
   pod: "Review PODs",
   enterIntoInventory: "Re-enter into inventory",
-  assignToBroker: "Assign to broker",
+  assignToDriver: "Assign to driver",
   delete: "Delete ticket(s)",
   export: "Export",
 };
@@ -29,11 +29,15 @@ export const FooterButtons = (props: FooterButtonsProps) => {
 
   const multiRowSelected = useRecoilValue(multiRowSelectedAtom);
 
-  const ticketID = useRecoilValue(selectedTicketIdAtom);
+  const ticketIDs = useRecoilValue(selectedTicketIdsAtom);
 
   return (
     <ButtonWrapper>
-      <Button variant="contained" disabled={!singleRowSelected} onClick={() => navigate(`/ticket-details/${ticketID}`)}>
+      <Button
+        variant="contained"
+        disabled={!singleRowSelected}
+        onClick={() => navigate(`/ticket-details/${ticketIDs[0]}`)}
+      >
         {ButtonLabels.ticketDetails}
       </Button>
       <Button variant="contained" disabled={!singleRowSelected}>
@@ -42,9 +46,11 @@ export const FooterButtons = (props: FooterButtonsProps) => {
       <Button variant="contained" disabled={!multiRowSelected}>
         {ButtonLabels.enterIntoInventory}
       </Button>
-      <Button variant="contained" disabled={!multiRowSelected}>
-        {ButtonLabels.assignToBroker}
-      </Button>
+      <AssignToDriverModal
+        disabled={!multiRowSelected}
+        ticketIDs={ticketIDs}
+        buttonText={ButtonLabels.assignToDriver}
+      />
       <Button variant="contained" disabled={!multiRowSelected}>
         {ButtonLabels.export}
       </Button>
