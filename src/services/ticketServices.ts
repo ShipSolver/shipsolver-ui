@@ -59,7 +59,7 @@ export const fetchAllTickets = async () => {
         timestamp,
         consigneeAddress,
         consigneeName,
-        ticketStatus
+        ticketStatus,
       }: any) => ({
         date: moment(new Date(timestamp)).format(DateFormat),
         status: ticketStatus.currentStatus,
@@ -74,7 +74,7 @@ export const fetchAllTickets = async () => {
       })
     );
 
-    return data.slice(0,25);
+    return data.slice(0, 25);
   } catch (e) {
     console.error(e);
     throw e;
@@ -148,21 +148,14 @@ export const fetchTicket = async (ticketId: string) => {
 
 export const fetchMilestones = async (ticketId: string) => {
   try {
-    const response: any = await axios.get(
-      `/api/creationmilestones/${ticketId}`,
-      {
-        withCredentials: false,
-      }
-    );
+    const response: any = await axios.get(`/api/milestones/${ticketId}`, {
+      withCredentials: false,
+    });
 
-    const { newStatus, createdAt } = response.data[0];
-
-    const data = {
-      description: newStatus,
-      dateAndTime: new Date(createdAt),
-    };
-
-    return data;
+    return response.data.map(({ description, timestamp }: any) => ({
+      description,
+      dateAndTime: new Date(timestamp),
+    }));
   } catch (e) {
     console.error(e);
     throw e;

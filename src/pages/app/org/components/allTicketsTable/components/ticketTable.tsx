@@ -51,6 +51,17 @@ export const TicketTable = <T extends string>({
       : {}
   );
 
+  useEffect(() => {
+    if (rows) {
+      setSelected(
+        Object.values(rows).reduce(
+          (selected, row) => ({ ...selected, [row.ticketId]: false }),
+          {}
+        )
+      );
+    }
+  }, [rows]);
+
   const filterButton = useRef<HTMLElement>(null);
   const [topStyle, setTopStyle] = useState<number | undefined>();
 
@@ -123,7 +134,7 @@ export const TicketTable = <T extends string>({
         <TableRow key={i} hover selected={selected[row.ticketId]}>
           <TableCell padding="checkbox">
             <Checkbox
-              checked={selected[row.ticketId]}
+              checked={selected[row.ticketId] ?? false}
               onClick={() => handleSingleClick(row.ticketId)}
             />
           </TableCell>
@@ -154,19 +165,16 @@ export const TicketTable = <T extends string>({
     } else if (numSelected === 1) {
       setSingleRowSelected(true);
       setMultiRowSelected(true);
-
-
     } else if (numSelected > 1) {
       setSingleRowSelected(false);
       setMultiRowSelected(true);
     }
 
-          // Figure out which tickets were selected
-          const rowIds = Object.entries(selected)
-          .filter(([key, val]) => val === true)
-          .map(([key, val]) => key);
-        setSelectedTicketIds(rowIds);
-
+    // Figure out which tickets were selected
+    const rowIds = Object.entries(selected)
+      .filter(([key, val]) => val === true)
+      .map(([key, val]) => key);
+    setSelectedTicketIds(rowIds);
 
     //Checks off select all if all rows are selected individually
     if (rows && numSelected === rows.length) {

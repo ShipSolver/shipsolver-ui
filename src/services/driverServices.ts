@@ -22,21 +22,39 @@ export const fetchDriver = (driverID: string) => {
   return mockServerDriverFetch();
 };
 
-
-export const fetchAllDrivers = async() => {
+export const fetchAllDrivers = async () => {
   try {
     const response: any = await axios.get("/api/driver/", {
       withCredentials: false,
     });
 
-    return response.data.slice(0, 10).map(({firstName, lastName}: any) => firstName + " " + lastName);
+    return response.data
+      .slice(0, 10)
+      .map(({ username, userId }: any) => ({username, userId}));
   } catch (e) {
     console.error(e);
     throw e;
   }
 };
 
-
-export const assignToDriver = async(ticketIDs: string[], driverID: string) => {
-  console.log("sent")
-}
+export const assignToDriver = async (ticketIDs: string[], driverID: string) => {
+  try {
+    const response: any = await Promise.all(
+      ticketIDs.map((ticketId) =>
+        axios.post("/api/milestones/AssignmentMilestones", {
+          withCredentials: false,
+          data: {
+            ticketId,
+            oldStatus: "checked_into_inventory",
+            newStatus: "assigned",
+            assignedByUserId: "761909011",
+            assignedToUserId: driverID,
+          },
+        })
+      )
+    );
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
+};
