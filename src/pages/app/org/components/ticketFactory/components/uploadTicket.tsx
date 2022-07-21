@@ -3,13 +3,22 @@ import Paper from "../../../../../components/roundedPaper";
 import Brand from "../../../../../../ShipSolverBrand";
 import { styled } from "@mui/material/styles";
 import { useDropzone } from "react-dropzone";
-import { Button } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import { RefetchLoader } from "./refetchLoader";
+import { PDFViewer } from "./pdfViewer";
+import { TicketInformation } from "../../ticketDetails/components";
+import { PDFViewAtom, surveyViewAtom, pageNumAtom } from "./state/viewState";
+import { useRecoilValue } from "recoil";
+import { TestTicket } from "../test/testData";
 
 export const UploadTicket = () => {
   const [flowStage, setFlowStage] = useState<number>(1);
 
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+
+  const PDFView = useRecoilValue(PDFViewAtom);
+  const surveyView = useRecoilValue(surveyViewAtom);
+  const pageNum = useRecoilValue(pageNumAtom);
 
   const onDrop = (acceptedFiles: File[]) => setUploadedFile(acceptedFiles[0]);
 
@@ -64,11 +73,26 @@ export const UploadTicket = () => {
   }
 
   return (
-    <TealBackground>
-      <DropZoneInner>
-        <div>Data Extracted</div>
-      </DropZoneInner>
-    </TealBackground>
+    // <TealBackground>
+    //   <DropZoneInner>
+    //     <div>Data Extracted</div>
+    //     <PDFViewer />
+    //   </DropZoneInner>
+    // </TealBackground>
+    <Grid container xs={12}>
+      <Grid item xs={12} md={PDFView}>
+        <PDFViewer maxLength={TestTicket.length} />
+      </Grid>
+      <Grid item xs={12} md={surveyView}>
+        <TealBackground>
+          <TicketInformation
+            data={TestTicket[pageNum - 1]}
+            newTicket={false}
+            deliveryReceipt
+          />
+        </TealBackground>
+      </Grid>
+    </Grid>
   );
 };
 

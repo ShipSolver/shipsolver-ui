@@ -20,6 +20,6 @@ export const Primary: ComponentStory<typeof TicketFactory> = () => (
 
 export const PDFViewerStory: ComponentStory<typeof PDFViewer> = () => (
   <StorybookThemeProvider>
-    <PDFViewer />
+    <PDFViewer maxLength={3} />
   </StorybookThemeProvider>
 );
