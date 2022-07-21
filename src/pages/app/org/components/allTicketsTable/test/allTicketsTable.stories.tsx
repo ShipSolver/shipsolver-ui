@@ -1,5 +1,5 @@
 import { AllTicketsTable } from "..";
-import StorybookThemeProvider from "../../../../../../tests/storybookThemeProvider";
+import MockAppRoot from "../../../../../../utils/mockAppRoot";
 
 import React from "react";
 
@@ -13,9 +13,9 @@ export default {
 } as ComponentMeta<typeof AllTicketsTable>;
 
 export const Primary: ComponentStory<typeof AllTicketsTable> = () => (
-  <StorybookThemeProvider>
+  <MockAppRoot>
     <RecoilRoot>
       <AllTicketsTable />
     </RecoilRoot>
-  </StorybookThemeProvider>
+  </MockAppRoot>
 );

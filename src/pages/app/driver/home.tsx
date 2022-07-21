@@ -295,7 +295,25 @@ const Home = () => {
       </>
     ) : null;
 
-  return (
+  return currentTicket == null &&
+    assigned == null &&
+    completed == null &&
+    pickup == null ? (
+    <InnerBlueDivBox>
+      <Typography
+        variant="h1"
+        color="red"
+        sx={{
+          marginBottom: "calc(var(--ss-brand-spacing)*2)",
+        }}
+      >
+        Sorry! We couldn't find any tickets assigned to you
+      </Typography>
+      <Typography variant="h4" color="red">
+        Please ask your organization manager to assign some tickets to you
+      </Typography>
+    </InnerBlueDivBox>
+  ) : (
     <div>
       <OuterBlueDivBox>
         <Typography variant="h3" color="#000" align="center" padding="10px">
@@ -305,84 +323,70 @@ const Home = () => {
           {currentDelivery}
         </InnerWhiteDivBox>
       </OuterBlueDivBox>
-      <OuterBlueDivBox>
-        {assigned && (
-          <InnerBlueDivBox>
-            <Grid container justifyContent="space-between">
-              <Typography variant="h2" alignContent="left">
-                Assigned
-              </Typography>
-              <Typography variant="h2" alignContent="right">
-                {String(assigned.length)}
-              </Typography>
-            </Grid>
-            <Tickets
-              viewAllTickets={viewAllAssigned}
-              tickets={assigned}
-              status="assigned"
-              setViewAllTickets={setViewAllAssigned}
-              title="Assigned"
-              items={assigned.length}
-            ></Tickets>
-          </InnerBlueDivBox>
-        )}
-        {completed && (
-          <InnerBlueDivBox>
-            <Grid container justifyContent="space-between">
-              <Typography variant="h2" color="#000" alignContent="left">
-                Completed
-              </Typography>
-              <Typography variant="h2" color="#000" alignContent="right">
-                {String(completed.length)}
-              </Typography>
-            </Grid>
-            <Tickets
-              viewAllTickets={viewAllCompleted}
-              tickets={completed}
-              status="completed_delivery"
-              setViewAllTickets={setViewAllCompleted}
-              title="Completed"
-              items={completed.length}
-            ></Tickets>
-          </InnerBlueDivBox>
-        )}
-        {pickup && (
-          <InnerBlueDivBox>
-            <Grid container justifyContent="space-between">
-              <Typography variant="h2" color="#000" alignContent="left">
-                Requested Pickups
-              </Typography>
-              <Typography variant="h2" color="#000" alignContent="right">
-                {String(pickup.length)}
-              </Typography>
-            </Grid>
-            <Tickets
-              viewAllTickets={viewAllPickup}
-              tickets={pickup}
-              status="requested_pickup"
-              setViewAllTickets={setViewAllPickup}
-              title="Requested Pickups"
-              items={pickup.length}
-            ></Tickets>
-          </InnerBlueDivBox>
-        )}
-        {assigned == null && completed == null && pickup == null && (
-          <InnerBlueDivBox>
-            <Typography
-              variant="h1"
-              color="red"
-              sx={{
-                marginBottom: "calc(var(--ss-brand-spacing)*2)",
-              }}
-            >
-              Sorry! We couldn't find any tickets for your
-            </Typography>
-            <Typography variant="h4" color="red">
-              Please ask your organization manager to assign some tickets to you
-            </Typography>
-          </InnerBlueDivBox>
-        )}
-      </OuterBlueDivBox>
+      {(assigned != null || completed != null || pickup != null) && (
+        <OuterBlueDivBox>
+          {assigned && (
+            <InnerBlueDivBox style={{ maxHeight: "90vh" }}>
+              <Grid container justifyContent="space-between">
+                <Typography variant="h2" alignContent="left">
+                  Assigned
+                </Typography>
+                <Typography variant="h2" alignContent="right">
+                  {String(assigned.length)}
+                </Typography>
+              </Grid>
+              <Tickets
+                viewAllTickets={viewAllAssigned}
+                tickets={assigned}
+                status="assigned"
+                setViewAllTickets={setViewAllAssigned}
+                title="Assigned"
+                items={assigned.length}
+              ></Tickets>
+            </InnerBlueDivBox>
+          )}
+          {completed && (
+            <InnerBlueDivBox style={{ maxHeight: "90vh" }}>
+              <Grid container justifyContent="space-between">
+                <Typography variant="h2" color="#000" alignContent="left">
+                  Completed
+                </Typography>
+                <Typography variant="h2" color="#000" alignContent="right">
+                  {String(completed.length)}
+                </Typography>
+              </Grid>
+              <Tickets
+                viewAllTickets={viewAllCompleted}
+                tickets={completed}
+                status="completed_delivery"
+                setViewAllTickets={setViewAllCompleted}
+                title="Completed"
+                items={completed.length}
+              ></Tickets>
+            </InnerBlueDivBox>
+          )}
+          {pickup && (
+            <InnerBlueDivBox style={{ maxHeight: "90vh" }}>
+              <Grid container justifyContent="space-between">
+                <Typography variant="h2" color="#000" alignContent="left">
+                  Requested Pickups
+                </Typography>
+                <Typography variant="h2" color="#000" alignContent="right">
+                  {String(pickup.length)}
+                </Typography>
+              </Grid>
+              <Tickets
+                viewAllTickets={viewAllPickup}
+                tickets={pickup}
+                status="requested_pickup"
+                setViewAllTickets={setViewAllPickup}
+                title="Requested Pickups"
+                items={pickup.length}
+              ></Tickets>
+            </InnerBlueDivBox>
+          )}
+        </OuterBlueDivBox>
+      )}
       <LargeButton
         label="Complete Shift"
         action={() => handleCompleteShift()}
