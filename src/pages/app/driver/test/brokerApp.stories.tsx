@@ -1,6 +1,6 @@
 import Home from "../home";
 
-import { DeliveryCompletion } from "../deliveryCompletion";
+import { DeliveryCompletion } from "../DeliveryCompletionPage/deliveryCompletion";
 import { IncompleteDelivery } from "../incompleteDelivery";
 
 import React from "react";

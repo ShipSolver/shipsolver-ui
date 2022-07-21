@@ -313,7 +313,7 @@ const Home = () => {
         </OuterBlueDivBox>
 
         <OuterBlueDivBox>
-          <InnerBlueDivBox>
+          <InnerBlueDivBox style={{ maxHeight: "90vh" }}>
             <Grid container justifyContent="space-between">
               <Typography variant="h2" alignContent="left">
                 Assigned
@@ -332,7 +332,7 @@ const Home = () => {
             ></Tickets>
           </InnerBlueDivBox>
 
-          <InnerBlueDivBox>
+          <InnerBlueDivBox style={{ maxHeight: "90vh" }}>
             <Grid container justifyContent="space-between">
               <Typography variant="h2" color="#000" alignContent="left">
                 Completed
@@ -351,7 +351,7 @@ const Home = () => {
             ></Tickets>
           </InnerBlueDivBox>
 
-          <InnerBlueDivBox>
+          <InnerBlueDivBox style={{ maxHeight: "90vh" }}>
             <Grid container justifyContent="space-between">
               <Typography variant="h2" color="#000" alignContent="left">
                 Requested Pickups
