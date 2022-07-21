@@ -12,7 +12,7 @@ import ScrollReset from "./utils/ScrollReset";
 
 import AuthenticationRoutes from "./pages/authentication";
 import AppRoutes from "./pages/app/org";
-import BrokerRoutes from "./pages/app/broker";
+import DriverRoutes from "./pages/app/driver";
 import RouteProtector from "./utils/routeProtector";
 
 function App() {
@@ -33,7 +33,7 @@ function App() {
                 <RouteProtector
                   defaultRoute={<AppRoutes/>}
                   extraRoutes={{
-                    driver: <BrokerRoutes/>
+                    driver: <DriverRoutes/>
                   }}
                   />
               }

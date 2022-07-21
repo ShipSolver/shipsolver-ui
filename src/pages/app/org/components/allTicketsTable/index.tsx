@@ -6,8 +6,10 @@ import Loading from "../../../../components/loading";
 import { TicketSearch } from "./components/ticketSearch";
 import { FooterButtons } from "./components/footerButtons";
 import { TicketTable } from "./components/ticketTable";
+import { useSetRecoilState } from "recoil";
+import { allDriversAtom } from "./components/state/tableState";
 import moment from "moment";
-import { DateFormat } from './components/filters/dateRangeFilter';
+import { DateFormat } from "./components/filters/dateRangeFilter";
 import {
   createAllTicketTableHeaders,
   Keys,
@@ -18,12 +20,12 @@ import { fetchAllTickets } from "../../../../../services/ticketServices";
 
 import { RowType } from "./components/ticketTable";
 import { Typography } from "@mui/material";
-import { isUndefined } from "util";
 
 export type AllTicketsTableRows = RowType<Keys>;
 
 export const AllTicketsTable = () => {
   const { val, loading, error } = useLoadable(fetchAllTickets);
+  const setAllDrivers = useSetRecoilState(allDriversAtom);
   const [headerRows, setHeaderRows] = useState<HeaderRowType<Keys>>();
 
   const [searchedRows, setSearchedRows] = useState<AllTicketsTableRows[]>();
@@ -68,7 +70,8 @@ export const AllTicketsTable = () => {
   useEffect(() => {
     if (val != null) {
       createAllTicketTableHeaders(filterData, val).then((data) => {
-        setHeaderRows(data);
+        setAllDrivers(data[0]);
+        setHeaderRows(data[1]);
         setFilteredRows(val);
         setSearchedRows(val);
         setRowsToDisplay(val);
