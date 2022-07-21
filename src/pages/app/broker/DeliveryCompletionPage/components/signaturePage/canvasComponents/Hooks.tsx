@@ -9,10 +9,10 @@ export type point = {
 };
 
 export type onDrawFn = (
-    ctx: CanvasRenderingContext2D | null, 
-    point: point | null, 
-    prevPoint: point | null
-  ) => void
+  ctx: CanvasRenderingContext2D | null,
+  point: point | null,
+  prevPoint: point | null
+) => void;
 
 function getPrevious<T>(ref: React.MutableRefObject<T>, value: T): T {
   const prev = ref.current;
@@ -20,7 +20,11 @@ function getPrevious<T>(ref: React.MutableRefObject<T>, value: T): T {
   return prev;
 }
 
-export function useOnDraw(onDraw: onDrawFn, onSaveImage?: (imageURL: string) => void, onSaveBitData?: (bitData: ImageData | undefined) => void) {
+export function useOnDraw(
+  onDraw: onDrawFn,
+  onSaveImage?: (imageURL: string) => void,
+  onSaveBitData?: (bitData: ImageData | undefined) => void
+) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const isDrawingRef = useRef(false);
   const prevPointRef = useRef<point | null>(null);
@@ -34,11 +38,11 @@ export function useOnDraw(onDraw: onDrawFn, onSaveImage?: (imageURL: string) => 
     isDrawingRef.current = true;
   }
 
-  function onClear(){
+  function onClear() {
     const canvas = canvasRef.current;
-    if(canvas != null){
-        const context = canvas.getContext('2d');
-        context?.clearRect(0, 0, canvas.width, canvas.height);
+    if (canvas != null) {
+      const context = canvas.getContext("2d");
+      context?.clearRect(0, 0, canvas.width, canvas.height);
     }
   }
 
@@ -68,39 +72,44 @@ export function useOnDraw(onDraw: onDrawFn, onSaveImage?: (imageURL: string) => 
         var touch = e.touches[0];
         var mouseEvent = new MouseEvent("mousemove", {
           clientX: touch.clientX,
-          clientY: touch.clientY
+          clientY: touch.clientY,
         });
         mouseMoveListener(mouseEvent);
-      }
+      };
 
       mouseMoveListenerRef.current = mouseMoveListener;
       window.addEventListener("mousemove", mouseMoveListener);
 
       touchMoveListenerRef.current = touchMoveListener;
-      window.addEventListener("touchmove", touchMoveListener)
+      window.addEventListener("touchmove", touchMoveListener);
     }
 
     function initMouseUpListener() {
       const mouseUpListener = () => {
         isDrawingRef.current = false;
         prevPointRef.current = null;
-        if(canvasRef !== null && canvasRef.current !== null) {
+        if (canvasRef !== null && canvasRef.current !== null) {
           const boundingRect = canvasRef.current.getBoundingClientRect();
           const image = canvasRef.current.toDataURL("image/png");
           onSaveImage?.(image);
-          
+
           var sizeWidth = (60 * window.innerWidth) / 100,
             sizeHeight = (50 * window.innerHeight) / 100;
 
           const ctx = canvasRef.current.getContext("2d");
-          const bitData: ImageData | undefined =ctx?.getImageData(boundingRect.left, boundingRect.top, sizeWidth, sizeHeight)
-          onSaveBitData?.(bitData)
+          const bitData: ImageData | undefined = ctx?.getImageData(
+            boundingRect.left,
+            boundingRect.top,
+            sizeWidth,
+            sizeHeight
+          );
+          onSaveBitData?.(bitData);
         }
       };
 
       const touchEndListener = () => {
-        mouseUpListener()
-      }
+        mouseUpListener();
+      };
 
       mouseUpListenerRef.current = mouseUpListener;
       window.addEventListener("mouseup", mouseUpListener);
@@ -112,7 +121,7 @@ export function useOnDraw(onDraw: onDrawFn, onSaveImage?: (imageURL: string) => 
     function cleanup() {
       if (mouseMoveListenerRef.current) {
         window.removeEventListener("mousemove", mouseMoveListenerRef.current);
-      } 
+      }
       if (touchMoveListenerRef.current) {
         window.removeEventListener("touchmove", touchMoveListenerRef.current);
       }
@@ -132,6 +141,6 @@ export function useOnDraw(onDraw: onDrawFn, onSaveImage?: (imageURL: string) => 
   return {
     canvasRef,
     triggerOnDraw,
-    onClear
+    onClear,
   };
 }
