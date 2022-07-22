@@ -81,6 +81,22 @@ export const fetchAllTickets = async () => {
   }
 };
 
+export const fetchTickets = async (ticketIDs: string[]) => {
+  try {
+    const response: { data: any }[] = await Promise.all(
+      ticketIDs.map((ticketID) =>
+        axios.get(`/api/ticket/${ticketID}`, {
+          withCredentials: false,
+        })
+      )
+    );
+
+    return response.map(({ data }) => data);
+  } catch (e) {
+    console.error(e);
+  }
+};
+
 export const fetchTicket = async (ticketId: string) => {
   try {
     const response: any = await axios.get(`/api/ticket/${ticketId}`, {
