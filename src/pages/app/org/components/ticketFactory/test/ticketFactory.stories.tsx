@@ -1,4 +1,5 @@
 import { TicketFactory } from "../ticketFactory";
+import { PDFViewer } from "../components/pdfViewer";
 
 import React from "react";
 
@@ -14,5 +15,11 @@ export default {
 export const Primary: ComponentStory<typeof TicketFactory> = () => (
   <StorybookThemeProvider>
     <TicketFactory />
+  </StorybookThemeProvider>
+);
+
+export const PDFViewerStory: ComponentStory<typeof PDFViewer> = () => (
+  <StorybookThemeProvider>
+    <PDFViewer maxLength={3} />
   </StorybookThemeProvider>
 );

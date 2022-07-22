@@ -23,7 +23,7 @@ export const TicketFactory = () => {
         <UploadTicket />
       ) : (
         <TealBackground>
-          <TicketInformation newTicket />
+          <TicketInformation newTicket={true} deliveryReceipt={false} />
         </TealBackground>
       )}
     </>
