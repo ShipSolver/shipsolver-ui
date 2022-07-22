@@ -244,6 +244,10 @@ const Home = () => {
   const completed = completedInfo?.tickets;
   const pickup = pickupInfo?.tickets;
 
+  const assignedCount = assignedInfo?.count;
+  const completedCount = completedInfo?.count;
+  const pickupCount = pickupInfo?.count;
+
   const { val: currentTicket } = useLoadable(fetchOrgCurrentDelivery);
 
   const [closeDelivery, setCloseDelivery] = useState<boolean>(false);
@@ -253,7 +257,7 @@ const Home = () => {
 
   const handleCompleteShift = () => {
     if (assigned != null) {
-      if (assigned.length > 0) {
+      if (assignedCount ?? 0 > 0) {
         navigate("shift-complete");
       } else {
         alert("No outstanding deliveries left to mark");
@@ -338,7 +342,7 @@ const Home = () => {
                   Assigned
                 </Typography>
                 <Typography variant="h2" alignContent="right">
-                  {String(assigned.length)}
+                  {String(assignedCount ?? 0)}
                 </Typography>
               </Grid>
               <Tickets
@@ -347,7 +351,7 @@ const Home = () => {
                 status="assigned"
                 setViewAllTickets={setViewAllAssigned}
                 title="Assigned"
-                items={assigned.length}
+                items={assignedCount ?? 0}
               ></Tickets>
             </InnerBlueDivBox>
           )}
@@ -358,7 +362,7 @@ const Home = () => {
                   Completed
                 </Typography>
                 <Typography variant="h2" color="#000" alignContent="right">
-                  {String(completed.length)}
+                  {String(completedCount ?? 0)}
                 </Typography>
               </Grid>
               <Tickets
@@ -367,7 +371,7 @@ const Home = () => {
                 status="completed_delivery"
                 setViewAllTickets={setViewAllCompleted}
                 title="Completed"
-                items={completed.length}
+                items={completedCount ?? 0}
               ></Tickets>
             </InnerBlueDivBox>
           )}
@@ -378,7 +382,7 @@ const Home = () => {
                   Requested Pickups
                 </Typography>
                 <Typography variant="h2" color="#000" alignContent="right">
-                  {String(pickup.length)}
+                  {String(pickupCount ?? 0)}
                 </Typography>
               </Grid>
               <Tickets
@@ -387,7 +391,7 @@ const Home = () => {
                 status="requested_pickup"
                 setViewAllTickets={setViewAllPickup}
                 title="Requested Pickups"
-                items={pickup.length}
+                items={pickupCount ?? 0}
               ></Tickets>
             </InnerBlueDivBox>
           )}
