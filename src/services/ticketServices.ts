@@ -162,24 +162,32 @@ export const fetchTicket = async (ticketId: string) => {
   }
 };
 
-export const changeDeliveryStatus = async (
-  ticketId: string,
+export type changeTicketStatusRes = {
+  error: string | null;
+};
+
+export const changeTicketStatus = async (
+  ticketId: number,
+  assignedToUserId: number,
   oldStatus: TicketMilestone,
   newStatus: TicketMilestone
 ) => {
+  let error = null;
   try {
-    const response: any = await axios.get(`/api/milestones/${ticketId}`, {
-      withCredentials: false,
+    await axios.post("/api/milestones/AssignmentMilestones", {
+      ticketId,
+      assignedToUserId,
+      assignedByUserId: assignedToUserId,
+      oldStatus: oldStatus.split(".")[1],
+      newStatus: newStatus.split(".")[1],
     });
-
-    return response.data.map(({ description, timestamp }: any) => ({
-      description,
-      dateAndTime: new Date(timestamp),
-    }));
-  } catch (e) {
-    console.error(e);
-    throw e;
+  } catch (e: any) {
+    error =
+      e?.toString?.() ??
+      `Error changing milestone status for ticket ${ticketId} from ${oldStatus} to ${newStatus}`;
   }
+
+  return { error };
 };
 
 export const fetchMilestones = async (ticketId: string) => {

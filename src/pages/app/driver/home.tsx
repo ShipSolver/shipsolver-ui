@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 
 import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
@@ -13,15 +13,27 @@ import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 
-import { fetchTicketsForStatus } from "../../../services/ticketServices";
+import {
+  changeTicketStatus,
+  fetchTicketsForStatus,
+} from "../../../services/ticketServices";
 
-import { Ticket, TicketStatus } from "../../../services/types";
+import { Ticket, TicketMilestone, TicketStatus } from "../../../services/types";
 
 import useLoadable from "../../../utils/useLoadable";
 
 import { styled } from "@mui/material/styles";
 import { CompletionPopUp } from "./components/completionPopUp";
 import { useNavigate } from "react-router-dom";
+
+type ChangeStatusModalButtonProps = {
+  title: string;
+  changeStatusFn: (
+    ticketId: number,
+    assignedToUserId: number,
+    oldStatus: TicketMilestone
+  ) => void;
+};
 
 export const CurrentDelivery = ({
   currentTicket,
@@ -78,6 +90,118 @@ export const CurrentDelivery = ({
   ) : null;
 };
 
+const PickupModalContent = ({
+  ticket,
+  onClose,
+}: {
+  ticket: Ticket;
+  onClose: () => void;
+}) => {
+  const navigate = useNavigate();
+  const timestamp = Number(ticket.timestamp);
+  const date = new Date(timestamp);
+  return (
+    <>
+      <Typography variant="h2" align="center" padding="40px">
+        Accept Pickup?
+      </Typography>
+
+      <InnerWhiteDivBox style={{ padding: 25, marginBottom: 30 }}>
+        <Typography variant="h4" marginBottom="5px">
+          <b>{ticket.consigneeAddress}</b>
+        </Typography>
+        <Typography color="#00000099">
+          Weight: {String(ticket.weight)}
+        </Typography>
+        <Typography color="#00000099">
+          REF#: {String(ticket.houseReferenceNumber)}
+        </Typography>
+        <Typography color="#00000099">
+          First Party: {ticket.customer}
+        </Typography>
+        <Typography color="#00000099">
+          Date/Time Assigned:{" "}
+          {date.toLocaleString("en-CA", {
+            month: "long",
+            day: "numeric",
+            year: "numeric",
+          })}{" "}
+          {date.toLocaleTimeString("en-CA", {
+            hour: "numeric",
+            minute: "2-digit",
+          })}
+          <Typography color="#00000099">
+            Barcode: {String(ticket.barcodeNumber)}
+          </Typography>
+        </Typography>
+      </InnerWhiteDivBox>
+      <LargeButton label="Accept" action={() => alert("action")} />
+      <LargeButton label="Decline" action={() => navigate("/decline-pickup")} />
+      <LargeButton label="Go Back" action={() => onClose()} />
+    </>
+  );
+};
+
+const TicketPopUpContent = ({
+  ticket,
+  onClose,
+  changeStatusButtons,
+}: {
+  ticket: Ticket;
+  onClose: () => void;
+  changeStatusButtons?: ChangeStatusModalButtonProps[];
+}) => {
+  const timestamp = Number(ticket.timestamp);
+  const date = new Date(timestamp);
+  return (
+    <>
+      <Typography variant="h3" align="center">
+        <b>{ticket.consigneeAddress}</b>
+      </Typography>
+      <Typography variant="h3" align="center">
+        REF#: {String(ticket.houseReferenceNumber)}
+      </Typography>
+      <InnerBlueDivBox>
+        <Typography color="#00000099">
+          Weight: {String(ticket.weight)}
+        </Typography>
+        <Typography color="#00000099">
+          First Party: {ticket.customer.name}
+        </Typography>
+        <Typography color="#00000099">
+          Date/Time Assigned:{" "}
+          {date.toLocaleString("en-CA", {
+            month: "long",
+            day: "numeric",
+            year: "numeric",
+          })}{" "}
+          {date.toLocaleTimeString("en-CA", {
+            hour: "numeric",
+            minute: "2-digit",
+          })}
+        </Typography>
+      </InnerBlueDivBox>
+      {changeStatusButtons &&
+        changeStatusButtons.map((buttonProps: ChangeStatusModalButtonProps) => (
+          <Button
+            variant="contained"
+            onClick={() => {
+              buttonProps.changeStatusFn(
+                ticket.ticketId,
+                ticket.ticketStatus.assignedTo,
+                ticket.ticketStatus.currentStatus ??
+                  "Creation_Milestone_Status.ticket_created"
+              );
+              onClose();
+            }}
+          >
+            {buttonProps.title}
+          </Button>
+        ))}
+    </>
+  );
+};
+
 export const Tickets = ({
   viewAllTickets,
   tickets,
@@ -85,6 +209,7 @@ export const Tickets = ({
   setViewAllTickets,
   title,
   items,
+  changeStatusButtons,
 }: {
   viewAllTickets: boolean;
   tickets: Ticket[] | null;
@@ -92,6 +217,7 @@ export const Tickets = ({
   setViewAllTickets: React.Dispatch<React.SetStateAction<boolean>>;
   title: string;
   items: number;
+  changeStatusButtons?: ChangeStatusModalButtonProps[];
 }) => {
   const navigate = useNavigate();
   const [openTicketModal, setOpenTicketModal] = useState<boolean>(false);
@@ -101,89 +227,6 @@ export const Tickets = ({
 
   const handleViewAllOpen = () => setViewAllTickets(true);
   const handleViewAllClose = () => setViewAllTickets(false);
-
-  const TicketPopUpContent = (ticket: Ticket) => {
-    const timestamp = Number(ticket.timestamp);
-    const date = new Date(timestamp);
-    return (
-      <>
-        <Typography variant="h3" align="center">
-          <b>{ticket.consigneeAddress}</b>
-        </Typography>
-        <Typography variant="h3" align="center">
-          REF#: {String(ticket.houseReferenceNumber)}
-        </Typography>
-        <InnerBlueDivBox>
-          <Typography color="#00000099">
-            Weight: {String(ticket.weight)}
-          </Typography>
-          <Typography color="#00000099">
-            First Party: {ticket.customer.name}
-          </Typography>
-          <Typography color="#00000099">
-            Date/Time Assigned:{" "}
-            {date.toLocaleString("en-CA", {
-              month: "long",
-              day: "numeric",
-              year: "numeric",
-            })}{" "}
-            {date.toLocaleTimeString("en-CA", {
-              hour: "numeric",
-              minute: "2-digit",
-            })}
-          </Typography>
-        </InnerBlueDivBox>
-      </>
-    );
-  };
-
-  const PickupModal = (ticket: Ticket) => {
-    const timestamp = Number(ticket.timestamp);
-    const date = new Date(timestamp);
-    return (
-      <>
-        <Typography variant="h2" align="center" padding="40px">
-          Accept Pickup?
-        </Typography>
-
-        <InnerWhiteDivBox style={{ padding: 25, marginBottom: 30 }}>
-          <Typography variant="h4" marginBottom="5px">
-            <b>{ticket.consigneeAddress}</b>
-          </Typography>
-          <Typography color="#00000099">
-            Weight: {String(ticket.weight)}
-          </Typography>
-          <Typography color="#00000099">
-            REF#: {String(ticket.houseReferenceNumber)}
-          </Typography>
-          <Typography color="#00000099">
-            First Party: {ticket.customer}
-          </Typography>
-          <Typography color="#00000099">
-            Date/Time Assigned:{" "}
-            {date.toLocaleString("en-CA", {
-              month: "long",
-              day: "numeric",
-              year: "numeric",
-            })}{" "}
-            {date.toLocaleTimeString("en-CA", {
-              hour: "numeric",
-              minute: "2-digit",
-            })}
-            <Typography color="#00000099">
-              Barcode: {String(ticket.barcodeNumber)}
-            </Typography>
-          </Typography>
-        </InnerWhiteDivBox>
-        <LargeButton label="Accept" action={() => alert("action")} />
-        <LargeButton
-          label="Decline"
-          action={() => navigate("/decline-pickup")}
-        />
-        <LargeButton label="Go Back" action={() => handleTicketModalClose()} />
-      </>
-    );
-  };
 
   const isPickupStatus =
     status === "unassigned_pickup" ||
@@ -210,17 +253,25 @@ export const Tickets = ({
           </Typography>
           <Typography>REF#: {String(ticket.houseReferenceNumber)}</Typography>
         </TicketCard>
-        {isPickupStatus && (
+        {isPickupStatus ? (
           <Modal open={openTicketModal} onClose={handleTicketModalClose}>
             <ModalContainer style={{ paddingBottom: 10 }}>
-              {PickupModal(ticket)}
+              <PickupModalContent
+                ticket={ticket}
+                onClose={handleTicketModalClose}
+              />
             </ModalContainer>
           </Modal>
-        )}
-        {!isPickupStatus && (
+        ) : (
           <Modal open={openTicketModal} onClose={handleTicketModalClose}>
             <Fade in={openTicketModal}>
-              <ModalContainer>{TicketPopUpContent(ticket)}</ModalContainer>
+              <ModalContainer>
+                <TicketPopUpContent
+                  ticket={ticket}
+                  onClose={handleTicketModalClose}
+                  changeStatusButtons={changeStatusButtons}
+                />
+              </ModalContainer>
             </Fade>
           </Modal>
         )}
@@ -276,19 +327,23 @@ const Home = () => {
 
   const [viewAllPickup, setViewAllPickup] = useState<boolean>(false);
 
-  const { val: currentDeliveries } = useLoadable(
-    fetchTicketsForStatus,
-    "in_transit"
-  );
-  const { val: assignedInfo } = useLoadable(fetchTicketsForStatus, "assigned");
-  const { val: completedInfo } = useLoadable(
-    fetchTicketsForStatus,
-    "completed_delivery"
-  );
-  const { val: pickupInfo } = useLoadable(
+  const { val: currentDeliveries, triggerRefetch: triggerRefetchInTransit } =
+    useLoadable(fetchTicketsForStatus, "in_transit");
+  const { val: assignedInfo, triggerRefetch: triggerRefetchAssigned } =
+    useLoadable(fetchTicketsForStatus, "assigned");
+  const { val: completedInfo, triggerRefetch: triggerRefetchCompleted } =
+    useLoadable(fetchTicketsForStatus, "completed_delivery");
+  const { val: pickupInfo, triggerRefetch: triggerRefetchPickup } = useLoadable(
     fetchTicketsForStatus,
     "requested_pickup"
   );
+
+  const refetchFunctions = [
+    triggerRefetchInTransit,
+    triggerRefetchAssigned,
+    triggerRefetchCompleted,
+    triggerRefetchPickup,
+  ];
 
   const currentTicket =
     currentDeliveries?.tickets.length ?? -1 > 0
@@ -312,6 +367,27 @@ const Home = () => {
       }
     }
   };
+
+  const markTicketAsCompleted = useCallback(
+    async (
+      ticketId: number,
+      assignedToUserId: number,
+      oldStatus: TicketMilestone
+    ) => {
+      const { error } = await changeTicketStatus(
+        ticketId,
+        assignedToUserId,
+        oldStatus,
+        "Delivery_Milestone_Status.in_transit"
+      );
+      if (error != null) {
+        //TODO error dialog
+      } else {
+        refetchFunctions.forEach((fn) => fn());
+      }
+    },
+    []
+  );
 
   return currentTicket == null &&
     assigned == null &&
@@ -364,6 +440,12 @@ const Home = () => {
                   setViewAllTickets={setViewAllAssigned}
                   title="Assigned"
                   items={assignedCount ?? 0}
+                  changeStatusButtons={[
+                    {
+                      title: "Mark ticket as in transit",
+                      changeStatusFn: markTicketAsCompleted,
+                    },
+                  ]}
                 ></Tickets>
               </InnerBlueDivBox>
             )}
