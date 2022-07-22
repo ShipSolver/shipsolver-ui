@@ -1,5 +1,5 @@
 import React from "react";
-import { files, pictureFile } from "../index";
+import { Files, PictureFile } from "../index";
 import { FileItem, PictureFileItem } from "./FileItem";
 
 type removeFileFn = (filename: string) => void;
@@ -8,7 +8,7 @@ export const PODFileList = ({
   files,
   removeFile,
 }: {
-  files: files[];
+  files: Files[];
   removeFile: removeFileFn;
 }) => {
   const deleteFileHandler = (_name: string) => {
@@ -29,7 +29,7 @@ export const PictureFileList = ({
   files,
   removeFile,
 }: {
-  files: pictureFile[];
+  files: PictureFile[];
   removeFile: removeFileFn;
 }) => {
   const deleteFileHandler = (_name: string) => {

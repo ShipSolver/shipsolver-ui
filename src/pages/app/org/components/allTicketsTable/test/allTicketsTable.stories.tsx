@@ -5,8 +5,6 @@ import React from "react";
 
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import { RecoilRoot } from "recoil";
-
 export default {
   title: "AllTicketsTable",
   component: AllTicketsTable,
@@ -14,8 +12,6 @@ export default {
 
 export const Primary: ComponentStory<typeof AllTicketsTable> = () => (
   <MockAppRoot>
-    <RecoilRoot>
-      <AllTicketsTable />
-    </RecoilRoot>
+    <AllTicketsTable />
   </MockAppRoot>
 );

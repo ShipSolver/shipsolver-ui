@@ -8,7 +8,7 @@ import MediumButton from "../mediumButton";
 import Canvas from "./canvasComponents/Canvas";
 import { FileUpload } from "./Components/fileUpload";
 
-import { files } from "../../index";
+import { Files } from "../../index";
 
 type removeFileFn = (filename: string) => void;
 
@@ -21,8 +21,8 @@ export const SignaturePopUp = ({
 }: {
   modal: boolean;
   setModal: React.Dispatch<React.SetStateAction<boolean>>;
-  files: files[];
-  setFiles: React.Dispatch<React.SetStateAction<files[]>>;
+  files: Files[];
+  setFiles: React.Dispatch<React.SetStateAction<Files[]>>;
   removeFiles: removeFileFn;
 }) => {
   const [customerName, setCustomerName] = useState<string>("");

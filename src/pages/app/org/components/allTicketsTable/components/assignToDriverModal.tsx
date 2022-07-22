@@ -5,7 +5,7 @@ import { styled } from "@mui/material/styles";
 import { Spacer } from "../../../../../components/spacer";
 import { allDriversAtom } from "./state/tableState";
 import { useRecoilValue } from "recoil";
-import { LoadingButton } from "@mui/lab";
+import Loading from "../../../../../components/loading";
 
 interface AssignToDriverModalProps {
   disabled: boolean;
@@ -82,7 +82,7 @@ export const AssignToDriverModal = ({
             disabled={!selectedDriver}
           >
             {loading ? (
-              <LoadingButton loading={true} />
+              <Loading />
             ) : selectedDriver ? (
               `Assign to ${selectedDriver}`
             ) : (

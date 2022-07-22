@@ -5,7 +5,7 @@ import React from "react";
 
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import StorybookThemeProvider from "../../../../../../tests/storybookThemeProvider";
+import StorybookThemeProvider from "../../../../../../utils/mockAppRoot";
 import { TestEventHistory } from "./testData";
 
 export default {

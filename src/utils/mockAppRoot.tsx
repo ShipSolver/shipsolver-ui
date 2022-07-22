@@ -1,20 +1,20 @@
 import React from "react";
 import { ThemeProvider } from "@mui/material";
 import CssBaseline from "@mui/material/ScopedCssBaseline";
-import { RecoilRoot } from "recoil";
-import { BrowserRouter } from "react-router-dom";
 import ShipSolverBrand from "../ShipSolverBrand";
 import "../index.css";
+import { RecoilRoot } from "recoil";
+import { BrowserRouter } from "react-router-dom";
 
 export default function MockAppRoot({ children }: { children: JSX.Element }) {
   return (
-    <RecoilRoot>
+    <ThemeProvider theme={ShipSolverBrand}>
       <BrowserRouter>
-        <ThemeProvider theme={ShipSolverBrand}>
+        <RecoilRoot>
           <CssBaseline />
           {children}
-        </ThemeProvider>
+        </RecoilRoot>
       </BrowserRouter>
-    </RecoilRoot>
+    </ThemeProvider>
   );
 }

@@ -2,18 +2,18 @@ import React from "react";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import ClearIcon from "@mui/icons-material/Clear";
-import { files, pictureFile } from "../index";
+import { Files, PictureFile } from "../index";
 
 import "./FileItem.css";
 
-type deleteFileFn = (filename: string) => void;
+type DeleteFileFn = (filename: string) => void;
 
 export function FileItem({
   file,
   deleteFile,
 }: {
-  file: files;
-  deleteFile: deleteFileFn;
+  file: Files;
+  deleteFile: DeleteFileFn;
 }) {
   return (
     <>
@@ -33,8 +33,8 @@ export function PictureFileItem({
   file,
   deleteFile,
 }: {
-  file: pictureFile;
-  deleteFile: deleteFileFn;
+  file: PictureFile;
+  deleteFile: DeleteFileFn;
 }) {
   return (
     <>

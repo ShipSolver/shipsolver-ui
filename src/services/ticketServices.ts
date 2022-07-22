@@ -74,10 +74,26 @@ export const fetchAllTickets = async () => {
       })
     );
 
-    return data.slice(0, 25);
+    return data;
   } catch (e) {
     console.error(e);
     throw e;
+  }
+};
+
+export const fetchTickets = async (ticketIDs: string[]) => {
+  try {
+    const response: { data: any }[] = await Promise.all(
+      ticketIDs.map((ticketID) =>
+        axios.get(`/api/ticket/${ticketID}`, {
+          withCredentials: false,
+        })
+      )
+    );
+
+    return response.map(({ data }) => data);
+  } catch (e) {
+    console.error(e);
   }
 };
 
@@ -197,6 +213,27 @@ export const createTicket = async ({
       withCredentials: false,
       data: payload,
     });
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
+};
+
+export const checkIntoInventory = async (ticketIDs: string[]) => {
+  try {
+    const response: any = await Promise.all(
+      ticketIDs.map((ticketId) =>
+        axios.post("/api/milestones/InventoryMilestones", {
+          withCredentials: false,
+          data: {
+            ticketId,
+            oldStatus: "DeliveryTicketCreated ",
+            newStatus: "checked_into_inventory",
+            approvedByUserId: "761909011",
+          },
+        })
+      )
+    );
   } catch (e) {
     console.error(e);
     throw e;

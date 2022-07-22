@@ -3,7 +3,7 @@ import React from "react";
 import Box from "@mui/material/Box";
 import MediumButton from "../../mediumButton";
 
-import { files } from "../../../index";
+import { Files } from "../../../index";
 
 type removeFileFn = (filename: string) => void;
 
@@ -15,8 +15,8 @@ export const FileUpload = ({
   modal,
   setModal,
 }: {
-  signFiles: files[];
-  setSignFiles: React.Dispatch<React.SetStateAction<files[]>>;
+  signFiles: Files[];
+  setSignFiles: React.Dispatch<React.SetStateAction<Files[]>>;
   removeFile: removeFileFn;
   name: string;
   modal: boolean;
@@ -36,7 +36,7 @@ export const FileUpload = ({
     signFileName = signFileName + "-" + date;
     signFileName = signFileName + ".jpg";
     console.log(signFileName);
-    const file: files = {
+    const file: Files = {
       name: signFileName,
     };
     setSignFiles([...signFiles, file]);

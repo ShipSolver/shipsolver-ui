@@ -43,8 +43,8 @@ export const CompletionPopUp = ({
       sx={{
         position: "relative",
         top: "50%",
-        left: "30%",
-        transform: "translate(-30%, -50%)",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
         width: "90vw",
         border: "2px solid #000",
         boxShadow: 24,

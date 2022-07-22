@@ -13,27 +13,27 @@ import Divider from "@mui/material/Divider";
 
 import { SignaturePopUp } from "./components/signaturePage/signaturePopUp";
 
-export type files = {
+export type Files = {
   name: string;
 };
 
-export type pictureFile = {
+export type PictureFile = {
   name: string;
   imgSrc: string;
 };
 
 export function DeliveryCompletion() {
-  const [podFiles, setPoDFiles] = useState<Array<files>>([
+  const [podFiles, setPoDFiles] = useState<Array<Files>>([
     {
       name: "POD-Rahul-2022-02-18-15-41-54.jpg",
     },
   ]);
-  const [signFiles, setSignFiles] = useState<Array<files>>([
+  const [signFiles, setSignFiles] = useState<Array<Files>>([
     {
       name: "signature-Am-Sith-2022-02-18-15-41-54.jpg",
     },
   ]);
-  const [pictureFiles, setPictureFiles] = useState<Array<pictureFile>>([
+  const [pictureFiles, setPictureFiles] = useState<Array<PictureFile>>([
     {
       name: "placeholder",
       imgSrc: "https://via.placeholder.com/170x120",
