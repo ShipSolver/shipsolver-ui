@@ -239,19 +239,24 @@ export const markTicketAsDelivered = async ({
   picture1Link,
   PODLink,
   customerSignatureLink,
+  userId,
 }: {
   ticketId: string;
   picture1Link?: string;
   PODLink: string;
   customerSignatureLink: string;
+  userId: string;
 }) => {
   let error: string | null = null;
   try {
     await axios.post("/api/milestones/DeliveryMilestones", {
       ticketId,
       picture1Link,
+      picture2Link: "",
+      picture3Link: "",
       PODLink,
       customerSignatureLink,
+      completingUserId: userId,
     });
   } catch (e: any) {
     error = e?.toString?.() || `Error marking delivery ${ticketId} as complete`;

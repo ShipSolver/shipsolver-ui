@@ -30,7 +30,7 @@ export const fetchAllDrivers = async () => {
 
     return response.data
       .slice(0, 10)
-      .map(({ username, userId }: any) => ({username, userId}));
+      .map(({ username, userId }: any) => ({ username, userId }));
   } catch (e) {
     console.error(e);
     throw e;
@@ -38,8 +38,9 @@ export const fetchAllDrivers = async () => {
 };
 
 export const assignToDriver = async (ticketIDs: string[], driverID: string) => {
+  let error: string | null = null;
   try {
-    const response: any = await Promise.all(
+    await Promise.all(
       ticketIDs.map((ticketId) =>
         axios.post("/api/milestones/AssignmentMilestones", {
           withCredentials: false,
@@ -47,14 +48,14 @@ export const assignToDriver = async (ticketIDs: string[], driverID: string) => {
             ticketId,
             oldStatus: "checked_into_inventory",
             newStatus: "assigned",
-            assignedByUserId: "761909011",
+            assignedByUserId: 761909011,
             assignedToUserId: driverID,
           },
         })
       )
     );
-  } catch (e) {
-    console.error(e);
-    throw e;
+  } catch (e: any) {
+    error = e?.toString?.() || `error assigned ticket to driver: ${driverID}`;
   }
+  return { error };
 };

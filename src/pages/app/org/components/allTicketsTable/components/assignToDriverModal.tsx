@@ -18,7 +18,7 @@ export const AssignToDriverModal = ({
   disabled,
   buttonText,
   ticketIDs,
-  triggerRefetch
+  triggerRefetch,
 }: AssignToDriverModalProps) => {
   const [open, setOpen] = useState<boolean>(false);
   const [selectedDriver, setSelectedDriver] = useState<string | null>(null);
@@ -31,9 +31,13 @@ export const AssignToDriverModal = ({
         ({ username }) => username === selectedDriver
       )[0].userId;
       setLoading(true);
-      await assignToDriver(ticketIDs, driverId);
+      const { error } = await assignToDriver(ticketIDs, driverId);
       setLoading(false);
-      triggerRefetch();
+      if (error != null) {
+        triggerRefetch();
+      } else {
+        alert(error);
+      }
       setOpen(false);
     }
   };
@@ -63,32 +67,34 @@ export const AssignToDriverModal = ({
         >
           <Typography variant="h3">Select a Driver</Typography>
           <Spacer height="24px" />
-          <Container>
-            {drivers.map(({ username: driver }) => (
-              <FlexDiv>
-                <Checkbox
-                  checked={driver === selectedDriver}
-                  onClick={() => setSelectedDriver(driver)}
-                />
-                {driver}
-              </FlexDiv>
-            ))}
-          </Container>
+          {loading ? (
+            <Loading />
+          ) : (
+            <>
+              <Container>
+                {drivers.map(({ username: driver }) => (
+                  <FlexDiv>
+                    <Checkbox
+                      checked={driver === selectedDriver}
+                      onClick={() => setSelectedDriver(driver)}
+                    />
+                    {driver}
+                  </FlexDiv>
+                ))}
+              </Container>
 
-          <Button
-            onClick={handleClick}
-            sx={{ width: "100%" }}
-            variant="outlined"
-            disabled={!selectedDriver}
-          >
-            {loading ? (
-              <Loading />
-            ) : selectedDriver ? (
-              `Assign to ${selectedDriver}`
-            ) : (
-              "Please select a driver"
-            )}
-          </Button>
+              <Button
+                onClick={handleClick}
+                sx={{ width: "100%" }}
+                variant="outlined"
+                disabled={!selectedDriver}
+              >
+                {selectedDriver
+                  ? `Assign to ${selectedDriver}`
+                  : "Please select a driver"}
+              </Button>
+            </>
+          )}
         </Box>
       </Modal>
     </>

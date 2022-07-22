@@ -154,6 +154,7 @@ export default function DeliveryCompletion() {
       }
 
       const { error } = await markTicketAsDelivered({
+        userId: String(completionDelivery.ticketStatus.assignedTo),
         ticketId: String(completionDelivery.ticketId),
         picture1Link: s3LinkExtraPicture ?? undefined,
         customerSignatureLink: s3LinkSignature,
