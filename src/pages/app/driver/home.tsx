@@ -25,6 +25,8 @@ import useLoadable from "../../../utils/useLoadable";
 import { styled } from "@mui/material/styles";
 import { CompletionPopUp } from "./components/completionPopUp";
 import { useNavigate } from "react-router-dom";
+import { useSetRecoilState } from "recoil";
+import { DeliveryCompletionTicketAtom } from "../../../state/deliveryCompletion";
 
 type ChangeStatusModalButtonProps = {
   title: string;
@@ -41,27 +43,21 @@ export const CurrentDelivery = ({
   currentTicket: Ticket | null;
 }) => {
   const [closeDelivery, setCloseDelivery] = useState<boolean>(false);
+  const setCompletionDelivery = useSetRecoilState(DeliveryCompletionTicketAtom);
   const navigate = useNavigate();
 
   const handleCloseDeliveryOpen = () => setCloseDelivery(true);
 
   const handleSubmit = async (deliveryMarkedCompleted: boolean) => {
     if (currentTicket != null) {
-      const { error } = await changeTicketStatus(
-        currentTicket.ticketId,
-        currentTicket.ticketStatus.assignedTo,
-        currentTicket.ticketStatus.currentStatus,
-        "Delivery_Milestone_Status.completed_delivery"
-      );
-      if (error == null) {
-        if (deliveryMarkedCompleted) {
-          navigate("complete-delivery");
-        } else {
-          navigate("incomplete-delivery");
-        }
+      if (deliveryMarkedCompleted) {
+        setCompletionDelivery(currentTicket);
+        navigate("complete-delivery");
       } else {
-        //TODO error dialog
+        navigate("incomplete-delivery");
       }
+    } else {
+      alert("no ticket to be submitted");
     }
   };
 
@@ -400,7 +396,7 @@ const Home = () => {
         "Delivery_Milestone_Status.in_transit"
       );
       if (error != null) {
-        //TODO error dialog
+        alert(error);
       } else {
         refetchFunctions.forEach((fn) => fn());
       }

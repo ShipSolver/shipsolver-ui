@@ -166,7 +166,12 @@ export type changeTicketStatusRes = {
   error: string | null;
 };
 
-export const changeTicketStatus = async (
+export const changeTicketStatus: (
+  ticketId: number,
+  assignedToUserId: number,
+  oldStatus: TicketMilestone,
+  newStatus: TicketMilestone
+) => Promise<changeTicketStatusRes> = async (
   ticketId: number,
   assignedToUserId: number,
   oldStatus: TicketMilestone,
@@ -204,6 +209,55 @@ export const fetchMilestones = async (ticketId: string) => {
     console.error(e);
     throw e;
   }
+};
+
+export const uploadTicketImage = async ({ file }: { file: File }) => {
+  let error: string | null = null;
+  let s3Link: string | null = null;
+
+  const formData = new FormData();
+  formData.append("upload[file]", file, file.name);
+  try {
+    const { data } = await axios.post("/api/blob_storage/", formData, {
+      headers: {
+        ...axios.defaults.headers.common,
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    const { link } = data;
+    s3Link = link;
+  } catch (e: any) {
+    error = e?.toString?.() || `Error uploading image ${file.name}`;
+  }
+
+  return { error, s3Link };
+};
+
+export const markTicketAsDelivered = async ({
+  ticketId,
+  picture1Link,
+  PODLink,
+  customerSignatureLink,
+}: {
+  ticketId: string;
+  picture1Link?: string;
+  PODLink: string;
+  customerSignatureLink: string;
+}) => {
+  let error: string | null = null;
+  try {
+    await axios.post("/api/milestones/DeliveryMilestones", {
+      ticketId,
+      picture1Link,
+      PODLink,
+      customerSignatureLink,
+    });
+  } catch (e: any) {
+    error = e?.toString?.() || `Error marking delivery ${ticketId} as complete`;
+  }
+
+  return { error };
 };
 
 export const createTicket = async ({

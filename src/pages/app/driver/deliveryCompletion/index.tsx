@@ -17,6 +17,13 @@ import Divider from "@mui/material/Divider";
 
 import { SignaturePopUp } from "./components/signaturePage/signaturePopUp";
 import { CameraCapture } from "./components/cameraAccess/webcamAccess";
+import { useRecoilValue } from "recoil";
+import { DeliveryCompletionTicketAtom } from "../../../../state/deliveryCompletion";
+import {
+  markTicketAsDelivered,
+  uploadTicketImage,
+} from "../../../../services/ticketServices";
+import { Navigate, useNavigate } from "react-router-dom";
 
 export type pictureFile = {
   name: string;
@@ -29,10 +36,33 @@ export type signatureFile = {
   blobData: ImageData;
 };
 
+const blobToFile: (blob: Blob, fileName: string) => File = (
+  blob: Blob,
+  fileName: string
+) => {
+  return new File([blob], fileName, { lastModified: new Date().getTime() });
+};
+
+const imageSrcToFile = async (imageSrc: string, fileName: string) => {
+  try {
+    console.log({ imageSrc, fileName });
+    const blob = await fetch(imageSrc).then((r) => r.blob());
+    return blobToFile(blob, fileName);
+  } catch (e: any) {
+    alert(e?.toString?.() || "Error saving blob image");
+  }
+
+  return null;
+};
+
 export default function DeliveryCompletion() {
+  const navigate = useNavigate();
+
   const [podFiles, setPoDFiles] = useState<Array<pictureFile>>([]);
   const [signFiles, setSignFiles] = useState<Array<signatureFile>>([]);
   const [pictureFiles, setPictureFiles] = useState<Array<pictureFile>>([]);
+
+  const completionDelivery = useRecoilValue(DeliveryCompletionTicketAtom);
 
   const removePoDFile = useCallback(
     (filename: string) => {
@@ -68,7 +98,80 @@ export default function DeliveryCompletion() {
   const handleClosePODCameraOpen = () => setClosePODCamera(true);
   const handleClosePODCameraClose = () => setClosePODCamera(false);
 
-  return (
+  const handleSubmit = async () => {
+    if (
+      completionDelivery != null &&
+      podFiles.length > 0 &&
+      signFiles.length > 0
+    ) {
+      const podFileItem = podFiles[0];
+      const podFile = await imageSrcToFile(
+        podFileItem.imgSrc,
+        podFileItem.name
+      );
+      if (podFile == null) return;
+      const { s3Link: s3LinkPoD, error: errorPoD } = await uploadTicketImage({
+        file: podFile,
+      });
+
+      if (errorPoD || s3LinkPoD == null) {
+        alert(errorPoD);
+        return;
+      }
+      const signFileItem = signFiles[0];
+      const signFile = await imageSrcToFile(
+        signFileItem.imgSrc,
+        signFileItem.name
+      );
+      if (signFile == null) return;
+      const { s3Link: s3LinkSignature, error: errorSignature } =
+        await uploadTicketImage({
+          file: signFile,
+        });
+
+      if (errorSignature || s3LinkSignature == null) {
+        alert(errorSignature);
+        return;
+      }
+      let s3LinkExtraPicture: string | null = null;
+      let s3LinkError: string | null = null;
+
+      if (pictureFiles.length > 0) {
+        const extraPictureFileItem = pictureFiles[0];
+        const extraPictureFile = await imageSrcToFile(
+          extraPictureFileItem.imgSrc,
+          extraPictureFileItem.name
+        );
+        if (extraPictureFile == null) return;
+        const { s3Link: s3LinkExtraPictureTemp, error: errorExtraPicture } =
+          await uploadTicketImage({
+            file: extraPictureFile,
+          });
+        s3LinkExtraPicture = s3LinkExtraPictureTemp;
+        if (errorExtraPicture) {
+          alert(errorExtraPicture);
+        }
+      }
+
+      const { error } = await markTicketAsDelivered({
+        ticketId: String(completionDelivery.ticketId),
+        picture1Link: s3LinkExtraPicture ?? undefined,
+        customerSignatureLink: s3LinkSignature,
+        PODLink: s3LinkPoD,
+      });
+      if (error == null) {
+        navigate("/");
+      } else {
+        alert(error);
+      }
+    } else {
+      alert("No delivery to be submitted or pictures not taken");
+    }
+  };
+
+  return completionDelivery == null ? (
+    <Navigate to="/" />
+  ) : (
     <div>
       <OuterBlueDivBox>
         <Typography variant="h2" color="#000" align="center" padding="0px">
@@ -155,7 +258,9 @@ export default function DeliveryCompletion() {
         </InnerWhiteDivBox>
       </OuterBlueDivBox>
       <Box textAlign="center">
-        <MediumButton variant="contained">Submit</MediumButton>
+        <MediumButton variant="contained" onClick={handleSubmit}>
+          Submit
+        </MediumButton>
         <MediumButton variant="contained">Cancel</MediumButton>
       </Box>
     </div>

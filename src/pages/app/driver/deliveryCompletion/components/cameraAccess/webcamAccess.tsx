@@ -29,10 +29,10 @@ export const CameraCapture = ({
 }) => {
   const [isPictureTaken, setIsPictureTaken] = useState(false);
 
-  const webcamRef = useRef<any>(null);
+  const webcamRef = useRef<Webcam>(null);
   const webcamPhotoRef = useRef<string>("");
   const capture = React.useCallback(() => {
-    webcamPhotoRef.current = webcamRef.current?.getScreenshot();
+    webcamPhotoRef.current = webcamRef.current?.getScreenshot() ?? "";
     setIsPictureTaken(true);
   }, [webcamRef]);
 
