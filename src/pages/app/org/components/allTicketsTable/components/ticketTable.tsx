@@ -1,14 +1,25 @@
 import React, { useEffect, useMemo, useState, useRef } from "react";
 import { useSetRecoilState } from "recoil";
-import Table from "@mui/material/Table";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import TableCell from "@mui/material/TableCell";
-import Paper from "@mui/material/Paper";
-import TableBody from "@mui/material/TableBody";
+import {
+  Table,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TableCell,
+  Paper,
+  TableBody,
+  Checkbox,
+  TablePagination,
+  TableFooter,
+  Box,
+  IconButton,
+} from "@mui/material";
+
 import { DropdownButton } from "./dropdownButton";
-import Checkbox from "@mui/material/Checkbox";
+import FirstPageIcon from "@mui/icons-material/FirstPage";
+import LastPageIcon from "@mui/icons-material/LastPage";
+import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
+import { useTheme } from "@mui/material/styles";
 import {
   singleRowSelectedAtom,
   multiRowSelectedAtom,
@@ -42,6 +53,9 @@ export const TicketTable = <T extends string>({
 
   const setMultiRowSelected = useSetRecoilState(multiRowSelectedAtom);
 
+  const [rowsPerPage, setRowsPerPage] = useState<number>(10);
+  const [page, setPage] = useState<number>(0);
+
   const [selected, setSelected] = useState<{ [key: string]: boolean }>(
     rows
       ? Object.values(rows).reduce(
@@ -72,6 +86,20 @@ export const TicketTable = <T extends string>({
   const [allSelected, setAllSelected] = useState<boolean>(false);
 
   const [numSelected, setNumSelected] = useState<number>(0);
+
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  const handleChangePage = (
+    event: React.MouseEvent<HTMLButtonElement> | null,
+    newPage: number
+  ) => {
+    setPage(newPage);
+  };
 
   const handleSingleClick = (ticketID: string) => {
     if (selected[ticketID] === false) {
@@ -130,31 +158,33 @@ export const TicketTable = <T extends string>({
 
   const tableRows = useMemo(
     () =>
-      rows?.map((row, i) => (
-        <TableRow key={i} hover selected={selected[row.ticketId]}>
-          <TableCell padding="checkbox">
-            <Checkbox
-              checked={selected[row.ticketId] ?? false}
-              onClick={() => handleSingleClick(row.ticketId)}
-            />
-          </TableCell>
-          {Object.entries(row).map(([key, val], i) => {
-            if (key === "ticketId") return null;
-            if (key === "pickup")
+      rows
+        ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+        .map((row, i) => (
+          <TableRow key={i} hover selected={selected[row.ticketId]}>
+            <TableCell padding="checkbox">
+              <Checkbox
+                checked={selected[row.ticketId] ?? false}
+                onClick={() => handleSingleClick(row.ticketId)}
+              />
+            </TableCell>
+            {Object.entries(row).map(([key, val], i) => {
+              if (key === "ticketId") return null;
+              if (key === "pickup")
+                return (
+                  <TableCell key={i} align="left">
+                    {val === "1" ? "Yes" : "No"}
+                  </TableCell>
+                );
               return (
                 <TableCell key={i} align="left">
-                  {val === "1" ? "Yes" : "No"}
+                  {val as any}
                 </TableCell>
               );
-            return (
-              <TableCell key={i} align="left">
-                {val as any}
-              </TableCell>
-            );
-          })}
-        </TableRow>
-      )),
-    [rows, selected]
+            })}
+          </TableRow>
+        )),
+    [rows, selected, page, rowsPerPage]
   );
 
   useEffect(() => {
@@ -186,37 +216,52 @@ export const TicketTable = <T extends string>({
 
   // #TODO sticky header
   return (
-    <TableContainer component={Paper} sx={{ height: "550px", top: "32px" }}>
-      <Table stickyHeader>
-        <colgroup>
-          <col width="5%" />
-          <col width="10%" />
-          {/* <col width="10%" />
+    <>
+      <TableContainer component={Paper} sx={{ height: "550px", top: "32px" }}>
+        <Table stickyHeader>
+          <colgroup>
+            <col width="5%" />
+            <col width="10%" />
+            {/* <col width="10%" />
           <col width="10%" /> */}
-          <col width="10%" />
-          <col width="15%" />
-          <col width="10%" />
-          <col width="15%" />
-          <col width="10%" />
-          <col width="5%" />
-        </colgroup>
-        <TableHead>
-          <TableRow>
-            <TableCell></TableCell>
-            {headerFilters}
-          </TableRow>
-          <TableRow>
-            <TableCell padding="checkbox" style={{ top: topStyle }}>
-              <Checkbox
-                checked={allSelected}
-                onClick={() => handleSelectAllClick(rows)}
-              />
-            </TableCell>
-            {headerLabels}
-          </TableRow>
-        </TableHead>
-        <TableBody>{tableRows}</TableBody>
-      </Table>
-    </TableContainer>
+            <col width="10%" />
+            <col width="15%" />
+            <col width="10%" />
+            <col width="15%" />
+            <col width="10%" />
+            <col width="5%" />
+          </colgroup>
+          <TableHead>
+            <TableRow>
+              <TableCell></TableCell>
+              {headerFilters}
+            </TableRow>
+            <TableRow>
+              <TableCell padding="checkbox" style={{ top: topStyle }}>
+                <Checkbox
+                  checked={allSelected}
+                  onClick={() => handleSelectAllClick(rows)}
+                />
+              </TableCell>
+              {headerLabels}
+            </TableRow>
+          </TableHead>
+          <TableBody>{tableRows}</TableBody>
+        </Table>
+      </TableContainer>
+      {rows && (
+        <Paper>
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={rows.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        </Paper>
+      )}
+    </>
   );
 };

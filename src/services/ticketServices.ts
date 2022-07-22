@@ -74,7 +74,7 @@ export const fetchAllTickets = async () => {
       })
     );
 
-    return data.slice(0, 25);
+    return data;
   } catch (e) {
     console.error(e);
     throw e;
