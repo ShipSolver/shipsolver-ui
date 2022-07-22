@@ -1,5 +1,9 @@
 import React, { useState, useCallback } from "react";
-import { PODFileList, PictureFileList } from "./components/FileLists";
+import {
+  PODFileList,
+  SignatureFileList,
+  PictureFileList,
+} from "./components/FileLists";
 
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
@@ -12,57 +16,57 @@ import MediumButton from "./components/mediumButton";
 import Divider from "@mui/material/Divider";
 
 import { SignaturePopUp } from "./components/signaturePage/signaturePopUp";
+import { CameraCapture } from "./components/cameraAccess/webcamAccess";
 
-export type Files = {
-  name: string;
-};
-
-export type PictureFile = {
+export type pictureFile = {
   name: string;
   imgSrc: string;
 };
 
-export function DeliveryCompletion() {
-  const [podFiles, setPoDFiles] = useState<Array<Files>>([
-    {
-      name: "POD-Rahul-2022-02-18-15-41-54.jpg",
-    },
-  ]);
-  const [signFiles, setSignFiles] = useState<Array<Files>>([
-    {
-      name: "signature-Am-Sith-2022-02-18-15-41-54.jpg",
-    },
-  ]);
-  const [pictureFiles, setPictureFiles] = useState<Array<PictureFile>>([
-    {
-      name: "placeholder",
-      imgSrc: "https://via.placeholder.com/170x120",
-    },
-  ]);
+export type signatureFile = {
+  name: string;
+  imgSrc: string;
+  blobData: ImageData;
+};
+
+export default function DeliveryCompletion() {
+  const [podFiles, setPoDFiles] = useState<Array<pictureFile>>([]);
+  const [signFiles, setSignFiles] = useState<Array<signatureFile>>([]);
+  const [pictureFiles, setPictureFiles] = useState<Array<pictureFile>>([]);
 
   const removePoDFile = useCallback(
     (filename: string) => {
       setPoDFiles(podFiles.filter((file) => file.name !== filename));
     },
-    [setPoDFiles]
+    [podFiles, setPoDFiles]
   );
   const removeSignFile = useCallback(
     (filename: string) => {
       setSignFiles(signFiles.filter((file) => file.name !== filename));
     },
-    [setSignFiles]
+    [signFiles, setSignFiles]
   );
   const removePictureFile = useCallback(
     (filename: string) => {
       setPictureFiles(pictureFiles.filter((file) => file.name !== filename));
     },
-    [setPictureFiles]
+    [pictureFiles, setPictureFiles]
   );
 
   const [closeSignature, setCloseSignature] = useState<boolean>(false);
 
   const handleCloseSignatureOpen = () => setCloseSignature(true);
   const handleCloseSignatureClose = () => setCloseSignature(false);
+
+  const [closeCamera, setCloseCamera] = useState<boolean>(false);
+
+  const handleCloseCameraOpen = () => setCloseCamera(true);
+  const handleCloseCameraClose = () => setCloseCamera(false);
+
+  const [closePODCamera, setClosePODCamera] = useState<boolean>(false);
+
+  const handleClosePODCameraOpen = () => setClosePODCamera(true);
+  const handleClosePODCameraClose = () => setClosePODCamera(false);
 
   return (
     <div>
@@ -80,8 +84,22 @@ export function DeliveryCompletion() {
             <PODFileList files={podFiles} removeFile={removePoDFile} />
           </Box>
           <Grid container justifyContent="center">
-            <MediumButton variant="contained">Add</MediumButton>
+            <MediumButton
+              onClick={handleClosePODCameraOpen}
+              variant="contained"
+            >
+              Add
+            </MediumButton>
           </Grid>
+          <Modal open={closePODCamera} onClose={handleClosePODCameraClose}>
+            <CameraCapture
+              modal={closePODCamera}
+              setModal={setClosePODCamera}
+              files={podFiles}
+              removeFiles={removePoDFile}
+              setFiles={setPoDFiles}
+            ></CameraCapture>
+          </Modal>
         </InnerWhiteDivBox>
         <InnerWhiteDivBox style={{ padding: 25 }}>
           <Typography variant="h4" align="center" padding="10px">
@@ -89,7 +107,7 @@ export function DeliveryCompletion() {
           </Typography>
           <Divider sx={{ borderBottomWidth: 2, bgcolor: "black" }} />
           <Box minHeight={"200px"}>
-            <PODFileList files={signFiles} removeFile={removeSignFile} />
+            <SignatureFileList files={signFiles} removeFile={removeSignFile} />
           </Box>
           <Grid container justifyContent="center">
             <MediumButton
@@ -121,8 +139,19 @@ export function DeliveryCompletion() {
             />
           </Box>
           <Grid container justifyContent="center">
-            <MediumButton variant="contained">Add</MediumButton>
+            <MediumButton onClick={handleCloseCameraOpen} variant="contained">
+              Add
+            </MediumButton>
           </Grid>
+          <Modal open={closeCamera} onClose={handleCloseCameraClose}>
+            <CameraCapture
+              modal={closeCamera}
+              setModal={setCloseCamera}
+              files={pictureFiles}
+              removeFiles={removePictureFile}
+              setFiles={setPictureFiles}
+            ></CameraCapture>
+          </Modal>
         </InnerWhiteDivBox>
       </OuterBlueDivBox>
       <Box textAlign="center">

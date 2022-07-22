@@ -1,27 +1,28 @@
-import React from "react";
+import React, { useRef } from "react";
+import { toPng } from "html-to-image";
 
 import Box from "@mui/material/Box";
 import MediumButton from "../../mediumButton";
 
-import { Files } from "../../../index";
+import { signatureFile } from "../../..";
+
+type SignFileUploadProps = {
+  signFiles: signatureFile[];
+  setSignFiles: React.Dispatch<React.SetStateAction<signatureFile[]>>;
+  removeFile: removeFileFn;
+  name: string;
+  imageSrc: string;
+  bitData: ImageData | undefined;
+  modal: boolean;
+  setModal: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
 type removeFileFn = (filename: string) => void;
 
-export const FileUpload = ({
-  signFiles,
-  setSignFiles,
-  removeFile,
-  name,
-  modal,
-  setModal,
-}: {
-  signFiles: Files[];
-  setSignFiles: React.Dispatch<React.SetStateAction<Files[]>>;
-  removeFile: removeFileFn;
-  name: string;
-  modal: boolean;
-  setModal: React.Dispatch<React.SetStateAction<boolean>>;
-}) => {
+export const FileUpload = (props: SignFileUploadProps) => {
+  const { signFiles, setSignFiles, bitData, name, imageSrc, modal, setModal } =
+    props;
+
   function uploadHandler() {
     const nameArry: string[] = name.split(" ");
     let signFileName: string = "signature";
@@ -35,13 +36,20 @@ export const FileUpload = ({
     }-${current.getDate()}-${current.getHours()}-${current.getMinutes()}-${current.getSeconds()}`;
     signFileName = signFileName + "-" + date;
     signFileName = signFileName + ".jpg";
-    console.log(signFileName);
-    const file: Files = {
-      name: signFileName,
-    };
-    setSignFiles([...signFiles, file]);
-    setModal(!modal);
-    // upload to backend
+
+    if (bitData) {
+      const file: signatureFile = {
+        name: signFileName,
+        imgSrc: imageSrc,
+        blobData: bitData,
+      };
+
+      setSignFiles([...signFiles, file]);
+      setModal(!modal);
+      // upload to backend
+    } else {
+      console.log("Blob data is undefined");
+    }
   }
 
   return (

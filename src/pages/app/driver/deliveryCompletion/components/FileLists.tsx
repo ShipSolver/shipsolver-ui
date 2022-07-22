@@ -1,6 +1,6 @@
 import React from "react";
-import { Files, PictureFile } from "../index";
-import { FileItem, PictureFileItem } from "./FileItem";
+import { signatureFile, pictureFile } from "..";
+import { FileItem, PictureFileItem, SignatureFileItem } from "./FileItem";
 
 type removeFileFn = (filename: string) => void;
 
@@ -8,7 +8,7 @@ export const PODFileList = ({
   files,
   removeFile,
 }: {
-  files: Files[];
+  files: pictureFile[];
   removeFile: removeFileFn;
 }) => {
   const deleteFileHandler = (_name: string) => {
@@ -25,11 +25,36 @@ export const PODFileList = ({
   );
 };
 
+export const SignatureFileList = ({
+  files,
+  removeFile,
+}: {
+  files: signatureFile[];
+  removeFile: removeFileFn;
+}) => {
+  const deleteFileHandler = (_name: string) => {
+    removeFile(_name);
+    // remove from backend as well
+  };
+  return (
+    <ul className="file-list">
+      {files &&
+        files.map((f) => (
+          <SignatureFileItem
+            key={f.name}
+            file={f}
+            deleteFile={deleteFileHandler}
+          />
+        ))}
+    </ul>
+  );
+};
+
 export const PictureFileList = ({
   files,
   removeFile,
 }: {
-  files: PictureFile[];
+  files: pictureFile[];
   removeFile: removeFileFn;
 }) => {
   const deleteFileHandler = (_name: string) => {

@@ -1,14 +1,14 @@
 import { Typography, TextField } from "@mui/material";
-import React, { useState } from "react";
+import React, { useMemo, useState, useRef } from "react";
 
-import OuterBlueDivBox from "../../../components/outerBlueDivBox";
+import OuterBlueDivBox from "../../../../driver/components/outerBlueDivBox";
 import Box from "@mui/material/Box";
 import MediumButton from "../mediumButton";
 
 import Canvas from "./canvasComponents/Canvas";
 import { FileUpload } from "./Components/fileUpload";
 
-import { Files } from "../../index";
+import { signatureFile } from "../..";
 
 type removeFileFn = (filename: string) => void;
 
@@ -21,15 +21,28 @@ export const SignaturePopUp = ({
 }: {
   modal: boolean;
   setModal: React.Dispatch<React.SetStateAction<boolean>>;
-  files: Files[];
-  setFiles: React.Dispatch<React.SetStateAction<Files[]>>;
+  files: signatureFile[];
+  setFiles: React.Dispatch<React.SetStateAction<signatureFile[]>>;
   removeFiles: removeFileFn;
 }) => {
   const [customerName, setCustomerName] = useState<string>("");
+  const [customerSignature, setCustomerSignature] = useState<string>("");
+  const [signatureBlobData, setSignatureBlobData] = useState<ImageData>();
+  const [clearBoolean, setClearBoolean] = useState<boolean>(false);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCustomerName(event.target.value);
   };
+
+  const onSaveImageFn = (image: string) => {
+    setCustomerSignature(image);
+  };
+
+  const onSaveBitDataFn = (bitData: ImageData | undefined) => {
+    setSignatureBlobData(bitData);
+  };
+
+  const ref = useRef<HTMLDivElement>(null);
 
   return (
     <OuterBlueDivBox
@@ -70,8 +83,14 @@ export const SignaturePopUp = ({
           borderRadius: 8,
         }}
       >
-        <Box sx={{ alignItems: "center" }}>
-          <Canvas width={"70%"} height={"50%"} />
+        <Box ref={ref} sx={{ alignItems: "center" }}>
+          <Canvas
+            width={"70%"}
+            height={"50%"}
+            onSaveImage={onSaveImageFn}
+            onSaveBitData={onSaveBitDataFn}
+            onClearTrigger={clearBoolean}
+          />
           <Box
             sx={{
               display: "flex",
@@ -96,10 +115,17 @@ export const SignaturePopUp = ({
           setSignFiles={setFiles}
           removeFile={removeFiles}
           name={customerName}
+          imageSrc={customerSignature}
+          bitData={signatureBlobData}
           modal={modal}
           setModal={setModal}
         />
-        <MediumButton variant="contained">Clear</MediumButton>
+        <MediumButton
+          onClick={() => setClearBoolean(!clearBoolean)}
+          variant="contained"
+        >
+          Clear
+        </MediumButton>
         <MediumButton variant="contained" onClick={() => setModal(!modal)}>
           Cancel
         </MediumButton>
