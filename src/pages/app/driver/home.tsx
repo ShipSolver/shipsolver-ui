@@ -13,10 +13,7 @@ import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 
-import {
-  fetchTicketsForStatus,
-  fetchOrgCurrentDelivery,
-} from "../../../services/ticketServices";
+import { fetchTicketsForStatus } from "../../../services/ticketServices";
 
 import { Ticket, TicketStatus } from "../../../services/types";
 
@@ -25,6 +22,61 @@ import useLoadable from "../../../utils/useLoadable";
 import { styled } from "@mui/material/styles";
 import { CompletionPopUp } from "./components/completionPopUp";
 import { useNavigate } from "react-router-dom";
+
+export const CurrentDelivery = ({
+  currentTicket,
+}: {
+  currentTicket: Ticket | null;
+}) => {
+  const [closeDelivery, setCloseDelivery] = useState<boolean>(false);
+
+  const handleCloseDeliveryOpen = () => setCloseDelivery(true);
+  const handleCloseDeliveryClose = () => setCloseDelivery(false);
+
+  const timestamp = Number(currentTicket && currentTicket.timestamp);
+  const date = new Date(timestamp);
+
+  return currentTicket != null ? (
+    <OuterBlueDivBox>
+      <Typography variant="h3" color="#000" align="center" padding="10px">
+        Current Delivery
+      </Typography>
+      <InnerWhiteDivBox style={{ padding: 25 }}>
+        <Typography marginBottom="5px">
+          {currentTicket.consigneeAddress}
+        </Typography>
+        <Typography color="#00000099">
+          Weight: {String(currentTicket.weight)}
+        </Typography>
+        <Typography color="#00000099">
+          REF#: {String(currentTicket.houseReferenceNumber)}
+        </Typography>
+        <Typography color="#00000099">
+          First Party: {currentTicket.customer.name}
+        </Typography>
+        <Typography color="#00000099">
+          Date/Time Assigned:{" "}
+          {date.toLocaleString("en-CA", {
+            month: "long",
+            day: "numeric",
+            year: "numeric",
+          })}{" "}
+          {date.toLocaleTimeString("en-CA", {
+            hour: "numeric",
+            minute: "2-digit",
+          })}
+        </Typography>
+        <LargeButton
+          label="Close Delivery"
+          action={() => handleCloseDeliveryOpen()}
+        />
+        <Modal open={closeDelivery} onClose={handleCloseDeliveryClose}>
+          <CompletionPopUp modal={closeDelivery} setModal={setCloseDelivery} />
+        </Modal>
+      </InnerWhiteDivBox>
+    </OuterBlueDivBox>
+  ) : null;
+};
 
 export const Tickets = ({
   viewAllTickets,
@@ -224,6 +276,10 @@ const Home = () => {
 
   const [viewAllPickup, setViewAllPickup] = useState<boolean>(false);
 
+  const { val: currentDeliveries } = useLoadable(
+    fetchTicketsForStatus,
+    "in_transit"
+  );
   const { val: assignedInfo } = useLoadable(fetchTicketsForStatus, "assigned");
   const { val: completedInfo } = useLoadable(
     fetchTicketsForStatus,
@@ -234,11 +290,10 @@ const Home = () => {
     "requested_pickup"
   );
 
-  console.log({
-    assignedInfo,
-    completedInfo,
-    pickupInfo,
-  });
+  const currentTicket =
+    currentDeliveries?.tickets.length ?? -1 > 0
+      ? currentDeliveries?.tickets[0] ?? null
+      : null;
 
   const assigned = assignedInfo?.tickets;
   const completed = completedInfo?.tickets;
@@ -247,13 +302,6 @@ const Home = () => {
   const assignedCount = assignedInfo?.count;
   const completedCount = completedInfo?.count;
   const pickupCount = pickupInfo?.count;
-
-  const { val: currentTicket } = useLoadable(fetchOrgCurrentDelivery);
-
-  const [closeDelivery, setCloseDelivery] = useState<boolean>(false);
-
-  const handleCloseDeliveryOpen = () => setCloseDelivery(true);
-  const handleCloseDeliveryClose = () => setCloseDelivery(false);
 
   const handleCompleteShift = () => {
     if (assigned != null) {
@@ -264,46 +312,6 @@ const Home = () => {
       }
     }
   };
-
-  const timestamp = Number(currentTicket && currentTicket.timestamp);
-  const date = new Date(timestamp);
-
-  const currentDelivery =
-    currentTicket != null ? (
-      <>
-        <Typography marginBottom="5px">
-          {currentTicket.consigneeAddress}
-        </Typography>
-        <Typography color="#00000099">
-          Weight: {String(currentTicket.weight)}
-        </Typography>
-        <Typography color="#00000099">
-          REF#: {String(currentTicket.houseReferenceNumber)}
-        </Typography>
-        <Typography color="#00000099">
-          First Party: {currentTicket.customer.name}
-        </Typography>
-        <Typography color="#00000099">
-          Date/Time Assigned:{" "}
-          {date.toLocaleString("en-CA", {
-            month: "long",
-            day: "numeric",
-            year: "numeric",
-          })}{" "}
-          {date.toLocaleTimeString("en-CA", {
-            hour: "numeric",
-            minute: "2-digit",
-          })}
-        </Typography>
-        <LargeButton
-          label="Close Delivery"
-          action={() => handleCloseDeliveryOpen()}
-        />
-        <Modal open={closeDelivery} onClose={handleCloseDeliveryClose}>
-          <CompletionPopUp modal={closeDelivery} setModal={setCloseDelivery} />
-        </Modal>
-      </>
-    ) : null;
 
   return currentTicket == null &&
     assigned == null &&
@@ -325,77 +333,82 @@ const Home = () => {
     </InnerBlueDivBox>
   ) : (
     <div>
-      <OuterBlueDivBox>
-        <Typography variant="h3" color="#000" align="center" padding="10px">
-          Current Delivery
-        </Typography>
-        <InnerWhiteDivBox style={{ padding: 25 }}>
-          {currentDelivery}
-        </InnerWhiteDivBox>
-      </OuterBlueDivBox>
+      <CurrentDelivery currentTicket={currentTicket} />
       {(assigned != null || completed != null || pickup != null) && (
-        <OuterBlueDivBox>
-          {assigned && (
-            <InnerBlueDivBox style={{ maxHeight: "90vh" }}>
-              <Grid container justifyContent="space-between">
-                <Typography variant="h2" alignContent="left">
-                  Assigned
-                </Typography>
-                <Typography variant="h2" alignContent="right">
-                  {String(assignedCount ?? 0)}
-                </Typography>
-              </Grid>
-              <Tickets
-                viewAllTickets={viewAllAssigned}
-                tickets={assigned}
-                status="assigned"
-                setViewAllTickets={setViewAllAssigned}
-                title="Assigned"
-                items={assignedCount ?? 0}
-              ></Tickets>
-            </InnerBlueDivBox>
-          )}
-          {completed && (
-            <InnerBlueDivBox style={{ maxHeight: "90vh" }}>
-              <Grid container justifyContent="space-between">
-                <Typography variant="h2" color="#000" alignContent="left">
-                  Completed
-                </Typography>
-                <Typography variant="h2" color="#000" alignContent="right">
-                  {String(completedCount ?? 0)}
-                </Typography>
-              </Grid>
-              <Tickets
-                viewAllTickets={viewAllCompleted}
-                tickets={completed}
-                status="completed_delivery"
-                setViewAllTickets={setViewAllCompleted}
-                title="Completed"
-                items={completedCount ?? 0}
-              ></Tickets>
-            </InnerBlueDivBox>
-          )}
-          {pickup && (
-            <InnerBlueDivBox style={{ maxHeight: "90vh" }}>
-              <Grid container justifyContent="space-between">
-                <Typography variant="h2" color="#000" alignContent="left">
-                  Requested Pickups
-                </Typography>
-                <Typography variant="h2" color="#000" alignContent="right">
-                  {String(pickupCount ?? 0)}
-                </Typography>
-              </Grid>
-              <Tickets
-                viewAllTickets={viewAllPickup}
-                tickets={pickup}
-                status="requested_pickup"
-                setViewAllTickets={setViewAllPickup}
-                title="Requested Pickups"
-                items={pickupCount ?? 0}
-              ></Tickets>
-            </InnerBlueDivBox>
-          )}
-        </OuterBlueDivBox>
+        <>
+          <Typography
+            variant="h2"
+            color="primary"
+            align="center"
+            sx={{
+              margin: "calc(var(--ss-brand-spacing)*2)",
+            }}
+          >
+            Your Deliveries:
+          </Typography>
+          <OuterBlueDivBox>
+            {assigned && (
+              <InnerBlueDivBox style={{ maxHeight: "90vh" }}>
+                <Grid container justifyContent="space-between">
+                  <Typography variant="h2" alignContent="left">
+                    Assigned
+                  </Typography>
+                  <Typography variant="h2" alignContent="right">
+                    {String(assignedCount ?? 0)}
+                  </Typography>
+                </Grid>
+                <Tickets
+                  viewAllTickets={viewAllAssigned}
+                  tickets={assigned}
+                  status="assigned"
+                  setViewAllTickets={setViewAllAssigned}
+                  title="Assigned"
+                  items={assignedCount ?? 0}
+                ></Tickets>
+              </InnerBlueDivBox>
+            )}
+            {completed && (
+              <InnerBlueDivBox style={{ maxHeight: "90vh" }}>
+                <Grid container justifyContent="space-between">
+                  <Typography variant="h2" color="#000" alignContent="left">
+                    Completed
+                  </Typography>
+                  <Typography variant="h2" color="#000" alignContent="right">
+                    {String(completedCount ?? 0)}
+                  </Typography>
+                </Grid>
+                <Tickets
+                  viewAllTickets={viewAllCompleted}
+                  tickets={completed}
+                  status="completed_delivery"
+                  setViewAllTickets={setViewAllCompleted}
+                  title="Completed"
+                  items={completedCount ?? 0}
+                ></Tickets>
+              </InnerBlueDivBox>
+            )}
+            {pickup && (
+              <InnerBlueDivBox style={{ maxHeight: "90vh" }}>
+                <Grid container justifyContent="space-between">
+                  <Typography variant="h2" color="#000" alignContent="left">
+                    Requested Pickups
+                  </Typography>
+                  <Typography variant="h2" color="#000" alignContent="right">
+                    {String(pickupCount ?? 0)}
+                  </Typography>
+                </Grid>
+                <Tickets
+                  viewAllTickets={viewAllPickup}
+                  tickets={pickup}
+                  status="requested_pickup"
+                  setViewAllTickets={setViewAllPickup}
+                  title="Requested Pickups"
+                  items={pickupCount ?? 0}
+                ></Tickets>
+              </InnerBlueDivBox>
+            )}
+          </OuterBlueDivBox>
+        </>
       )}
       <LargeButton
         label="Complete Shift"

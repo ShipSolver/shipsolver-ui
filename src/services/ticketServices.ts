@@ -2,9 +2,8 @@ import axios from "axios";
 
 import { SERVER_URL } from "./constants";
 
-import ticketsByStatus from "../mockData/todaysTickets.json";
 import tickets from "../mockData/tickets.json";
-import { Ticket, TicketStatus } from "./types";
+import { Ticket, TicketMilestone, TicketStatus } from "./types";
 import moment from "moment";
 import { DateFormat } from "../pages/app/org/components/allTicketsTable/components/filters/dateRangeFilter";
 
@@ -157,6 +156,26 @@ export const fetchTicket = async (ticketId: string) => {
       .map((commodity: string) => ({ description: commodity }));
 
     return [data, commodities];
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
+};
+
+export const changeDeliveryStatus = async (
+  ticketId: string,
+  oldStatus: TicketMilestone,
+  newStatus: TicketMilestone
+) => {
+  try {
+    const response: any = await axios.get(`/api/milestones/${ticketId}`, {
+      withCredentials: false,
+    });
+
+    return response.data.map(({ description, timestamp }: any) => ({
+      description,
+      dateAndTime: new Date(timestamp),
+    }));
   } catch (e) {
     console.error(e);
     throw e;

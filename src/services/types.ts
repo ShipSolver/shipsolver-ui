@@ -1,3 +1,11 @@
+export type UserType =
+  | "driver"
+  | "manager"
+  | "dispatch"
+  | "customer"
+  | "driver"
+  | "worker";
+
 export type User = {
   name: string;
   email: string;
@@ -5,8 +13,48 @@ export type User = {
   type?: string;
 };
 
+export type CreationTicketMilestone =
+  | "Creation_Milestone_Status.ticket_created"
+  | "Creation_Milestone_Status.unassigned_pickup";
+
+export type PickupTicketMilestone =
+  | "Pickup_Milestone_Status.unassigned_pickup"
+  | "Pickup_Milestone_Status.requested_pickup"
+  | "Pickup_Milestone_Status.accepted_pickup"
+  | "Pickup_Milestone_Status.declined_pickup"
+  | "Pickup_Milestone_Status.complete_pickup"
+  | "Pickup_Milestone_Status.incomplete_pickup";
+
+export type InventoryTicketMilestone =
+  | "Inventory_Milestone_Status.ticket_created"
+  | "Inventory_Milestone_Status.checked_into_inventory"
+  | "Inventory_Milestone_Status.incomplete_delivery"
+  | "Inventory_Milestone_Status.completed_delivery";
+
+export type TicketAssignmentMilestone =
+  | "Assignment_Milestone_Status.checked_into_inventory"
+  | "Assignment_Milestone_Status.assigned"
+  | "Assignment_Milestone_Status.in_transit";
+
+export type TicketDeliveryMilestone =
+  | "Delivery_Milestone_Status.in_transit"
+  | "Delivery_Milestone_Status.completed_delivery";
+
+export type TicketIncompleteDeliveryMilestone =
+  | "Incomplete_Delivery_Milestone_Status.in_transit"
+  | "Incomplete_Delivery_Milestone_Status.incomplete_delivery";
+
+export type TicketMilestone =
+  | CreationTicketMilestone
+  | PickupTicketMilestone
+  | InventoryTicketMilestone
+  | TicketAssignmentMilestone
+  | TicketDeliveryMilestone
+  | TicketIncompleteDeliveryMilestone;
+
+export type CreationTicketStatus = "ticket_created" | "unassigned_pickup";
+
 export type PickupTicketStatus =
-  | "ticket_created"
   | "unassigned_pickup"
   | "requested_pickup"
   | "accepted_pickup"
@@ -18,20 +66,43 @@ export type InventoryTicketStatus =
   | "ticket_created"
   | "checked_into_inventory"
   | "incomplete_delivery"
-  | "completed_delivery"
-  | "approve_pod";
+  | "completed_delivery";
 
 export type TicketAssignmentStatus =
   | "checked_into_inventory"
   | "assigned"
   | "in_transit";
 
+export type TicketDeliveryStatus = "in_transit" | "completed_delivery";
+
+export type TicketIncompleteDeliveryStatus =
+  | "in_transit"
+  | "incomplete_delivery";
+
 export type TicketStatus =
+  | CreationTicketStatus
   | PickupTicketStatus
   | InventoryTicketStatus
-  | TicketAssignmentStatus;
+  | TicketAssignmentStatus
+  | TicketDeliveryStatus
+  | TicketIncompleteDeliveryStatus;
 
 export type Ticket = {
+  ticketStatus: {
+    assignedTo: number;
+    currentStatus: TicketMilestone;
+    ticketId: number;
+    user: {
+      createdAt: number;
+      email: string;
+      firstName: string;
+      lastName: string;
+      modifiedAt: number;
+      userId: number;
+      userType: UserType;
+      username: string;
+    };
+  };
   BOLNumber: number;
   barcodeNumber: number;
   claimedNumberOfPieces: number;
