@@ -9,10 +9,9 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
-import TextField from "@mui/material/TextField";
 
-import OuterBlueDivBox from "../../driver/components/outerBlueDivBox";
-import InnerWhiteDivBox from "../../driver/components/innerWhiteDivBox";
+import OuterBlueDivBox from "../components/outerBlueDivBox";
+import InnerWhiteDivBox from "../components/innerWhiteDivBox";
 import MediumButton from "./components/mediumButton";
 import Divider from "@mui/material/Divider";
 
@@ -27,10 +26,10 @@ export type pictureFile = {
 export type signatureFile = {
   name: string;
   imgSrc: string;
-  blobData: ImageData
-}
+  blobData: ImageData;
+};
 
-export function DeliveryCompletion() {
+export default function DeliveryCompletion() {
   const [podFiles, setPoDFiles] = useState<Array<pictureFile>>([]);
   const [signFiles, setSignFiles] = useState<Array<signatureFile>>([]);
   const [pictureFiles, setPictureFiles] = useState<Array<pictureFile>>([]);

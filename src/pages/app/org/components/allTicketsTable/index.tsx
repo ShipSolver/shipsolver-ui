@@ -91,7 +91,7 @@ export const AllTicketsTable = () => {
         <TicketTable headerRow={headerRows} rows={rowsToDisplay} />
       )}
       <Spacer height="24px" />
-      <FooterButtons triggerRefetch={triggerRefetch}/>
+      <FooterButtons triggerRefetch={triggerRefetch} />
     </Wrapper>
   );
 };

@@ -1,10 +1,11 @@
 import { TicketFactory } from "../ticketFactory";
+import { PDFViewer } from "../components/pdfViewer";
 
 import React from "react";
 
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import StorybookThemeProvider from "../../../../../../tests/storybookThemeProvider";
+import StorybookThemeProvider from "../../../../../../utils/mockAppRoot";
 
 export default {
   title: "Ticket Factory",
@@ -14,5 +15,11 @@ export default {
 export const Primary: ComponentStory<typeof TicketFactory> = () => (
   <StorybookThemeProvider>
     <TicketFactory />
+  </StorybookThemeProvider>
+);
+
+export const PDFViewerStory: ComponentStory<typeof PDFViewer> = () => (
+  <StorybookThemeProvider>
+    <PDFViewer maxLength={3} />
   </StorybookThemeProvider>
 );

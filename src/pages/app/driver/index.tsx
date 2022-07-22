@@ -3,16 +3,16 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 
 import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
 
 import Copyright from "../../components/copyright";
 
 import Home from "./home";
+
+import DeliveryCompletion from "./deliveryCompletion";
 import {
   IncompleteDelivery,
   IncompleteDeliveryReasons,
 } from "./incompleteDelivery";
-
 import { IncompletePickup, IncompletePickupReasons } from "./incompletePickup";
 import { ShiftCompletion, IncompleteShiftReasons } from "./shiftCompletion";
 import { DeclinePickup, DeclinePickupReasons } from "./declinePickup";
@@ -24,10 +24,7 @@ function DriverRouter() {
       <Header />
       <Routes>
         <Route index element={<Home />} />
-        <Route
-          path="/incomplete-delivery"
-          element={<IncompleteDelivery reasons={IncompleteDeliveryReasons} />}
-        />
+        <Route path="/complete-delivery" element={<DeliveryCompletion />} />
         <Route
           path="/incomplete-pickup"
           element={<IncompletePickup reasons={IncompletePickupReasons} />}

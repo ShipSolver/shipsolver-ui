@@ -1,13 +1,15 @@
 import Home from "../home";
 
-import { DeliveryCompletion } from "../../broker/DeliveryCompletionPage/deliveryCompletion";
-import { IncompleteDelivery } from "../incompleteDelivery";
+import DeliveryCompletion from "../deliveryCompletion";
+import {
+  IncompleteDelivery,
+  IncompleteDeliveryReasons,
+} from "../incompleteDelivery";
 
 import React from "react";
 
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import StoryBookThemeProvider from "../../../../utils/storybookThemeProvider";
-import { IncompleteDeliveryReasons } from "../incompleteDelivery";
+import MockAppRoot from "../../../../utils/mockAppRoot";
 
 export default {
   title: "Home",
@@ -15,23 +17,23 @@ export default {
 } as ComponentMeta<typeof Home>;
 
 export const Primary: ComponentStory<typeof Home> = () => (
-  <StoryBookThemeProvider>
+  <MockAppRoot>
     <Home />
-  </StoryBookThemeProvider>
+  </MockAppRoot>
 );
 
 export const DeliveryCompletionStory: ComponentStory<
   typeof DeliveryCompletion
 > = () => (
-  <StoryBookThemeProvider>
+  <MockAppRoot>
     <DeliveryCompletion />
-  </StoryBookThemeProvider>
+  </MockAppRoot>
 );
 
 export const IncompleteDeliveryStory: ComponentStory<
   typeof IncompleteDelivery
 > = () => (
-  <StoryBookThemeProvider>
+  <MockAppRoot>
     <IncompleteDelivery reasons={IncompleteDeliveryReasons} />
-  </StoryBookThemeProvider>
+  </MockAppRoot>
 );

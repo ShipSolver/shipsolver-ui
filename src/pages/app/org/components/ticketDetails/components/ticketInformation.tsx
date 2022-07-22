@@ -7,12 +7,13 @@ import {
   InputLabel,
   Checkbox,
   Button,
+  Paper,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { Edit as EditIcon } from "@mui/icons-material";
 import { Spacer } from "../../../../../components/spacer";
 import { CommodityType, Commodities } from "./commodities";
-import { useRecoilValue, useRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { commoditiesAtom } from "../state/commodityState";
 import { createTicket } from "../../../../../../services/ticketServices";
 
@@ -43,6 +44,12 @@ const ConsigneeFieldLabels = {
   postalCode: "Postal Code",
 };
 
+const ClearData = {
+  shipper: {},
+  shipmentDetails: {},
+  consignee: {},
+};
+
 type ShipperFields = keyof typeof ShipperFieldLabels;
 type ShipmmentDetailsFields = keyof typeof ShipmentDetailsFieldLabels;
 type ConsigneeFields = keyof typeof ConsigneeFieldLabels;
@@ -58,8 +65,10 @@ export type TicketInformationStateType = {
   consignee: {
     [key in ConsigneeFields]?: string;
   };
-  isPickup?: boolean;
   enterIntoInventory?: boolean;
+  isPickup?: boolean;
+  noSignatureRequired?: boolean;
+  tailgateAuthorized?: boolean;
 };
 
 export interface TicketType extends TicketInformationStateType {
@@ -69,11 +78,29 @@ export interface TicketType extends TicketInformationStateType {
 interface TicketInformationProps {
   data?: TicketInformationStateType;
   newTicket?: boolean;
+  deliveryReceipt?: boolean;
 }
+
+const ColoredButton = ({
+  color,
+  label,
+  action,
+}: {
+  color: string;
+  label: string;
+  action?: () => void;
+}) => {
+  return (
+    <PaperButton style={{ backgroundColor: color }} onClick={() => action?.()}>
+      <Typography variant="h5">{label}</Typography>
+    </PaperButton>
+  );
+};
 
 export const TicketInformation = ({
   data,
   newTicket,
+  deliveryReceipt,
 }: TicketInformationProps) => {
   const [isEditable, setIsEditable] = useState<boolean>(newTicket ?? false);
 
@@ -86,6 +113,8 @@ export const TicketInformation = ({
   );
 
   const [commodities, setcommodities] = useRecoilState(commoditiesAtom);
+
+  const [viewSize, setViewSize] = useState<number>(5);
 
   useEffect(() => {
     return () => {
@@ -122,28 +151,129 @@ export const TicketInformation = ({
     }));
   };
 
+  const handleClearClick = () => {
+    setFormData(ClearData);
+  };
+
+  useEffect(() => {
+    if (data != null) {
+      setFormData(data);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (
+      (newTicket == null || newTicket == false) &&
+      (deliveryReceipt == null || deliveryReceipt == false)
+    ) {
+      setViewSize(5);
+    } else if (newTicket == true || deliveryReceipt == true) {
+      setIsEditable(true);
+      setViewSize(6);
+    }
+  }, [newTicket, deliveryReceipt]);
+
   return (
     <FormWrap>
       <Grid container spacing={3}>
-        <Grid item xs={5}>
-          <SpecialInputField>
-            <Typography sx={{ margin: "auto 0" }} variant="h3">
-              First Party
-            </Typography>
-            <Spacer width="16px" />
-            <TextField
-              inputProps={{
-                readOnly: !isEditable,
-              }}
-              value={formData.firstParty}
-              onChange={(e) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  formDate: e.target.value,
-                }))
-              }
-            />
-          </SpecialInputField>
+        <Grid container item xs={12}>
+          <Grid item xs={12} lg={viewSize}>
+            <InputContainer>
+              <SpecialInputField>
+                <Typography sx={{ margin: "auto 0" }} variant="h3">
+                  First Party
+                </Typography>
+                <Spacer width="16px" />
+                <TextField
+                  inputProps={{
+                    readOnly: !isEditable,
+                  }}
+                  value={formData.firstParty ?? ""}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      formDate: e.target.value,
+                    }))
+                  }
+                />
+              </SpecialInputField>
+            </InputContainer>
+          </Grid>
+          <Grid item xs={12} lg={viewSize}>
+            <InputContainer>
+              {newTicket == null && (
+                <SpecialInputField>
+                  <Checkbox
+                    disabled={!isEditable}
+                    checked={formData.enterIntoInventory}
+                    onClick={() =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        enterIntoInventory: !prev.enterIntoInventory,
+                      }))
+                    }
+                  />
+                  <Spacer width="16px" />
+                  <Typography sx={{ fontSize: "18px", margin: "auto 0" }}>
+                    Checked into Inventory
+                  </Typography>
+                </SpecialInputField>
+              )}
+
+              <SpecialInputField>
+                <Checkbox
+                  disabled={!isEditable}
+                  checked={formData.isPickup}
+                  onClick={() =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      isPickup: !prev.isPickup,
+                    }))
+                  }
+                />
+                <Spacer width="16px" />
+                <Typography sx={{ fontSize: "18px", margin: "auto 0" }}>
+                  Pickup?
+                </Typography>
+              </SpecialInputField>
+
+              <SpecialInputField>
+                <Checkbox
+                  disabled={!isEditable}
+                  checked={formData.noSignatureRequired}
+                  onClick={() =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      noSignatureRequired: !prev.noSignatureRequired,
+                    }))
+                  }
+                />
+                <Spacer width="16px" />
+                <Typography sx={{ fontSize: "18px", margin: "auto 0" }}>
+                  No Signature Required
+                </Typography>
+              </SpecialInputField>
+
+              <SpecialInputField>
+                <Checkbox
+                  disabled={!isEditable}
+                  checked={formData.tailgateAuthorized}
+                  onClick={() =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      tailgateAuthorized: !prev.tailgateAuthorized,
+                    }))
+                  }
+                />
+                <Spacer width="16px" />
+                <Typography sx={{ fontSize: "18px", margin: "auto 0" }}>
+                  Tailgate Authorized
+                </Typography>
+              </SpecialInputField>
+            </InputContainer>
+          </Grid>
+        </Grid>
+        <Grid item xs={12} lg={viewSize}>
           <SectionTitle variant="h3">Shipper</SectionTitle>
 
           {Object.entries(ShipperFieldLabels).map(([key, value]) => (
@@ -154,7 +284,7 @@ export const TicketInformation = ({
                 inputProps={{
                   readOnly: !isEditable,
                 }}
-                value={formData.shipper[key as ShipperFields]}
+                value={formData.shipper[key as ShipperFields] ?? ""}
                 onChange={(e) => handleChange("shipper", key, e.target.value)}
               />
             </InputContainer>
@@ -170,7 +300,9 @@ export const TicketInformation = ({
                 inputProps={{
                   readOnly: !isEditable,
                 }}
-                value={formData.shipmentDetails[key as ShipmmentDetailsFields]}
+                value={
+                  formData.shipmentDetails[key as ShipmmentDetailsFields] ?? ""
+                }
                 onChange={(e) =>
                   handleChange("shipmentDetails", key, e.target.value)
                 }
@@ -178,42 +310,7 @@ export const TicketInformation = ({
             </InputContainer>
           ))}
         </Grid>
-        <Grid item xs={5}>
-          <InputContainer>
-            <SpecialInputField>
-              <Checkbox
-                disabled={!isEditable}
-                value={formData.isPickup}
-                onClick={() =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    isPickup: !prev.isPickup,
-                  }))
-                }
-              />
-              <Spacer width="16px" />
-              <Typography sx={{ fontSize: "18px", margin: "auto 0" }}>
-                Is pickup
-              </Typography>
-            </SpecialInputField>
-
-            <SpecialInputField>
-              <Checkbox
-                disabled={!isEditable}
-                value={formData.enterIntoInventory}
-                onClick={() =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    enterIntoInventory: !prev.enterIntoInventory,
-                  }))
-                }
-              />
-              <Spacer width="16px" />
-              <Typography sx={{ fontSize: "18px", margin: "auto 0" }}>
-                Enter into inventory
-              </Typography>
-            </SpecialInputField>
-          </InputContainer>
+        <Grid item xs={12} lg={viewSize}>
           <SectionTitle variant="h3">Consignee</SectionTitle>
           {Object.entries(ConsigneeFieldLabels).map(([key, value]) => (
             <InputContainer>
@@ -223,7 +320,7 @@ export const TicketInformation = ({
                 inputProps={{
                   readOnly: !isEditable,
                 }}
-                value={formData.consignee[key as ConsigneeFields]}
+                value={formData.consignee[key as ConsigneeFields] ?? ""}
                 onChange={(e) => handleChange("consignee", key, e.target.value)}
               />
             </InputContainer>
@@ -231,48 +328,62 @@ export const TicketInformation = ({
           <SectionTitle variant="h3">Commodities</SectionTitle>
           <Commodities isEditable={isEditable} />
         </Grid>
-        <Grid item xs={2}>
-          <ActionColumn>
-            <div
-              style={{
-                width: "100%",
-              }}
-            >
-              {newTicket ? null : (
-                <Button
-                  size="small"
-                  sx={{
-                    width: "100px",
-                    float: "right",
+        {(newTicket == null || newTicket == false) &&
+          (deliveryReceipt == null || deliveryReceipt == false) && (
+            <Grid item xs={2} lg={2}>
+              <ActionColumn>
+                <div
+                  style={{
+                    width: "100%",
                   }}
-                  onClick={() =>
-                    isEditable ? handleSave() : setIsEditable(true)
-                  }
                 >
-                  {isEditable ? (
-                    "Save"
-                  ) : (
-                    <>
-                      Edit <EditIcon sx={{ marginLeft: "8px" }} />
-                    </>
-                  )}
-                </Button>
-              )}
-            </div>
-            {newTicket ? (
-              <FullWidthButton
-                variant="contained"
-                size="small"
-                onClick={() => handleSave()}
-              >
-                Create Ticket
-              </FullWidthButton>
-            ) : (
-              <FullWidthButton variant="contained" size="small">
-                View DR
-              </FullWidthButton>
-            )}
-          </ActionColumn>
+                  <Button
+                    size="small"
+                    sx={{
+                      width: "100px",
+                      float: "right",
+                    }}
+                    onClick={() =>
+                      isEditable ? handleSave() : setIsEditable(true)
+                    }
+                  >
+                    {isEditable ? (
+                      "Save"
+                    ) : (
+                      <>
+                        Edit <EditIcon sx={{ marginLeft: "8px" }} />
+                      </>
+                    )}
+                  </Button>
+                </div>
+                <FullWidthButton variant="contained" size="small">
+                  View DR
+                </FullWidthButton>
+              </ActionColumn>
+            </Grid>
+          )}
+        <Grid container item xs={12}>
+          {(newTicket != null || deliveryReceipt != null) && (
+            <>
+              <Grid item xs={8}>
+                <ColoredButton color="#C5FAD180" label="Add to Inventory" />
+                <ColoredButton color="#FAC5C580" label="Delete" />
+                <ColoredButton
+                  color="#CBDFEB"
+                  label="Clear"
+                  action={() => handleClearClick()}
+                />
+              </Grid>
+            </>
+          )}
+          {deliveryReceipt == true && (
+            <Grid item xs={4}>
+              <div style={{ display: "flex", justifyContent: "right" }}>
+                <ColoredButton color="#CBDFEB" label="Cancel" />
+                <ColoredButton color="#CBDFEB" label="Add All" />
+              </div>
+            </Grid>
+          )}
         </Grid>
       </Grid>
     </FormWrap>
@@ -315,4 +426,12 @@ const ActionColumn = styled("div")`
 const FullWidthButton = styled(Button)`
   width: 100%;
   display: inline-block;
+`;
+
+const PaperButton = styled(Paper)`
+  display: inline-block;
+  border-radius: 8px;
+  cursor: pointer;
+  padding: 13px 15px;
+  margin: 20px 20px 10px 10px;
 `;
