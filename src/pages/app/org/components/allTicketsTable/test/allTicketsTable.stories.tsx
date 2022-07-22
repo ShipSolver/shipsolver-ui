@@ -1,12 +1,9 @@
 import { AllTicketsTable } from "..";
-import StorybookThemeProvider from "../../../../../../tests/storybookThemeProvider";
+import StorybookThemeProvider from "../../../../../../utils/storybookThemeProvider";
 
 import React from "react";
 
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-
-import { RecoilRoot } from "recoil";
-import StoryBookThemeProvider from "../../../../tests/storybookThemeProvider";
 
 export default {
   title: "AllTicketsTable",
@@ -15,8 +12,6 @@ export default {
 
 export const Primary: ComponentStory<typeof AllTicketsTable> = () => (
   <StorybookThemeProvider>
-    <RecoilRoot>
-      <AllTicketsTable />
-    </RecoilRoot>
+    <AllTicketsTable />
   </StorybookThemeProvider>
 );
