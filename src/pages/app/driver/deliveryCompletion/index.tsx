@@ -22,7 +22,7 @@ export type PictureFile = {
   imgSrc: string;
 };
 
-export function DeliveryCompletion() {
+export default function DeliveryCompletion() {
   const [podFiles, setPoDFiles] = useState<Array<Files>>([
     {
       name: "POD-Rahul-2022-02-18-15-41-54.jpg",

@@ -41,9 +41,29 @@ export const CurrentDelivery = ({
   currentTicket: Ticket | null;
 }) => {
   const [closeDelivery, setCloseDelivery] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   const handleCloseDeliveryOpen = () => setCloseDelivery(true);
-  const handleCloseDeliveryClose = () => setCloseDelivery(false);
+
+  const handleSubmit = async (deliveryMarkedCompleted: boolean) => {
+    if (currentTicket != null) {
+      const { error } = await changeTicketStatus(
+        currentTicket.ticketId,
+        currentTicket.ticketStatus.assignedTo,
+        currentTicket.ticketStatus.currentStatus,
+        "Delivery_Milestone_Status.completed_delivery"
+      );
+      if (error == null) {
+        if (deliveryMarkedCompleted) {
+          navigate("complete-delivery");
+        } else {
+          navigate("incomplete-delivery");
+        }
+      } else {
+        //TODO error dialog
+      }
+    }
+  };
 
   const timestamp = Number(currentTicket && currentTicket.timestamp);
   const date = new Date(timestamp);
@@ -78,13 +98,12 @@ export const CurrentDelivery = ({
             minute: "2-digit",
           })}
         </Typography>
-        <LargeButton
-          label="Close Delivery"
-          action={() => handleCloseDeliveryOpen()}
+        <LargeButton label="Close Delivery" action={handleCloseDeliveryOpen} />
+        <CompletionPopUp
+          isShown={closeDelivery}
+          setIsShown={setCloseDelivery}
+          onSubmit={handleSubmit}
         />
-        <Modal open={closeDelivery} onClose={handleCloseDeliveryClose}>
-          <CompletionPopUp modal={closeDelivery} setModal={setCloseDelivery} />
-        </Modal>
       </InnerWhiteDivBox>
     </OuterBlueDivBox>
   ) : null;

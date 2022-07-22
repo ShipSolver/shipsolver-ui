@@ -13,6 +13,8 @@ import {
   IncompleteDeliveryReasons,
 } from "./incompleteDelivery";
 
+import DeliveryCompletion from "./deliveryCompletion";
+
 import { IncompletePickup, IncompletePickupReasons } from "./incompletePickup";
 import { ShiftCompletion, IncompleteShiftReasons } from "./shiftCompletion";
 import { DeclinePickup, DeclinePickupReasons } from "./declinePickup";
@@ -24,20 +26,17 @@ function DriverRouter() {
       <Header />
       <Routes>
         <Route index element={<Home />} />
+        <Route path="complete-delivery" element={<DeliveryCompletion />} />
         <Route
-          path="/incomplete-delivery"
-          element={<IncompleteDelivery reasons={IncompleteDeliveryReasons} />}
-        />
-        <Route
-          path="/incomplete-pickup"
+          path="incomplete-pickup"
           element={<IncompletePickup reasons={IncompletePickupReasons} />}
         />
         <Route
-          path="/shift-complete"
+          path="shift-complete"
           element={<ShiftCompletion reasons={IncompleteShiftReasons} />}
         />
         <Route
-          path="/decline-pickup"
+          path="decline-pickup"
           element={<DeclinePickup reasons={DeclinePickupReasons} />}
         />
       </Routes>
