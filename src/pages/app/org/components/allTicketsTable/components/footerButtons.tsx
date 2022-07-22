@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useRecoilValue } from "recoil";
 
 import Button from "@mui/material/Button";
@@ -10,9 +10,13 @@ import {
   singleRowSelectedAtom,
   multiRowSelectedAtom,
 } from "./state/tableState";
+import Loading from "../../../../../components/loading";
 
 import { selectedTicketIdsAtom } from "./state/tableState";
-import { fetchTickets } from "../../../../../../services/ticketServices";
+import {
+  fetchTickets,
+  checkIntoInventory,
+} from "../../../../../../services/ticketServices";
 import _ from "lodash";
 
 const ButtonLabels = {
@@ -36,6 +40,8 @@ export const FooterButtons = ({ triggerRefetch }: FooterButtonsProps) => {
 
   const ticketIDs = useRecoilValue(selectedTicketIdsAtom);
 
+  const [loading, setLoading] = useState<boolean>(false);
+
   const handleGetTicketInformation = async () => {
     const response = (await fetchTickets(ticketIDs)) ?? [];
     return response.map((ticket) => {
@@ -56,6 +62,13 @@ export const FooterButtons = ({ triggerRefetch }: FooterButtonsProps) => {
     });
   };
 
+  const handleReenterIntoInventory = async () => {
+    setLoading(true);
+    await checkIntoInventory(ticketIDs);
+    setLoading(false);
+    triggerRefetch();
+  };
+
   return (
     <ButtonWrapper>
       <Button
@@ -68,8 +81,12 @@ export const FooterButtons = ({ triggerRefetch }: FooterButtonsProps) => {
       <Button variant="contained" disabled={!singleRowSelected}>
         {ButtonLabels.pod}
       </Button>
-      <Button variant="contained" disabled={!multiRowSelected}>
-        {ButtonLabels.enterIntoInventory}
+      <Button
+        variant="contained"
+        disabled={!multiRowSelected}
+        onClick={handleReenterIntoInventory}
+      >
+        {loading ? <Loading /> : ButtonLabels.enterIntoInventory}
       </Button>
       <AssignToDriverModal
         disabled={!multiRowSelected}

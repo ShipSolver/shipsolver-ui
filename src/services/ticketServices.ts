@@ -218,3 +218,24 @@ export const createTicket = async ({
     throw e;
   }
 };
+
+export const checkIntoInventory = async (ticketIDs: string[]) => {
+  try {
+    const response: any = await Promise.all(
+      ticketIDs.map((ticketId) =>
+        axios.post("/api/milestones/InventoryMilestones", {
+          withCredentials: false,
+          data: {
+            ticketId,
+            oldStatus: "DeliveryTicketCreated ",
+            newStatus: "checked_into_inventory",
+            approvedByUserId: "761909011",
+          },
+        })
+      )
+    );
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
+};
