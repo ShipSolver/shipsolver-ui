@@ -28,12 +28,17 @@ type TicketForStatusRes = {
   count: number;
   tickets: Ticket[];
 };
-export const fetchTicketsForStatus = (status: TicketStatus) => {
-  return axios.get(`/api/ticket/status/${status}`, {
-    params: {
-      limit: 10,
-    },
-  }) as Promise<TicketForStatusRes>;
+export const fetchTicketsForStatus = async (status: TicketStatus) => {
+  try {
+    const { data } = await axios.get(`/api/ticket/status/${status}`, {
+      params: {
+        limit: 10,
+      },
+    });
+    return data as TicketForStatusRes;
+  } catch (e: any) {
+    throw e;
+  }
 };
 
 export const fetchOrgCurrentDelivery = () => {

@@ -5,77 +5,135 @@ export type User = {
   type?: string;
 };
 
-export type PickupTicketStatus =  
-  "ticket_created" |
-  "unassigned_pickup" |
-  "requested_pickup" |
-  "accepted_pickup" | 
-  "declined_pickup" |
-  "complete_pickup" | 
-  "incomplete_pickup"
-  ;
+export type PickupTicketStatus =
+  | "ticket_created"
+  | "unassigned_pickup"
+  | "requested_pickup"
+  | "accepted_pickup"
+  | "declined_pickup"
+  | "complete_pickup"
+  | "incomplete_pickup";
 
-export type InventoryTicketStatus = 
-  "ticket_created" |
-  "checked_into_inventory" |
-  "incomplete_delivery" |
-  "completed_delivery" |
-  "approve_pod"
-  ;
+export type InventoryTicketStatus =
+  | "ticket_created"
+  | "checked_into_inventory"
+  | "incomplete_delivery"
+  | "completed_delivery"
+  | "approve_pod";
 
-export type TicketAssignmentStatus = 
-  "checked_into_inventory" |
-  "assigned" |
-  "in_transit"
-  ;
+export type TicketAssignmentStatus =
+  | "checked_into_inventory"
+  | "assigned"
+  | "in_transit";
 
-export type TicketStatus = 
-  PickupTicketStatus | 
-  InventoryTicketStatus |
-  TicketAssignmentStatus
-  ;
+export type TicketStatus =
+  | PickupTicketStatus
+  | InventoryTicketStatus
+  | TicketAssignmentStatus;
 
 export type Ticket = {
-  BOLNumber: number, 
-  barcodeNumber: number, 
-  claimedNumberOfPieces: number, 
-  consigneeAddress: string, 
-  consigneeCompany: string, 
-  consigneeName: string, 
-  consigneePhoneNumber: string, 
-  consigneePostalCode: string, 
+  BOLNumber: number;
+  barcodeNumber: number;
+  claimedNumberOfPieces: number;
+  consigneeAddress: string;
+  consigneeCompany: string;
+  consigneeName: string;
+  consigneePhoneNumber: string;
+  consigneePostalCode: string;
   customer: {
-    customerId: number, 
-    name: string
-  }, 
-  customerId: number, 
-  houseReferenceNumber: number, 
-  orderS3Link: string, 
-  pieces: string, 
-  shipperAddress: string, 
-  shipperCompany: string, 
-  shipperName: string, 
-  shipperPhoneNumber: string, 
-  shipperPostalCode: string, 
-  specialInstructions: string, 
-  specialServices: string, 
-  ticketEventId: number, 
-  ticketId: number, 
-  timestamp: number, 
+    customerId: number;
+    name: string;
+  };
+  customerId: number;
+  houseReferenceNumber: number;
+  orderS3Link: string;
+  pieces: string;
+  shipperAddress: string;
+  shipperCompany: string;
+  shipperName: string;
+  shipperPhoneNumber: string;
+  shipperPostalCode: string;
+  specialInstructions: string;
+  specialServices: string;
+  ticketEventId: number;
+  ticketId: number;
+  timestamp: number;
   user: {
-    createdAt: number, 
-    email: string, 
-    firstName: string, 
-    lastName: string, 
-    modifiedAt: number, 
-    userId: number, 
-    userType: string, 
-    username: string
-  }, 
-  userId: number, 
-  weight: number
-}
+    createdAt: number;
+    email: string;
+    firstName: string;
+    lastName: string;
+    modifiedAt: number;
+    userId: number;
+    userType: string;
+    username: string;
+  };
+  userId: number;
+  weight: number;
+};
 
+/**
+ * expected:
+ {"tickets": [
+  {
+    "BOLNumber": 489162603, 
+    "barcodeNumber": 530493911, 
+    "claimedNumberOfPieces": 3, 
+    "consigneeAddress": "1712 Stephen Parks\nSouth Shelbyberg, WV 72070",
+    "consigneeCompany": "Watts, Evans and Gaines",
+    "consigneeName": "Ashley Ward",
+    "consigneePhoneNumber": "(070)701-5359",
+    "consigneePostalCode": "32756",
+    "customer": {
+      "customerId": 99,
+      "name": "Franco, Bowers and Hanson"
+    },
+    "customerId": 99,
+    "houseReferenceNumber": 219287676,
+    "isPickup": false,
+    "noSignatureRequired": false,
+    "orderS3Link": "s3link",
+    "pieces": "West project develop fall finally employee.",
+    "shipperAddress": "03999 John Dale Suite 633\nNicholsonchester, MA 18219",
+    "shipperCompany": "Kent PLC",
+    "shipperName": "Eric Lopez",
+    "shipperPhoneNumber": "624.475.0943",
+    "shipperPostalCode": "27448",
+    "specialInstructions": "Environmental environment glass station stop.",
+    "specialServices": "Expect more age table.",
+    "tailgateAuthorized": false,
+    "ticketEventId": 3,
+    "ticketId": 3,
+    "ticketStatus": {
+      "assignedTo": 273809914,
+      "currentStatus": "Generic_Milestone_Status.assigned",
+      "ticketId": 3,
+      "user": {
+        "createdAt": 1658364848,
+        "email": "knavarro@faker.com",
+        "firstName": "Kayla",
+        "lastName": "Navarro",
+        "modifiedAt": 1658364848,
+        "userId": 273809914,
+        "userType": "driver",
+        "username": "knavarro"
+      }
+    },
+    "timestamp": 1658364848,
+    "user": {
+      "createdAt": 1658364848,
+      "email": "carroyo@faker.com",
+      "firstName": "Chad",
+      "lastName": "Arroyo",
+      "modifiedAt": 1658364848,
+      "userId": 587940103,
+      "userType": "customer",
+      "username": "carroyo"
+    },
+    "userId": 587940103,
+    "weight": 191
+  },
+*/
 // legacy, current model is missing fields we need
 // export type Ticket = {
 //   STATUS: string;

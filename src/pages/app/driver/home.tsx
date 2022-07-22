@@ -234,6 +234,12 @@ const Home = () => {
     "requested_pickup"
   );
 
+  console.log({
+    assignedInfo,
+    completedInfo,
+    pickupInfo,
+  });
+
   const assigned = assignedInfo?.tickets;
   const completed = completedInfo?.tickets;
   const pickup = pickupInfo?.tickets;
