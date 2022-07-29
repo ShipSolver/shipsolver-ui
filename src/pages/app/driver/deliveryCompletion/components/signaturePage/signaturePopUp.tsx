@@ -1,7 +1,7 @@
 import { Typography, TextField } from "@mui/material";
 import React, { useMemo, useState, useRef } from "react";
 
-import OuterBlueDivBox from "../../../../driver/components/outerBlueDivBox";
+import OuterBlueDivBox from "../../../../components/outerBlueDivBox";
 import Box from "@mui/material/Box";
 import MediumButton from "../mediumButton";
 

@@ -5,8 +5,8 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 
-import OuterBlueDivBox from '../driver/components/outerBlueDivBox';
-import InnerBlueDivBox from '../driver/components/innerBlueDivBox';
+import OuterBlueDivBox from '../components/outerBlueDivBox';
+import InnerBlueDivBox from '../components/innerBlueDivBox';
 
 export const CheckInDeliveries = () => {
     return (

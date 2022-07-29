@@ -1,11 +1,11 @@
 import React, { useMemo, useState } from "react";
 import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
-import OuterBlueDivBox from "./components/outerBlueDivBox";
-import InnerWhiteDivBox from "./components/innerWhiteDivBox";
+import OuterBlueDivBox from "../components/outerBlueDivBox";
+import InnerWhiteDivBox from "../components/innerWhiteDivBox";
 import Box from "@mui/material/Box";
-import { LargeButton } from "./components/largeButton";
-import SelectorButton from "./components/selectorButton";
+import { LargeButton } from "../components/largeButton";
+import SelectorButton from "../components/selectorButton";
 import TextField from "@mui/material/TextField";
 import { styled } from "@mui/material/styles";
 import { IconButton } from "@mui/material";

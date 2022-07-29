@@ -12,9 +12,9 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 
-import { logout } from "../../../../services/authenticationServices";
+import { logout } from "../../../services/authenticationServices";
 import { useResetRecoilState } from "recoil";
-import { AuthenticatedUsernameAtom } from "../../../../state/authentication";
+import { AuthenticatedUsernameAtom } from "../../../state/authentication";
 import Link from "@mui/material/Link";
 import { useNavigate } from "react-router-dom";
 
