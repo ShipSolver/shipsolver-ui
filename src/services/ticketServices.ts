@@ -2,8 +2,9 @@ import axios from "axios";
 
 import { SERVER_URL } from "./constants";
 
+import workerTickets from "../mockData/workerTickets.json"
 import tickets from "../mockData/tickets.json";
-import { Ticket, TicketMilestone, TicketStatus } from "./types";
+import { Ticket, TicketMilestone, TicketStatus, WorkerAppTicketStatus, WorkerAppTicket } from "./types";
 import moment from "moment";
 import { DateFormat } from "../pages/app/org/components/allTicketsTable/components/filters/dateRangeFilter";
 
@@ -35,6 +36,14 @@ export const fetchTicketsForStatus = async (status: TicketStatus) => {
   });
   return data as TicketForStatusRes;
 };
+
+export const fetchWokerAppTicketsForStatus = (status: WorkerAppTicketStatus) => {
+  const mockServerWorkerAppTicketFetch = async () => {
+    await delay(250);
+    return workerTickets.workerTickets.filter(ticket => ticket.status === status) as WorkerAppTicket[];
+  };
+  return mockServerWorkerAppTicketFetch();
+}
 
 export const fetchOrgCurrentDelivery = () => {
   const mockServerTicketFetch = async () => {

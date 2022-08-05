@@ -270,3 +270,13 @@ export type Driver = {
   EMAIL: string;
   PHONE: string;
 };
+
+export type WorkerAppTicket = {
+  RefNumber: string;
+  address: string;
+  status: string;
+}
+
+export type WorkerAppTicketStatus = 
+  | "expected"
+  | "confirmed";
