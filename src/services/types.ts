@@ -111,6 +111,7 @@ export type Ticket = {
   consigneeName: string;
   consigneePhoneNumber: string;
   consigneePostalCode: string;
+  customerName: string;
   customer: {
     customerId: number;
     name: string;

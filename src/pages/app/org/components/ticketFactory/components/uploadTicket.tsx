@@ -6,42 +6,84 @@ import { useDropzone } from "react-dropzone";
 import { Button, Grid } from "@mui/material";
 import { RefetchLoader } from "./refetchLoader";
 import { PDFViewer } from "./pdfViewer";
-import { TicketInformation } from "../../ticketDetails/components";
+// import FormData from "form-data";
+import {
+  CommodityType,
+  TicketInformation,
+} from "../../ticketDetails/components";
 import { PDFViewAtom, surveyViewAtom, pageNumAtom } from "./state/viewState";
 import { useRecoilValue } from "recoil";
-import { TestTicket } from "../test/testData";
+import {
+  sendDocument,
+} from "../../../../../../services/documentServices";
+import { Loading } from "../../../../../components/loading";
+import { TicketInformationStateType } from "../../ticketDetails/components";
 
 export const UploadTicket = () => {
   const [flowStage, setFlowStage] = useState<number>(1);
 
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const [urls, setUrls] = useState<string[]>([]);
+
+  const [loading, setLoading] = useState<boolean>(false);
+  const [documentID, setDocumentID] = useState<number>();
+  const [ticketInformation, setTicketInformation] = useState<
+    TicketInformationStateType[]
+  >([]);
+
+  const [commodities, setCommodities] = useState<CommodityType[][]>([[]]);
 
   const PDFView = useRecoilValue(PDFViewAtom);
   const surveyView = useRecoilValue(surveyViewAtom);
   const pageNum = useRecoilValue(pageNumAtom);
 
-  const onDrop = (acceptedFiles: File[]) => setUploadedFile(acceptedFiles[0]);
+  const onDrop = (acceptedFiles: File[]) => {
+    setUploadedFile(acceptedFiles[0]);
+  };
 
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
-  const sendUploadedPDF = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const sendUploadedPDF = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     if (uploadedFile) {
       var formData = new FormData();
       formData.append("file", uploadedFile);
-
-      // axios.post('upload_file', formData, {
-      //     headers: {
-      //       'Content-Type': 'multipart/form-data'
-      //     }
-      // })
-      setFlowStage((prev) => prev + 1);
+      setLoading(true);
+      let response = await sendDocument(formData);
+      if (response) {
+        setDocumentID(response);
+        setFlowStage((prev) => prev + 1);
+      }
     }
   };
 
-  const processData = (data: any) => {
+  const handleComplete = (
+    data: [TicketInformationStateType, CommodityType[], { url: string }][]
+  ) => {
+    setTicketInformation(
+      data.map(([ticketInfo, commodities, obj]) => ticketInfo)
+    );
+    setCommodities(data.map(([ticketInfo, commodities, obj]) => commodities));
+    setUrls(data.map(([ticketInfo, commodities, obj]) => obj.url));
+    setLoading(false);
     setFlowStage((prev) => prev + 1);
   };
+
+  if (loading && flowStage == 1) {
+    return (
+      <TealBackground>
+        <DropZoneInner>
+          <Loading text="Uploading pdf.." />
+        </DropZoneInner>
+      </TealBackground>
+    );
+  }
+
+  if (loading && flowStage == 2 && documentID) {
+    return (
+      <RefetchLoader onComplete={handleComplete} documentID={documentID} />
+    );
+  }
 
   if (flowStage == 1) {
     return (
@@ -68,25 +110,19 @@ export const UploadTicket = () => {
     );
   }
 
-  if (flowStage == 2) {
-    return <RefetchLoader onComplete={processData} />;
-  }
-
   return (
-    // <TealBackground>
-    //   <DropZoneInner>
-    //     <div>Data Extracted</div>
-    //     <PDFViewer />
-    //   </DropZoneInner>
-    // </TealBackground>
     <Grid container xs={12}>
       <Grid item xs={12} md={PDFView}>
-        <PDFViewer maxLength={TestTicket.length} />
+        <PDFViewer
+          maxLength={ticketInformation.length}
+          urls={urls}
+          commodities={commodities}
+        />
       </Grid>
       <Grid item xs={12} md={surveyView}>
         <TealBackground>
           <TicketInformation
-            data={TestTicket[pageNum - 1]}
+            data={ticketInformation[pageNum - 1]}
             newTicket={false}
             deliveryReceipt
           />

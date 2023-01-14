@@ -1,17 +1,16 @@
 import React from "react";
 
-interface CustomerSignatureProps {}
+interface CustomerSignatureProps {
+  urls?: string[];
+}
 
-export const CustomerSignature = (props: CustomerSignatureProps) => {
+export const CustomerSignature = ({ urls }: CustomerSignatureProps) => {
   return (
     <div>
-      <h3>Customer Signature</h3>
-      <a
-        href="https://timesofindia.indiatimes.com/thumb/msid-70238371,imgsize-89579,width-400,resizemode-4/70238371.jpg"
-        download
-      >
-        https://timesofindia.indiatimes.com/thumb/msid-70238371,imgsize-89579,width-400,resizemode-4/70238371.jpg
-      </a>
+      <h3>Customer Signatures</h3>
+      {urls?.map((url) => {
+        <a href={url}>{url}</a>;
+      })}
     </div>
   );
 };

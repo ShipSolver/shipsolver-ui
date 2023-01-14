@@ -1,37 +1,49 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { PDFViewAtom, surveyViewAtom, pageNumAtom } from "./state/viewState";
-
+import Loading from "../../../../../components/loading";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
-
+import { commoditiesAtom } from "../../ticketDetails/state/commodityState";
+import { useSetRecoilState } from "recoil";
 import { styled } from "@mui/material/styles";
+import { CommodityType } from "../../ticketDetails/components";
+import axios from "axios";
+
+interface PDFViewerProps {
+  action?: () => void;
+  maxLength: number;
+  urls: string[];
+  commodities: CommodityType[][];
+}
 
 export const PDFViewer = ({
   action,
   maxLength,
-}: {
-  action?: () => void;
-  maxLength: number;
-}) => {
+  urls: downloadURLs,
+  commodities,
+}: PDFViewerProps) => {
   const [PDFView, setPDFView] = useRecoilState(PDFViewAtom);
   const [surveyView, setSurveyView] = useRecoilState(surveyViewAtom);
   const [pageNum, setPageNum] = useRecoilState(pageNumAtom);
+  const setCommodities = useSetRecoilState(commoditiesAtom);
+  const [urls, setUrls] = useState<Blob[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const handlePrevPage = () => {
     if (pageNum > 1) {
       setPageNum((pageNum) => pageNum - 1);
+      setCommodities(commodities[pageNum - 1]);
     }
   };
 
   const handleNextPage = () => {
     if (pageNum < maxLength) {
       setPageNum((pageNum) => pageNum + 1);
+      setCommodities(commodities[pageNum + 1]);
     }
   };
-
-  const url = `https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf#view=Fit&toolbar=0`;
 
   const handleZoomClick = () => {
     if (PDFView == 4 && surveyView == 8) {
@@ -42,6 +54,25 @@ export const PDFViewer = ({
       setSurveyView(8);
     }
   };
+
+  console.log("urls", urls);
+  useEffect(() => {
+    if (downloadURLs) {
+      setLoading(true);
+      Promise.all([
+        downloadURLs.map((url, index) =>
+          fetch(url).then(async (r: any) => {
+            const blob: Blob = await r.blob();
+            // const fileName: string = `pdf${index}.pdf`;
+            // const file = new File([blob], fileName, { lastModified: new Date().getTime() });
+            setUrls((urls) => [...urls, blob]);
+          })
+        ),
+      ]).then((res) => {
+        setLoading(false);
+      });
+    }
+  }, [downloadURLs]);
 
   const PDF = () => {
     return (
@@ -107,7 +138,18 @@ export const PDFViewer = ({
             verticalAlign: "center",
           }}
         >
-          <iframe src={url} key={url} height="95%" width="92%" scrolling="no" />
+          <Loading />
+          {/* {loading || urls.length < 1 ? (
+            <Loading />
+          ) : (
+            <iframe
+              src={URL.createObjectURL(urls[pageNum])}
+              key={`pdf_${pageNum}`}
+              height="95%"
+              width="92%"
+              scrolling="no"
+            />
+          )} */}
         </div>
       </>
     );

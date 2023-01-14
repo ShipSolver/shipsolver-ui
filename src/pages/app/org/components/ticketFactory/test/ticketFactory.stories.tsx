@@ -18,8 +18,8 @@ export const Primary: ComponentStory<typeof TicketFactory> = () => (
   </StorybookThemeProvider>
 );
 
-export const PDFViewerStory: ComponentStory<typeof PDFViewer> = () => (
-  <StorybookThemeProvider>
-    <PDFViewer maxLength={3} />
-  </StorybookThemeProvider>
-);
+// export const PDFViewerStory: ComponentStory<typeof PDFViewer> = () => (
+//   <StorybookThemeProvider>
+//     <PDFViewer maxLength={3} />
+//   </StorybookThemeProvider>
+// );

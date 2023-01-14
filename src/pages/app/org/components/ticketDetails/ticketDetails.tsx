@@ -68,19 +68,19 @@ export const TicketDetails = () => {
             <Grid container spacing={6}>
               <Grid item xs={4}>
                 <FormWrap>
-                  <POD />
+                  <POD urls={ticketInfo[0].podUrls}/>
                 </FormWrap>
               </Grid>
 
               <Grid item xs={4}>
                 <FormWrap>
-                  <CustomerSignature />
+                  <CustomerSignature urls={ticketInfo[0].customerSignatureUrls}/>
                 </FormWrap>
               </Grid>
 
               <Grid item xs={4}>
                 <FormWrap>
-                  <Pictures />
+                  <Pictures urls={ticketInfo[0].pictureUrls}/>
                 </FormWrap>
               </Grid>
             </Grid>
