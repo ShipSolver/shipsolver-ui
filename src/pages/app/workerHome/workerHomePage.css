@@ -1,0 +1,80 @@
+.worker-app-view-all-button {
+    color: #006FFF ;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    margin-top: 50px !important;
+}
+
+.worker-app-view-all-button:hover {
+    cursor: pointer;
+}
+
+.worker-app-delivery-titles {
+    font-size: 24px !important;
+    margin-left: 10px !important;
+    display: inline-flex;
+}
+
+.worker-app-delivery-header {
+    font-size: 20.5px !important;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px !important;
+    margin-top: 20px !important;
+}
+
+.worker-app-ticket-sub-title {
+    color: #818181
+}
+
+.worker-app-ticket-container:hover {
+    cursor: pointer;
+}
+
+.expected-deliveries-modal{
+    background-color: white;
+    position: absolute;
+    left: 50%;
+    top: 20%;
+    transform: translate(-50%, -50%);
+    width: 85vw;
+    height: 35vh;
+    border-radius: 8px;
+}
+
+.expected-deliveries-modal-content{
+    justify-content: space-around;
+    align-items: center;
+    height: 100%;
+}
+
+.expected-deliveries-modal-text{
+    font-weight: 300 !important;
+}
+
+.worker-app-yes-button{
+    background-color: #E1FCE7 !important;
+    color: #0A3977 !important;
+    width: 100px;
+    box-shadow: none !important;
+}
+
+.worker-app-no-button{
+    background-color: #FCE1E1 !important;
+    color: #0A3977 !important;
+    width: 100px; 
+    box-shadow: none !important;
+}
+
+.modal-close-button{
+    float: right    
+}
+
+.modal-close-button:hover {
+    cursor: pointer;
+}
+
+.worker-app-view-all-container{
+    max-height: 80vh;
+    overflow-y: scroll;
+}

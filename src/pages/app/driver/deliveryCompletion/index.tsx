@@ -10,8 +10,8 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 
-import OuterBlueDivBox from "../components/outerBlueDivBox";
-import InnerWhiteDivBox from "../components/innerWhiteDivBox";
+import OuterBlueDivBox from "../../components/outerBlueDivBox";
+import InnerWhiteDivBox from "../../components/innerWhiteDivBox";
 import MediumButton from "./components/mediumButton";
 import Divider from "@mui/material/Divider";
 

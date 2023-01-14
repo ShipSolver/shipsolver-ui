@@ -4,11 +4,11 @@ import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
 
-import OuterBlueDivBox from "./components/outerBlueDivBox";
-import InnerBlueDivBox from "./components/innerBlueDivBox";
-import InnerWhiteDivBox from "./components/innerWhiteDivBox";
-import ModalContainer from "./components/modalContainer";
-import { LargeButton } from "./components/largeButton";
+import OuterBlueDivBox from "../components/outerBlueDivBox";
+import InnerBlueDivBox from "../components/innerBlueDivBox";
+import InnerWhiteDivBox from "../components/innerWhiteDivBox";
+import ModalContainer from "../components/modalContainer";
+import { LargeButton } from "../components/largeButton";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
@@ -23,7 +23,7 @@ import { Ticket, TicketMilestone, TicketStatus } from "../../../services/types";
 import useLoadable from "../../../utils/useLoadable";
 
 import { styled } from "@mui/material/styles";
-import { CompletionPopUp } from "./components/completionPopUp";
+import { CompletionPopUp } from "../components/completionPopUp";
 import { useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import { DeliveryCompletionTicketAtom } from "../../../state/deliveryCompletion";
