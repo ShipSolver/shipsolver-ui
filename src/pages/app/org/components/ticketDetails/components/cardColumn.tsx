@@ -10,25 +10,31 @@ interface EventHistoryProps {
   title?: string;
   cardContents?: React.ReactNode[];
   customHeight?: string;
+  customPadding?: string;
   isEditable?: boolean;
   action?: () => void;
+  fullHeight?: boolean;
 }
 
 export const CardColumn = ({
   title,
   cardContents,
   customHeight,
+  customPadding,
   isEditable,
-  action
+  action,
+  fullHeight,
 }: EventHistoryProps) => {
-
   const cards = useMemo(
     () => cardContents?.map((content) => <StyledCard>{content}</StyledCard>),
     [cardContents]
   );
 
   return (
-    <Container>
+    <Container
+      customPadding={customPadding}
+      sx={fullHeight ? { height: "100%" } : undefined}
+    >
       {title ? (
         <TitlePaper>
           <Typography variant="h2" fontWeight="bold">
@@ -56,13 +62,15 @@ export const CardColumn = ({
   );
 };
 
-const Container = styled("div")(({ theme }) => ({
-  borderRadius: "var(--ss-brand-border-radius)",
-  backgroundColor: theme.palette.secondary.main,
-  flexGrow: 1,
-  padding: "16px",
-  position: "relative"
-}));
+const Container = styled("div")<{ customPadding?: string }>(
+  ({ theme, customPadding }) => ({
+    borderRadius: "var(--ss-brand-border-radius)",
+    backgroundColor: theme.palette.secondary.main,
+    flexGrow: 1,
+    padding: customPadding ?? "16px",
+    position: "relative",
+  })
+);
 
 export const TitlePaper = styled(Paper)({
   display: "inline-block",
@@ -86,7 +94,6 @@ const StyledCard = styled(Card)({
   padding: 10,
   margin: 15,
 });
-
 
 const AddButton = styled(IconButton)`
   position: absolute;

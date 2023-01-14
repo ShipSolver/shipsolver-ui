@@ -69,6 +69,7 @@ export type TicketInformationStateType = {
   isPickup?: boolean;
   noSignatureRequired?: boolean;
   tailgateAuthorized?: boolean;
+  id?: string;
 };
 
 export interface TicketType extends TicketInformationStateType {
@@ -76,23 +77,34 @@ export interface TicketType extends TicketInformationStateType {
 }
 
 interface TicketInformationProps {
-  data?: TicketInformationStateType;
+  data?: TicketInformationStateType | null;
   newTicket?: boolean;
   deliveryReceipt?: boolean;
+  reviewPOD?: boolean;
 }
 
-const ColoredButton = ({
+export const ColoredButton = ({
   color,
   label,
   action,
 }: {
   color: string;
   label: string;
+
   action?: () => void;
 }) => {
   return (
-    <PaperButton style={{ backgroundColor: color }} onClick={() => action?.()}>
-      <Typography variant="h5">{label}</Typography>
+    <PaperButton
+      style={{
+        backgroundColor: color,
+        margin: 5,
+        marginTop: 0,
+      }}
+      onClick={() => action?.()}
+    >
+      <Typography variant="h5" textAlign="center">
+        {label}
+      </Typography>
     </PaperButton>
   );
 };
@@ -101,6 +113,7 @@ export const TicketInformation = ({
   data,
   newTicket,
   deliveryReceipt,
+  reviewPOD,
 }: TicketInformationProps) => {
   const [isEditable, setIsEditable] = useState<boolean>(newTicket ?? false);
 
@@ -356,8 +369,9 @@ export const TicketInformation = ({
                     )}
                   </Button>
                 </div>
+
                 <FullWidthButton variant="contained" size="small">
-                  View DR
+                  {reviewPOD == false ? "View PDF" : "View DR"}
                 </FullWidthButton>
               </ActionColumn>
             </Grid>
@@ -428,10 +442,9 @@ const FullWidthButton = styled(Button)`
   display: inline-block;
 `;
 
-const PaperButton = styled(Paper)`
+export const PaperButton = styled(Paper)`
   display: inline-block;
   border-radius: 8px;
   cursor: pointer;
   padding: 13px 15px;
-  margin: 20px 20px 10px 10px;
 `;
