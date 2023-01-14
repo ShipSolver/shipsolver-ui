@@ -1,11 +1,19 @@
 module.exports = {
   "stories": ["../src/**/*.stories.mdx", "../src/**/*.stories.@(js|jsx|ts|tsx)"],
-  "addons": ["@storybook/addon-links", "@storybook/addon-essentials", "@storybook/addon-interactions", "@storybook/preset-create-react-app"],
-  "framework": "@storybook/react",
+  "addons": ["@storybook/addon-links", "@storybook/addon-essentials"],
   core: {
-    builder: "webpack5"
+    builder: '@storybook/builder-vite',
   },
   typescript: {
     reactDocgen: 'react-docgen',
+  },
+  async viteFinal(config) {
+    return {
+      ...config,
+      define: {
+        ...config.define,
+        global: "window",
+      }
+    };
   },
 };
