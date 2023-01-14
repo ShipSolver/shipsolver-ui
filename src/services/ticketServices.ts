@@ -13,6 +13,7 @@ import {
   TicketType,
 } from "../pages/app/org/components/ticketDetails/components/ticketInformation";
 
+import { CommodityType } from "../pages/app/org/components/ticketDetails/components/commodities";
 axios.defaults.baseURL = SERVER_URL;
 
 const delay = (time: number) => {
@@ -97,7 +98,22 @@ export const fetchTickets = async (ticketIDs: string[]) => {
   }
 };
 
-export const fetchTicket = async (ticketId: string) => {
+// export const createTicket = async (payload: any) => {
+//   try {
+//     const data = payload;
+//     const response: any = await axios.post("/api/ticket/", {
+//       withCredentials: false,
+//       data,
+//     });
+//   } catch (e) {
+//     console.error(e);
+//     throw e;
+//   }
+// };
+
+export const fetchTicket = async (
+  ticketId: string
+): Promise<[TicketInformationStateType, CommodityType[]]> => {
   try {
     const response: any = await axios.get(`/api/ticket/${ticketId}`, {
       withCredentials: false,
@@ -151,8 +167,8 @@ export const fetchTicket = async (ticketId: string) => {
       enterIntoInventory: true,
     };
 
-    const commodities = response.data.pieces
-      .split(",")
+    const commodities: CommodityType[] = response.data.pieces
+      .split(",+-")
       .map((commodity: string) => ({ description: commodity }));
 
     return [data, commodities];
@@ -293,12 +309,15 @@ export const createTicket = async ({
     consigneeAddress: consignee.address,
     consigneePhoneNumber: consignee.phoneNum,
     consigneePostalCode: consignee.postalCode,
+    noSignatureRequired: false,
+    tailgateAuthorized: false
   });
 
   try {
     const response: any = await axios.post(`/api/ticket/`, {
       withCredentials: false,
       data: payload,
+
     });
   } catch (e) {
     console.error(e);

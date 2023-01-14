@@ -4,7 +4,11 @@ import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
 import Container from "@mui/material/Container";
 
-export const Loading = () => {
+interface LoadingProps {
+  text?: string;
+}
+
+export const Loading = ({ text }: LoadingProps) => {
   return (
     <Container
       sx={{
@@ -20,11 +24,11 @@ export const Loading = () => {
         variant="h2"
         sx={{ margin: "calc(var(--ss-brand-spacing)*5)" }}
       >
-        Loading
+        {text ?? Loading}
       </Typography>
       <CircularProgress sx={{ margin: "calc(var(--ss-brand-spacing)*5)" }} />
     </Container>
   );
-}
+};
 
 export default Loading;

@@ -70,6 +70,9 @@ export type TicketInformationStateType = {
   noSignatureRequired?: boolean;
   tailgateAuthorized?: boolean;
   id?: string;
+  podUrls?: string[];
+  customerSignatureUrls?: string[];
+  pictureUrls?: string[];
 };
 
 export interface TicketType extends TicketInformationStateType {
@@ -136,12 +139,12 @@ export const TicketInformation = ({
   }, []);
 
   const handleSave = () => {
-    if (newTicket) {
+    if (newTicket || deliveryReceipt) {
       let ticket: TicketType = { ...formData };
       if (commodities) {
         ticket.pieces = commodities
           .map(({ description }) => description)
-          .join();
+          .join(",+-");
       }
 
       createTicket(ticket);
@@ -380,7 +383,11 @@ export const TicketInformation = ({
           {(newTicket != null || deliveryReceipt != null) && (
             <>
               <Grid item xs={8}>
-                <ColoredButton color="#C5FAD180" label="Add to Inventory" />
+                <ColoredButton
+                  color="#C5FAD180"
+                  label="Add to Inventory"
+                  action={handleSave}
+                />
                 <ColoredButton color="#FAC5C580" label="Delete" />
                 <ColoredButton
                   color="#CBDFEB"
