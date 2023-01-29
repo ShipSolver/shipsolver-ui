@@ -5,15 +5,15 @@ import { SERVER_URL } from "./constants";
 import tickets from "../mockData/tickets.json";
 import { Ticket, TicketMilestone, TicketStatus } from "./types";
 import moment from "moment";
-import { DateFormat } from "../pages/app/org/components/allTicketsTable/components/filters/dateRangeFilter";
+import { DateFormat } from "../apps/org/pages/allTicketsTable/components/filters/dateRangeFilter";
 
-import { AllTicketsTableRows } from "../pages/app/org/components/allTicketsTable";
 import {
   TicketInformationStateType,
   TicketType,
-} from "../pages/app/org/components/ticketDetails/components/ticketInformation";
+} from "../apps/org/pages/ticketDetails/components/ticketInformation";
 
-import { CommodityType } from "../pages/app/org/components/ticketDetails/components/commodities";
+import { CommodityType } from "../apps/org/pages/ticketDetails/components/commodities";
+import { RowType } from "../apps/org/pages/allTicketsTable/types";
 axios.defaults.baseURL = SERVER_URL;
 
 const delay = (time: number) => {
@@ -51,7 +51,7 @@ export const fetchAllTickets = async () => {
       withCredentials: false,
     });
 
-    const data: AllTicketsTableRows[] = response.data.map(
+    const data: RowType[] = response.data.map(
       ({
         barcodeNumber,
         ticketId,
@@ -70,7 +70,7 @@ export const fetchAllTickets = async () => {
         lastAssigned: ticketStatus.assignedTo,
         barcodeNumber,
         shipper: shipperCompany,
-        pickup: "1",
+        pickup: "Yes",
         ticketId,
       })
     );

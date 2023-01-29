@@ -1,7 +1,7 @@
 import React from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { useRecoilValue } from "recoil";
-import Loading from "../pages/components/loading";
+import Loading from "../components/loading";
 
 import { AuthenticatedUsernameAtom, useGetUserInfo } from "../state/authentication";
 
