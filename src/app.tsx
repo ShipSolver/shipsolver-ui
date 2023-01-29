@@ -10,9 +10,9 @@ import CssBaseline from "@mui/material/ScopedCssBaseline";
 import ShipSolverBrand from "./ShipSolverBrand";
 import ScrollReset from "./utils/ScrollReset";
 
-import AuthenticationRoutes from "./pages/authentication";
-import AppRoutes from "./pages/app/org";
-import DriverRoutes from "./pages/app/driver";
+import AuthenticationRoutes from "./authentication";
+import AppRoutes from "./apps/org";
+import DriverRoutes from "./apps/driver";
 import RouteProtector from "./utils/routeProtector";
 
 function App() {

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { SERVER_URL, MEMORY_STORAGE_KEY } from "./constants";
-import awsConfig from "./aws-exports";
+import { awsConfig } from "./aws-exports";
 import { Auth, Amplify } from "aws-amplify";
 import { CognitoUser, CognitoUserSession } from "amazon-cognito-identity-js";
 

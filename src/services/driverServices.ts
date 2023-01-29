@@ -22,6 +22,8 @@ export const fetchDriver = (driverID: string) => {
   return mockServerDriverFetch();
 };
 
+export interface IFetchAllDriversResponse {username: string, userId: string};
+
 export const fetchAllDrivers = async () => {
   try {
     const response: any = await axios.get("/api/driver/", {
@@ -30,7 +32,7 @@ export const fetchAllDrivers = async () => {
 
     return response.data
       .slice(0, 10)
-      .map(({ username, userId }: any) => ({ username, userId }));
+      .map(({ username, userId }: IFetchAllDriversResponse) => ({ username, userId }));
   } catch (e) {
     console.error(e);
     throw e;

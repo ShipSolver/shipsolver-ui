@@ -1,9 +1,9 @@
 import axios from "axios";
 
 import { SERVER_URL } from "./constants";
-import { TicketInformationStateType } from "../pages/app/org/components/ticketDetails/components/ticketInformation";
+import { TicketInformationStateType } from "../pages/apps/org/pages/ticketDetails/components/ticketInformation";
 import { Ticket } from "./types";
-import { CommodityType } from "../pages/app/org/components/ticketDetails/components/commodities";
+import { CommodityType } from "../pages/apps/org/pages/ticketDetails/components/commodities";
 // import FormData from "form-data";
 axios.defaults.baseURL = SERVER_URL;
 
