@@ -17,8 +17,8 @@ import { commoditiesAtom } from "../ticketDetails/state/commodityState";
 import Loading from "../../../../components/loading";
 import { TestTicket } from "./test/testData";
 import { SelectDelivery } from "./components/selectDelivery";
-import { ColoredButton } from "../ticketDetails/components";
-import { TicketInformationStateType } from "../ticketDetails/components";
+import { ColoredButton } from "../../../../components/coloredButton";
+import { TicketInformationStateType } from "../ticketDetails/components/ticketInformation/types";
 import { selectedTicketIDAtom } from "./state/selectedTicketState";
 import { useRecoilValue } from "recoil";
 

@@ -6,7 +6,7 @@ import Paper from "../../../../../components/roundedPaper";
 import { styled } from "@mui/material/styles";
 import { CardColumn } from "../../ticketDetails/components";
 import { TestTicket } from "../test/testData";
-import { TicketInformationStateType } from "../../ticketDetails/components";
+import { TicketInformationStateType } from "../../ticketDetails/components/ticketInformation/types";
 import { selectedTicketIDAtom } from "../state/selectedTicketState";
 import { useSetRecoilState, useRecoilValue } from "recoil";
 

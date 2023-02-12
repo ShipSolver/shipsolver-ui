@@ -6,10 +6,10 @@ import { styled } from "@mui/material/styles";
 import { IconButton } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 
-interface EventHistoryProps {
+interface CardColumnProps {
   title?: string;
   cardContents?: React.ReactNode[];
-  customHeight?: string;
+  $customHeight?: string;
   customPadding?: string;
   isEditable?: boolean;
   action?: () => void;
@@ -19,12 +19,12 @@ interface EventHistoryProps {
 export const CardColumn = ({
   title,
   cardContents,
-  customHeight,
+  $customHeight,
   customPadding,
   isEditable,
   action,
   fullHeight,
-}: EventHistoryProps) => {
+}: CardColumnProps) => {
   const cards = useMemo(
     () => cardContents?.map((content) => <StyledCard>{content}</StyledCard>),
     [cardContents]
@@ -33,7 +33,7 @@ export const CardColumn = ({
   return (
     <Container
       customPadding={customPadding}
-      sx={fullHeight ? { height: "100%" } : undefined}
+      // sx={fullHeight ? { height: "50%" } : undefined}
     >
       {title ? (
         <TitlePaper>
@@ -44,7 +44,7 @@ export const CardColumn = ({
       ) : null}
 
       <CardContainerPaper
-        customHeight={customHeight}
+        $customHeight={$customHeight}
         sx={{
           "&::-webkit-scrollbar": {
             display: "none",
@@ -62,16 +62,6 @@ export const CardColumn = ({
   );
 };
 
-const Container = styled("div")<{ customPadding?: string }>(
-  ({ theme, customPadding }) => ({
-    borderRadius: "var(--ss-brand-border-radius)",
-    backgroundColor: theme.palette.secondary.main,
-    flexGrow: 1,
-    padding: customPadding ?? "16px",
-    position: "relative",
-  })
-);
-
 export const TitlePaper = styled(Paper)({
   display: "inline-block",
   position: "relative",
@@ -81,9 +71,9 @@ export const TitlePaper = styled(Paper)({
   marginBottom: "8px",
 });
 
-const CardContainerPaper = styled(Paper)<{ customHeight?: string }>(
-  ({ theme, customHeight }) => ({
-    height: customHeight ?? "44vh",
+const CardContainerPaper = styled(Paper)<{ $customHeight?: string }>(
+  ({ theme, $customHeight }) => ({
+    height: $customHeight ?? "44vh",
     backgroundColor: theme.palette.secondary.light,
     padding: "8px",
     overflowY: "scroll",
@@ -101,3 +91,13 @@ const AddButton = styled(IconButton)`
   right: 4px;
   background-color: white;
 `;
+
+export const Container = styled("div")<{ customPadding?: string, $customHeight?: string }>(
+  ({ theme, customPadding, $customHeight }) => ({
+    borderRadius: "var(--ss-brand-border-radius)",
+    backgroundColor: theme.palette.secondary.main,
+    padding: customPadding ?? "16px",
+    position: "relative",
+    height: $customHeight
+  })
+);

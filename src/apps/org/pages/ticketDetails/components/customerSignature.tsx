@@ -6,11 +6,13 @@ interface CustomerSignatureProps {
 
 export const CustomerSignature = ({ urls }: CustomerSignatureProps) => {
   return (
-    <div>
+    <>
       <h3>Customer Signatures</h3>
       {urls?.map((url) => {
-        <a href={url}>{url}</a>;
+        <a href={url} key={url}>
+          {url}
+        </a>;
       })}
-    </div>
+    </>
   );
 };

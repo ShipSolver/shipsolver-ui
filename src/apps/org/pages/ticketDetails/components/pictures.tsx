@@ -4,15 +4,15 @@ interface PicturesProps {
   urls?: string[];
 }
 
-export const Pictures = ({urls}: PicturesProps) => {
+export const Pictures = ({ urls }: PicturesProps) => {
   return (
-    <div>
+    <>
       <h3>Pictures</h3>
       {urls?.map((url) => {
-        <a href={url}>
+        <a href={url} key={url}>
           {url}
         </a>;
       })}
-    </div>
+    </>
   );
 };

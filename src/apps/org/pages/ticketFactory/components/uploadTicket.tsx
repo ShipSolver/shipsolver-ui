@@ -123,7 +123,6 @@ export const UploadTicket = () => {
         <TealBackground>
           <TicketInformation
             data={ticketInformation[pageNum - 1]}
-            newTicket={false}
             deliveryReceipt
           />
         </TealBackground>

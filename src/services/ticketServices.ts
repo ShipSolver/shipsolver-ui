@@ -10,7 +10,7 @@ import { DateFormat } from "../apps/org/pages/allTicketsTable/components/filters
 import {
   TicketInformationStateType,
   TicketType,
-} from "../apps/org/pages/ticketDetails/components/ticketInformation";
+} from "../apps/org/pages/ticketDetails/components/ticketInformation/types";
 
 import { CommodityType } from "../apps/org/pages/ticketDetails/components/commodities";
 import { RowType } from "../apps/org/pages/allTicketsTable/types";
@@ -98,19 +98,6 @@ export const fetchTickets = async (ticketIDs: string[]) => {
   }
 };
 
-// export const createTicket = async (payload: any) => {
-//   try {
-//     const data = payload;
-//     const response: any = await axios.post("/api/ticket/", {
-//       withCredentials: false,
-//       data,
-//     });
-//   } catch (e) {
-//     console.error(e);
-//     throw e;
-//   }
-// };
-
 export const fetchTicket = async (
   ticketId: string
 ): Promise<[TicketInformationStateType, CommodityType[]]> => {
@@ -120,7 +107,7 @@ export const fetchTicket = async (
     });
 
     const {
-      customer,
+      customerName,
       shipperCompany,
       shipperName,
       shipperAddress,
@@ -137,10 +124,11 @@ export const fetchTicket = async (
       consigneeAddress,
       consigneePhoneNumber,
       consigneePostalCode,
+      noSignatureRequired
     } = response.data;
 
     const data: TicketInformationStateType = {
-      firstParty: customer.name,
+      firstParty: customerName,
       shipper: {
         company: shipperCompany,
         name: shipperName,
@@ -164,7 +152,8 @@ export const fetchTicket = async (
         postalCode: consigneePostalCode,
       },
       isPickup: true,
-      enterIntoInventory: true,
+      noSignatureRequired
+      // enterIntoInventory: true,
     };
 
     const commodities: CommodityType[] = response.data.pieces
@@ -211,13 +200,21 @@ export const changeTicketStatus: (
   return { error };
 };
 
+interface IFetchMilestones {
+  description: string;
+  timestamp: number;
+}
+
 export const fetchMilestones = async (ticketId: string) => {
   try {
-    const response: any = await axios.get(`/api/milestones/${ticketId}`, {
-      withCredentials: false,
-    });
+    const response: { data: IFetchMilestones[] } = await axios.get(
+      `/api/milestones/${ticketId}`,
+      {
+        withCredentials: false,
+      }
+    );
 
-    return response.data.map(({ description, timestamp }: any) => ({
+    return response.data.map(({ description, timestamp }) => ({
       description,
       dateAndTime: new Date(timestamp),
     }));
@@ -285,13 +282,11 @@ export const createTicket = async ({
   shipper,
   shipmentDetails,
   consignee,
-  pieces,
   firstParty,
+  ...rest
 }: TicketType) => {
   const payload = JSON.stringify({
-    customer: {
-      name: firstParty,
-    },
+    customerName: firstParty,
     shipperCompany: shipper.company,
     shipperName: shipper.name,
     shipperAddress: shipper.address,
@@ -301,7 +296,6 @@ export const createTicket = async ({
     specialInstructions: shipmentDetails.specialInst,
     weight: shipmentDetails.weight,
     claimedNumberOfPieces: shipmentDetails.numPieces,
-    pieces,
     barcodeNumber: shipmentDetails.barcode,
     houseReferenceNumber: shipmentDetails.refNum,
     consigneeCompany: consignee.company,
@@ -309,21 +303,62 @@ export const createTicket = async ({
     consigneeAddress: consignee.address,
     consigneePhoneNumber: consignee.phoneNum,
     consigneePostalCode: consignee.postalCode,
-    noSignatureRequired: false,
-    tailgateAuthorized: false
+    ...rest,
   });
 
   try {
     const response: any = await axios.post(`/api/ticket/`, {
       withCredentials: false,
       data: payload,
-
     });
+
+    return response;
   } catch (e) {
     console.error(e);
     throw e;
   }
 };
+
+export const editTicket = async ({
+  shipper,
+  shipmentDetails,
+  consignee,
+  firstParty,
+  ...rest
+}: TicketType, ticketID: string) => {
+  const payload = JSON.stringify({
+    customerName: firstParty,
+    shipperCompany: shipper.company,
+    shipperName: shipper.name,
+    shipperAddress: shipper.address,
+    shipperPhoneNumber: shipper.phoneNum,
+    shipperPostalCode: shipper.postalCode,
+    BOLNumber: shipmentDetails.bolNum,
+    specialInstructions: shipmentDetails.specialInst,
+    weight: shipmentDetails.weight,
+    claimedNumberOfPieces: shipmentDetails.numPieces,
+    barcodeNumber: shipmentDetails.barcode,
+    houseReferenceNumber: shipmentDetails.refNum,
+    consigneeCompany: consignee.company,
+    consigneeName: consignee.name,
+    consigneeAddress: consignee.address,
+    consigneePhoneNumber: consignee.phoneNum,
+    consigneePostalCode: consignee.postalCode,
+    ...rest,
+  });
+
+  try {
+    const response: any = await axios.post(`/api/ticket/${ticketID}`, {
+      withCredentials: false,
+      data: payload,
+    });
+
+    return response;
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
+}
 
 export const checkIntoInventory = async (ticketIDs: string[]) => {
   try {
