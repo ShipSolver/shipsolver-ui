@@ -15,7 +15,7 @@ export const Loading = ({ text }: LoadingProps) => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        minHeight: "calc(80vh - 96px)",
+        // minHeight: "calc(80vh - 96px)",
         justifyContent: "center",
       }}
     >
@@ -24,7 +24,7 @@ export const Loading = ({ text }: LoadingProps) => {
         variant="h2"
         sx={{ margin: "calc(var(--ss-brand-spacing)*5)" }}
       >
-        {text ?? Loading}
+        {text ?? "Loading"}
       </Typography>
       <CircularProgress sx={{ margin: "calc(var(--ss-brand-spacing)*5)" }} />
     </Container>

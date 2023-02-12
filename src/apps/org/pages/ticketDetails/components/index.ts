@@ -6,4 +6,4 @@ export * from './eventHistory';
 export * from './milestones';
 export * from './pictures';
 export * from './pod';
-export * from './ticketInformation';
+export * from './ticketInformation/ticketInformation';

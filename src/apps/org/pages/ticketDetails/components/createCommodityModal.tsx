@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { CommodityType } from "./commodities";
-import { InputField, InputContainer } from "./ticketInformation";
+import { InputField, InputContainer } from "./ticketInformation/ticketInformation";
 import InputLabel from "@mui/material/InputLabel";
 import { Spacer } from "../../../../../components/spacer";
 import { useSetRecoilState } from "recoil";

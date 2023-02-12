@@ -39,7 +39,7 @@ export const Commodities = ({ isEditable }: CommoditiesProps) => {
     <>
       <CardColumn
         cardContents={commoditiesCards}
-        customHeight="29vh"
+        $customHeight="29vh"
         isEditable={isEditable}
         action={() => setIsOpen(true)}
       />

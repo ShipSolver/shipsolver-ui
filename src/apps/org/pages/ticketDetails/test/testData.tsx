@@ -1,5 +1,5 @@
 import { EventHistoryType } from "../components/eventHistory";
-import { TicketInformationStateType } from "../components/ticketInformation";
+import { TicketInformationStateType } from "../components/ticketInformation/ticketInformation";
 import { CommodityType } from "../components/commodities";
 import { MilestoneType } from "../components/milestones";
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { styled } from "@mui/material/styles";
 import { Typography, Grid } from "@mui/material";
 import Brand from "../../../../ShipSolverBrand";
@@ -15,10 +15,11 @@ import {
   CustomerSignature,
   EventHistory,
   EventHistoryType,
-  TicketInformation,
-  TicketInformationStateType,
-  FormWrap,
+  TicketInformation
+  // FormWrap,
 } from "./components";
+
+import { TicketInformationStateType } from "./components/ticketInformation/types";
 import useLoadable from "../../../../utils/useLoadable";
 import { useSetRecoilState } from "recoil";
 import { commoditiesAtom } from "./state/commodityState";
@@ -36,10 +37,22 @@ export const TicketDetails = () => {
   let { ticketId } = useParams();
 
   const {
-    val: ticketInfo,
+    val: ticketInfo = [TestTicketInformation, TestCommodities],
     loading,
     error,
   } = useLoadable(fetchTicket, ticketId ?? "");
+
+  /** Uncomment for storybook testing purposes */
+  // const ticketInfo = [TestTicketInformation, TestCommodities]
+  // const ticketId = 1;
+  // const loading = false;
+  // const error = false;
+
+  useEffect(() => {
+    if(ticketInfo){
+      setCommodities(ticketInfo[1]);
+    }
+  }, [ticketInfo])
 
   if (loading || ticketInfo == null) {
     return (
@@ -49,7 +62,13 @@ export const TicketDetails = () => {
     );
   }
 
-  setCommodities(ticketInfo[1]);
+  if (error) {
+    return (
+      <Container>
+        Error fetching ticket information
+      </Container>
+    )
+  }
 
   return (
     <Container>
@@ -65,7 +84,7 @@ export const TicketDetails = () => {
               data={ticketInfo[0]}
             />
             <Spacer height="18px" />
-            <Grid container spacing={6}>
+            {/* <Grid container spacing={6}>
               <Grid item xs={4}>
                 <FormWrap>
                   <POD urls={ticketInfo[0].podUrls}/>
@@ -83,7 +102,7 @@ export const TicketDetails = () => {
                   <Pictures urls={ticketInfo[0].pictureUrls}/>
                 </FormWrap>
               </Grid>
-            </Grid>
+            </Grid> */}
           </Wrapper>
         </Grid>
         <Grid item xs={5}>
