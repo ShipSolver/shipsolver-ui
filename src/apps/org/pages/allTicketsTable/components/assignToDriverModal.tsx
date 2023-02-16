@@ -74,7 +74,7 @@ export const AssignToDriverModal = ({
             <>
               <Container>
                 {drivers.map(({ username: driver }) => (
-                  <FlexDiv>
+                  <FlexDiv key={driver}>
                     <Checkbox
                       checked={driver === selectedDriver}
                       onClick={() => setSelectedDriver(driver)}

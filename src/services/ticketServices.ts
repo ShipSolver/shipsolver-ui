@@ -56,7 +56,7 @@ export const fetchAllTickets = async () => {
         barcodeNumber,
         ticketId,
         shipperCompany,
-        customer,
+        customerName,
         timestamp,
         consigneeAddress,
         consigneeName,
@@ -64,7 +64,7 @@ export const fetchAllTickets = async () => {
       }: any) => ({
         date: moment(new Date(timestamp)).format(DateFormat),
         status: ticketStatus.currentStatus,
-        firstParty: customer.name,
+        firstParty: customerName,
         consigneeName,
         consigneeAddress,
         lastAssigned: ticketStatus.assignedTo,
@@ -124,7 +124,7 @@ export const fetchTicket = async (
       consigneeAddress,
       consigneePhoneNumber,
       consigneePostalCode,
-      noSignatureRequired
+      ...rest
     } = response.data;
 
     const data: TicketInformationStateType = {
@@ -152,7 +152,7 @@ export const fetchTicket = async (
         postalCode: consigneePostalCode,
       },
       isPickup: true,
-      noSignatureRequired
+      ...rest
       // enterIntoInventory: true,
     };
 
@@ -284,8 +284,9 @@ export const createTicket = async ({
   consignee,
   firstParty,
   ...rest
-}: TicketType) => {
+}: TicketType, userId: string) => {
   const payload = JSON.stringify({
+    userId,
     customerName: firstParty,
     shipperCompany: shipper.company,
     shipperName: shipper.name,
@@ -325,8 +326,9 @@ export const editTicket = async ({
   consignee,
   firstParty,
   ...rest
-}: TicketType, ticketID: string) => {
+}: TicketType, ticketID: string, userId: string) => {
   const payload = JSON.stringify({
+    userId,
     customerName: firstParty,
     shipperCompany: shipper.company,
     shipperName: shipper.name,

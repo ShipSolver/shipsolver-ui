@@ -21,7 +21,7 @@ function RouteProtector({
   const authenticatedUsername = useRecoilValue(AuthenticatedUsernameAtom)
   const UserInfo = useGetUserInfo();
   const location = useLocation();
-
+  
   let renderRoute : JSX.Element | null = null
   if(UserInfo !== null){
       const extraRouteFlags = Object.keys(extraRoutes ?? {})

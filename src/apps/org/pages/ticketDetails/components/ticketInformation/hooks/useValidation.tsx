@@ -16,8 +16,6 @@ const postalCodeRegex = new RegExp(/^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/);
 
 export function useValidation() {
   const [errors, setErrors] = useState<TicketInformationValidationType>({});
-  const [numErrors, setNumErrors] = useState<number>(0);
-
   function validateShipperData(
     shipper: {
       [key in ShipperFields]?: string;
@@ -125,17 +123,15 @@ export function useValidation() {
         [parentKey]: undefined,
       }));
     }
-
-    setNumErrors((prev) => prev - 1);
   }
 
   const validate = (data: TicketInformationStateType) => {
-    setNumErrors(
+    return (
       validateShipperData(data.shipper) +
-        validateConsigneeData(data.consignee) +
-        validateShipmentDetailsData(data.shipmentDetails)
+      validateConsigneeData(data.consignee) +
+      validateShipmentDetailsData(data.shipmentDetails)
     );
   };
 
-  return { errors, validate, clearError, numErrors };
+  return { errors, validate, clearError };
 }

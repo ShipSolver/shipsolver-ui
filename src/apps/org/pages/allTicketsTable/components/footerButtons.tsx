@@ -93,7 +93,7 @@ export const FooterButtons = ({ triggerRefetch }: FooterButtonsProps) => {
         {loading ? <Loading /> : ButtonLabels.enterIntoInventory}
       </Button>
       <AssignToDriverModal
-        disabled={!multiRowSelected}
+        disabled={!singleRowSelected}
         ticketIDs={() => getTicketIds(selectedTickets)}
         buttonText={ButtonLabels.assignToDriver}
         triggerRefetch={triggerRefetch}
