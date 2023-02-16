@@ -11,6 +11,7 @@ export type User = {
   email: string;
   phone: string;
   type?: string;
+  userID: string;
 };
 
 export type CreationTicketMilestone =

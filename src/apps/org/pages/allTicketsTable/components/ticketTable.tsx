@@ -85,10 +85,10 @@ export const TicketTable = ({ headers, rows }: TicketTableProps) => {
         <Table stickyHeader>
           <colgroup>
             <col width="5%" />
-            <col width="10%" />
+            <col width="20%" />
             {/* <col width="10%" />
           <col width="10%" /> */}
-            <col width="10%" />
+            <col width="20%" />
             <col width="15%" />
             <col width="10%" />
             <col width="15%" />

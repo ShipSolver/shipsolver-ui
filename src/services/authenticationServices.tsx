@@ -63,13 +63,26 @@ export const signup: signupFn = async ({ email, password, name, phone }) => {
   let error = null;
 
   try {
-    await Auth.signUp({
+    const { userSub } = await Auth.signUp({
       username: email,
       password,
       attributes: {
         email: email,
         name,
         phone_number: phone,
+      },
+    });
+
+    // Create user in BE
+    await axios.post("/api/user/", {
+      withCredentials: false,
+      data: {
+        userId: userSub,
+        userType: "manager",
+        username: email,
+        firstName: name.split(" ")[0],
+        lastName: name.split(" ")[1],
+        email,
       },
     });
   } catch (err: any) {

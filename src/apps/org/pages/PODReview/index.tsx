@@ -41,7 +41,6 @@ export const PODReview = ({ complete }: { complete: boolean }) => {
   //   }
 
   //   setCommodities(ticketInfo[1]);
-  //console.log(complete);
 
   const [selectedTicket, setSelectedTicket] =
     useState<TicketInformationStateType | null>(null);

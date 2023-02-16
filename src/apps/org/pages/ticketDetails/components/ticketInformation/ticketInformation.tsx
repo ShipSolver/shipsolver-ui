@@ -35,6 +35,7 @@ import {
   EMPTY_DATA,
 } from "./types";
 import { useValidation } from "./hooks/useValidation";
+import { useGetUserInfo } from "../../../../../../state/authentication";
 
 interface TicketInformationProps {
   data?: TicketInformationStateType | null;
@@ -51,11 +52,12 @@ export const TicketInformation = ({
 }: TicketInformationProps) => {
   const [isEditable, setIsEditable] = useState<boolean>(newTicket ?? false);
   const formData = useRef<TicketInformationStateType>(data ?? EMPTY_DATA);
-  const { errors, validate, clearError, numErrors } = useValidation();
+  const { errors, validate, clearError } = useValidation();
   const [commodities, setcommodities] = useRecoilState(commoditiesAtom);
   const [viewSize, setViewSize] = useState<number>(5);
   let { ticketId } = useParams();
   let [newTicketId, setNewTicketId] = useState<string | undefined>();
+  const user = useGetUserInfo();
 
   useEffect(() => {
     return () => {
@@ -66,24 +68,22 @@ export const TicketInformation = ({
   const handleSave = async (event?: React.SyntheticEvent<HTMLFormElement>) => {
     event?.preventDefault();
 
-    validate(formData.current);
-    if (numErrors) {
+    if (validate(formData.current) || !user) {
       return;
     }
 
     let ticket: TicketType = { ...formData.current };
-    console.log(formData.current);
     ticket.pieces =
       commodities?.map(({ description }) => description).join(",+-") ?? "";
 
     if (newTicket || deliveryReceipt) {
       const {
         data: { ticketId },
-      } = await createTicket(ticket);
+      } = await createTicket(ticket, user.userID);
       setNewTicketId(ticketId);
     } else if (ticketId) {
       // edit ticket endpoint
-      await editTicket(ticket, ticketId);
+      await editTicket(ticket, ticketId, user.userID);
       setIsEditable(false);
     }
   };
@@ -157,7 +157,7 @@ export const TicketInformation = ({
   }, [newTicket, deliveryReceipt]);
 
   return (
-    <StyledForm onSubmit={handleSave}>
+    <StyledForm>
       <Grid container spacing={3}>
         <Grid container item xs={12}>
           <Grid item xs={12} lg={viewSize}>
@@ -370,14 +370,12 @@ export const TicketInformation = ({
                       width: "100px",
                       float: "right",
                     }}
-                    type="submit"
-                    // onClick={() => handleSave()}
+                    onClick={() => handleSave()}
                   >
                     Save
                   </Button>
                 ) : (
                   <Button
-                    size="small"
                     sx={{
                       width: "100px",
                       float: "right",
@@ -396,7 +394,7 @@ export const TicketInformation = ({
           </Grid>
         ) : (
           <div style={{ display: "flex", marginLeft: "24px" }}>
-            <Button type="submit" variant="outlined">
+            <Button onClick={() => handleSave()} variant="outlined">
               Add to Inventory
             </Button>
             <Spacer width="4px" />
@@ -418,7 +416,7 @@ export const TicketInformation = ({
   );
 };
 
-export const StyledForm = styled("form")`
+export const StyledForm = styled("div")`
   background-color: white;
   padding: 16px;
   border-radius: var(--ss-brand-border-radius);
