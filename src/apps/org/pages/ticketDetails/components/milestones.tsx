@@ -18,7 +18,7 @@ export const Milestones = ({ ticketId }: MilestonesProps) => {
     val: milestones,
     loading,
     error,
-  } = useLoadable(fetchMilestones, ticketId ?? "");
+  } = useLoadable(fetchMilestones, ticketId);
 
   if (loading || milestones == null) {
     return (
@@ -53,7 +53,11 @@ export const Milestones = ({ ticketId }: MilestonesProps) => {
     </div>,
   ]);
 
-  return <CardColumn $customHeight="29vh" title="Milestones" cardContents={milestoneCards} />;
+  return (
+    <CardColumn
+      $customHeight="350px"
+      title="Milestones"
+      cardContents={milestoneCards}
+    />
+  );
 };
-
-

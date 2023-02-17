@@ -6,7 +6,7 @@ import tickets from "../mockData/tickets.json";
 import { Ticket, TicketMilestone, TicketStatus } from "./types";
 import moment from "moment";
 import { DateFormat } from "../apps/org/pages/allTicketsTable/components/filters/dateRangeFilter";
-
+import { EventHistoryType } from "../apps/org/pages/ticketDetails/components/eventHistory";
 import {
   TicketInformationStateType,
   TicketType,
@@ -32,7 +32,6 @@ export const fetchTicketsForStatus = async (
   status: TicketStatus,
   userId?: string
 ) => {
-  
   const { data } = await axios.get(`/api/ticket/status/${status}`, {
     params: {
       limit: 10,
@@ -85,7 +84,7 @@ export const fetchAllTickets = async () => {
     return data;
   } catch (e) {
     console.error(e);
-    throw e;
+    return e;
   }
 };
 
@@ -106,8 +105,8 @@ export const fetchTickets = async (ticketIDs: string[]) => {
 };
 
 export const fetchTicket = async (
-  ticketId: string
-): Promise<[TicketInformationStateType, CommodityType[]]> => {
+  ticketId?: string
+): Promise<[TicketInformationStateType, CommodityType[]] | null> => {
   try {
     const response: any = await axios.get(`/api/ticket/${ticketId}`, {
       withCredentials: false,
@@ -170,7 +169,7 @@ export const fetchTicket = async (
     return [data, commodities];
   } catch (e) {
     console.error(e);
-    throw e;
+    return null;
   }
 };
 
@@ -212,7 +211,9 @@ interface IFetchMilestones {
   timestamp: number;
 }
 
-export const fetchMilestones = async (ticketId: string) => {
+export const fetchMilestones = async (
+  ticketId?: string
+): Promise<{ description: string; dateAndTime: Date }[]> => {
   try {
     const response: { data: IFetchMilestones[] } = await axios.get(
       `/api/milestones/${ticketId}`,
@@ -227,7 +228,7 @@ export const fetchMilestones = async (ticketId: string) => {
     }));
   } catch (e) {
     console.error(e);
-    throw e;
+    return [];
   }
 };
 
@@ -320,7 +321,20 @@ export const createTicket = async (
     return response;
   } catch (e) {
     console.error(e);
-    throw e;
+    return e;
+  }
+};
+
+export const fetchTicketEdits = async (ticketId?: string): Promise<EventHistoryType[]> => {
+  try {
+    const response: any = await axios.get(`/api/ticket/edits/${ticketId}`, {
+      withCredentials: false,
+    });
+    console.log(response.data);
+    return [];
+  } catch (e) {
+    console.error(e);
+    return [];
   }
 };
 
@@ -381,6 +395,6 @@ export const checkIntoInventory = async (ticketIDs: string[]) => {
     );
   } catch (e) {
     console.error(e);
-    throw e;
+    return e;
   }
 };

@@ -4,7 +4,10 @@ import { Typography, Grid } from "@mui/material";
 import Brand from "../../../../ShipSolverBrand";
 import { Spacer } from "../../../../components/spacer";
 import { useParams } from "react-router-dom";
-import { fetchTicket } from "../../../../services/ticketServices";
+import {
+  fetchTicket,
+  fetchTicketEdits,
+} from "../../../../services/ticketServices";
 import {
   TitlePaper,
   CommodityType,
@@ -15,7 +18,7 @@ import {
   CustomerSignature,
   EventHistory,
   EventHistoryType,
-  TicketInformation
+  TicketInformation,
   // FormWrap,
 } from "./components";
 
@@ -40,7 +43,7 @@ export const TicketDetails = () => {
     val: ticketInfo = [TestTicketInformation, TestCommodities],
     loading,
     error,
-  } = useLoadable(fetchTicket, ticketId ?? "");
+  } = useLoadable(fetchTicket, ticketId);
 
   /** Uncomment for storybook testing purposes */
   // const ticketInfo = [TestTicketInformation, TestCommodities]
@@ -49,10 +52,10 @@ export const TicketDetails = () => {
   // const error = false;
 
   useEffect(() => {
-    if(ticketInfo){
+    if (ticketInfo) {
       setCommodities(ticketInfo[1]);
     }
-  }, [ticketInfo])
+  }, [ticketInfo]);
 
   if (loading || ticketInfo == null) {
     return (
@@ -63,11 +66,7 @@ export const TicketDetails = () => {
   }
 
   if (error) {
-    return (
-      <Container>
-        Error fetching ticket information
-      </Container>
-    )
+    return <Container>Error fetching ticket information</Container>;
   }
 
   return (
@@ -80,9 +79,7 @@ export const TicketDetails = () => {
                 Ticket Information
               </Typography>
             </TitlePaper>
-            <TicketInformation
-              data={ticketInfo[0]}
-            />
+            <TicketInformation data={ticketInfo[0]} />
             <Spacer height="18px" />
             {/* <Grid container spacing={6}>
               <Grid item xs={4}>
@@ -106,8 +103,8 @@ export const TicketDetails = () => {
           </Wrapper>
         </Grid>
         <Grid item xs={5}>
-          <EventHistory events={TestEventHistory} />
-          <Spacer height="8px" />
+          <EventHistory ticketId={ticketId} />
+          <Spacer height="12px" />
           <Milestones ticketId={ticketId} />
         </Grid>
       </Grid>

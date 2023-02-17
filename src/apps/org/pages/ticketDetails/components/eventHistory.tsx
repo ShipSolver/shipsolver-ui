@@ -3,7 +3,10 @@ import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
 import Paper from "../../../../../components/roundedPaper";
 import { styled } from "@mui/material/styles";
-import { CardColumn } from "./cardColumn";
+import { fetchTicketEdits } from "../../../../../services/ticketServices";
+import Loading from "../../../../../components/loading";
+import { CardColumn, Container } from "./cardColumn";
+import useLoadable from "../../../../../utils/useLoadable";
 
 export type EventHistoryType = {
   user: string;
@@ -12,11 +15,35 @@ export type EventHistoryType = {
   dateAndTime: Date;
 };
 interface EventHistoryProps {
-  events: EventHistoryType[];
+  ticketId?: string;
 }
 
-export const EventHistory = ({ events }: EventHistoryProps) => {
-  const eventHistoryCards = events.map(
+export const EventHistory = ({ ticketId }: EventHistoryProps) => {
+  const {
+    val: ticketEdits,
+    loading,
+    error,
+  } = useLoadable(fetchTicketEdits, ticketId);
+
+  if (loading || ticketEdits === null) {
+    return (
+      <Container $customHeight="350px">
+        <Loading />
+      </Container>
+    );
+  }
+
+  if (error) {
+    return (
+      <Container $customHeight="350px">
+        <Typography color="red" align="center">
+          There was an error fecthing milestones!
+        </Typography>
+      </Container>
+    );
+  }
+
+  const eventHistoryCards = ticketEdits.map(
     ({ user, userRole, action, dateAndTime }) => (
       <div>
         <Typography>
@@ -39,5 +66,11 @@ export const EventHistory = ({ events }: EventHistoryProps) => {
     )
   );
 
-  return <CardColumn title="Edits" cardContents={eventHistoryCards} />;
+  return (
+    <CardColumn
+      title="Edits"
+      $customHeight="350px"
+      cardContents={eventHistoryCards}
+    />
+  );
 };

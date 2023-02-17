@@ -30,6 +30,8 @@ export const fetchAllDrivers = async () => {
       withCredentials: false,
     });
 
+    return [];
+
     return response.data
       .slice(0, 10)
       .map(({ username, userId }: IFetchAllDriversResponse) => ({ username, userId }));
