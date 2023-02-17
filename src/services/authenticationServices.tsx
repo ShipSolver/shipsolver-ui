@@ -3,6 +3,7 @@ import { SERVER_URL, MEMORY_STORAGE_KEY } from "./constants";
 import { awsConfig } from "./aws-exports";
 import { Auth, Amplify } from "aws-amplify";
 import { CognitoUser, CognitoUserSession } from "amazon-cognito-identity-js";
+import { User } from "../services/types";
 
 Amplify.configure(awsConfig);
 
@@ -55,11 +56,18 @@ type signupInfo = {
   password: string;
   name: string;
   phone: string;
+  userType: User;
 };
 type signupResponse = Promise<{ error: string | null }>;
 type signupFn = (info: signupInfo) => signupResponse;
 
-export const signup: signupFn = async ({ email, password, name, phone }) => {
+export const signup: signupFn = async ({
+  email,
+  password,
+  name,
+  phone,
+  userType,
+}) => {
   let error = null;
 
   try {

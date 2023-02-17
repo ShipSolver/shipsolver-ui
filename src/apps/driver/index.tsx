@@ -6,13 +6,9 @@ import Box from "@mui/material/Box";
 
 import Copyright from "../../components/copyright";
 
-import Home from "./home";
+import { Home } from "./home";
 
 import DeliveryCompletion from "./deliveryCompletion";
-import {
-  IncompleteDelivery,
-  IncompleteDeliveryReasons,
-} from "./incompleteDelivery";
 
 import { IncompletePickup, IncompletePickupReasons } from "./incompletePickup";
 import { ShiftCompletion, IncompleteShiftReasons } from "./shiftCompletion";

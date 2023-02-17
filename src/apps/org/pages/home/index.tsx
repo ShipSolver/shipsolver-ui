@@ -9,62 +9,68 @@ import {
   requestedPickupEntryRenderer,
   inventoryEntryRenderer,
   assignedEntryRenderer,
-  inProgressEntryRenderer
+  inProgressEntryRenderer,
 } from "./components/multiList/entryRenderers";
-import { 
+import {
   unassignedPickupMenu,
   requestedPickupMenu,
   inventoryMenu,
   assignedMenu,
-  inProgressMenu
- } from './components/multiList/menus'
+  inProgressMenu,
+} from "./components/multiList/menus";
 import useLoadable from "../../../../utils/useLoadable";
 import { styled } from "@mui/material/styles";
 
 import { useNavigate } from "react-router-dom";
+import { useGetUserInfo } from "../../../../state/authentication";
 
 function Home() {
   const navigate = useNavigate();
+  const user = useGetUserInfo();
 
   const {
     val: unassignedPickupTickets,
     loading: unassignedPickupTicketsLoading,
     error: unassignedPickupTicketsError,
-  } = useLoadable(fetchTicketsForStatus, "unassigned_pickup");
+  } = useLoadable(fetchTicketsForStatus, "unassigned_pickup", user?.userID);
 
   const {
     val: pickupRequestTickets,
     loading: pickupRequestTicketsLoading,
     error: pickupRequestTicketsError,
-  } = useLoadable(fetchTicketsForStatus, "requested_pickup");
+  } = useLoadable(fetchTicketsForStatus, "requested_pickup", user?.userID);
 
   const {
     val: inventoryTickets,
     loading: inventoryTicketsLoading,
     error: inventoryTicketsError,
-  } = useLoadable(fetchTicketsForStatus, "checked_into_inventory");
+  } = useLoadable(
+    fetchTicketsForStatus,
+    "checked_into_inventory",
+    user?.userID
+  );
 
   const {
     val: assignedTickets,
     loading: assignedTicketsLoading,
     error: assignedTicketsError,
-  } = useLoadable(fetchTicketsForStatus, "assigned");
+  } = useLoadable(fetchTicketsForStatus, "assigned", user?.userID);
 
   const {
     val: inProgressTickets,
     loading: inProgressTicketsLoading,
     error: inProgressTicketsError,
-  } = useLoadable(fetchTicketsForStatus, "in_transit");
+  } = useLoadable(fetchTicketsForStatus, "in_transit", user?.userID);
 
-  const ticketsLoading = 
+  const ticketsLoading =
     unassignedPickupTicketsLoading ||
     pickupRequestTicketsLoading ||
     inventoryTicketsLoading ||
     assignedTicketsLoading ||
     inProgressTicketsLoading;
 
-  const ticketsError = 
-    unassignedPickupTicketsError || 
+  const ticketsError =
+    unassignedPickupTicketsError ||
     pickupRequestTicketsError ||
     inventoryTicketsError ||
     assignedTicketsError ||
@@ -109,7 +115,7 @@ function Home() {
         ]}
       />
       <FlexDiv>
-      <Button variant="contained" onClick={() => navigate("/pod-review")}>
+        <Button variant="contained" onClick={() => navigate("/pod-review")}>
           Review PODs
         </Button>
         <Button variant="contained" onClick={() => {}}>
@@ -121,7 +127,6 @@ function Home() {
         <Button variant="contained" onClick={() => navigate("/ticket-factory")}>
           Create Tickets
         </Button>
-
       </FlexDiv>
     </div>
   );
@@ -132,4 +137,4 @@ export default Home;
 const FlexDiv = styled("div")`
   display: flex;
   justify-content: space-between;
-`
+`;
