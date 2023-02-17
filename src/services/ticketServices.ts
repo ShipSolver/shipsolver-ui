@@ -352,15 +352,15 @@ export const editTicket = async (
   });
 
   try {
-    const response: any = await axios.post(`/api/ticket/${ticketID}`, {
+    await axios.post(`/api/ticket/${ticketID}`, {
       withCredentials: false,
       data: payload,
     });
 
-    return response;
+    return true;
   } catch (e) {
     console.error(e);
-    throw e;
+    return false;
   }
 };
 

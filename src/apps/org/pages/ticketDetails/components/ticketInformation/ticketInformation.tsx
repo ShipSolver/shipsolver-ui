@@ -84,8 +84,11 @@ export const TicketInformation = ({
       setNewTicketId(ticketId);
     } else if (ticketId) {
       // edit ticket endpoint
-      await editTicket(ticket, ticketId, user.userID);
+      const status = await editTicket(ticket, ticketId, user.userID);
       setIsEditable(false);
+      if (status) {
+        window.alert("successfully edited!");
+      }
     }
   };
 
@@ -371,6 +374,8 @@ export const TicketInformation = ({
                       width: "100px",
                       float: "right",
                     }}
+                    type="submit"
+                    key="save"
                   >
                     Save
                   </Button>
@@ -382,6 +387,7 @@ export const TicketInformation = ({
                     }}
                     type="button"
                     onClick={() => setIsEditable(true)}
+                    key="edit"
                   >
                     Edit <EditIcon sx={{ marginLeft: "8px" }} />
                   </Button>
@@ -395,11 +401,11 @@ export const TicketInformation = ({
           </Grid>
         ) : (
           <div style={{ display: "flex", marginLeft: "24px" }}>
-            <Button type="submit" variant="outlined">
+            <Button type="submit" variant="outlined" key="addToInventory">
               Add to Inventory
             </Button>
             <Spacer width="4px" />
-            <Button type="button" onClick={handleClearClick}>
+            <Button type="button" key="clear" onClick={handleClearClick}>
               Clear
             </Button>
           </div>
