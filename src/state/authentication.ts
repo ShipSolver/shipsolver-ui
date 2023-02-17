@@ -53,7 +53,7 @@ export const useGetUserInfo = () => {
                   email,
                   name,
                   phone,
-                  type: "driver",
+                  type,
                   userID,
                 });
               } else {
