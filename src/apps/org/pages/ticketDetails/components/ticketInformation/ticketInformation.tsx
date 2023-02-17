@@ -69,6 +69,7 @@ export const TicketInformation = ({
     event?.preventDefault();
 
     if (validate(formData.current) || !user) {
+      console.log("validation or unexpected event");
       return;
     }
 
@@ -157,7 +158,7 @@ export const TicketInformation = ({
   }, [newTicket, deliveryReceipt]);
 
   return (
-    <StyledForm>
+    <StyledForm onSubmit={handleSave}>
       <Grid container spacing={3}>
         <Grid container item xs={12}>
           <Grid item xs={12} lg={viewSize}>
@@ -370,7 +371,6 @@ export const TicketInformation = ({
                       width: "100px",
                       float: "right",
                     }}
-                    onClick={() => handleSave()}
                   >
                     Save
                   </Button>
@@ -380,6 +380,7 @@ export const TicketInformation = ({
                       width: "100px",
                       float: "right",
                     }}
+                    type="button"
                     onClick={() => setIsEditable(true)}
                   >
                     Edit <EditIcon sx={{ marginLeft: "8px" }} />
@@ -387,18 +388,20 @@ export const TicketInformation = ({
                 )}
               </div>
 
-              <FullWidthButton variant="contained" size="small">
+              <FullWidthButton type="button" variant="contained" size="small">
                 {reviewPOD == false ? "View PDF" : "View DR"}
               </FullWidthButton>
             </ActionColumn>
           </Grid>
         ) : (
           <div style={{ display: "flex", marginLeft: "24px" }}>
-            <Button onClick={() => handleSave()} variant="outlined">
+            <Button type="submit" variant="outlined">
               Add to Inventory
             </Button>
             <Spacer width="4px" />
-            <Button onClick={handleClearClick}>Clear</Button>
+            <Button type="button" onClick={handleClearClick}>
+              Clear
+            </Button>
           </div>
         )}
         <Grid container item xs={12}>
@@ -416,7 +419,7 @@ export const TicketInformation = ({
   );
 };
 
-export const StyledForm = styled("div")`
+export const StyledForm = styled("form")`
   background-color: white;
   padding: 16px;
   border-radius: var(--ss-brand-border-radius);

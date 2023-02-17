@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { Checkbox, Button, Box, Modal, Typography } from "@mui/material";
-import { assignToDriver } from "../../../../../services/driverServices";
+import {
+  assignToDriver,
+  fetchAllDrivers,
+} from "../../../../../services/driverServices";
 import { styled } from "@mui/material/styles";
 import { Spacer } from "../../../../../components/spacer";
-import { allDriversAtom } from "./state/tableState";
-import { useRecoilValue } from "recoil";
 import Loading from "../../../../../components/loading";
-import { getTicketIds } from "./footerButtons";
-
+import { useGetUserInfo } from "../../../../../state/authentication";
+import useLoadable from "../../../../../utils/useLoadable";
 interface AssignToDriverModalProps {
   disabled: boolean;
   buttonText: string;
@@ -23,8 +24,9 @@ export const AssignToDriverModal = ({
 }: AssignToDriverModalProps) => {
   const [open, setOpen] = useState<boolean>(false);
   const [selectedDriver, setSelectedDriver] = useState<string | null>(null);
-  const drivers = useRecoilValue(allDriversAtom);
+  const { val: drivers } = useLoadable(fetchAllDrivers);
   const [loading, setLoading] = useState<boolean>(false);
+  const user = useGetUserInfo();
 
   const handleClick = async () => {
     if (selectedDriver) {
@@ -32,7 +34,11 @@ export const AssignToDriverModal = ({
         ({ username }) => username === selectedDriver
       )[0].userId;
       setLoading(true);
-      const { error } = await assignToDriver(ticketIDs(), driverId);
+      const { error } = await assignToDriver(
+        ticketIDs(),
+        driverId,
+        user?.userID
+      );
       setLoading(false);
       if (error != null) {
         triggerRefetch();

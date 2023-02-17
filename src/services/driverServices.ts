@@ -39,7 +39,7 @@ export const fetchAllDrivers = async () => {
   }
 };
 
-export const assignToDriver = async (ticketIDs: string[], driverID: string) => {
+export const assignToDriver = async (ticketIDs: string[], driverID: string, userID?: string) => {
   let error: string | null = null;
   try {
     await Promise.all(
@@ -50,7 +50,7 @@ export const assignToDriver = async (ticketIDs: string[], driverID: string) => {
             ticketId,
             oldStatus: "checked_into_inventory",
             newStatus: "assigned",
-            assignedByUserId: 761909011,
+            assignedByUserId: userID,
             assignedToUserId: driverID,
           },
         })
