@@ -28,10 +28,17 @@ type TicketForStatusRes = {
   count: number;
   tickets: Ticket[];
 };
-export const fetchTicketsForStatus = async (status: TicketStatus) => {
+export const fetchTicketsForStatus = async (
+  status: TicketStatus,
+  userId?: string
+) => {
+  
   const { data } = await axios.get(`/api/ticket/status/${status}`, {
     params: {
       limit: 10,
+    },
+    data: {
+      userId,
     },
   });
   return data as TicketForStatusRes;
@@ -152,7 +159,7 @@ export const fetchTicket = async (
         postalCode: consigneePostalCode,
       },
       isPickup: true,
-      ...rest
+      ...rest,
       // enterIntoInventory: true,
     };
 
@@ -278,13 +285,10 @@ export const markTicketAsDelivered = async ({
   return { error };
 };
 
-export const createTicket = async ({
-  shipper,
-  shipmentDetails,
-  consignee,
-  firstParty,
-  ...rest
-}: TicketType, userId: string) => {
+export const createTicket = async (
+  { shipper, shipmentDetails, consignee, firstParty, ...rest }: TicketType,
+  userId: string
+) => {
   const payload = JSON.stringify({
     userId,
     customerName: firstParty,
@@ -320,13 +324,11 @@ export const createTicket = async ({
   }
 };
 
-export const editTicket = async ({
-  shipper,
-  shipmentDetails,
-  consignee,
-  firstParty,
-  ...rest
-}: TicketType, ticketID: string, userId: string) => {
+export const editTicket = async (
+  { shipper, shipmentDetails, consignee, firstParty, ...rest }: TicketType,
+  ticketID: string,
+  userId: string
+) => {
   const payload = JSON.stringify({
     userId,
     customerName: firstParty,
@@ -360,7 +362,7 @@ export const editTicket = async ({
     console.error(e);
     throw e;
   }
-}
+};
 
 export const checkIntoInventory = async (ticketIDs: string[]) => {
   try {

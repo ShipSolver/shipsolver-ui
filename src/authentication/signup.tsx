@@ -5,7 +5,8 @@ import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Alert from "@mui/material/Alert";
-
+import Checkbox from "@mui/material/Checkbox";
+import InputLabel from "@mui/material/InputLabel";
 import { useNavigate } from "react-router-dom";
 
 import Loading from "../components/loading";
@@ -13,25 +14,26 @@ import { validateEmail } from "../utils/regex";
 import { signup } from "../services/authenticationServices";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { ErrorAtom, UnconfirmedUsernameAtom } from "../state/authentication";
+import FormControlLabel from "@mui/material/FormControlLabel";
 
 function Signup() {
-  const setUnconfirmedUsername = useSetRecoilState(UnconfirmedUsernameAtom)
+  const setUnconfirmedUsername = useSetRecoilState(UnconfirmedUsernameAtom);
   const setError = useSetRecoilState(ErrorAtom);
 
   const [loading, setLoading] = useState<boolean>(false);
-  
+
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [phone, setPhone] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
-  const [passwordStrengthError, setPasswordStrengthError] = useState<string>(
-    ""
-  );
+  const [passwordStrengthError, setPasswordStrengthError] =
+    useState<string>("");
   const [emailHelp, setEmailHelp] = useState<string>("");
   const [passwordHelp, setPasswordHelp] = useState<string>("");
   const [invalidForm, setInvalidForm] = useState<string | null>(null);
+  const [userType, setUserType] = useState<string>("manager");
 
   const navigate = useNavigate();
 
@@ -48,13 +50,14 @@ function Signup() {
         email,
         password,
         phone: "+1" + phone.replaceAll("-", ""),
+        userType
       });
       setError(err);
       setLoading(false);
-      if (err == null){
-        setUnconfirmedUsername(email)
-        navigate("/authentication/signup-code-confirmation")
-      };
+      if (err == null) {
+        setUnconfirmedUsername(email);
+        navigate("/authentication/signup-code-confirmation");
+      }
     } else {
       if (!passwordMatch) {
         setPasswordHelp("Passwords do not match");
@@ -78,9 +81,10 @@ function Signup() {
         <Alert severity="error">{invalidForm}</Alert>
       ) : null}
       <Typography component="h1" variant="h2" color="primary" align="center">
-        <b>Sign up as a user</b>
+        <b>Sign up</b>
       </Typography>
       <div className="ss-brand-spacer-small" />
+
       <Grid container spacing={1}>
         <Grid item xs={12} sm={6}>
           <TextField
@@ -223,6 +227,33 @@ function Signup() {
               }
             }}
           />
+
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              marginTop: "24px",
+            }}
+          >
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={userType === "driver"}
+                  onClick={() => setUserType("driver")}
+                />
+              }
+              label="Driver"
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={userType === "manager"}
+                  onClick={() => setUserType("manager")}
+                />
+              }
+              label="Manager"
+            />
+          </div>
         </Grid>
         <Grid item xs={12} style={{ marginTop: "14px" }}>
           <Typography
