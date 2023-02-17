@@ -70,6 +70,7 @@ export const signup: signupFn = async ({ email, password, name, phone }) => {
         email: email,
         name,
         phone_number: phone,
+        "custom:UserType": "manager",
       },
     });
 

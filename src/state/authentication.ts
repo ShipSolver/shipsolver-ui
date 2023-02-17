@@ -44,14 +44,11 @@ export const useGetUserInfo = () => {
               const userID: string | null =
                 userAttributes?.find(({ Name }) => Name === "sub")?.Value ??
                 null;
+              const type: string =
+                userAttributes?.find(({ Name }) => Name === "custom:UserType")
+                  ?.Value ?? "manager";
 
-              const {
-                data: { userType: type },
-              } = await axios.get(`/api/user/${userID}`, {
-                withCredentials: false,
-              });
-
-              if (email && name && phone && userID && type) {
+              if (email && name && phone && userID) {
                 setUserInfo({
                   email,
                   name,
