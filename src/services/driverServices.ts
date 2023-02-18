@@ -22,26 +22,38 @@ export const fetchDriver = (driverID: string) => {
   return mockServerDriverFetch();
 };
 
-export interface IFetchAllDriversResponse {username: string, userId: string};
+export interface IFetchAllDriversResponse {
+  username: string;
+  userId: string;
+  firstName: string;
+  lastName: string;
+}
 
-export const fetchAllDrivers = async () => {
+export const fetchAllDrivers = async (): Promise<
+  { name: string; userId: string }[]
+> => {
   try {
     const response: any = await axios.get("/api/driver/", {
       withCredentials: false,
     });
 
-    return [];
-
-    return response.data
-      .slice(0, 10)
-      .map(({ username, userId }: IFetchAllDriversResponse) => ({ username, userId }));
+    return response.data.map(
+      ({ firstName, lastName, userId }: IFetchAllDriversResponse) => ({
+        name: firstName + " " + lastName,
+        userId,
+      })
+    );
   } catch (e) {
     console.error(e);
     throw e;
   }
 };
 
-export const assignToDriver = async (ticketIDs: string[], driverID: string, userID?: string) => {
+export const assignToDriver = async (
+  ticketIDs: string[],
+  driverID: string,
+  userID?: string
+) => {
   let error: string | null = null;
   try {
     await Promise.all(

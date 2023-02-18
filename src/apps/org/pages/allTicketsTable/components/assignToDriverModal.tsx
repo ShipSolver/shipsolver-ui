@@ -33,9 +33,9 @@ export const AssignToDriverModal = ({
   const user = useGetUserInfo();
 
   const handleClick = async () => {
-    if (selectedDriver) {
+    if (selectedDriver && drivers) {
       const driverId = drivers.filter(
-        ({ username }) => username === selectedDriver
+        ({ name }) => name === selectedDriver
       )[0].userId;
       setLoading(true);
       const { error } = await assignToDriver(
@@ -89,7 +89,7 @@ export const AssignToDriverModal = ({
           ) : (
             <>
               <Container>
-                {/* {drivers.map(({ username: driver }) => (
+                {drivers?.map(({ name: driver }) => (
                   <FlexDiv key={driver}>
                     <Checkbox
                       checked={driver === selectedDriver}
@@ -97,7 +97,7 @@ export const AssignToDriverModal = ({
                     />
                     {driver}
                   </FlexDiv>
-                ))} */}
+                ))}
               </Container>
 
               <Button

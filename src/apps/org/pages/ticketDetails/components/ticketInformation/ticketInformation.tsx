@@ -71,7 +71,7 @@ export const TicketInformation = ({
     event?.preventDefault();
 
     if (validate(formData.current) || !user) {
-      console.log("validation or unexpected event");
+      console.log("validation or unexpected event", user);
       return;
     }
 
@@ -82,11 +82,11 @@ export const TicketInformation = ({
     if (newTicket || deliveryReceipt) {
       const {
         data: { ticketId },
-      } = await createTicket(ticket, user.userID);
+      } = await createTicket(ticket);
       setNewTicketId(ticketId);
     } else if (ticketId) {
       // edit ticket endpoint
-      const status = await editTicket(ticket, ticketId, user.userID);
+      const status = await editTicket(ticket, ticketId);
       setIsEditable(false);
       if (status) {
         refetchTicketEdits();
