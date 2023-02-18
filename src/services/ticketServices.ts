@@ -6,7 +6,7 @@ import tickets from "../mockData/tickets.json";
 import { Ticket, TicketMilestone, TicketStatus } from "./types";
 import moment from "moment";
 import { DateFormat } from "../apps/org/pages/allTicketsTable/components/filters/dateRangeFilter";
-
+import { EventHistoryType } from "../apps/org/pages/ticketDetails/components/eventHistory";
 import {
   TicketInformationStateType,
   TicketType,
@@ -28,17 +28,10 @@ type TicketForStatusRes = {
   count: number;
   tickets: Ticket[];
 };
-export const fetchTicketsForStatus = async (
-  status: TicketStatus,
-  userId?: string
-) => {
-  
+export const fetchTicketsForStatus = async (status: TicketStatus) => {
   const { data } = await axios.get(`/api/ticket/status/${status}`, {
     params: {
       limit: 10,
-    },
-    data: {
-      userId,
     },
   });
   return data as TicketForStatusRes;
@@ -85,7 +78,7 @@ export const fetchAllTickets = async () => {
     return data;
   } catch (e) {
     console.error(e);
-    throw e;
+    return e;
   }
 };
 
@@ -106,8 +99,8 @@ export const fetchTickets = async (ticketIDs: string[]) => {
 };
 
 export const fetchTicket = async (
-  ticketId: string
-): Promise<[TicketInformationStateType, CommodityType[]]> => {
+  ticketId?: string
+): Promise<[TicketInformationStateType, CommodityType[]] | null> => {
   try {
     const response: any = await axios.get(`/api/ticket/${ticketId}`, {
       withCredentials: false,
@@ -170,7 +163,7 @@ export const fetchTicket = async (
     return [data, commodities];
   } catch (e) {
     console.error(e);
-    throw e;
+    return null;
   }
 };
 
@@ -212,7 +205,9 @@ interface IFetchMilestones {
   timestamp: number;
 }
 
-export const fetchMilestones = async (ticketId: string) => {
+export const fetchMilestones = async (
+  ticketId?: string
+): Promise<{ description: string; dateAndTime: Date }[]> => {
   try {
     const response: { data: IFetchMilestones[] } = await axios.get(
       `/api/milestones/${ticketId}`,
@@ -227,7 +222,7 @@ export const fetchMilestones = async (ticketId: string) => {
     }));
   } catch (e) {
     console.error(e);
-    throw e;
+    return [];
   }
 };
 
@@ -285,12 +280,14 @@ export const markTicketAsDelivered = async ({
   return { error };
 };
 
-export const createTicket = async (
-  { shipper, shipmentDetails, consignee, firstParty, ...rest }: TicketType,
-  userId: string
-) => {
+export const createTicket = async ({
+  shipper,
+  shipmentDetails,
+  consignee,
+  firstParty,
+  ...rest
+}: TicketType) => {
   const payload = JSON.stringify({
-    userId,
     customerName: firstParty,
     shipperCompany: shipper.company,
     shipperName: shipper.name,
@@ -320,17 +317,57 @@ export const createTicket = async (
     return response;
   } catch (e) {
     console.error(e);
-    throw e;
+    return e;
+  }
+};
+
+export const fetchTicketEdits = async (
+  ticketId?: string
+): Promise<EventHistoryType[]> => {
+  try {
+    const response: {
+      data: { [key: string | "timestamp"]: string | number }[];
+    } = await axios.get(`/api/ticket/edits/${ticketId}`, {
+      withCredentials: false,
+    });
+    return response.data.map((edit) => {
+      let dateAndTime;
+      let action;
+      let user: string = "";
+
+      for (const [key, val] of Object.entries(edit)) {
+        switch (key) {
+          case "timestamp":
+            dateAndTime = new Date(val);
+            break;
+          case "firstName":
+            user = val as string;
+            break;
+          case "lastName":
+            user += (val as string);
+            break;
+          default:
+            action = `Changed ${key} to \"${val}\"`;
+            break;
+        }
+      }
+      return {
+        dateAndTime,
+        action,
+        user
+      };
+    });
+  } catch (e) {
+    console.error(e);
+    return [];
   }
 };
 
 export const editTicket = async (
   { shipper, shipmentDetails, consignee, firstParty, ...rest }: TicketType,
-  ticketID: string,
-  userId: string
+  ticketID: string
 ) => {
   const payload = JSON.stringify({
-    userId,
     customerName: firstParty,
     shipperCompany: shipper.company,
     shipperName: shipper.name,
@@ -352,15 +389,15 @@ export const editTicket = async (
   });
 
   try {
-    const response: any = await axios.post(`/api/ticket/${ticketID}`, {
+    await axios.post(`/api/ticket/${ticketID}`, {
       withCredentials: false,
       data: payload,
     });
 
-    return response;
+    return true;
   } catch (e) {
     console.error(e);
-    throw e;
+    return false;
   }
 };
 
@@ -381,6 +418,6 @@ export const checkIntoInventory = async (ticketIDs: string[]) => {
     );
   } catch (e) {
     console.error(e);
-    throw e;
+    return e;
   }
 };

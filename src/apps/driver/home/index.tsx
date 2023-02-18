@@ -33,15 +33,14 @@ export const Home = () => {
   const [viewAllPickup, setViewAllPickup] = useState<boolean>(false);
 
   const { val: currentDeliveries, triggerRefetch: triggerRefetchInTransit } =
-    useLoadable(fetchTicketsForStatus, "in_transit", user?.userID);
+    useLoadable(fetchTicketsForStatus, "in_transit");
   const { val: assignedInfo, triggerRefetch: triggerRefetchAssigned } =
-    useLoadable(fetchTicketsForStatus, "assigned", user?.userID);
+    useLoadable(fetchTicketsForStatus, "assigned");
   const { val: completedInfo, triggerRefetch: triggerRefetchCompleted } =
-    useLoadable(fetchTicketsForStatus, "completed_delivery", user?.userID);
+    useLoadable(fetchTicketsForStatus, "completed_delivery");
   const { val: pickupInfo, triggerRefetch: triggerRefetchPickup } = useLoadable(
     fetchTicketsForStatus,
-    "requested_pickup",
-    user?.userID
+    "requested_pickup"
   );
 
   const refetchFunctions = [

@@ -78,7 +78,7 @@ export const signup: signupFn = async ({
         email: email,
         name,
         phone_number: phone,
-        "custom:UserType": "manager",
+        "custom:UserType": userType,
       },
     });
 
@@ -87,7 +87,7 @@ export const signup: signupFn = async ({
       withCredentials: false,
       data: {
         userId: userSub,
-        userType: "manager",
+        userType,
         username: email,
         firstName: name.split(" ")[0],
         lastName: name.split(" ")[1],

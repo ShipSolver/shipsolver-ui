@@ -42,10 +42,12 @@ interface TicketInformationProps {
   newTicket?: boolean;
   deliveryReceipt?: boolean;
   reviewPOD?: boolean;
+  refetchTicketEdits?: () => void;
 }
 
 export const TicketInformation = ({
   data,
+  refetchTicketEdits = () => {},
   newTicket = false,
   deliveryReceipt = false,
   reviewPOD = false,
@@ -69,6 +71,7 @@ export const TicketInformation = ({
     event?.preventDefault();
 
     if (validate(formData.current) || !user) {
+      console.log("validation or unexpected event", user);
       return;
     }
 
@@ -79,12 +82,16 @@ export const TicketInformation = ({
     if (newTicket || deliveryReceipt) {
       const {
         data: { ticketId },
-      } = await createTicket(ticket, user.userID);
+      } = await createTicket(ticket);
       setNewTicketId(ticketId);
     } else if (ticketId) {
       // edit ticket endpoint
-      await editTicket(ticket, ticketId, user.userID);
+      const status = await editTicket(ticket, ticketId);
       setIsEditable(false);
+      if (status) {
+        refetchTicketEdits();
+        window.alert("successfully edited!");
+      }
     }
   };
 
@@ -157,7 +164,7 @@ export const TicketInformation = ({
   }, [newTicket, deliveryReceipt]);
 
   return (
-    <StyledForm>
+    <StyledForm onSubmit={handleSave}>
       <Grid container spacing={3}>
         <Grid container item xs={12}>
           <Grid item xs={12} lg={viewSize}>
@@ -370,7 +377,8 @@ export const TicketInformation = ({
                       width: "100px",
                       float: "right",
                     }}
-                    onClick={() => handleSave()}
+                    type="submit"
+                    key="save"
                   >
                     Save
                   </Button>
@@ -380,25 +388,29 @@ export const TicketInformation = ({
                       width: "100px",
                       float: "right",
                     }}
+                    type="button"
                     onClick={() => setIsEditable(true)}
+                    key="edit"
                   >
                     Edit <EditIcon sx={{ marginLeft: "8px" }} />
                   </Button>
                 )}
               </div>
 
-              <FullWidthButton variant="contained" size="small">
+              <FullWidthButton type="button" variant="contained" size="small">
                 {reviewPOD == false ? "View PDF" : "View DR"}
               </FullWidthButton>
             </ActionColumn>
           </Grid>
         ) : (
           <div style={{ display: "flex", marginLeft: "24px" }}>
-            <Button onClick={() => handleSave()} variant="outlined">
+            <Button type="submit" variant="outlined" key="addToInventory">
               Add to Inventory
             </Button>
             <Spacer width="4px" />
-            <Button onClick={handleClearClick}>Clear</Button>
+            <Button type="button" key="clear" onClick={handleClearClick}>
+              Clear
+            </Button>
           </div>
         )}
         <Grid container item xs={12}>
@@ -416,7 +428,7 @@ export const TicketInformation = ({
   );
 };
 
-export const StyledForm = styled("div")`
+export const StyledForm = styled("form")`
   background-color: white;
   padding: 16px;
   border-radius: var(--ss-brand-border-radius);

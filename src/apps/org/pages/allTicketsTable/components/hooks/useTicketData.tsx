@@ -3,7 +3,6 @@ import useLoadable from "../../../../../../utils/useLoadable";
 import { fetchAllTickets } from "../../../../../../services/ticketServices";
 import { KEYS_BASE, Keys, HeaderRowType } from "../../types";
 import { buildHeaderCells } from "../allTicketTableHeaders";
-import { allDriversAtom } from "../state/tableState";
 import { useSetRecoilState } from "recoil";
 
 export function useTicketData() {
@@ -15,7 +14,6 @@ export function useTicketData() {
   } = useLoadable(fetchAllTickets);
 
   const [headers, setHeaders] = useState<null | HeaderRowType>(null);
-  const setAllDrivers = useSetRecoilState(allDriversAtom);
 
   useEffect(() => {
     if (rows) {
@@ -31,12 +29,6 @@ export function useTicketData() {
       });
 
       setHeaders(buildHeaderCells(sets));
-      setAllDrivers(
-        [...(sets.lastAssigned ?? [])].map((username) => ({
-          username,
-          userId: username,
-        }))
-      );
     }
   }, [rows]);
 
