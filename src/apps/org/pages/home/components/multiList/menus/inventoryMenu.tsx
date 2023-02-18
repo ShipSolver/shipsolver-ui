@@ -8,7 +8,7 @@ import { Ticket } from "../../../../../../../services/types";
 import { AssignToDriverModal } from "../../../../allTicketsTable/components/assignToDriverModal";
 import { EntryID, IndexedEntry } from "../index";
 import { Typography } from "@mui/material";
-
+import { useNavigate } from "react-router-dom";
 import "./menu.css";
 
 interface IMenu {
@@ -21,9 +21,19 @@ export default function Menu({
   isMultiSelected,
   entries,
 }: IMenu): JSX.Element {
+  const navigate = useNavigate();
+  console.log(selectedListEntries, entries);
+
   return (
     <Box className="menu-container">
       <List>
+        <ListItemButton
+          onClick={() => navigate(`/ticket-details/${selectedListEntries[0]}`)}
+          disabled={isMultiSelected}
+        >
+          <Typography className="menu-text-typography">Edit ticket</Typography>
+        </ListItemButton>
+        <Divider sx={{ borderBottomWidth: 2 }} />
         <AssignToDriverModal
           buttonText="Assign to driver"
           listItem

@@ -42,10 +42,10 @@ export const EventHistory = ({ ticketEdits, loading, error }: EventHistoryProps)
   const eventHistoryCards = ticketEdits.map(
     ({ user, userRole, action, dateAndTime }) => (
       <div>
-        {/* <Typography>
+        <Typography>
           <b>User:</b> {user}
         </Typography>
-        <Typography>
+        {/* <Typography>
           <b>User Role:</b> {userRole}
         </Typography> */}
         <Typography>

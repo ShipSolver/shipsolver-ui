@@ -333,13 +333,18 @@ export const fetchTicketEdits = async (
     return response.data.map((edit) => {
       let dateAndTime;
       let action;
+      let user: string = "";
 
       for (const [key, val] of Object.entries(edit)) {
         switch (key) {
           case "timestamp":
             dateAndTime = new Date(val);
             break;
-          case "user":
+          case "firstName":
+            user = val as string;
+            break;
+          case "lasstName":
+            user += (val as string);
             break;
           default:
             action = `Changed ${key} to \"${val}\"`;
@@ -349,6 +354,7 @@ export const fetchTicketEdits = async (
       return {
         dateAndTime,
         action,
+        user
       };
     });
   } catch (e) {
