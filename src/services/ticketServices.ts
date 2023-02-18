@@ -343,7 +343,7 @@ export const fetchTicketEdits = async (
           case "firstName":
             user = val as string;
             break;
-          case "lasstName":
+          case "lastName":
             user += (val as string);
             break;
           default:
