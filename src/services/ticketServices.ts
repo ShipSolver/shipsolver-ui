@@ -28,18 +28,12 @@ type TicketForStatusRes = {
   count: number;
   tickets: Ticket[];
 };
-export const fetchTicketsForStatus = async (
-  status: TicketStatus,
-  userId?: string
-) => {
-  const { data } = await axios.get(
-    `/api/ticket/status/${status}?userId=${userId}`,
-    {
-      params: {
-        limit: 10,
-      },
-    }
-  );
+export const fetchTicketsForStatus = async (status: TicketStatus) => {
+  const { data } = await axios.get(`/api/ticket/status/${status}`, {
+    params: {
+      limit: 10,
+    },
+  });
   return data as TicketForStatusRes;
 };
 
@@ -286,12 +280,14 @@ export const markTicketAsDelivered = async ({
   return { error };
 };
 
-export const createTicket = async (
-  { shipper, shipmentDetails, consignee, firstParty, ...rest }: TicketType,
-  userId: string
-) => {
+export const createTicket = async ({
+  shipper,
+  shipmentDetails,
+  consignee,
+  firstParty,
+  ...rest
+}: TicketType) => {
   const payload = JSON.stringify({
-    userId,
     customerName: firstParty,
     shipperCompany: shipper.company,
     shipperName: shipper.name,
@@ -334,26 +330,26 @@ export const fetchTicketEdits = async (
     } = await axios.get(`/api/ticket/edits/${ticketId}`, {
       withCredentials: false,
     });
-    return response.data.map(edit => { 
+    return response.data.map((edit) => {
       let dateAndTime;
       let action;
 
-      for(const [key, val] of Object.entries(edit)){
+      for (const [key, val] of Object.entries(edit)) {
         switch (key) {
           case "timestamp":
             dateAndTime = new Date(val);
             break;
-          case "user": 
+          case "user":
             break;
           default:
-            action = `Changed ${key} to \"${val}\"`
+            action = `Changed ${key} to \"${val}\"`;
             break;
         }
       }
-      return ({
+      return {
         dateAndTime,
         action,
-      })
+      };
     });
   } catch (e) {
     console.error(e);
@@ -363,11 +359,9 @@ export const fetchTicketEdits = async (
 
 export const editTicket = async (
   { shipper, shipmentDetails, consignee, firstParty, ...rest }: TicketType,
-  ticketID: string,
-  userId: string
+  ticketID: string
 ) => {
   const payload = JSON.stringify({
-    userId,
     customerName: firstParty,
     shipperCompany: shipper.company,
     shipperName: shipper.name,

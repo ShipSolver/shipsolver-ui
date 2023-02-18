@@ -9,18 +9,22 @@ import { Spacer } from "../../../../../components/spacer";
 import Loading from "../../../../../components/loading";
 import { useGetUserInfo } from "../../../../../state/authentication";
 import useLoadable from "../../../../../utils/useLoadable";
+import ListItemButton from "@mui/material/ListItemButton";
+
 interface AssignToDriverModalProps {
-  disabled: boolean;
+  disabled?: boolean;
   buttonText: string;
-  ticketIDs: () => string[];
-  triggerRefetch: () => void;
+  getTicketIDs: () => string[];
+  triggerRefetch?: () => void;
+  listItem?: boolean;
 }
 
 export const AssignToDriverModal = ({
   disabled,
   buttonText,
-  ticketIDs,
+  getTicketIDs,
   triggerRefetch,
+  listItem,
 }: AssignToDriverModalProps) => {
   const [open, setOpen] = useState<boolean>(false);
   const [selectedDriver, setSelectedDriver] = useState<string | null>(null);
@@ -35,13 +39,13 @@ export const AssignToDriverModal = ({
       )[0].userId;
       setLoading(true);
       const { error } = await assignToDriver(
-        ticketIDs(),
+        getTicketIDs(),
         driverId,
         user?.userID
       );
       setLoading(false);
       if (error != null) {
-        triggerRefetch();
+        triggerRefetch?.();
       } else {
         alert(error);
       }
@@ -51,13 +55,19 @@ export const AssignToDriverModal = ({
 
   return (
     <>
-      <Button
-        variant="contained"
-        disabled={disabled}
-        onClick={() => setOpen(true)}
-      >
-        {buttonText}
-      </Button>
+      {listItem ? (
+        <ListItemButton onClick={() => setOpen(true)}>
+          <Typography>{buttonText}</Typography>
+        </ListItemButton>
+      ) : (
+        <Button
+          variant="contained"
+          disabled={disabled}
+          onClick={() => setOpen(true)}
+        >
+          {buttonText}
+        </Button>
+      )}
 
       <Modal open={open} onClose={() => setOpen(false)}>
         <Box
@@ -79,7 +89,7 @@ export const AssignToDriverModal = ({
           ) : (
             <>
               <Container>
-                {drivers.map(({ username: driver }) => (
+                {/* {drivers.map(({ username: driver }) => (
                   <FlexDiv key={driver}>
                     <Checkbox
                       checked={driver === selectedDriver}
@@ -87,7 +97,7 @@ export const AssignToDriverModal = ({
                     />
                     {driver}
                   </FlexDiv>
-                ))}
+                ))} */}
               </Container>
 
               <Button

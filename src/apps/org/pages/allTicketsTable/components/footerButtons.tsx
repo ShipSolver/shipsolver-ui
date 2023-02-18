@@ -94,7 +94,7 @@ export const FooterButtons = ({ triggerRefetch }: FooterButtonsProps) => {
       </Button>
       <AssignToDriverModal
         disabled={!singleRowSelected}
-        ticketIDs={() => getTicketIds(selectedTickets)}
+        getTicketIDs={() => getTicketIds(selectedTickets)}
         buttonText={ButtonLabels.assignToDriver}
         triggerRefetch={triggerRefetch}
       />

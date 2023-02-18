@@ -32,35 +32,31 @@ function Home() {
     val: unassignedPickupTickets,
     loading: unassignedPickupTicketsLoading,
     error: unassignedPickupTicketsError,
-  } = useLoadable(fetchTicketsForStatus, "unassigned_pickup", user?.userID);
+  } = useLoadable(fetchTicketsForStatus, "unassigned_pickup");
 
   const {
     val: pickupRequestTickets,
     loading: pickupRequestTicketsLoading,
     error: pickupRequestTicketsError,
-  } = useLoadable(fetchTicketsForStatus, "requested_pickup", user?.userID);
+  } = useLoadable(fetchTicketsForStatus, "requested_pickup");
 
   const {
     val: inventoryTickets,
     loading: inventoryTicketsLoading,
     error: inventoryTicketsError,
-  } = useLoadable(
-    fetchTicketsForStatus,
-    "checked_into_inventory",
-    user?.userID
-  );
+  } = useLoadable(fetchTicketsForStatus, "checked_into_inventory");
 
   const {
     val: assignedTickets,
     loading: assignedTicketsLoading,
     error: assignedTicketsError,
-  } = useLoadable(fetchTicketsForStatus, "assigned", user?.userID);
+  } = useLoadable(fetchTicketsForStatus, "assigned");
 
   const {
     val: inProgressTickets,
     loading: inProgressTicketsLoading,
     error: inProgressTicketsError,
-  } = useLoadable(fetchTicketsForStatus, "in_transit", user?.userID);
+  } = useLoadable(fetchTicketsForStatus, "in_transit");
 
   const ticketsLoading =
     unassignedPickupTicketsLoading ||
