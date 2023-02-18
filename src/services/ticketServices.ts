@@ -32,14 +32,14 @@ export const fetchTicketsForStatus = async (
   status: TicketStatus,
   userId?: string
 ) => {
-  const { data } = await axios.get(`/api/ticket/status/${status}`, {
-    params: {
-      limit: 10,
-    },
-    data: {
-      userId,
-    },
-  });
+  const { data } = await axios.get(
+    `/api/ticket/status/${status}?userId=${userId}`,
+    {
+      params: {
+        limit: 10,
+      },
+    }
+  );
   return data as TicketForStatusRes;
 };
 
@@ -325,13 +325,36 @@ export const createTicket = async (
   }
 };
 
-export const fetchTicketEdits = async (ticketId?: string): Promise<EventHistoryType[]> => {
+export const fetchTicketEdits = async (
+  ticketId?: string
+): Promise<EventHistoryType[]> => {
   try {
-    const response: any = await axios.get(`/api/ticket/edits/${ticketId}`, {
+    const response: {
+      data: { [key: string | "timestamp"]: string | number }[];
+    } = await axios.get(`/api/ticket/edits/${ticketId}`, {
       withCredentials: false,
     });
-    console.log(response.data);
-    return [];
+    return response.data.map(edit => { 
+      let dateAndTime;
+      let action;
+
+      for(const [key, val] of Object.entries(edit)){
+        switch (key) {
+          case "timestamp":
+            dateAndTime = new Date(val);
+            break;
+          case "user": 
+            break;
+          default:
+            action = `Changed ${key} to \"${val}\"`
+            break;
+        }
+      }
+      return ({
+        dateAndTime,
+        action,
+      })
+    });
   } catch (e) {
     console.error(e);
     return [];

@@ -42,10 +42,12 @@ interface TicketInformationProps {
   newTicket?: boolean;
   deliveryReceipt?: boolean;
   reviewPOD?: boolean;
+  refetchTicketEdits?: () => void;
 }
 
 export const TicketInformation = ({
   data,
+  refetchTicketEdits = () => {},
   newTicket = false,
   deliveryReceipt = false,
   reviewPOD = false,
@@ -87,6 +89,7 @@ export const TicketInformation = ({
       const status = await editTicket(ticket, ticketId, user.userID);
       setIsEditable(false);
       if (status) {
+        refetchTicketEdits();
         window.alert("successfully edited!");
       }
     }

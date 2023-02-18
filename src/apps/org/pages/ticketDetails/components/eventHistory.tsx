@@ -6,24 +6,20 @@ import { styled } from "@mui/material/styles";
 import { fetchTicketEdits } from "../../../../../services/ticketServices";
 import Loading from "../../../../../components/loading";
 import { CardColumn, Container } from "./cardColumn";
-import useLoadable from "../../../../../utils/useLoadable";
 
 export type EventHistoryType = {
-  user: string;
-  userRole: string;
-  action: string;
-  dateAndTime: Date;
+  user?: string;
+  userRole?: string;
+  action?: string;
+  dateAndTime?: Date;
 };
 interface EventHistoryProps {
-  ticketId?: string;
+  ticketEdits: EventHistoryType[] | null,
+  loading: boolean,
+  error: string | null
 }
 
-export const EventHistory = ({ ticketId }: EventHistoryProps) => {
-  const {
-    val: ticketEdits,
-    loading,
-    error,
-  } = useLoadable(fetchTicketEdits, ticketId);
+export const EventHistory = ({ ticketEdits, loading, error }: EventHistoryProps) => {
 
   if (loading || ticketEdits === null) {
     return (
@@ -37,7 +33,7 @@ export const EventHistory = ({ ticketId }: EventHistoryProps) => {
     return (
       <Container $customHeight="350px">
         <Typography color="red" align="center">
-          There was an error fecthing milestones!
+          There was an error fecthing ticket edits!
         </Typography>
       </Container>
     );
@@ -46,21 +42,21 @@ export const EventHistory = ({ ticketId }: EventHistoryProps) => {
   const eventHistoryCards = ticketEdits.map(
     ({ user, userRole, action, dateAndTime }) => (
       <div>
-        <Typography>
+        {/* <Typography>
           <b>User:</b> {user}
         </Typography>
         <Typography>
           <b>User Role:</b> {userRole}
-        </Typography>
+        </Typography> */}
         <Typography>
           <b>Action:</b> {action}
         </Typography>
         <Typography>
-          <b>Date:</b> {dateAndTime.toLocaleDateString("en-CA")}
+          <b>Date:</b> {dateAndTime?.toLocaleDateString("en-CA")}
         </Typography>
         {/* prettier-ignore */}
         <Typography>
-            <b>Time:</b> {dateAndTime.toLocaleTimeString("en-CA", { hour12: false })}
+            <b>Time:</b> {dateAndTime?.toLocaleTimeString("en-CA", { hour12: false })}
         </Typography>
       </div>
     )
@@ -69,7 +65,7 @@ export const EventHistory = ({ ticketId }: EventHistoryProps) => {
   return (
     <CardColumn
       title="Edits"
-      $customHeight="350px"
+      $customHeight="325px"
       cardContents={eventHistoryCards}
     />
   );

@@ -98,6 +98,7 @@ export const Container = styled("div")<{ customPadding?: string, $customHeight?:
     backgroundColor: theme.palette.secondary.main,
     padding: customPadding ?? "16px",
     position: "relative",
+    width: "300px",
     height: $customHeight
   })
 );

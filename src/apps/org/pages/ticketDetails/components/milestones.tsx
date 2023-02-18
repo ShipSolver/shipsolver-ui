@@ -30,7 +30,7 @@ export const Milestones = ({ ticketId }: MilestonesProps) => {
 
   if (error) {
     return (
-      <Container $customHeight="350px">
+      <Container $customHeight="325px">
         <Typography color="red" align="center">
           There was an error fecthing milestones!
         </Typography>

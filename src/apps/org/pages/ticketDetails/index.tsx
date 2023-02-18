@@ -45,6 +45,13 @@ export const TicketDetails = () => {
     error,
   } = useLoadable(fetchTicket, ticketId);
 
+  const {
+    val: ticketEdits,
+    loading: loadingTicketEdits,
+    error: ticketEditsError,
+    triggerRefetch: refetchTicketEdits,
+  } = useLoadable(fetchTicketEdits, ticketId);
+
   /** Uncomment for storybook testing purposes */
   // const ticketInfo = [TestTicketInformation, TestCommodities]
   // const ticketId = 1;
@@ -79,7 +86,7 @@ export const TicketDetails = () => {
                 Ticket Information
               </Typography>
             </TitlePaper>
-            <TicketInformation data={ticketInfo[0]} />
+            <TicketInformation data={ticketInfo[0]} refetchTicketEdits={refetchTicketEdits}/>
             <Spacer height="18px" />
             {/* <Grid container spacing={6}>
               <Grid item xs={4}>
@@ -103,8 +110,12 @@ export const TicketDetails = () => {
           </Wrapper>
         </Grid>
         <Grid item xs={5}>
-          <EventHistory ticketId={ticketId} />
-          <Spacer height="12px" />
+          <EventHistory
+            ticketEdits={ticketEdits}
+            loading={loadingTicketEdits}
+            error={ticketEditsError}
+          />
+          <Spacer height="24px" />
           <Milestones ticketId={ticketId} />
         </Grid>
       </Grid>
