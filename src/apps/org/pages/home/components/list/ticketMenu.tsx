@@ -7,9 +7,9 @@ import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
 import { getTicketIds } from "../../../allTicketsTable/components/footerButtons";
-import { deleteTicket } from "../../../../../../services/ticketServices";
 import { AssignToDriverModal } from "../../../allTicketsTable/components/assignToDriverModal";
-import "./menu.css"
+import { DeleteTicketModal } from "../deleteTicketModal";
+import "./menu.css";
 
 interface ITicketMenu {
   listType: ListType;
@@ -59,11 +59,13 @@ export function TicketMenu({
                 Go to Driver's Tickets
               </Typography>
             </ListItemButton>
+            <Divider sx={{ borderBottomWidth: 2 }} />
             <ListItemButton>
               <Typography className="menu-text-typography">
                 Move to Inventory
               </Typography>
             </ListItemButton>
+            <Divider sx={{ borderBottomWidth: 2 }} />
             <ListItemButton>
               <Typography className="menu-text-typography">
                 Review incomplete delivery
@@ -73,23 +75,27 @@ export function TicketMenu({
         );
       }
       case "delivered": {
-        <>
-          <ListItemButton>
-            <Typography className="menu-text-typography">
-              Go to Driver's Tickets
-            </Typography>
-          </ListItemButton>
-          <ListItemButton>
-            <Typography className="menu-text-typography">
-              Approve POD
-            </Typography>
-          </ListItemButton>
-          <ListItemButton>
-            <Typography className="menu-text-typography">
-              Review completed delivery
-            </Typography>
-          </ListItemButton>
-        </>;
+        return (
+          <>
+            <ListItemButton>
+              <Typography className="menu-text-typography">
+                Go to Driver's Tickets
+              </Typography>
+            </ListItemButton>
+            <Divider sx={{ borderBottomWidth: 2 }} />
+            <ListItemButton>
+              <Typography className="menu-text-typography">
+                Approve POD
+              </Typography>
+            </ListItemButton>
+            <Divider sx={{ borderBottomWidth: 2 }} />
+            <ListItemButton>
+              <Typography className="menu-text-typography">
+                Review completed delivery
+              </Typography>
+            </ListItemButton>
+          </>
+        );
       }
     }
   }
@@ -108,9 +114,7 @@ export function TicketMenu({
           <Typography className="menu-text-typography">Edit ticket</Typography>
         </ListItemButton>
         <Divider sx={{ borderBottomWidth: 2 }} />
-        <ListItemButton onClick={() => deleteTicket(getTicketIds(selected))}>
-          <Typography className="menu-text-typography">Delete</Typography>
-        </ListItemButton>
+        <DeleteTicketModal getTicketIDs={() => getTicketIds(selected)} triggerRefetch={triggerRefetch} />
       </List>
     </Box>
   );

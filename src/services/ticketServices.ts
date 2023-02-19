@@ -423,13 +423,14 @@ export const checkIntoInventory = async (ticketIDs: string[]) => {
 };
 
 
-export const deleteTicket = async (ticketIDs: string[]) => {
+export const deleteTickets = async (ticketIDs: string[]) => {
   try {
-    const responses = await Promise.all(
+    await Promise.all(
       ticketIDs.map((ticketID) => axios.delete(`/api/ticket/${ticketID}`))
     );
+    return 1;
   } catch (e) {
     console.error(e);
-    return;
+    return 0;
   }
 };

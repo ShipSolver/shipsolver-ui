@@ -19,16 +19,19 @@ export type ListType =
 interface IList {
   listTitle: string;
   listType: ListType;
-  fetch: (status: TicketStatus, milestoneType: string) => Promise<TicketForStatusRes>;
+  fetch: (
+    status: TicketStatus,
+    milestoneType: string
+  ) => Promise<TicketForStatusRes>;
   args: [TicketStatus, string];
 }
 
 export function List({ listTitle, listType, fetch, args }: IList) {
   const {
     val: response,
-    loading: loading,
-    error: error,
-    triggerRefetch
+    loading,
+    error,
+    triggerRefetch,
   } = useLoadable(fetch, ...args);
 
   const [selected, setSelected] = useState<{ [key: number]: boolean }>({});
@@ -42,19 +45,33 @@ export function List({ listTitle, listType, fetch, args }: IList) {
     }));
   };
 
-  if (loading) {
-    <div className="list-column">
-      <Loading />
-    </div>;
-  }
+  const renderTickets = () => {
+    if (loading) {
+      return <Loading />;
+    }
 
-  if (error) {
-    <div className="list-column">
-      {`There was an error fetching your ${listType} tickets`}
-    </div>;
-  }
+    if (error) {
+      return (
+        <Typography>{`There was an error fetching your ${listType} tickets`}</Typography>
+      );
+    }
 
-  console.log("list", response);
+    return response?.tickets.map((ticket: Ticket) => (
+      <Paper
+        variant="outlined"
+        className={`entry-renderer${
+          selected[ticket.ticketId] ? "-selected" : ""
+        }`}
+        onClick={() => handleClick(ticket.ticketId)}
+      >
+        <Typography variant="h6">{ticket.consigneeAddress}</Typography>
+        <TicketSubtitle
+          assignedTo={ticket.ticketStatus.user.firstName}
+          listType={listType}
+        />
+      </Paper>
+    ));
+  };
 
   return (
     <div>
@@ -74,24 +91,13 @@ export function List({ listTitle, listType, fetch, args }: IList) {
           <strong>{response?.count ?? 0}</strong>
         </Typography>
       </div>
-      <div className="list-column">
-        {response?.tickets.map((ticket: Ticket) => (
-          <Paper
-            variant="outlined"
-            className={`entry-renderer${
-              selected[ticket.ticketId] ? "-selected" : ""
-            }`}
-            onClick={() => handleClick(ticket.ticketId)}
-          >
-            <Typography variant="h6">{ticket.consigneeAddress}</Typography>
-            <TicketSubtitle
-              assignedTo={ticket.ticketStatus.user.firstName}
-              listType={listType}
-            />
-          </Paper>
-        ))}
-      </div>
-      <TicketMenu selected={selected} numSelected={numSelected} listType={listType} triggerRefetch={triggerRefetch} />
+      <div className="list-column">{renderTickets()}</div>
+      <TicketMenu
+        selected={selected}
+        numSelected={numSelected}
+        listType={listType}
+        triggerRefetch={triggerRefetch}
+      />
     </div>
   );
 }
