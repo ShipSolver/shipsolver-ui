@@ -3,7 +3,7 @@ import axios from "axios";
 import { SERVER_URL } from "./constants";
 
 import tickets from "../mockData/tickets.json";
-import { Ticket, TicketMilestone, TicketStatus } from "./types";
+import { MilestonesModelTypes, Ticket, TicketMilestone, TicketStatus } from "./types";
 import moment from "moment";
 import { DateFormat } from "../apps/org/pages/allTicketsTable/components/filters/dateRangeFilter";
 import { EventHistoryType } from "../apps/org/pages/ticketDetails/components/eventHistory";
@@ -28,7 +28,7 @@ export type TicketForStatusRes = {
   count: number;
   tickets: Ticket[];
 };
-export const fetchTicketsForStatus = async (status: TicketStatus, milestoneType: string) => {
+export const fetchTicketsForStatus = async (status: TicketStatus, milestoneType: MilestonesModelTypes) => {
   const { data } = await axios.get(`/api/ticket/status/${status}?milestoneType=${milestoneType}`, {
     params: {
       limit: 10,

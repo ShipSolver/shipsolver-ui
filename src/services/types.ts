@@ -14,6 +14,14 @@ export type User = {
   userID: string;
 };
 
+export type MilestonesModelTypes = 
+  | "CreationMilestones"
+  | "PickupMilestones"
+  | "InventoryMilestones"
+  | "AssignmentMilestones"
+  | "IncompleteDeliveryMilestones"
+  | "DeliveryMilestones";
+
 export type CreationTicketMilestone =
   | "Creation_Milestone_Status.ticket_created"
   | "Creation_Milestone_Status.unassigned_pickup";
