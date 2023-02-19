@@ -6,7 +6,7 @@ import Divider from "@mui/material/Divider";
 
 import { Ticket } from "../../../../../../../services/types";
 import { AssignToDriverModal } from "../../../../allTicketsTable/components/assignToDriverModal";
-import { EntryID, IndexedEntry } from "../index";
+import { EntryID } from "../index";
 import { Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import "./menu.css";
@@ -14,15 +14,17 @@ import "./menu.css";
 interface IMenu {
   selectedListEntries: EntryID[];
   isMultiSelected: boolean;
-  entries: IndexedEntry<Ticket>[];
+  entries: Ticket[];
+  triggerRefetch?: () => void
 }
 export default function Menu({
   selectedListEntries,
   isMultiSelected,
   entries,
+  triggerRefetch
+
 }: IMenu): JSX.Element {
   const navigate = useNavigate();
-  console.log(selectedListEntries, entries);
 
   return (
     <Box className="menu-container">
@@ -38,6 +40,7 @@ export default function Menu({
           buttonText="Assign to driver"
           listItem
           getTicketIDs={() => selectedListEntries}
+          triggerRefetch={triggerRefetch}
         />
         <Divider sx={{ borderBottomWidth: 2 }} />
         <ListItemButton>

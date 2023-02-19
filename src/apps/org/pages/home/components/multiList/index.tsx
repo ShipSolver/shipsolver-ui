@@ -1,114 +1,67 @@
 import React, { useState, useCallback, useMemo } from "react";
 import Loading from "../../../../../../components/loading";
 import Typography from "@mui/material/Typography";
+import { Ticket } from "../../../../../../services/types";
 
 import Paper from "../../../../../../components/roundedPaper";
 
 import "./multiList.css";
+import { Tickets } from "../../../../../driver/home/tickets";
 
 export type toggleSelectionFn = () => void;
 
-type entryRendererFn<T> = (props: {
-  entry: T;
-  toggleSelection: toggleSelectionFn;
-  selected: boolean;
-}) => JSX.Element;
-
-type menuRendererFn<T> = (props: {
-  selectedListEntries: EntryID[];
-  isMultiSelected: boolean;
-  entries: IndexedEntry<T>[];
-}) => JSX.Element;
-
-type List<T> = {
+type List = {
   title: string;
-  entries: T[];
-  entryRenderer: entryRendererFn<T>;
-  menuRenderer: menuRendererFn<T>;
+  entries: Ticket[];
+  entryRenderer: (props: {
+    entry: Ticket;
+    toggleSelection: toggleSelectionFn;
+    selected: boolean;
+  }) => JSX.Element;
+  menuRenderer: (props: {
+    selectedListEntries: EntryID[];
+    isMultiSelected: boolean;
+    entries: Ticket[];
+    triggerRefetch?: () => void;
+  }) => JSX.Element;
+  triggerRefetch?: () => void;
 };
 
-type MultiListProps<T> = {
+type MultiListProps = {
   title?: string;
-  listSpecifications: List<T>[];
+  listSpecifications: List[];
   loading: boolean;
   error: string | null;
 };
 
-export type IndexedEntry<T> = {
-  entry: T;
-  ID: string;
-  listID: string;
-};
-
-type IndexedList<T> = {
-  title: string;
-  listID: string;
-  entries: IndexedEntry<T>[];
-  entryRenderer: entryRendererFn<T>;
-  menuRenderer: menuRendererFn<T>;
-};
-
-type ID = string;
-
 export type EntryID = string; // this string will look like ListID_EntryIndexInList
 
-type ListID = string; // this string will be the index of the list in our list specifications
+function Lists(props: MultiListProps): JSX.Element {
+  const { listSpecifications, loading, error } = props;
 
-type ListSelectedItemsState = {
-  [key: EntryID]: boolean;
-};
+  const [selectedItems, setSelectedItems] = useState<{
+    [key: string]: boolean;
+  }>({});
 
-type AllSelectedItemsState = {
-  [key: ListID]: ListSelectedItemsState;
-};
-
-function Lists<T>(props: MultiListProps<T>): JSX.Element {
-  const { title, listSpecifications, loading, error } = props;
-
-  const indexedListSpecifications: IndexedList<T>[] = useMemo(() => {
-    return listSpecifications.map((listSpecification, indexOuter) => ({
-      ...listSpecification,
-      entries: listSpecification.entries.map((entry, indexInner) => ({
-        entry,
-        listID: "_" + indexOuter,
-        ID: indexInner + "_" + indexOuter,
-      })),
-      listID: "_" + indexOuter,
+  const toggleSelection = (ticketId: string) => {
+    setSelectedItems((prev) => ({
+      ...prev,
+      [ticketId]: !(prev[ticketId] ?? false),
     }));
-  }, [listSpecifications]);
-
-  const [selectedItems, setSelectedItems] = useState<AllSelectedItemsState>({});
-
-  const toggleSelection = useCallback(
-    (listID: string, ID: string) => {
-      setSelectedItems((currentSelectedItems) => ({
-        ...currentSelectedItems,
-        [listID]: {
-          ...currentSelectedItems[listID],
-          [ID]: !currentSelectedItems[listID]?.[ID],
-        },
-      }));
-    },
-    [setSelectedItems]
-  );
-
-  const pullSelectedEntries = function (
-    selectedItems: AllSelectedItemsState,
-    listID: ListID
-  ) {
-    let array: EntryID[] = [];
-
-    for (let key in selectedItems) {
-      if (key.includes(listID)) {
-        for (let entryID in selectedItems[listID]) {
-          if (selectedItems[listID][entryID] == true) {
-            array.push(entryID);
-          }
-        }
-      }
-    }
-    return array;
   };
+
+  function getSelectedTickets(listID: string) {
+    return Object.entries(selectedItems)
+      .map(([key, val]) => {
+        const [listId, ticketID] = key.split("_");
+        if (val && listId === listID) {
+          return ticketID;
+        } else {
+          return undefined;
+        }
+      })
+      .filter((ticketId) => ticketId) as string[];
+  }
 
   if (loading) {
     return (
@@ -118,19 +71,21 @@ function Lists<T>(props: MultiListProps<T>): JSX.Element {
     );
   }
 
+  if (error) {
+    return (
+      <Paper className="multi-list-all-lists-container">
+        <Typography>There was an error!</Typography>
+      </Paper>
+    );
+  }
+
   return (
     <Paper className="multi-list-all-lists-container">
-      {indexedListSpecifications.map(
-        (
-          { title, listID, entries, entryRenderer, menuRenderer },
-          indexOuterLoop
-        ) => {
+      {listSpecifications.map(
+        ({ title, entries: tickets, entryRenderer, menuRenderer, triggerRefetch }, listIdx) => {
           const EntryRenderer = entryRenderer;
           const MenuRenderer = menuRenderer;
-          const selectedPulledEntries = pullSelectedEntries(
-            selectedItems,
-            listID
-          );
+          const selectedPulledEntries = getSelectedTickets(listIdx.toString());
           return (
             <div className="multi-list-list-container">
               <div className="ss-flexbox">
@@ -151,31 +106,39 @@ function Lists<T>(props: MultiListProps<T>): JSX.Element {
                   color="black"
                   gutterBottom
                 >
-                  <strong>{entries.length}</strong>
+                  <strong>{tickets.length}</strong>
                 </Typography>
               </div>
               <div className="multi-list-list">
-                {entries.map((indexedEntry, indexInnerLoop) => (
+                {tickets.map((ticket) => (
                   <EntryRenderer
-                    entry={indexedEntry.entry}
-                    toggleSelection={() =>
-                      toggleSelection(indexedEntry?.listID, indexedEntry?.ID)
-                    }
+                    entry={ticket}
+                    toggleSelection={() => {
+                      toggleSelection(
+                        [listIdx.toString(), ticket.ticketId.toString()].join(
+                          "_"
+                        )
+                      );
+                    }}
                     selected={
-                      selectedItems[indexedEntry?.listID]?.[indexedEntry?.ID] ??
-                      false
+                      selectedItems[
+                        [listIdx.toString(), ticket.ticketId.toString()].join(
+                          "_"
+                        )
+                      ] ?? false
                     }
                   />
                 ))}
               </div>
               <div>
-                {pullSelectedEntries(selectedItems, listID).length > 0 && (
+                {selectedPulledEntries.length > 0 ? (
                   <MenuRenderer
                     selectedListEntries={selectedPulledEntries}
                     isMultiSelected={selectedPulledEntries.length > 1}
-                    entries={entries}
+                    entries={tickets}
+                    triggerRefetch={triggerRefetch}
                   />
-                )}
+                ) : null}
               </div>
             </div>
           );

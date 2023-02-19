@@ -32,31 +32,52 @@ function Home() {
     val: unassignedPickupTickets,
     loading: unassignedPickupTicketsLoading,
     error: unassignedPickupTicketsError,
-  } = useLoadable(fetchTicketsForStatus, "unassigned_pickup");
+  } = useLoadable(
+    fetchTicketsForStatus,
+    "unassigned_pickup",
+    "Creation_Milestone_Status"
+  );
 
   const {
     val: pickupRequestTickets,
     loading: pickupRequestTicketsLoading,
     error: pickupRequestTicketsError,
-  } = useLoadable(fetchTicketsForStatus, "requested_pickup");
+  } = useLoadable(
+    fetchTicketsForStatus,
+    "requested_pickup",
+    "Pickup_Milestone_Status"
+  );
 
   const {
     val: inventoryTickets,
     loading: inventoryTicketsLoading,
     error: inventoryTicketsError,
-  } = useLoadable(fetchTicketsForStatus, "checked_into_inventory");
+  } = useLoadable(
+    fetchTicketsForStatus,
+    "checked_into_inventory",
+    "Inventory_Milestone_Status"
+  );
 
   const {
     val: assignedTickets,
     loading: assignedTicketsLoading,
     error: assignedTicketsError,
-  } = useLoadable(fetchTicketsForStatus, "assigned");
+    triggerRefetch
+  } = useLoadable(
+    fetchTicketsForStatus,
+    "assigned",
+    "Assignment_Milestone_Status"
+  );
 
   const {
     val: inProgressTickets,
     loading: inProgressTicketsLoading,
     error: inProgressTicketsError,
-  } = useLoadable(fetchTicketsForStatus, "in_transit");
+  } = useLoadable(
+    fetchTicketsForStatus,
+    "in_transit",
+    "Assignment_Milestone_Status"
+  );
 
   const ticketsLoading =
     unassignedPickupTicketsLoading ||
@@ -95,6 +116,7 @@ function Home() {
             entries: inventoryTickets?.tickets ?? [],
             entryRenderer: inventoryEntryRenderer,
             menuRenderer: inventoryMenu,
+            triggerRefetch: triggerRefetch
           },
           {
             title: "Assigned",
