@@ -1,0 +1,10 @@
+.lists-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-gap: 1rem;
+    gap: 1rem;
+    border-radius: 15px;
+    background-color: #cbdfeb !important;
+    padding: 24px;
+    margin: 24px 0;
+  }
