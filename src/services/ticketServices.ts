@@ -24,7 +24,7 @@ const delay = (time: number) => {
   });
 };
 
-type TicketForStatusRes = {
+export type TicketForStatusRes = {
   count: number;
   tickets: Ticket[];
 };
@@ -344,7 +344,7 @@ export const fetchTicketEdits = async (
             user = val as string;
             break;
           case "lastName":
-            user += (val as string);
+            user += val as string;
             break;
           default:
             action = `Changed ${key} to \"${val}\"`;
@@ -354,7 +354,7 @@ export const fetchTicketEdits = async (
       return {
         dateAndTime,
         action,
-        user
+        user,
       };
     });
   } catch (e) {
@@ -419,5 +419,17 @@ export const checkIntoInventory = async (ticketIDs: string[]) => {
   } catch (e) {
     console.error(e);
     return e;
+  }
+};
+
+
+export const deleteTicket = async (ticketIDs: string[]) => {
+  try {
+    const responses = await Promise.all(
+      ticketIDs.map((ticketID) => axios.delete(`/api/ticket/${ticketID}`))
+    );
+  } catch (e) {
+    console.error(e);
+    return;
   }
 };
