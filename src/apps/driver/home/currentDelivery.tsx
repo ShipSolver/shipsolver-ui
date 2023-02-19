@@ -55,7 +55,7 @@ export const CurrentDelivery = ({
           REF#: {String(currentTicket.houseReferenceNumber)}
         </Typography>
         <Typography color="#00000099">
-          First Party: {currentTicket.customer.name}
+          First Party: {currentTicket.customerName}
         </Typography>
         <Typography color="#00000099">
           Date/Time Assigned:{" "}

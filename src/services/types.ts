@@ -121,10 +121,6 @@ export type Ticket = {
   consigneePhoneNumber: string;
   consigneePostalCode: string;
   customerName: string;
-  customer: {
-    customerId: number;
-    name: string;
-  };
   customerId: number;
   houseReferenceNumber: number;
   orderS3Link: string;

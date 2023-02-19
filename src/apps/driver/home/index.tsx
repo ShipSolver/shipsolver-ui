@@ -3,7 +3,7 @@ import React, { useCallback, useState } from "react";
 import Typography from "@mui/material/Typography";
 
 import Grid from "@mui/material/Grid";
-
+import { Loading } from "../../../components/loading";
 import OuterBlueDivBox from "../components/outerBlueDivBox";
 import InnerBlueDivBox from "../components/innerBlueDivBox";
 import { LargeButton } from "../components/largeButton";
@@ -32,13 +32,13 @@ export const Home = () => {
 
   const [viewAllPickup, setViewAllPickup] = useState<boolean>(false);
 
-  const { val: currentDeliveries, triggerRefetch: triggerRefetchInTransit } =
+  const { val: currentDeliveries, loading: loading1, triggerRefetch: triggerRefetchInTransit } =
     useLoadable(fetchTicketsForStatus, "in_transit", "AssignmentMilestones");
-  const { val: assignedInfo, triggerRefetch: triggerRefetchAssigned } =
+  const { val: assignedInfo, loading: loading2, triggerRefetch: triggerRefetchAssigned } =
     useLoadable(fetchTicketsForStatus, "assigned", "AssignmentMilestones");
-  const { val: completedInfo, triggerRefetch: triggerRefetchCompleted } =
+  const { val: completedInfo, loading: loading3, triggerRefetch: triggerRefetchCompleted } =
     useLoadable(fetchTicketsForStatus, "completed_delivery", "DeliveryMilestones");
-  const { val: pickupInfo, triggerRefetch: triggerRefetchPickup } = useLoadable(
+  const { val: pickupInfo, loading: loading4, triggerRefetch: triggerRefetchPickup } = useLoadable(
     fetchTicketsForStatus,
     "requested_pickup",
     "PickupMilestones"
@@ -50,6 +50,8 @@ export const Home = () => {
     triggerRefetchCompleted,
     triggerRefetchPickup,
   ];
+
+  const loading = loading1 || loading2 || loading3 || loading4;
 
   const currentTicket =
     currentDeliveries?.tickets.length ?? -1 > 0
@@ -94,6 +96,10 @@ export const Home = () => {
     },
     []
   );
+
+  if(loading){
+    return <Loading />
+  }
 
   if (!currentTicket && !assigned && !completed && !pickup) {
     return (
