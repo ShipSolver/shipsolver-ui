@@ -22,7 +22,9 @@ type List = {
     selectedListEntries: EntryID[];
     isMultiSelected: boolean;
     entries: Ticket[];
+    triggerRefetch?: () => void;
   }) => JSX.Element;
+  triggerRefetch?: () => void;
 };
 
 type MultiListProps = {
@@ -80,7 +82,7 @@ function Lists(props: MultiListProps): JSX.Element {
   return (
     <Paper className="multi-list-all-lists-container">
       {listSpecifications.map(
-        ({ title, entries: tickets, entryRenderer, menuRenderer }, listIdx) => {
+        ({ title, entries: tickets, entryRenderer, menuRenderer, triggerRefetch }, listIdx) => {
           const EntryRenderer = entryRenderer;
           const MenuRenderer = menuRenderer;
           const selectedPulledEntries = getSelectedTickets(listIdx.toString());
@@ -134,6 +136,7 @@ function Lists(props: MultiListProps): JSX.Element {
                     selectedListEntries={selectedPulledEntries}
                     isMultiSelected={selectedPulledEntries.length > 1}
                     entries={tickets}
+                    triggerRefetch={triggerRefetch}
                   />
                 ) : null}
               </div>

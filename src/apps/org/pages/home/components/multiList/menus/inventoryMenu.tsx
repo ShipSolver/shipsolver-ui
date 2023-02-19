@@ -15,11 +15,14 @@ interface IMenu {
   selectedListEntries: EntryID[];
   isMultiSelected: boolean;
   entries: Ticket[];
+  triggerRefetch?: () => void
 }
 export default function Menu({
   selectedListEntries,
   isMultiSelected,
   entries,
+  triggerRefetch
+
 }: IMenu): JSX.Element {
   const navigate = useNavigate();
 
@@ -37,6 +40,7 @@ export default function Menu({
           buttonText="Assign to driver"
           listItem
           getTicketIDs={() => selectedListEntries}
+          triggerRefetch={triggerRefetch}
         />
         <Divider sx={{ borderBottomWidth: 2 }} />
         <ListItemButton>
