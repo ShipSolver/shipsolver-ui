@@ -8,6 +8,7 @@ import { Loading } from "../../../../../../components/loading";
 import { TicketMenu } from "./ticketMenu";
 import { TicketForStatusRes } from "../../../../../../services/ticketServices";
 import "./list.css";
+import { Key } from "@mui/icons-material";
 
 export type ListType =
   | "delivered"
@@ -34,10 +35,10 @@ export function List({ listTitle, listType, fetch, args }: IList) {
     triggerRefetch,
   } = useLoadable(fetch, ...args);
 
-  const [selected, setSelected] = useState<{ [key: number]: boolean }>({});
+  const [selected, setSelected] = useState<{ [key: string]: boolean }>({});
   const [numSelected, setNumSelected] = useState<number>(0);
 
-  const handleClick = (ticketID: number) => {
+  const handleClick = (ticketID: string) => {
     setNumSelected((prev) => prev + (selected[ticketID] ? -1 : 1));
     setSelected((prev) => ({
       ...prev,
@@ -56,21 +57,27 @@ export function List({ listTitle, listType, fetch, args }: IList) {
       );
     }
 
-    return response?.tickets.map((ticket: Ticket) => (
-      <Paper
-        variant="outlined"
-        className={`entry-renderer${
-          selected[ticket.ticketId] ? "-selected" : ""
-        }`}
-        onClick={() => handleClick(ticket.ticketId)}
-      >
-        <Typography variant="h6">{ticket.consigneeAddress}</Typography>
-        <TicketSubtitle
-          assignedTo={ticket.ticketStatus.user.firstName}
-          listType={listType}
-        />
-      </Paper>
-    ));
+    return response?.tickets.map((ticket: Ticket) => {
+      /* This is so that we can easily grab the driver first name inside of TicketMenu */
+      const key = [
+        ticket.ticketId.toString(),
+        ticket.ticketStatus.user.firstName,
+      ].join("_");
+
+      return (
+        <Paper
+          variant="outlined"
+          className={`entry-renderer${selected[key] ? "-selected" : ""}`}
+          onClick={() => handleClick(key)}
+        >
+          <Typography variant="h6">{ticket.consigneeAddress}</Typography>
+          <TicketSubtitle
+            assignedTo={ticket.ticketStatus.user.firstName}
+            listType={listType}
+          />
+        </Paper>
+      );
+    });
   };
 
   return (

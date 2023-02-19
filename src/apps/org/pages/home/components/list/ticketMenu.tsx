@@ -36,29 +36,21 @@ export function TicketMenu({
           <AssignToDriverModal
             buttonText="Assign to driver"
             listItem
-            getTicketIDs={() => getTicketIds(selected)}
+            getTicketIDs={() =>
+              getTicketIds(selected).map((id) => id.split("_")[0])
+            }
             triggerRefetch={triggerRefetch}
           />
         );
       }
       case "inProgress":
       case "assigned": {
-        return (
-          <ListItemButton>
-            <Typography className="menu-text-typography">
-              Go to Driver's Tickets
-            </Typography>
-          </ListItemButton>
-        );
+        return <GoToDriver selected={selected} numSelected={numSelected} />;
       }
       case "incomplete": {
         return (
           <>
-            <ListItemButton>
-              <Typography className="menu-text-typography">
-                Go to Driver's Tickets
-              </Typography>
-            </ListItemButton>
+            <GoToDriver selected={selected} numSelected={numSelected} />
             <Divider sx={{ borderBottomWidth: 2 }} />
             <ListItemButton>
               <Typography className="menu-text-typography">
@@ -77,11 +69,7 @@ export function TicketMenu({
       case "delivered": {
         return (
           <>
-            <ListItemButton>
-              <Typography className="menu-text-typography">
-                Go to Driver's Tickets
-              </Typography>
-            </ListItemButton>
+            <GoToDriver selected={selected} numSelected={numSelected} />
             <Divider sx={{ borderBottomWidth: 2 }} />
             <ListItemButton>
               <Typography className="menu-text-typography">
@@ -107,15 +95,37 @@ export function TicketMenu({
         <Divider sx={{ borderBottomWidth: 2 }} />
         <ListItemButton
           onClick={() =>
-            navigate(`/ticket-details/${getTicketIds(selected)[0]}`)
+            navigate(
+              `/ticket-details/${getTicketIds(selected)[0].split("_")[0]}`
+            )
           }
           disabled={numSelected != 1}
         >
           <Typography className="menu-text-typography">Edit ticket</Typography>
         </ListItemButton>
         <Divider sx={{ borderBottomWidth: 2 }} />
-        <DeleteTicketModal getTicketIDs={() => getTicketIds(selected)} triggerRefetch={triggerRefetch} />
+        <DeleteTicketModal
+          getTicketIDs={() =>
+            getTicketIds(selected).map((id) => id.split("_")[0])
+          }
+          triggerRefetch={triggerRefetch}
+        />
       </List>
     </Box>
+  );
+}
+
+interface IGoToDriver {
+  numSelected: number;
+  selected: { [key: string]: boolean };
+}
+
+function GoToDriver({ selected, numSelected }: IGoToDriver) {
+  return (
+    <ListItemButton disabled={numSelected !== 1}>
+      <Typography className="menu-text-typography">
+        {`Go to ${getTicketIds(selected)[0].split("_")[1]}'s Tickets`}
+      </Typography>
+    </ListItemButton>
   );
 }

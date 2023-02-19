@@ -9,7 +9,6 @@ interface LoadingProps {
 }
 
 export const Loading = ({ text }: LoadingProps) => {
-  console.log("does this mount???/")
   return (
     <Container
       sx={{
