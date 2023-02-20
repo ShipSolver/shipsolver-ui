@@ -24,5 +24,5 @@ export type HeaderRowType = {
 };
 
 export type RowType = {
-  [key in Keys]: string;
+  [key in Keys]: string | number;
 };

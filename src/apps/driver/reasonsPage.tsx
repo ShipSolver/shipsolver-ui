@@ -10,6 +10,7 @@ import TextField from "@mui/material/TextField";
 import { styled } from "@mui/material/styles";
 import { IconButton } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
+import { moveToIncomplete } from "../../services/ticketServices";
 
 export type ReasonsType = {
   reason: string;
@@ -58,6 +59,7 @@ export const ReasonsPage = ({
     if (numSelected == 1) {
       for (const id in selected) {
         if (selected[id] === true) {
+          // moveToIncomplete();
         }
       }
     } else {

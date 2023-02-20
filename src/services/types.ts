@@ -14,6 +14,14 @@ export type User = {
   userID: string;
 };
 
+export type MilestonesModelTypes = 
+  | "CreationMilestones"
+  | "PickupMilestones"
+  | "InventoryMilestones"
+  | "AssignmentMilestones"
+  | "IncompleteDeliveryMilestones"
+  | "DeliveryMilestones";
+
 export type CreationTicketMilestone =
   | "Creation_Milestone_Status.ticket_created"
   | "Creation_Milestone_Status.unassigned_pickup";
@@ -102,7 +110,7 @@ export type Ticket = {
       userId: number;
       userType: UserType;
       username: string;
-    };
+    } | null;
   };
   BOLNumber: number;
   barcodeNumber: number;
@@ -113,10 +121,6 @@ export type Ticket = {
   consigneePhoneNumber: string;
   consigneePostalCode: string;
   customerName: string;
-  customer: {
-    customerId: number;
-    name: string;
-  };
   customerId: number;
   houseReferenceNumber: number;
   orderS3Link: string;

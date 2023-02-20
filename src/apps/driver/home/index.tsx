@@ -3,7 +3,7 @@ import React, { useCallback, useState } from "react";
 import Typography from "@mui/material/Typography";
 
 import Grid from "@mui/material/Grid";
-
+import { Loading } from "../../../components/loading";
 import OuterBlueDivBox from "../components/outerBlueDivBox";
 import InnerBlueDivBox from "../components/innerBlueDivBox";
 import { LargeButton } from "../components/largeButton";
@@ -32,17 +32,26 @@ export const Home = () => {
 
   const [viewAllPickup, setViewAllPickup] = useState<boolean>(false);
 
-  const { val: currentDeliveries, triggerRefetch: triggerRefetchInTransit } =
-    useLoadable(fetchTicketsForStatus, "in_transit", "Assignment_Milestone_Status");
-  const { val: assignedInfo, triggerRefetch: triggerRefetchAssigned } =
-    useLoadable(fetchTicketsForStatus, "assigned", "Assignment_Milestone_Status");
-  const { val: completedInfo, triggerRefetch: triggerRefetchCompleted } =
-    useLoadable(fetchTicketsForStatus, "completed_delivery", "Delivery_Milestone_Status");
-  const { val: pickupInfo, triggerRefetch: triggerRefetchPickup } = useLoadable(
-    fetchTicketsForStatus,
-    "requested_pickup",
-    "Pickup_Milestone_Status"
-  );
+  const {
+    val: currentDeliveries,
+    loading: loading1,
+    triggerRefetch: triggerRefetchInTransit,
+  } = useLoadable(fetchTicketsForStatus, "in_transit");
+  const {
+    val: assignedInfo,
+    loading: loading2,
+    triggerRefetch: triggerRefetchAssigned,
+  } = useLoadable(fetchTicketsForStatus, "assigned");
+  const {
+    val: completedInfo,
+    loading: loading3,
+    triggerRefetch: triggerRefetchCompleted,
+  } = useLoadable(fetchTicketsForStatus, "completed_delivery");
+  const {
+    val: pickupInfo,
+    loading: loading4,
+    triggerRefetch: triggerRefetchPickup,
+  } = useLoadable(fetchTicketsForStatus, "requested_pickup");
 
   const refetchFunctions = [
     triggerRefetchInTransit,
@@ -50,6 +59,8 @@ export const Home = () => {
     triggerRefetchCompleted,
     triggerRefetchPickup,
   ];
+
+  const loading = loading1 || loading2 || loading3 || loading4;
 
   const currentTicket =
     currentDeliveries?.tickets.length ?? -1 > 0
@@ -94,6 +105,10 @@ export const Home = () => {
     },
     []
   );
+
+  if (loading) {
+    return <Loading />;
+  }
 
   if (!currentTicket && !assigned && !completed && !pickup) {
     return (
