@@ -9,6 +9,8 @@ import { useNavigate } from "react-router-dom";
 import { getTicketIds } from "../../../allTicketsTable/components/footerButtons";
 import { AssignToDriverModal } from "../../../allTicketsTable/components/assignToDriverModal";
 import { DeleteTicketModal } from "../deleteTicketModal";
+import { filterAtom } from "../../../allTicketsTable/components/state/tableState";
+import { useSetRecoilState } from "recoil";
 import "./menu.css";
 
 interface ITicketMenu {
@@ -121,10 +123,22 @@ interface IGoToDriver {
 }
 
 function GoToDriver({ selected, numSelected }: IGoToDriver) {
+  const navigate = useNavigate();
+
+  const setFilter = useSetRecoilState(filterAtom);
+
+  const driverName = getTicketIds(selected)[0].split("_")[1];
+
   return (
-    <ListItemButton disabled={numSelected !== 1}>
+    <ListItemButton
+      disabled={numSelected !== 1}
+      onClick={() => {
+        setFilter((prev) => ({ ...prev, lastAssigned: driverName }));
+        navigate("/all-tickets");
+      }}
+    >
       <Typography className="menu-text-typography">
-        {`Go to ${getTicketIds(selected)[0].split("_")[1]}'s Tickets`}
+        {`Go to ${driverName}'s Tickets`}
       </Typography>
     </ListItemButton>
   );
