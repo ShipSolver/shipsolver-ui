@@ -9,7 +9,10 @@ import { TicketMenu } from "./ticketMenu";
 import { TicketForStatusRes } from "../../../../../../services/ticketServices";
 import "./list.css";
 import { useRecoilState } from "recoil";
-import { assignedTicketsRefetchAtom } from "../../state/assignedTicketsRefetchAtom";
+import {
+  assignedTicketsRefetchAtom,
+  inventoryTicketsRefetchAtom,
+} from "../../state/assignedTicketsRefetchAtom";
 
 export type ListType =
   | "delivered"
@@ -36,7 +39,12 @@ export function List({ listTitle, listType, fetch, args }: IList) {
   const [selected, setSelected] = useState<{ [key: string]: boolean }>({});
   const [numSelected, setNumSelected] = useState<number>(0);
 
-  const [refetch, setRefetch] = useRecoilState(assignedTicketsRefetchAtom);
+  const [refetchAssigned, setRefetchAssigned] = useRecoilState(
+    assignedTicketsRefetchAtom
+  );
+  const [refetchInventory, setRefetchInventory] = useRecoilState(
+    inventoryTicketsRefetchAtom
+  );
 
   ////////////////// This is a little hacky ///////////////////////////
 
@@ -44,13 +52,26 @@ export function List({ listTitle, listType, fetch, args }: IList) {
     This lets us pass in the refetch from the assigned column to the inventory column to be called */
   useEffect(() => {
     if (listType === "assigned") {
-      setRefetch(triggerRefetch);
+      setRefetchAssigned(triggerRefetch);
     }
   }, []);
 
   const assignToDriverRefetch = () => {
-    refetch(); // This will refetch the assigned column
+    refetchAssigned(); // This will refetch the assigned column
     triggerRefetch(); // This will refetch the current column (inventory)
+  };
+
+  /* When re entering a ticket into inventory we want to refetch the incomplete ticket column as well as the inventory column. 
+    This lets us pass in the refetch from the inventory column to the incomplete column to be called */
+  useEffect(() => {
+    if (listType === "inventory") {
+      setRefetchInventory(triggerRefetch);
+    }
+  }, []);
+
+  const checkIntoInventoryRefetch = () => {
+    refetchInventory(); // This will refetch the inventory column
+    triggerRefetch(); // This will refetch the current column (incomplete)
   };
   ///////////////////// End of hacky code /////////////////////////////
 
@@ -124,6 +145,9 @@ export function List({ listTitle, listType, fetch, args }: IList) {
         deleteTicketRefetch={triggerRefetch}
         assignToDriverRefetch={
           listType === "inventory" ? assignToDriverRefetch : undefined
+        }
+        checkIntoInventoryRefetch={
+          listType === "incomplete" ? checkIntoInventoryRefetch : undefined
         }
       />
     </div>

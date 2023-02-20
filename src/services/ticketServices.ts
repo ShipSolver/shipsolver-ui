@@ -3,7 +3,12 @@ import axios from "axios";
 import { SERVER_URL } from "./constants";
 
 import tickets from "../mockData/tickets.json";
-import { MilestonesModelTypes, Ticket, TicketMilestone, TicketStatus } from "./types";
+import {
+  MilestonesModelTypes,
+  Ticket,
+  TicketMilestone,
+  TicketStatus,
+} from "./types";
 import moment from "moment";
 import { DateFormat } from "../apps/org/pages/allTicketsTable/components/filters/dateRangeFilter";
 import { EventHistoryType } from "../apps/org/pages/ticketDetails/components/eventHistory";
@@ -402,6 +407,41 @@ export const editTicket = async (
   }
 };
 
+interface IMoveToIncomplete {
+  ticketId: string;
+  oldStatus: string;
+  reasonForIncomplete: string;
+  dueToEndedShift?: boolean;
+}
+
+export const moveToIncomplete = async (tickets: IMoveToIncomplete[]) => {
+  try {
+    const response: any = await Promise.all(
+      tickets.map(
+        ({
+          ticketId,
+          oldStatus,
+          reasonForIncomplete,
+          dueToEndedShift = false,
+        }) =>
+          axios.post("/api/milestones/IncompleteDeliveryMilestones", {
+            withCredentials: false,
+            data: {
+              ticketId,
+              oldStatus,
+              newStatus: "incomplete_delivery",
+              reasonForIncomplete,
+              dueToEndedShift,
+            },
+          })
+      )
+    );
+  } catch (e) {
+    console.error(e);
+    return e;
+  }
+};
+
 export const checkIntoInventory = async (ticketIDs: string[]) => {
   try {
     const response: any = await Promise.all(
@@ -412,7 +452,6 @@ export const checkIntoInventory = async (ticketIDs: string[]) => {
             ticketId,
             oldStatus: "DeliveryTicketCreated ",
             newStatus: "checked_into_inventory",
-            approvedByUserId: "761909011",
           },
         })
       )

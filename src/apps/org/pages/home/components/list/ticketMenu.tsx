@@ -11,6 +11,7 @@ import { AssignToDriverModal } from "../../../allTicketsTable/components/assignT
 import { DeleteTicketModal } from "../deleteTicketModal";
 import { filterAtom } from "../../../allTicketsTable/components/state/tableState";
 import { useSetRecoilState } from "recoil";
+import { checkIntoInventory } from "../../../../../../services/ticketServices";
 import "./menu.css";
 
 interface ITicketMenu {
@@ -19,6 +20,7 @@ interface ITicketMenu {
   selected: { [key: string]: boolean };
   deleteTicketRefetch: () => void;
   assignToDriverRefetch?: () => void;
+  checkIntoInventoryRefetch?: () => void;
 }
 export function TicketMenu({
   listType,
@@ -26,6 +28,7 @@ export function TicketMenu({
   numSelected,
   assignToDriverRefetch,
   deleteTicketRefetch,
+  checkIntoInventoryRefetch,
 }: ITicketMenu) {
   const navigate = useNavigate();
 
@@ -57,7 +60,15 @@ export function TicketMenu({
             <GoToDriver selected={selected} numSelected={numSelected} />
             <Divider sx={{ borderBottomWidth: 2 }} />
             <ListItemButton>
-              <Typography className="menu-text-typography">
+              <Typography
+                className="menu-text-typography"
+                onClick={() => {
+                  checkIntoInventory(
+                    getTicketIds(selected).map((id) => id.split("_")[0])
+                  );
+                  checkIntoInventoryRefetch?.();
+                }}
+              >
                 Move to Inventory
               </Typography>
             </ListItemButton>
