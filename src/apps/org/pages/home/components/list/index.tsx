@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Typography from "@mui/material/Typography";
 import { Ticket, TicketStatus } from "../../../../../../services/types";
 import Paper from "../../../../../../components/roundedPaper";
@@ -8,7 +8,8 @@ import { Loading } from "../../../../../../components/loading";
 import { TicketMenu } from "./ticketMenu";
 import { TicketForStatusRes } from "../../../../../../services/ticketServices";
 import "./list.css";
-import { Key } from "@mui/icons-material";
+import { useRecoilState } from "recoil";
+import { assignedTicketsRefetchAtom } from "../../state/assignedTicketsRefetchAtom";
 
 export type ListType =
   | "delivered"
@@ -20,11 +21,8 @@ export type ListType =
 interface IList {
   listTitle: string;
   listType: ListType;
-  fetch: (
-    status: TicketStatus,
-    milestoneType: string
-  ) => Promise<TicketForStatusRes>;
-  args: [TicketStatus, string];
+  fetch: (status: TicketStatus) => Promise<TicketForStatusRes>;
+  args: TicketStatus;
 }
 
 export function List({ listTitle, listType, fetch, args }: IList) {
@@ -33,10 +31,28 @@ export function List({ listTitle, listType, fetch, args }: IList) {
     loading,
     error,
     triggerRefetch,
-  } = useLoadable(fetch, ...args);
+  } = useLoadable(fetch, args);
 
   const [selected, setSelected] = useState<{ [key: string]: boolean }>({});
   const [numSelected, setNumSelected] = useState<number>(0);
+
+  const [refetch, setRefetch] = useRecoilState(assignedTicketsRefetchAtom);
+
+  ////////////////// This is a little hacky ///////////////////////////
+
+  /* When assigning a ticket to a driver we want to refetch the assigned ticket column as well as the inventory column. 
+    This lets us pass in the refetch from the assigned column to the inventory column to be called */
+  useEffect(() => {
+    if (listType === "assigned") {
+      setRefetch(triggerRefetch);
+    }
+  }, []);
+
+  const assignToDriverRefetch = () => {
+    refetch(); // This will refetch the assigned column
+    triggerRefetch(); // This will refetch the current column (inventory)
+  };
+  ///////////////////// End of hacky code /////////////////////////////
 
   const handleClick = (ticketID: string) => {
     setNumSelected((prev) => prev + (selected[ticketID] ? -1 : 1));
@@ -105,7 +121,10 @@ export function List({ listTitle, listType, fetch, args }: IList) {
         selected={selected}
         numSelected={numSelected}
         listType={listType}
-        triggerRefetch={triggerRefetch}
+        deleteTicketRefetch={triggerRefetch}
+        assignToDriverRefetch={
+          listType === "inventory" ? assignToDriverRefetch : undefined
+        }
       />
     </div>
   );

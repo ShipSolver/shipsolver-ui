@@ -28,8 +28,8 @@ export type TicketForStatusRes = {
   count: number;
   tickets: Ticket[];
 };
-export const fetchTicketsForStatus = async (status: TicketStatus, milestoneType: MilestonesModelTypes) => {
-  const { data } = await axios.get(`/api/ticket/status/${status}?milestoneType=${milestoneType}`, {
+export const fetchTicketsForStatus = async (status: TicketStatus) => {
+  const { data } = await axios.get(`/api/ticket/status/${status}`, {
     params: {
       limit: 10,
     },

@@ -17,13 +17,15 @@ interface ITicketMenu {
   listType: ListType;
   numSelected: number;
   selected: { [key: string]: boolean };
-  triggerRefetch: () => void;
+  deleteTicketRefetch: () => void;
+  assignToDriverRefetch?: () => void;
 }
 export function TicketMenu({
   listType,
   selected,
   numSelected,
-  triggerRefetch,
+  assignToDriverRefetch,
+  deleteTicketRefetch,
 }: ITicketMenu) {
   const navigate = useNavigate();
 
@@ -41,7 +43,7 @@ export function TicketMenu({
             getTicketIDs={() =>
               getTicketIds(selected).map((id) => id.split("_")[0])
             }
-            triggerRefetch={triggerRefetch}
+            triggerRefetch={assignToDriverRefetch}
           />
         );
       }
@@ -110,7 +112,7 @@ export function TicketMenu({
           getTicketIDs={() =>
             getTicketIds(selected).map((id) => id.split("_")[0])
           }
-          triggerRefetch={triggerRefetch}
+          triggerRefetch={deleteTicketRefetch}
         />
       </List>
     </Box>

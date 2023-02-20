@@ -12,32 +12,32 @@ import "./home.css";
 
 const LISTS: {
   listTitle: string;
-  args: [TicketStatus, string];
+  args: TicketStatus;
   listType: ListType;
 }[] = [
   {
     listTitle: "Delivered",
-    args: ["unassigned_pickup", "Creation_Milestone_Status"],
+    args: "unassigned_pickup",
     listType: "delivered",
   },
   {
     listTitle: "Incomplete",
-    args: ["requested_pickup", "Pickup_Milestone_Status"],
+    args: "requested_pickup",
     listType: "incomplete",
   },
   {
     listTitle: "In Progress",
-    args: ["in_transit", "Assignment_Milestone_Status"],
+    args: "in_transit",
     listType: "inProgress",
   },
   {
     listTitle: "Assigned",
-    args: ["assigned", "Assignment_Milestone_Status"],
+    args: "assigned",
     listType: "assigned",
   },
   {
     listTitle: "Inventory",
-    args: ["checked_into_inventory", "Inventory_Milestone_Status"],
+    args: "checked_into_inventory",
     listType: "inventory",
   },
 ];
