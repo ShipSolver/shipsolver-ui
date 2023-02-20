@@ -45,9 +45,9 @@ export const fetchOrgCurrentDelivery = () => {
   return mockServerTicketFetch();
 };
 
-export const fetchAllTickets = async () => {
+export const fetchAllTickets = async (): Promise<RowType[]> => {
   try {
-    const response: any = await axios.get("/api/ticket/", {
+    const response: { data: Ticket[] } = await axios.get("/api/ticket/", {
       withCredentials: false,
     });
 
@@ -67,7 +67,8 @@ export const fetchAllTickets = async () => {
         firstParty: customerName,
         consigneeName,
         consigneeAddress,
-        lastAssigned: ticketStatus.assignedTo,
+        lastAssigned:
+          ticketStatus.user.firstName + " " + ticketStatus.user.lastName,
         barcodeNumber,
         shipper: shipperCompany,
         pickup: "Yes",
@@ -78,7 +79,7 @@ export const fetchAllTickets = async () => {
     return data;
   } catch (e) {
     console.error(e);
-    return e;
+    throw e;
   }
 };
 
@@ -421,7 +422,6 @@ export const checkIntoInventory = async (ticketIDs: string[]) => {
     return e;
   }
 };
-
 
 export const deleteTickets = async (ticketIDs: string[]) => {
   try {
