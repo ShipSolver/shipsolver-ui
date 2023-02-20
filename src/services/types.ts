@@ -110,7 +110,7 @@ export type Ticket = {
       userId: number;
       userType: UserType;
       username: string;
-    };
+    } | null;
   };
   BOLNumber: number;
   barcodeNumber: number;

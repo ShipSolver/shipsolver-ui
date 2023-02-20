@@ -65,15 +65,14 @@ export const fetchAllTickets = async (): Promise<RowType[]> => {
         timestamp,
         consigneeAddress,
         consigneeName,
-        ticketStatus,
-      }: any) => ({
+        ticketStatus: { user, currentStatus },
+      }: Ticket) => ({
         date: moment(new Date(timestamp)).format(DateFormat),
-        status: ticketStatus.currentStatus,
+        status: currentStatus,
         firstParty: customerName,
         consigneeName,
         consigneeAddress,
-        lastAssigned:
-          ticketStatus.user.firstName + " " + ticketStatus.user.lastName,
+        lastAssigned: user ? user.firstName + " " + user.lastName : "",
         barcodeNumber,
         shipper: shipperCompany,
         pickup: "Yes",

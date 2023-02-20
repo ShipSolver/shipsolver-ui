@@ -98,9 +98,11 @@ export function List({ listTitle, listType, fetch, args }: IList) {
       /* This is so that we can easily grab the driver first name inside of TicketMenu */
       const key = [
         ticket.ticketId.toString(),
-        ticket.ticketStatus.user.firstName +
-          " " +
-          ticket.ticketStatus.user.lastName,
+        ticket.ticketStatus.user
+          ? ticket.ticketStatus.user.firstName +
+            " " +
+            ticket.ticketStatus.user.lastName
+          : "",
       ].join("_");
 
       return (
@@ -111,7 +113,7 @@ export function List({ listTitle, listType, fetch, args }: IList) {
         >
           <Typography variant="h6">{ticket.consigneeAddress}</Typography>
           <TicketSubtitle
-            assignedTo={ticket.ticketStatus.user.firstName}
+            assignedTo={ticket.ticketStatus.user?.firstName ?? ""}
             listType={listType}
           />
         </Paper>
