@@ -33,10 +33,10 @@ export const AssignToDriverModal = ({
   const user = useGetUserInfo();
 
   const handleClick = async () => {
+    setLoading(true);
     if (selectedDriver && drivers) {
       const driverId = drivers.filter(({ name }) => name === selectedDriver)[0]
         .userId;
-      setLoading(true);
       const { error } = await assignToDriver(
         getTicketIDs(),
         driverId,
@@ -48,8 +48,11 @@ export const AssignToDriverModal = ({
       } else {
         triggerRefetch?.();
       }
-      setOpen(false);
+    } else {
+      setLoading(false);
+      alert("there was an error");
     }
+    setOpen(false);
   };
 
   return (

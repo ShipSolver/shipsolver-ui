@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 
 export default function useLoadable<
   fn extends (...args: any[]) => Promise<any>
@@ -8,9 +8,9 @@ export default function useLoadable<
   const [error, setError] = useState<string | null>(null);
   const [trigger, setTrigger] = useState<boolean>(false);
 
-  const triggerRefetch = () => {
+  const triggerRefetch = useCallback(() => {
     setTrigger((prev) => !prev);
-  };
+  }, []);
 
   useEffect(() => {
     setLoading(true);

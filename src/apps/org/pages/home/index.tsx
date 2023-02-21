@@ -50,6 +50,7 @@ function Home() {
       <div className="lists-container">
         {LISTS.map(({ listTitle, args, listType }) => (
           <List
+            key={listType}
             listTitle={listTitle}
             fetch={fetchTicketsForStatus}
             args={args}

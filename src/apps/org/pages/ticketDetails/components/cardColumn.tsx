@@ -26,7 +26,7 @@ export const CardColumn = ({
   fullHeight,
 }: CardColumnProps) => {
   const cards = useMemo(
-    () => cardContents?.map((content) => <StyledCard>{content}</StyledCard>),
+    () => cardContents?.map((content, idx) => <StyledCard key={idx}>{content}</StyledCard>),
     [cardContents]
   );
 

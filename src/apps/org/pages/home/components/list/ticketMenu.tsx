@@ -9,28 +9,29 @@ import { useNavigate } from "react-router-dom";
 import { getTicketIds } from "../../../allTicketsTable/components/footerButtons";
 import { AssignToDriverModal } from "../../../allTicketsTable/components/assignToDriverModal";
 import { DeleteTicketModal } from "../deleteTicketModal";
-import { filterAtom } from "../../../allTicketsTable/components/state/tableState";
-import { useSetRecoilState } from "recoil";
+import { refetchAtom } from "../../state/refetchAtom";
+import { useRecoilValue } from "recoil";
 import { checkIntoInventory } from "../../../../../../services/ticketServices";
+import { GoToDriver } from "../goToDriver";
 import "./menu.css";
 
 interface ITicketMenu {
   listType: ListType;
   numSelected: number;
   selected: { [key: string]: boolean };
-  deleteTicketRefetch: () => void;
-  assignToDriverRefetch?: () => void;
-  checkIntoInventoryRefetch?: () => void;
+  refetchSelf: () => void;
 }
 export function TicketMenu({
   listType,
   selected,
   numSelected,
-  assignToDriverRefetch,
-  deleteTicketRefetch,
-  checkIntoInventoryRefetch,
+  refetchSelf,
 }: ITicketMenu) {
   const navigate = useNavigate();
+
+  const refetch = useRecoilValue(refetchAtom);
+
+  console.log(numSelected, selected);
 
   if (!numSelected) {
     return null;
@@ -46,7 +47,10 @@ export function TicketMenu({
             getTicketIDs={() =>
               getTicketIds(selected).map((id) => id.split("_")[0])
             }
-            triggerRefetch={assignToDriverRefetch}
+            triggerRefetch={() => {
+              refetch.assigned?.();
+              refetchSelf();
+            }}
           />
         );
       }
@@ -66,7 +70,8 @@ export function TicketMenu({
                   checkIntoInventory(
                     getTicketIds(selected).map((id) => id.split("_")[0])
                   );
-                  checkIntoInventoryRefetch?.();
+                  refetch.inventory?.();
+                  refetchSelf();
                 }}
               >
                 Move to Inventory
@@ -123,36 +128,10 @@ export function TicketMenu({
           getTicketIDs={() =>
             getTicketIds(selected).map((id) => id.split("_")[0])
           }
-          triggerRefetch={deleteTicketRefetch}
+          triggerRefetch={refetchSelf}
         />
       </List>
     </Box>
   );
 }
 
-interface IGoToDriver {
-  numSelected: number;
-  selected: { [key: string]: boolean };
-}
-
-function GoToDriver({ selected, numSelected }: IGoToDriver) {
-  const navigate = useNavigate();
-
-  const setFilter = useSetRecoilState(filterAtom);
-
-  const driverName = getTicketIds(selected)[0].split("_")[1];
-
-  return (
-    <ListItemButton
-      disabled={numSelected !== 1}
-      onClick={() => {
-        setFilter((prev) => ({ ...prev, lastAssigned: driverName }));
-        navigate("/all-tickets");
-      }}
-    >
-      <Typography className="menu-text-typography">
-        {`Go to ${driverName}'s Tickets`}
-      </Typography>
-    </ListItemButton>
-  );
-}

@@ -337,7 +337,7 @@ export const fetchTicketEdits = async (
     });
     return response.data.map((edit) => {
       let dateAndTime;
-      let action;
+      let actions = [];
       let user: string = "";
 
       for (const [key, val] of Object.entries(edit)) {
@@ -349,16 +349,18 @@ export const fetchTicketEdits = async (
             user = val as string;
             break;
           case "lastName":
-            user += val as string;
+            user += " " + val as string;
+            break;
+          case "userId":
             break;
           default:
-            action = `Changed ${key} to \"${val}\"`;
+            actions.push(`Changed ${key} to \"${val}\"`);
             break;
         }
       }
       return {
         dateAndTime,
-        action,
+        actions,
         user,
       };
     });
@@ -449,7 +451,7 @@ export const checkIntoInventory = async (ticketIDs: string[]) => {
           withCredentials: false,
           data: {
             ticketId,
-            oldStatus: "DeliveryTicketCreated ",
+            oldStatus: "incomplete_delivery",
             newStatus: "checked_into_inventory",
           },
         })

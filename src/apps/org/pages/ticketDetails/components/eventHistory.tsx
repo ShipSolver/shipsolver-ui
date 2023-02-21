@@ -10,17 +10,20 @@ import { CardColumn, Container } from "./cardColumn";
 export type EventHistoryType = {
   user?: string;
   userRole?: string;
-  action?: string;
+  actions: string[];
   dateAndTime?: Date;
 };
 interface EventHistoryProps {
-  ticketEdits: EventHistoryType[] | null,
-  loading: boolean,
-  error: string | null
+  ticketEdits: EventHistoryType[] | null;
+  loading: boolean;
+  error: string | null;
 }
 
-export const EventHistory = ({ ticketEdits, loading, error }: EventHistoryProps) => {
-
+export const EventHistory = ({
+  ticketEdits,
+  loading,
+  error,
+}: EventHistoryProps) => {
   if (loading || ticketEdits === null) {
     return (
       <Container $customHeight="350px">
@@ -40,7 +43,7 @@ export const EventHistory = ({ ticketEdits, loading, error }: EventHistoryProps)
   }
 
   const eventHistoryCards = ticketEdits.map(
-    ({ user, userRole, action, dateAndTime }) => (
+    ({ user, userRole, actions, dateAndTime }) => (
       <div>
         <Typography>
           <b>User:</b> {user}
@@ -48,9 +51,11 @@ export const EventHistory = ({ ticketEdits, loading, error }: EventHistoryProps)
         {/* <Typography>
           <b>User Role:</b> {userRole}
         </Typography> */}
-        <Typography>
-          <b>Action:</b> {action}
-        </Typography>
+        {actions.map((action) => (
+          <Typography key={action}>
+            <b>Action:</b> {action}
+          </Typography>
+        ))}
         <Typography>
           <b>Date:</b> {dateAndTime?.toLocaleDateString("en-CA")}
         </Typography>
