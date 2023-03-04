@@ -172,38 +172,58 @@ export const fetchTicket = async (
   }
 };
 
-export type changeTicketStatusRes = {
-  error: string | null;
-};
 
-export const changeTicketStatus: (
-  ticketId: number,
-  assignedToUserId: number,
-  oldStatus: TicketMilestone,
-  newStatus: TicketMilestone
-) => Promise<changeTicketStatusRes> = async (
-  ticketId: number,
-  assignedToUserId: number,
-  oldStatus: TicketMilestone,
-  newStatus: TicketMilestone
-) => {
+export const markAsInTransit = async (ticketId: number) => {
   let error = null;
   try {
-    await axios.post("/api/milestones/AssignmentMilestones", {
+    await axios.post("/api/milestones/AssignemntMilestones", {
       ticketId,
-      assignedToUserId,
-      assignedByUserId: assignedToUserId,
-      oldStatus: oldStatus.split(".")[1],
-      newStatus: newStatus.split(".")[1],
+      oldStatus: "assigned",
+      newStatus: "in_transit",
     });
   } catch (e: any) {
     error =
       e?.toString?.() ??
-      `Error changing milestone status for ticket ${ticketId} from ${oldStatus} to ${newStatus}`;
+      `Failed to mark as in transit`;
   }
 
   return { error };
-};
+}
+
+export const markAsComplete = async (ticketId: number) => {
+  let error = null;
+  try {
+    await axios.post("/api/milestones/DeliveryMilestones", {
+      ticketId,
+      oldStatus: "in_transit",
+      newStatus: "completed_delivery",
+    });
+  } catch (e: any) {
+    error =
+      e?.toString?.() ??
+      `Failed to mark as complete`;
+  }
+
+  return { error };
+}
+
+export const markAsInComplete = async (ticketId: number) => {
+  let error = null;
+  try {
+    await axios.post("/api/milestones/IncompleteDeliveryMilestones", {
+      ticketId,
+      oldStatus: "in_transit",
+      newStatus: "incomplete_delivery",
+    });
+  } catch (e: any) {
+    error =
+      e?.toString?.() ??
+      `Failed to mark as incomplete`;
+  }
+
+  return { error };
+}
+
 
 interface IFetchMilestones {
   description: string;
@@ -474,3 +494,4 @@ export const deleteTickets = async (ticketIDs: string[]) => {
     return 0;
   }
 };
+

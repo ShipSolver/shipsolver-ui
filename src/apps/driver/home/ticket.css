@@ -1,0 +1,16 @@
+.ticket-selected {
+  margin: var(--ss-brand-spacing);
+  border-width: var(--ss-entry-border-width) !important;
+  background-color: var(--ss-brand-theme-color) !important;
+  border-color: var(--ss-entry-border-color) !important;
+  cursor: pointer;
+}
+
+.ticket {
+  margin: var(--ss-brand-spacing);
+  cursor: pointer;
+}
+
+.ticket:hover {
+  background-color: #d3d3d3;
+}
