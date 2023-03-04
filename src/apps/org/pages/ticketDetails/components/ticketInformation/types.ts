@@ -48,6 +48,7 @@ export type TicketInformationStateType = {
   podUrls?: string[];
   customerSignatureUrls?: string[];
   pictureUrls?: string[];
+  deliveryReceiptS3Path?: string;
 };
 
 export type TicketInformationValidationType = {
