@@ -19,6 +19,12 @@ import {
 
 import { CommodityType } from "../apps/org/pages/ticketDetails/components/commodities";
 import { RowType } from "../apps/org/pages/allTicketsTable/types";
+
+
+// import axiosRetry from 'axios-retry';
+
+// axiosRetry(axios, { retries: 3 });
+
 axios.defaults.baseURL = SERVER_URL;
 
 const delay = (time: number) => {
