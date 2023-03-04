@@ -98,6 +98,7 @@ export type TicketStatus =
 
 export type Ticket = {
   ticketStatus: {
+    timestamp: number;
     assignedTo: number;
     currentStatus: TicketMilestone;
     ticketId: number;

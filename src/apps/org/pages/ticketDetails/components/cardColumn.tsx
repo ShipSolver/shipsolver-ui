@@ -5,6 +5,7 @@ import Paper from "../../../../../components/roundedPaper";
 import { styled } from "@mui/material/styles";
 import { IconButton } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
+import { Loading } from "../../../../../components/loading";
 
 interface CardColumnProps {
   title?: string;
@@ -14,6 +15,8 @@ interface CardColumnProps {
   isEditable?: boolean;
   action?: () => void;
   fullHeight?: boolean;
+  loading?: boolean;
+  error?: string;
 }
 
 export const CardColumn = ({
@@ -24,11 +27,34 @@ export const CardColumn = ({
   isEditable,
   action,
   fullHeight,
+  loading,
+  error,
 }: CardColumnProps) => {
   const cards = useMemo(
-    () => cardContents?.map((content, idx) => <StyledCard key={idx}>{content}</StyledCard>),
+    () =>
+      cardContents?.map((content, idx) => (
+        <StyledCard key={idx}>{content}</StyledCard>
+      )),
     [cardContents]
   );
+
+  if (loading) {
+    return (
+      <Container customPadding={customPadding}>
+        <Loading />
+      </Container>
+    );
+  }
+
+  if (error) {
+    return (
+      <Container customPadding={customPadding}>
+        <Typography color="red" align="center">
+          {error}
+        </Typography>
+      </Container>
+    );
+  }
 
   return (
     <Container
@@ -92,13 +118,14 @@ const AddButton = styled(IconButton)`
   background-color: white;
 `;
 
-export const Container = styled("div")<{ customPadding?: string, $customHeight?: string }>(
-  ({ theme, customPadding, $customHeight }) => ({
-    borderRadius: "var(--ss-brand-border-radius)",
-    backgroundColor: theme.palette.secondary.main,
-    padding: customPadding ?? "16px",
-    position: "relative",
-    width: "300px",
-    height: $customHeight
-  })
-);
+export const Container = styled("div")<{
+  customPadding?: string;
+  $customHeight?: string;
+}>(({ theme, customPadding, $customHeight }) => ({
+  borderRadius: "var(--ss-brand-border-radius)",
+  backgroundColor: theme.palette.secondary.main,
+  padding: customPadding ?? "16px",
+  position: "relative",
+  width: "100%",
+  height: $customHeight,
+}));

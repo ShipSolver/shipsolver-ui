@@ -1,11 +1,6 @@
 import React from "react";
 import Typography from "@mui/material/Typography";
-import Card from "@mui/material/Card";
-import Paper from "../../../../../components/roundedPaper";
-import { styled } from "@mui/material/styles";
-import { fetchTicketEdits } from "../../../../../services/ticketServices";
-import Loading from "../../../../../components/loading";
-import { CardColumn, Container } from "./cardColumn";
+import { CardColumn } from "./cardColumn";
 
 export type EventHistoryType = {
   user?: string;
@@ -24,25 +19,7 @@ export const EventHistory = ({
   loading,
   error,
 }: EventHistoryProps) => {
-  if (loading || ticketEdits === null) {
-    return (
-      <Container $customHeight="350px">
-        <Loading />
-      </Container>
-    );
-  }
-
-  if (error) {
-    return (
-      <Container $customHeight="350px">
-        <Typography color="red" align="center">
-          There was an error fecthing ticket edits!
-        </Typography>
-      </Container>
-    );
-  }
-
-  const eventHistoryCards = ticketEdits.map(
+  const eventHistoryCards = ticketEdits?.map(
     ({ user, userRole, actions, dateAndTime }) => (
       <div>
         <Typography>
@@ -72,6 +49,8 @@ export const EventHistory = ({
       title="Edits"
       $customHeight="325px"
       cardContents={eventHistoryCards}
+      loading={loading}
+      error={error ? "There was an error fecthing ticket edits!" : undefined}
     />
   );
 };

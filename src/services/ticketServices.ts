@@ -42,6 +42,11 @@ export const fetchTicketsForStatus = async (status: TicketStatus) => {
   return data as TicketForStatusRes;
 };
 
+export const fetchDeliveryReceipt = async (ticketID: number) => {
+  const { data } = await axios.get(`/api/deliveryReceipt/${ticketID}`);
+  return data;
+};
+
 export const fetchOrgCurrentDelivery = () => {
   const mockServerTicketFetch = async () => {
     await delay(250);
@@ -452,6 +457,46 @@ export const moveToIncomplete = async (tickets: IMoveToIncomplete[]) => {
             },
           })
       )
+    );
+  } catch (e) {
+    console.error(e);
+    return e;
+  }
+};
+
+
+export const rejectDelivery = async (ticketId: string) => {
+  try {
+    const response: any = await axios.post(
+      "/api/milestones/InventoryMilestones",
+      {
+        withCredentials: false,
+        data: {
+          ticketId,
+          oldStatus: "completed_delivery",
+          newStatus: "incomplete_delivery",
+        },
+      }
+    );
+  } catch (e) {
+    console.error(e);
+    return e;
+  }
+};
+
+
+export const approveDelivery = async (ticketId: string) => {
+  try {
+    const response: any = await axios.post(
+      "/api/milestones/InventoryMilestones",
+      {
+        withCredentials: false,
+        data: {
+          ticketId,
+          oldStatus: "completed_delivery",
+          newStatus: "completed_delivery",
+        },
+      }
     );
   } catch (e) {
     console.error(e);

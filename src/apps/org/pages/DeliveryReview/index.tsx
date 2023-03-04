@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { fetchTicket } from "../../../../services/ticketServices";
+import {
+  fetchTicket,
+  approveDelivery,
+  rejectDelivery,
+} from "../../../../services/ticketServices";
 import { useParams } from "react-router-dom";
 import useLoadable from "../../../../utils/useLoadable";
 import { styled } from "@mui/material/styles";
 import Brand from "../../../../ShipSolverBrand";
 
-import { Grid, Typography, Box } from "@mui/material";
+import { Grid, Typography, Box, Button } from "@mui/material";
 import { POD, CustomerSignature, Pictures } from "../ticketDetails/components";
 import { IncompleteDelivery } from "./components/incompleteDelivery";
 import { Spacer } from "../../../../components/spacer";
@@ -21,8 +25,12 @@ import { ColoredButton } from "../../../../components/coloredButton";
 import { TicketInformationStateType } from "../ticketDetails/components/ticketInformation/types";
 import { selectedTicketIDAtom } from "./state/selectedTicketState";
 import { useRecoilValue } from "recoil";
+import { fetchTicketsForStatus } from "../../../../services/ticketServices";
 
-export const PODReview = ({ complete }: { complete: boolean }) => {
+interface IDeliveryReview {
+  completeDelivery?: boolean;
+}
+export const DeliveryReview = ({ completeDelivery }: IDeliveryReview) => {
   //   const setCommodities = useSetRecoilState(commoditiesAtom);
   //   let { ticketId } = useParams();
 
@@ -43,7 +51,7 @@ export const PODReview = ({ complete }: { complete: boolean }) => {
   //   setCommodities(ticketInfo[1]);
 
   const [selectedTicket, setSelectedTicket] =
-    useState<TicketInformationStateType | null>(null);
+    useState<TicketInformationStateType | undefined>();
   const selectedTicketID = useRecoilValue(selectedTicketIDAtom);
 
   useEffect(() => {
@@ -52,7 +60,7 @@ export const PODReview = ({ complete }: { complete: boolean }) => {
         const ticket = TestTicket[Number(selectedTicketID) - 1];
         setSelectedTicket(ticket);
       } else {
-        setSelectedTicket(null);
+        setSelectedTicket(undefined);
       }
     })();
   }, [selectedTicket, selectedTicketID, setSelectedTicket]);
@@ -63,15 +71,18 @@ export const PODReview = ({ complete }: { complete: boolean }) => {
     <Container>
       <Grid container spacing={2} columns={24}>
         <Grid item xs={8}>
-          <SelectDelivery deliveries={TestTicket} />
+          <SelectDelivery onSelectTicket={() => {}} />
         </Grid>
         <Grid item xs={16} spacing={2}>
           <Wrapper>
-            <TicketInformation data={selectedTicket} reviewPOD={complete} />
+            <TicketInformation
+              data={selectedTicket}
+              deliveryReviewComplete={completeDelivery}
+            />
           </Wrapper>
           <Spacer height="18px" />
         </Grid>
-        {complete ? (
+        {completeDelivery ? (
           <>
             <Grid item xs={6}>
               <FormWrap>
@@ -92,8 +103,28 @@ export const PODReview = ({ complete }: { complete: boolean }) => {
             </Grid>
             <Grid item xs={6}>
               <ButtonWrapper>
-                <ColoredButton color="#C5FAD180" label="Approve POD" />
-                <ColoredButton color="#FAC5C580" label="Reject POD" />
+                <Button
+                  onClick={() => {
+                    if (selectedTicketID) {
+                      approveDelivery(selectedTicketID);
+                      setSelectedTicket(undefined);
+                    }
+                  }}
+                  variant="outlined"
+                >
+                  Approve POD
+                </Button>
+                <Button
+                  onClick={() => {
+                    if (selectedTicketID) {
+                      rejectDelivery(selectedTicketID);
+                      setSelectedTicket(undefined);
+                    }
+                  }}
+                  variant="outlined"
+                >
+                  Reject POD
+                </Button>
               </ButtonWrapper>
             </Grid>
           </>

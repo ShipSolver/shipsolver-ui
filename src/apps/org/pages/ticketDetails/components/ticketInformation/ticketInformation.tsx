@@ -18,8 +18,10 @@ import { commoditiesAtom } from "../../state/commodityState";
 import {
   createTicket,
   editTicket,
+  fetchDeliveryReceipt,
 } from "../../../../../../services/ticketServices";
 import { TicketCreationSuccessModal } from "../ticketCreationSuccessModal";
+import { DeliveryReceiptModal } from "../deliveryReceiptModal";
 import { ColoredButton } from "../../../../../../components/coloredButton";
 import { useParams } from "react-router-dom";
 import {
@@ -39,26 +41,32 @@ import { useGetUserInfo } from "../../../../../../state/authentication";
 
 interface TicketInformationProps {
   data?: TicketInformationStateType | null;
-  newTicket?: boolean;
-  deliveryReceipt?: boolean;
-  reviewPOD?: boolean;
+  newTicketManual?: boolean;
+  newTicketDeliveryReceipt?: boolean;
+  deliveryReviewComplete?: boolean;
+  deliveryReviewIncomplete?: boolean;
   refetchTicketEdits?: () => void;
 }
 
 export const TicketInformation = ({
   data,
   refetchTicketEdits = () => {},
-  newTicket = false,
-  deliveryReceipt = false,
-  reviewPOD = false,
+  newTicketManual,
+  newTicketDeliveryReceipt,
+  deliveryReviewComplete,
+  deliveryReviewIncomplete,
 }: TicketInformationProps) => {
+  const newTicket = newTicketManual || newTicketDeliveryReceipt;
+  const deliveryReview = deliveryReviewComplete || deliveryReviewIncomplete;
+  const isViewTicketDetails = !newTicket && !deliveryReview;
+
   const [isEditable, setIsEditable] = useState<boolean>(newTicket ?? false);
   const formData = useRef<TicketInformationStateType>(data ?? EMPTY_DATA);
   const { errors, validate, clearError } = useValidation();
   const [commodities, setcommodities] = useRecoilState(commoditiesAtom);
-  const [viewSize, setViewSize] = useState<number>(5);
-  let { ticketId } = useParams();
-  let [newTicketId, setNewTicketId] = useState<string | undefined>();
+  const { ticketId } = useParams();
+  const [newTicketId, setNewTicketId] = useState<string | undefined>();
+  const [deliveryReceiptURL, setDeliveryReceiptURL] = useState<string | undefined>();
   const user = useGetUserInfo();
 
   useEffect(() => {
@@ -66,6 +74,21 @@ export const TicketInformation = ({
       setcommodities(null);
     };
   }, []);
+
+  useEffect(() => {
+    if (data != null) {
+      formData.current = data;
+    }
+  }, [data]);
+
+  const handleClearClick = () => {
+    formData.current = EMPTY_DATA;
+  };
+
+  const fetchDeliveryReceipt = async () => {
+    const link = await fetchDeliveryReceipt();
+    setDeliveryReceiptURL(link as any);
+  };
 
   const handleSave = async (event?: React.SyntheticEvent<HTMLFormElement>) => {
     event?.preventDefault();
@@ -79,7 +102,7 @@ export const TicketInformation = ({
     ticket.pieces =
       commodities?.map(({ description }) => description).join(",+-") ?? "";
 
-    if (newTicket || deliveryReceipt) {
+    if (newTicket) {
       const {
         data: { ticketId },
       } = await createTicket(ticket);
@@ -144,54 +167,51 @@ export const TicketInformation = ({
     }
   };
 
-  const handleClearClick = () => {
-    formData.current = EMPTY_DATA;
-  };
-
-  useEffect(() => {
-    if (data != null) {
-      formData.current = data;
-    }
-  }, [data]);
-
-  useEffect(() => {
-    if (!newTicket && !deliveryReceipt) {
-      setViewSize(5);
-    } else {
-      setIsEditable(true);
-      setViewSize(6);
-    }
-  }, [newTicket, deliveryReceipt]);
-
   return (
     <StyledForm onSubmit={handleSave}>
-      <Grid container spacing={3}>
-        <Grid container item xs={12}>
-          <Grid item xs={12} lg={viewSize}>
-            <InputContainer>
-              <SpecialInputField>
-                <Typography sx={{ margin: "auto 0" }} variant="h3">
-                  First Party
-                </Typography>
-                <Spacer width="16px" />
-                <TextField
-                  inputProps={{
-                    readOnly: !isEditable,
-                  }}
-                  defaultValue={formData.current.firstParty}
-                  onChange={(e) => {
-                    formData.current = {
-                      ...formData.current,
-                      firstParty: e.target.value,
-                    };
-                  }}
-                  required
-                  error={!!errors.firstParty}
-                />
-              </SpecialInputField>
-            </InputContainer>
-          </Grid>
-          <Grid item xs={12} lg={viewSize}>
+      <Grid container xs={12} spacing={3}>
+        <Grid item xs={6}>
+          <InputContainer>
+            <SpecialInputField>
+              <Typography sx={{ margin: "auto 0" }} variant="h3">
+                First Party
+              </Typography>
+              <Spacer width="16px" />
+              <TextField
+                inputProps={{
+                  readOnly: !isEditable,
+                }}
+                defaultValue={formData.current.firstParty}
+                onChange={(e) => {
+                  formData.current = {
+                    ...formData.current,
+                    firstParty: e.target.value,
+                  };
+                }}
+                required
+                error={!!errors.firstParty}
+              />
+            </SpecialInputField>
+          </InputContainer>
+        </Grid>
+        <Grid
+          item
+          xs={6}
+          sx={{
+            display: "flex",
+            flexDirection: "row-reverse",
+          }}
+        >
+          {deliveryReview ? (
+            <Button
+              type="button"
+              variant="contained"
+              size="small"
+              onClick={fetchDeliveryReceipt}
+            >
+              {deliveryReviewComplete ? "View DR" : "View PDF"}
+            </Button>
+          ) : (
             <InputContainer>
               {/* {!newTicket ? (
                 <SpecialInputField>
@@ -266,13 +286,10 @@ export const TicketInformation = ({
                 </Typography>
               </SpecialInputField>
             </InputContainer>
-          </Grid>
+          )}
         </Grid>
-        <TicketCreationSuccessModal
-          ticketId={newTicketId}
-          handleClose={() => setNewTicketId(undefined)}
-        />
-        <Grid item xs={12} lg={viewSize}>
+
+        <Grid item xs={6}>
           <SectionTitle variant="h3">Shipper</SectionTitle>
           {(
             Object.entries(ShipperFieldLabels) as [ShipperFields, string][]
@@ -331,7 +348,7 @@ export const TicketInformation = ({
             </InputContainer>
           ))}
         </Grid>
-        <Grid item xs={12} lg={viewSize}>
+        <Grid item xs={6}>
           <SectionTitle variant="h3">Consignee</SectionTitle>
           {(
             Object.entries(ConsigneeFieldLabels) as [ConsigneeFields, string][]
@@ -362,47 +379,25 @@ export const TicketInformation = ({
           <SectionTitle variant="h3">Commodities</SectionTitle>
           <Commodities isEditable={isEditable} />
         </Grid>
-        {!newTicket && !deliveryReceipt ? (
+        {isViewTicketDetails ? (
           <Grid item xs={2} lg={2}>
             <ActionColumn>
-              <div
-                style={{
-                  width: "100%",
+              <Button
+                sx={{
+                  width: "100px",
+                  float: "right",
                 }}
+                type="button"
+                onClick={() =>
+                  isEditable ? handleSave() : setIsEditable(true)
+                }
               >
-                {isEditable ? (
-                  <Button
-                    size="small"
-                    sx={{
-                      width: "100px",
-                      float: "right",
-                    }}
-                    type="submit"
-                    key="save"
-                  >
-                    Save
-                  </Button>
-                ) : (
-                  <Button
-                    sx={{
-                      width: "100px",
-                      float: "right",
-                    }}
-                    type="button"
-                    onClick={() => setIsEditable(true)}
-                    key="edit"
-                  >
-                    Edit <EditIcon sx={{ marginLeft: "8px" }} />
-                  </Button>
-                )}
-              </div>
-
-              <FullWidthButton type="button" variant="contained" size="small">
-                {reviewPOD == false ? "View PDF" : "View DR"}
-              </FullWidthButton>
+                Save
+              </Button>
             </ActionColumn>
           </Grid>
-        ) : (
+        ) : null}
+        {newTicket ? (
           <div style={{ display: "flex", marginLeft: "24px" }}>
             <Button type="submit" variant="outlined" key="addToInventory">
               Add to Inventory
@@ -412,18 +407,26 @@ export const TicketInformation = ({
               Clear
             </Button>
           </div>
-        )}
-        <Grid container item xs={12}>
-          {deliveryReceipt == true && (
-            <Grid item xs={4}>
-              <div style={{ display: "flex", justifyContent: "right" }}>
-                <ColoredButton color="#CBDFEB" label="Cancel" />
-                <ColoredButton color="#CBDFEB" label="Add All" />
-              </div>
-            </Grid>
-          )}
-        </Grid>
+        ) : null}
+        {newTicketDeliveryReceipt ? (
+          <Grid container item xs={12}>
+            {/* <Grid item xs={4}> */}
+            <div style={{ display: "flex", justifyContent: "right" }}>
+              <ColoredButton color="#CBDFEB" label="Cancel" />
+              <ColoredButton color="#CBDFEB" label="Add All" />
+            </div>
+            {/* </Grid> */}
+          </Grid>
+        ) : null}
       </Grid>
+      <TicketCreationSuccessModal
+        ticketId={newTicketId}
+        handleClose={() => setNewTicketId(undefined)}
+      />
+      <DeliveryReceiptModal
+        url={deliveryReceiptURL}
+        handleClose={() => setDeliveryReceiptURL(undefined)}
+      />
     </StyledForm>
   );
 };
@@ -459,6 +462,7 @@ const ActionColumn = styled("div")`
   height: 100%;
   flex-direction: column;
   justify-content: space-between;
+  width: 100%;
 `;
 
 const FullWidthButton = styled(Button)`

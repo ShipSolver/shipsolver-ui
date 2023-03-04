@@ -20,25 +20,7 @@ export const Milestones = ({ ticketId }: MilestonesProps) => {
     error,
   } = useLoadable(fetchMilestones, ticketId);
 
-  if (loading || milestones == null) {
-    return (
-      <Container $customHeight="350px">
-        <Loading />
-      </Container>
-    );
-  }
-
-  if (error) {
-    return (
-      <Container $customHeight="325px">
-        <Typography color="red" align="center">
-          There was an error fecthing milestones!
-        </Typography>
-      </Container>
-    );
-  }
-
-  const milestoneCards = milestones.map(({ description, dateAndTime }) => [
+  const milestoneCards = milestones?.map(({ description, dateAndTime }) => [
     <div>
       <Typography>
         <b>Description:</b> {description}
@@ -58,6 +40,7 @@ export const Milestones = ({ ticketId }: MilestonesProps) => {
       $customHeight="350px"
       title="Milestones"
       cardContents={milestoneCards}
+      error={error ? "There was an error fecthing milestones!" : undefined}
     />
   );
 };

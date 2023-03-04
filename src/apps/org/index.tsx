@@ -11,6 +11,7 @@ import Home from "./pages/home";
 import { LazyTicketFactory } from "./pages/ticketFactory/lazy";
 import { LazyAllTicketsTable } from "./pages/allTicketsTable/lazy";
 import { LazyTicketDetails } from "./pages/ticketDetails/lazy";
+import { LazyDeliveryReview } from "./pages/DeliveryReview/lazy";
 import Loading from "../../components/loading";
 import "./app.css";
 
@@ -34,6 +35,22 @@ function AppRouter() {
             element={
               <Suspense fallback={<Loading />}>
                 <LazyAllTicketsTable />
+              </Suspense>
+            }
+          />
+          <Route
+            path="pod-review"
+            element={
+              <Suspense fallback={<Loading />}>
+                <LazyDeliveryReview completeDelivery />
+              </Suspense>
+            }
+          />
+          <Route
+            path="incomplete-delivery-review"
+            element={
+              <Suspense fallback={<Loading />}>
+                <LazyDeliveryReview />
               </Suspense>
             }
           />
