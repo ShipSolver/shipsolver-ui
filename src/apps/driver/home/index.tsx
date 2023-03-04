@@ -138,7 +138,7 @@ export const Home = () => {
           </InnerBlueDivBox>
         ) : null}
         {completed ? (
-          <InnerBlueDivBox style={{ maxHeight: "90vh" }}>
+          <InnerBlueDivBox style={{ maxHeight: "90vh", position: "relative" }}>
             <Grid container justifyContent="space-between">
               <Typography variant="h2" color="#000" alignContent="left">
                 Completed

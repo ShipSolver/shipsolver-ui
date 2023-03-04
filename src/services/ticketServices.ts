@@ -172,23 +172,22 @@ export const fetchTicket = async (
   }
 };
 
-
 export const markAsInTransit = async (ticketId: number) => {
   let error = null;
   try {
-    await axios.post("/api/milestones/AssignemntMilestones", {
-      ticketId,
-      oldStatus: "assigned",
-      newStatus: "in_transit",
+    await axios.post("/api/milestones/AssignmentMilestones", {
+      data: {
+        ticketId,
+        oldStatus: "assigned",
+        newStatus: "in_transit",
+      },
     });
   } catch (e: any) {
-    error =
-      e?.toString?.() ??
-      `Failed to mark as in transit`;
+    error = e?.toString?.() ?? `Failed to mark as in transit`;
   }
 
   return { error };
-}
+};
 
 export const markAsComplete = async (ticketId: number) => {
   let error = null;
@@ -199,13 +198,11 @@ export const markAsComplete = async (ticketId: number) => {
       newStatus: "completed_delivery",
     });
   } catch (e: any) {
-    error =
-      e?.toString?.() ??
-      `Failed to mark as complete`;
+    error = e?.toString?.() ?? `Failed to mark as complete`;
   }
 
   return { error };
-}
+};
 
 export const markAsInComplete = async (ticketId: number) => {
   let error = null;
@@ -216,14 +213,11 @@ export const markAsInComplete = async (ticketId: number) => {
       newStatus: "incomplete_delivery",
     });
   } catch (e: any) {
-    error =
-      e?.toString?.() ??
-      `Failed to mark as incomplete`;
+    error = e?.toString?.() ?? `Failed to mark as incomplete`;
   }
 
   return { error };
-}
-
+};
 
 interface IFetchMilestones {
   description: string;
@@ -369,7 +363,7 @@ export const fetchTicketEdits = async (
             user = val as string;
             break;
           case "lastName":
-            user += " " + val as string;
+            user += (" " + val) as string;
             break;
           case "userId":
             break;
@@ -494,4 +488,3 @@ export const deleteTickets = async (ticketIDs: string[]) => {
     return 0;
   }
 };
-

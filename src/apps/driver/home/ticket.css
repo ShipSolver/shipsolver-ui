@@ -14,3 +14,14 @@
 .ticket:hover {
   background-color: #d3d3d3;
 }
+
+.menu-container-driver{
+  width: var(--ss-menu-box-width);
+  background-color: white;
+  z-index: 2;
+  position: absolute;
+  box-shadow: var(--ss-brand-box-shadow);
+  border-radius: var(--ss-brand-border-radius);
+  bottom: 12px;
+  right: 4px;
+}
