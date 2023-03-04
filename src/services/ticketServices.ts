@@ -140,6 +140,7 @@ export const fetchTicket = async (
       consigneeAddress,
       consigneePhoneNumber,
       consigneePostalCode,
+      orderS3Link,
       ...rest
     } = response.data;
 
