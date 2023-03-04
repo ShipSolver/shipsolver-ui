@@ -304,6 +304,7 @@ export const createTicket = async ({
   shipmentDetails,
   consignee,
   firstParty,
+  deliveryReceiptS3Path,
   ...rest
 }: TicketType) => {
   const payload = JSON.stringify({
@@ -324,6 +325,7 @@ export const createTicket = async ({
     consigneeAddress: consignee.address,
     consigneePhoneNumber: consignee.phoneNum,
     consigneePostalCode: consignee.postalCode,
+    orderS3Link: deliveryReceiptS3Path,
     ...rest,
   });
 

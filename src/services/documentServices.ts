@@ -35,6 +35,7 @@ interface DocumentReturnType {
 
 interface DocumentsResponse extends Ticket {
   orderS3Link: string;
+  orderS3Path: string;
 }
 interface DocumentResponseType extends Ticket {
   status: string;
@@ -77,6 +78,7 @@ export const checkStatus = async (
           consigneePostalCode,
           pieces,
           orderS3Link,
+          orderS3Path
         }) => {
           const commodities: CommodityType[] = pieces
             .split(",+-")
@@ -108,7 +110,8 @@ export const checkStatus = async (
                 postalCode: consigneePostalCode,
               },
               isPickup: true,
-              enterIntoInventory: true,
+              // enterIntoInventory: true,
+              deliveryReceiptS3Path: orderS3Path
             },
             commodities,
             { url: orderS3Link },
