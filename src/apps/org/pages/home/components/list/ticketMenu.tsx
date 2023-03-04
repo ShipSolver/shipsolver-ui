@@ -31,8 +31,6 @@ export function TicketMenu({
 
   const refetch = useRecoilValue(refetchAtom);
 
-  console.log(numSelected, selected);
-
   if (!numSelected) {
     return null;
   }

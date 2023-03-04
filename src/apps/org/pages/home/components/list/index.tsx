@@ -62,7 +62,7 @@ export function List({ listTitle, listType, fetch, args }: IList) {
     }
 
     return response?.tickets.map((ticket: Ticket) => {
-      /* This is so that we can easily grab the driver first name inside of TicketMenu */
+      /* This is so that we can easily grab the driver name inside of TicketMenu */
       const key = [
         ticket.ticketId.toString(),
         ticket.ticketStatus.user

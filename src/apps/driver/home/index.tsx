@@ -13,10 +13,7 @@ import { PickupModalContent } from "./pickupModalContent";
 import { CurrentDelivery } from "./currentDelivery";
 import { useNavigate } from "react-router-dom";
 import { styled } from "@mui/material/styles";
-import {
-  changeTicketStatus,
-  fetchTicketsForStatus,
-} from "../../../services/ticketServices";
+import { fetchTicketsForStatus } from "../../../services/ticketServices";
 
 import { TicketMilestone } from "../../../services/types";
 
@@ -26,11 +23,6 @@ import { useGetUserInfo } from "../../../state/authentication";
 export const Home = () => {
   const navigate = useNavigate();
   const user = useGetUserInfo();
-  const [viewAllAssigned, setViewAllAssigned] = useState<boolean>(false);
-
-  const [viewAllCompleted, setViewAllCompleted] = useState<boolean>(false);
-
-  const [viewAllPickup, setViewAllPickup] = useState<boolean>(false);
 
   const {
     val: currentDeliveries,
@@ -47,20 +39,27 @@ export const Home = () => {
     loading: loading3,
     triggerRefetch: triggerRefetchCompleted,
   } = useLoadable(fetchTicketsForStatus, "completed_delivery");
+
   const {
     val: pickupInfo,
     loading: loading4,
     triggerRefetch: triggerRefetchPickup,
   } = useLoadable(fetchTicketsForStatus, "requested_pickup");
+  const {
+    val: incompleteInfo,
+    loading: loading5,
+    triggerRefetch: triggerRefetchIncompleted,
+  } = useLoadable(fetchTicketsForStatus, "incomplete_delivery");
 
   const refetchFunctions = [
     triggerRefetchInTransit,
     triggerRefetchAssigned,
     triggerRefetchCompleted,
     triggerRefetchPickup,
+    triggerRefetchIncompleted,
   ];
 
-  const loading = loading1 || loading2 || loading3 || loading4;
+  const loading = loading1 || loading2 || loading3 || loading4 || loading5;
 
   const currentTicket =
     currentDeliveries?.tickets.length ?? -1 > 0
@@ -70,10 +69,12 @@ export const Home = () => {
   const assigned = assignedInfo?.tickets;
   const completed = completedInfo?.tickets;
   const pickup = pickupInfo?.tickets;
+  const incomplete = incompleteInfo?.tickets;
 
   const assignedCount = assignedInfo?.count;
   const completedCount = completedInfo?.count;
   const pickupCount = pickupInfo?.count;
+  const incompleteCount = incompleteInfo?.count;
 
   const handleCompleteShift = () => {
     if (assigned != null) {
@@ -85,32 +86,11 @@ export const Home = () => {
     }
   };
 
-  const markTicketAsCompleted = useCallback(
-    async (
-      ticketId: number,
-      assignedToUserId: number,
-      oldStatus: TicketMilestone
-    ) => {
-      const { error } = await changeTicketStatus(
-        ticketId,
-        assignedToUserId,
-        oldStatus,
-        "Delivery_Milestone_Status.in_transit"
-      );
-      if (error != null) {
-        alert(error);
-      } else {
-        refetchFunctions.forEach((fn) => fn());
-      }
-    },
-    []
-  );
-
   if (loading) {
     return <Loading />;
   }
 
-  if (!currentTicket && !assigned && !completed && !pickup) {
+  if (!currentTicket && !assigned && !completed && !incomplete && !pickup) {
     return (
       <InnerBlueDivBox>
         <Typography
@@ -154,20 +134,7 @@ export const Home = () => {
                 {String(assignedCount ?? 0)}
               </Typography>
             </Grid>
-            <Tickets
-              viewAllTickets={viewAllAssigned}
-              tickets={assigned}
-              status="assigned"
-              setViewAllTickets={setViewAllAssigned}
-              title="Assigned"
-              items={assignedCount ?? 0}
-              changeStatusButtons={[
-                {
-                  title: "Mark ticket as in transit",
-                  changeStatusFn: markTicketAsCompleted,
-                },
-              ]}
-            ></Tickets>
+            <Tickets tickets={assigned} status="assigned" />
           </InnerBlueDivBox>
         ) : null}
         {completed ? (
@@ -180,17 +147,23 @@ export const Home = () => {
                 {String(completedCount ?? 0)}
               </Typography>
             </Grid>
-            <Tickets
-              viewAllTickets={viewAllCompleted}
-              tickets={completed}
-              status="completed_delivery"
-              setViewAllTickets={setViewAllCompleted}
-              title="Completed"
-              items={completedCount ?? 0}
-            ></Tickets>
+            <Tickets tickets={completed} status="completed" />
           </InnerBlueDivBox>
         ) : null}
-        {pickup ? (
+        {incomplete ? (
+          <InnerBlueDivBox style={{ maxHeight: "90vh" }}>
+            <Grid container justifyContent="space-between">
+              <Typography variant="h2" color="#000" alignContent="left">
+                InComplete
+              </Typography>
+              <Typography variant="h2" color="#000" alignContent="right">
+                {String(incompleteCount ?? 0)}
+              </Typography>
+            </Grid>
+            <Tickets tickets={incomplete} status="completed" />
+          </InnerBlueDivBox>
+        ) : null}
+        {/* {pickup ? (
           <InnerBlueDivBox style={{ maxHeight: "90vh" }}>
             <Grid container justifyContent="space-between">
               <Typography variant="h2" color="#000" alignContent="left">
@@ -200,16 +173,9 @@ export const Home = () => {
                 {String(pickupCount ?? 0)}
               </Typography>
             </Grid>
-            <Tickets
-              viewAllTickets={viewAllPickup}
-              tickets={pickup}
-              status="requested_pickup"
-              setViewAllTickets={setViewAllPickup}
-              title="Requested Pickups"
-              items={pickupCount ?? 0}
-            ></Tickets>
+            <Tickets tickets={pickup} />
           </InnerBlueDivBox>
-        ) : null}
+        ) : null} */}
       </OuterBlueDivBox>
       <LargeButton
         label="Complete Shift"
