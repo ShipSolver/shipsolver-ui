@@ -12,5 +12,5 @@ export const surveyViewAtom = atom<number>({
 
 export const pageNumAtom = atom<number>({
   key: "pageNum",
-  default: 2,
+  default: 1,
 });

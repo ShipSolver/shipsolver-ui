@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useCallback, useState } from "react";
 import Paper from "../../../../../components/roundedPaper";
 import Brand from "../../../../../ShipSolverBrand";
 import { styled } from "@mui/material/styles";
 import { useDropzone } from "react-dropzone";
-import { Button, Grid } from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
 import { RefetchLoader } from "./refetchLoader";
 import { PDFViewer } from "./pdfViewer";
 // import FormData from "form-data";
@@ -13,11 +13,9 @@ import {
 } from "../../ticketDetails/components";
 import { PDFViewAtom, surveyViewAtom, pageNumAtom } from "./state/viewState";
 import { useRecoilValue } from "recoil";
-import {
-  sendDocument,
-} from "../../../../../services/documentServices";
+import { sendDocument } from "../../../../../services/documentServices";
 import { Loading } from "../../../../../components/loading";
-import { TicketInformationStateType } from "../../ticketDetails/components";
+import { TicketInformationStateType } from "../../ticketDetails/components/ticketInformation/types";
 
 export const UploadTicket = () => {
   const [flowStage, setFlowStage] = useState<number>(1);
@@ -26,6 +24,7 @@ export const UploadTicket = () => {
   const [urls, setUrls] = useState<string[]>([]);
 
   const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>();
   const [documentID, setDocumentID] = useState<number>();
   const [ticketInformation, setTicketInformation] = useState<
     TicketInformationStateType[]
@@ -49,25 +48,37 @@ export const UploadTicket = () => {
       var formData = new FormData();
       formData.append("file", uploadedFile);
       setLoading(true);
-      let response = await sendDocument(formData);
-      if (response) {
-        setDocumentID(response);
-        setFlowStage((prev) => prev + 1);
-      }
+      setError(undefined);
+      sendDocument(formData)
+        .then((response) => {
+          if (response) {
+            setDocumentID(response);
+            setFlowStage((prev) => prev + 1);
+          }
+        })
+        .catch(() => {
+          setError("Error uploading file. Please try again.");
+        });
     }
   };
 
-  const handleComplete = (
-    data: [TicketInformationStateType, CommodityType[], { url: string }][]
-  ) => {
-    setTicketInformation(
-      data.map(([ticketInfo, commodities, obj]) => ticketInfo)
-    );
-    setCommodities(data.map(([ticketInfo, commodities, obj]) => commodities));
-    setUrls(data.map(([ticketInfo, commodities, obj]) => obj.url));
+  const handleComplete = useCallback(
+    (
+      data: [TicketInformationStateType, CommodityType[], { url: string }][]
+    ) => {
+      setTicketInformation(data.map(([ticketInfo]) => ticketInfo));
+      setCommodities(data.map(([_, commodities, _2]) => commodities));
+      setUrls(data.map(([_, _2, obj]) => obj.url));
+      setLoading(false);
+      setFlowStage((prev) => prev + 1);
+    },
+    []
+  );
+
+  const handleError = useCallback((error: string) => {
+    setError(error);
     setLoading(false);
-    setFlowStage((prev) => prev + 1);
-  };
+  }, []);
 
   if (loading && flowStage == 1) {
     return (
@@ -81,7 +92,11 @@ export const UploadTicket = () => {
 
   if (loading && flowStage == 2 && documentID) {
     return (
-      <RefetchLoader onComplete={handleComplete} documentID={documentID} />
+      <RefetchLoader
+        onComplete={handleComplete}
+        onError={handleError}
+        documentID={documentID}
+      />
     );
   }
 
@@ -91,10 +106,11 @@ export const UploadTicket = () => {
         <DropZoneOutter {...getRootProps()}>
           <DropZoneInner>
             <input {...getInputProps()} />
-            <Text>Click to browse or drag and drop your files</Text>
+            {error && <Typography color="error">{error}</Typography>}
+            <Typography>Click to browse or drag and drop your files</Typography>
             {uploadedFile ? (
               <div>
-                <Text>{`File name: ${uploadedFile.name}`}</Text>
+                <Typography>{`File name: ${uploadedFile.name}`}</Typography>
                 <CenteredButton
                   variant="outlined"
                   size="small"
@@ -111,22 +127,29 @@ export const UploadTicket = () => {
   }
 
   return (
-    <Grid container xs={12}>
+    <Grid container>
       <Grid item xs={12} md={PDFView}>
-        <PDFViewer
-          maxLength={ticketInformation.length}
-          urls={urls}
-          commodities={commodities}
-        />
-      </Grid>
-      <Grid item xs={12} md={surveyView}>
-        <TealBackground>
-          <TicketInformation
-            data={ticketInformation[pageNum - 1]}
-            deliveryReceipt
+        {error ? (
+          <Typography color="error">{error}</Typography>
+        ) : (
+          <PDFViewer
+            maxLength={ticketInformation.length}
+            urls={urls}
+            commodities={commodities}
           />
-        </TealBackground>
+        )}
       </Grid>
+      {surveyView > 0 && (
+        <Grid item xs={12} md={surveyView}>
+          <TealBackground>
+            <Typography color="error">{error}</Typography>
+            <TicketInformation
+              data={ticketInformation[pageNum - 1]}
+              deliveryReceipt
+            />
+          </TealBackground>
+        </Grid>
+      )}
     </Grid>
   );
 };
@@ -151,10 +174,6 @@ export const DropZoneInner = styled("div")`
   justify-content: center;
   align-content: center;
   flex-direction: column;
-`;
-
-const Text = styled("p")`
-  text-align: center;
 `;
 
 const CenteredButton = styled(Button)`

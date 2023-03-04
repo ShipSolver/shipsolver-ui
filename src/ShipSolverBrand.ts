@@ -14,6 +14,10 @@ const ShipSolverBrand = createTheme({
       main: "#CBDFEB",
       light: "#FFFFFFA1",
     },
+    error: {
+      main: "#F44336",
+      light: "#FFCDD2",
+    },
   },
   components: {
     MuiTypography: {

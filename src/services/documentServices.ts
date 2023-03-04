@@ -1,9 +1,9 @@
 import axios from "axios";
 
 import { SERVER_URL } from "./constants";
-import { TicketInformationStateType } from "../pages/apps/org/pages/ticketDetails/components/ticketInformation";
 import { Ticket } from "./types";
-import { CommodityType } from "../pages/apps/org/pages/ticketDetails/components/commodities";
+import { CommodityType } from "../apps/org/pages/ticketDetails/components";
+import { TicketInformationStateType } from "../apps/org/pages/ticketDetails/components/ticketInformation/types";
 // import FormData from "form-data";
 axios.defaults.baseURL = SERVER_URL;
 
@@ -21,9 +21,9 @@ export const sendDocument = async (
         "Content-Type": "multipart/form-data",
       },
     });
-    return response.data.documentStatusId;
+    return Promise.resolve(response.data.documentStatusId);
   } catch (e) {
-    console.error(e);
+    return Promise.reject(e);
   }
 };
 
@@ -117,8 +117,8 @@ export const checkStatus = async (
       ),
     };
 
-    return data;
+    return Promise.resolve(data);
   } catch (e) {
-    console.error(e);
+    return Promise.reject(e);
   }
 };
