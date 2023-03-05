@@ -48,10 +48,6 @@ export const fetchTicketsForStatus = async (status: TicketStatus) => {
   return data as TicketForStatusRes;
 };
 
-export const fetchDeliveryReceipt = async (ticketID: number) => {
-  const { data } = await axios.get(`/api/deliveryReceipt/${ticketID}`);
-  return data;
-};
 
 export const fetchOrgCurrentDelivery = () => {
   const mockServerTicketFetch = async () => {

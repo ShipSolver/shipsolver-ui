@@ -63,12 +63,12 @@ export const UploadTicket = () => {
   };
 
   const handleComplete = useCallback(
-    (
-      data: [TicketInformationStateType, CommodityType[], { url: string }][]
-    ) => {
-      setTicketInformation(data.map(([ticketInfo]) => ticketInfo));
-      setCommodities(data.map(([_, commodities, _2]) => commodities));
-      setUrls(data.map(([_, _2, obj]) => obj.url));
+    (data: [TicketInformationStateType, CommodityType[]][]) => {
+      data.forEach(([ticketInfo, commodity]) => {
+        setTicketInformation([...ticketInformation, ticketInfo]);
+        setCommodities([...commodities, commodity]);
+        setUrls([...urls, ticketInfo.deliveryRecieptLink!]);
+      });
       setLoading(false);
       setFlowStage((prev) => prev + 1);
     },
@@ -145,7 +145,7 @@ export const UploadTicket = () => {
             <Typography color="error">{error}</Typography>
             <TicketInformation
               data={ticketInformation[pageNum - 1]}
-              deliveryReceipt
+              newTicketDeliveryReceipt
             />
           </TealBackground>
         </Grid>

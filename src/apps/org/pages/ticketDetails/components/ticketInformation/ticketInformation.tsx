@@ -18,10 +18,8 @@ import { commoditiesAtom } from "../../state/commodityState";
 import {
   createTicket,
   editTicket,
-  fetchDeliveryReceipt,
 } from "../../../../../../services/ticketServices";
-import { TicketCreationSuccessModal } from "../ticketCreationSuccessModal";
-import { DeliveryReceiptModal } from "../deliveryReceiptModal";
+import { TicketCreationSuccessModal } from "./modals/ticketCreationSuccessModal";
 import { ColoredButton } from "../../../../../../components/coloredButton";
 import { useParams } from "react-router-dom";
 import {
@@ -38,6 +36,9 @@ import {
 } from "./types";
 import { useValidation } from "./hooks/useValidation";
 import { useGetUserInfo } from "../../../../../../state/authentication";
+//@ts-ignore
+import { Document, Page } from "react-pdf/dist/esm/entry.vite";
+import { DeliveryReceiptModal } from "./modals/deliveryReceiptModal";
 
 interface TicketInformationProps {
   data?: TicketInformationStateType | null;
@@ -66,7 +67,8 @@ export const TicketInformation = ({
   const [commodities, setcommodities] = useRecoilState(commoditiesAtom);
   const { ticketId } = useParams();
   const [newTicketId, setNewTicketId] = useState<string | undefined>();
-  const [deliveryReceiptURL, setDeliveryReceiptURL] = useState<string | undefined>();
+  const [deliveryReceiptURL, setDeliveryReceiptURL] =
+    useState<string | undefined>();
   const user = useGetUserInfo();
 
   useEffect(() => {
@@ -83,11 +85,6 @@ export const TicketInformation = ({
 
   const handleClearClick = () => {
     formData.current = EMPTY_DATA;
-  };
-
-  const fetchDeliveryReceipt = async () => {
-    const link = await fetchDeliveryReceipt();
-    setDeliveryReceiptURL(link as any);
   };
 
   const handleSave = async (event?: React.SyntheticEvent<HTMLFormElement>) => {
@@ -202,15 +199,11 @@ export const TicketInformation = ({
             flexDirection: "row-reverse",
           }}
         >
-          {deliveryReview ? (
-            <Button
-              type="button"
-              variant="contained"
-              size="small"
-              onClick={fetchDeliveryReceipt}
-            >
-              {deliveryReviewComplete ? "View DR" : "View PDF"}
-            </Button>
+          {deliveryReview && formData.current.deliveryRecieptLink ? (
+            <DeliveryReceiptModal
+              url={formData.current.deliveryRecieptLink}
+              buttonText={deliveryReviewComplete ? "View DR" : "View PDF"}
+            />
           ) : (
             <InputContainer>
               {/* {!newTicket ? (
@@ -422,10 +415,6 @@ export const TicketInformation = ({
       <TicketCreationSuccessModal
         ticketId={newTicketId}
         handleClose={() => setNewTicketId(undefined)}
-      />
-      <DeliveryReceiptModal
-        url={deliveryReceiptURL}
-        handleClose={() => setDeliveryReceiptURL(undefined)}
       />
     </StyledForm>
   );
