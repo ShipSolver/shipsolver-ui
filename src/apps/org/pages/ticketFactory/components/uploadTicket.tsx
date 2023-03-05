@@ -58,8 +58,7 @@ export const UploadTicket = () => {
         })
         .catch(() => {
           setError("Error uploading file. Please try again.");
-        })
-        .finally(() => setLoading(false));
+        });
     }
   };
 

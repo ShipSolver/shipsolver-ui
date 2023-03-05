@@ -42,7 +42,6 @@ export const PODFileUpload = ({
     };
     setFiles([...files, file]);
     setModal(!modal);
-    // upload to backend
   }
 
   return (
