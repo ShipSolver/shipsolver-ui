@@ -59,7 +59,7 @@ export const AssignToDriverModal = ({
   return (
     <>
       {listItem ? (
-        <ListItemButton onClick={() => setOpen(true)}>
+        <ListItemButton disabled={disabled} onClick={() => setOpen(true)}>
           <Typography className="menu-text-typography">{buttonText}</Typography>
         </ListItemButton>
       ) : (

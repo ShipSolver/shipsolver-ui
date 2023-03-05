@@ -134,7 +134,10 @@ export const fetchTicket = async (
   }
 };
 
-export const markAsInTransit = async (ticketId: number) => {
+export const markAsInTransit = async (
+  ticketId: number,
+  assignedToUserId: string
+) => {
   let error = null;
   try {
     await axios.post("/api/milestones/AssignmentMilestones", {
@@ -142,6 +145,7 @@ export const markAsInTransit = async (ticketId: number) => {
         ticketId,
         oldStatus: "assigned",
         newStatus: "in_transit",
+        assignedToUserId,
       },
     });
   } catch (e: any) {

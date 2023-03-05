@@ -42,14 +42,6 @@ export const Home = () => {
     triggerRefetch: triggerRefetchIncompleted,
   } = useLoadable(fetchTicketsForStatus, "incomplete_delivery");
 
-  const refetchFunctions = [
-    triggerRefetchInTransit,
-    triggerRefetchAssigned,
-    triggerRefetchCompleted,
-    triggerRefetchPickup,
-    triggerRefetchIncompleted,
-  ];
-
   const loading = loading1 || loading2 || loading3 || loading4 || loading5;
 
   const currentTicket =
@@ -125,7 +117,16 @@ export const Home = () => {
                 {String(assignedCount ?? 0)}
               </Typography>
             </Grid>
-            <Tickets tickets={assigned} status="assigned" />
+            <Tickets
+              tickets={assigned}
+              status="assigned"
+              fetch={() => {
+                triggerRefetchAssigned();
+                triggerRefetchInTransit();
+                triggerRefetchCompleted();
+                triggerRefetchIncompleted();
+              }}
+            />
           </InnerBlueDivBox>
         ) : null}
         {completed ? (

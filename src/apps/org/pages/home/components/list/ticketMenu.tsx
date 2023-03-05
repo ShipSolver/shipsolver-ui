@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { ListType } from "./index";
 import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -30,11 +30,7 @@ export function TicketMenu({
 
   const refetch = useRecoilValue(refetchAtom);
 
-  if (!numSelected) {
-    return null;
-  }
-
-  function getListItems(): React.ReactNode {
+  const listItems = useMemo(() => {
     switch (listType) {
       case "inventory": {
         return (
@@ -48,7 +44,6 @@ export function TicketMenu({
               refetch.assigned?.();
               refetchSelf();
             }}
-            disabled={numSelected > 1}
           />
         );
       }
@@ -104,12 +99,16 @@ export function TicketMenu({
         );
       }
     }
+  }, [listType, selected, numSelected, refetchSelf, refetch]);
+
+  if (!numSelected) {
+    return null;
   }
 
   return (
     <div className="menu-container">
       <List>
-        {getListItems()}
+        {listItems}
         <Divider sx={{ borderBottomWidth: 2 }} />
         <ListItemButton
           onClick={() =>

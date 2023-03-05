@@ -153,7 +153,7 @@ export const TicketInformation = ({
         break;
       }
       default: {
-        console.error("unexpected event has occured");
+        alert("unexpected event has occured");
       }
     }
   };

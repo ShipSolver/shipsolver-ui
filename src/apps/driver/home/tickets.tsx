@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import { markAsInTransit } from "../../../services/ticketServices";
-import { Ticket } from "../../../services/types";
+import {
+  markAsInTransit,
+  TicketForStatusRes,
+} from "../../../services/ticketServices";
+import { Ticket, TicketStatus } from "../../../services/types";
 import Paper from "../../../components/roundedPaper";
 import "./ticket.css";
 import Box from "@mui/material/Box";
@@ -12,11 +15,13 @@ import ListItemButton from "@mui/material/ListItemButton";
 export const Tickets = ({
   tickets,
   status,
+  fetch,
 }: {
   tickets: Ticket[] | null;
   status: string;
+  fetch?: () => void;
 }) => {
-  const [selected, setSelected] = useState<number>(-1);
+  const [selected, setSelected] = useState<Ticket | null>(null);
 
   const [displayTickets, setDisplayTickets] = useState<"show" | "hide">("hide");
 
@@ -25,7 +30,7 @@ export const Tickets = ({
   }
 
   return (
-    <>
+    <div style={{ position: "relative" }}>
       {tickets
         ?.slice(0, displayTickets === "hide" ? 2 : undefined)
         .map((ticket) => {
@@ -33,12 +38,12 @@ export const Tickets = ({
             return (
               <Paper
                 className={`ticket${
-                  selected === ticket.ticketId ? "-selected" : ""
+                  selected?.ticketId === ticket.ticketId ? "-selected" : ""
                 }`}
                 variant="outlined"
                 onClick={() => {
                   setSelected((prev) =>
-                    prev === ticket.ticketId ? -1 : ticket.ticketId
+                    prev?.ticketId === ticket.ticketId ? null : ticket
                   );
                 }}
               >
@@ -73,15 +78,22 @@ export const Tickets = ({
       >
         {displayTickets === "hide" ? "View All" : "Hide"}
       </Button>
-      {status === "assigned" && selected !== -1 ? (
-        <Box className="menu-container-driver">
+      {status === "assigned" && selected ? (
+        <div className="menu-container-driver">
           <List>
-            <ListItemButton onClick={() => markAsInTransit(selected)}>
+            <ListItemButton
+              onClick={() =>
+                markAsInTransit(
+                  selected.ticketId,
+                  selected.ticketStatus.assignedTo.toString()
+                ).finally(fetch)
+              }
+            >
               <Typography>Move to in transit</Typography>
             </ListItemButton>
           </List>
-        </Box>
+        </div>
       ) : null}
-    </>
+    </div>
   );
 };

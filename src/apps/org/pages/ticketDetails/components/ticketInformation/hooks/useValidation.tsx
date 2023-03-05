@@ -12,7 +12,9 @@ const phoneNumberRegex = new RegExp(
   /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/
 );
 
-const postalCodeRegex = new RegExp(/^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/);
+const postalCodeRegex = new RegExp(
+  /^((\d{5}-\d{4})|(\d{5})|([A-Z|a-z]\d[A-Z|a-z]\d[A-Z|a-z]\d))$/
+);
 
 export function useValidation() {
   const [errors, setErrors] = useState<TicketInformationValidationType>({});
@@ -91,19 +93,19 @@ export function useValidation() {
   ) {
     let numErrors = 0;
 
-    // Make sure value is present
-    for (let [key, val] of Object.entries(shipmentDetails)) {
-      if (key !== "specialInst" && isNaN(+val)) {
-        setErrors((prev) => ({
-          ...prev,
-          shipmentDetails: {
-            ...prev.shipmentDetails,
-            [key]: "Please enter a valid number",
-          },
-        }));
-        numErrors++;
-      }
-    }
+    // // Make sure value is present
+    // for (let [key, val] of Object.entries(shipmentDetails)) {
+    //   if (key !== "specialInst" && isNaN(+val)) {
+    //     setErrors((prev) => ({
+    //       ...prev,
+    //       shipmentDetails: {
+    //         ...prev.shipmentDetails,
+    //         [key]: "Please enter a valid number",
+    //       },
+    //     }));
+    //     numErrors++;
+    //   }
+    // }
 
     return numErrors;
   }
