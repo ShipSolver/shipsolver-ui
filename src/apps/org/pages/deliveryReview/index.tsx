@@ -65,8 +65,6 @@ export const DeliveryReview = ({ completeDelivery }: IDeliveryReview) => {
     })();
   }, [selectedTicket, selectedTicketID, setSelectedTicket]);
 
-  console.log("PODREVIEW" + selectedTicketID);
-  console.log(selectedTicket);
   return (
     <Container>
       <Grid container spacing={2} columns={24}>

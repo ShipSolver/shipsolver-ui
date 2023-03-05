@@ -28,7 +28,7 @@ export const SelectDelivery = ({ onSelectTicket }: SelectDeliveryProps) => {
   const [selected, setSelected] = useState<number>(-1);
 
   const selectDeliveryCards = response?.tickets.map((ticket) => (
-    <div
+    <Paper
       onClick={() => {
         setSelected(ticket.ticketId);
         onSelectTicket(ticket);
@@ -52,7 +52,7 @@ export const SelectDelivery = ({ onSelectTicket }: SelectDeliveryProps) => {
           { hour12: false }
         )}`}
       </Typography>
-    </div>
+    </Paper>
   ));
 
   return (

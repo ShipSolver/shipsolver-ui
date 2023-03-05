@@ -199,12 +199,13 @@ export const TicketInformation = ({
             flexDirection: "row-reverse",
           }}
         >
-          {deliveryReview && formData.current.deliveryRecieptLink ? (
+          {formData.current.deliveryRecieptLink ? (
             <DeliveryReceiptModal
               url={formData.current.deliveryRecieptLink}
               buttonText={deliveryReviewComplete ? "View DR" : "View PDF"}
             />
-          ) : (
+          ) : null}
+          {!deliveryReview ? (
             <InputContainer>
               {/* {!newTicket ? (
                 <SpecialInputField>
@@ -279,7 +280,7 @@ export const TicketInformation = ({
                 </Typography>
               </SpecialInputField>
             </InputContainer>
-          )}
+          ) : null}
         </Grid>
 
         <Grid item xs={6}>

@@ -11,7 +11,7 @@ import Home from "./pages/home";
 import { LazyTicketFactory } from "./pages/ticketFactory/lazy";
 import { LazyAllTicketsTable } from "./pages/allTicketsTable/lazy";
 import { LazyTicketDetails } from "./pages/ticketDetails/lazy";
-import { LazyDeliveryReview } from "./pages/DeliveryReview/lazy";
+import { LazyDeliveryReview } from "./pages/deliveryReview/lazy";
 import Loading from "../../components/loading";
 import "./app.css";
 
