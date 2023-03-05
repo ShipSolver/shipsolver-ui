@@ -1,6 +1,5 @@
 import React from "react";
 import { ListType } from "./index";
-import Box from "@mui/material/Box";
 import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
 import Divider from "@mui/material/Divider";
@@ -49,6 +48,7 @@ export function TicketMenu({
               refetch.assigned?.();
               refetchSelf();
             }}
+            disabled={numSelected > 1}
           />
         );
       }
@@ -107,7 +107,7 @@ export function TicketMenu({
   }
 
   return (
-    <Box className="menu-container">
+    <div className="menu-container">
       <List>
         {getListItems()}
         <Divider sx={{ borderBottomWidth: 2 }} />
@@ -129,7 +129,6 @@ export function TicketMenu({
           triggerRefetch={refetchSelf}
         />
       </List>
-    </Box>
+    </div>
   );
 }
-

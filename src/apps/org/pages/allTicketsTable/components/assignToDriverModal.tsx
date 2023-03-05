@@ -32,7 +32,7 @@ export const AssignToDriverModal = ({
   const [loading, setLoading] = useState<boolean>(false);
   const user = useGetUserInfo();
 
-  const handleClick = async () => {
+  const handleSubmit = async () => {
     setLoading(true);
     if (selectedDriver && drivers) {
       const driverId = drivers.filter(({ name }) => name === selectedDriver)[0]
@@ -52,6 +52,7 @@ export const AssignToDriverModal = ({
       setLoading(false);
       alert("there was an error");
     }
+    setSelectedDriver(null);
     setOpen(false);
   };
 
@@ -103,7 +104,7 @@ export const AssignToDriverModal = ({
               </Container>
 
               <Button
-                onClick={handleClick}
+                onClick={handleSubmit}
                 sx={{ width: "100%" }}
                 variant="outlined"
                 disabled={!selectedDriver}

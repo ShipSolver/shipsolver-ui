@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Typography from "@mui/material/Typography";
 import { Ticket, TicketStatus } from "../../../../../../services/types";
 import Paper from "../../../../../../components/roundedPaper";
@@ -50,14 +50,17 @@ export function List({ listTitle, listType, fetch, args }: IList) {
     }));
   };
 
-  const renderTickets = () => {
+  const renderedTickets = useMemo(() => {
     if (loading) {
       return <Loading />;
     }
 
     if (error) {
       return (
-        <Typography>{`There was an error fetching your ${listType} tickets`}</Typography>
+        <Typography
+          style={{ margin: 8 }}
+          color="error"
+        >{`There was an error fetching your ${listType} tickets`}</Typography>
       );
     }
 
@@ -86,10 +89,10 @@ export function List({ listTitle, listType, fetch, args }: IList) {
         </Paper>
       );
     });
-  };
+  }, [loading, error, response, selected]);
 
   return (
-    <div>
+    <div style={{ position: "relative" }}>
       <div className="ss-flexbox">
         <span className="list-column-header">
           <Typography display="inline" variant="h4" color="black" gutterBottom>
@@ -106,7 +109,7 @@ export function List({ listTitle, listType, fetch, args }: IList) {
           <strong>{response?.count ?? 0}</strong>
         </Typography>
       </div>
-      <div className="list-column">{renderTickets()}</div>
+      <div className="list-column">{renderedTickets}</div>
       <TicketMenu
         selected={selected}
         numSelected={numSelected}

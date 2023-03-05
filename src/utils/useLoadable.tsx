@@ -17,12 +17,11 @@ export default function useLoadable<
     fetcher(...args)
       .then((val) => {
         setVal(val);
-        setLoading(false);
       })
       .catch((e) => {
         setError(e.toString());
-        setLoading(false);
-      });
+      })
+      .finally(() => setLoading(false));
   }, [trigger]);
 
   return {

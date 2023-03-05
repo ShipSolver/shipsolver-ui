@@ -14,7 +14,7 @@ export type User = {
   userID: string;
 };
 
-export type MilestonesModelTypes = 
+export type MilestonesModelTypes =
   | "CreationMilestones"
   | "PickupMilestones"
   | "InventoryMilestones"
@@ -97,6 +97,9 @@ export type TicketStatus =
   | TicketIncompleteDeliveryStatus;
 
 export type Ticket = {
+  customer: {
+    name: string;
+  };
   ticketStatus: {
     assignedTo: number;
     currentStatus: TicketMilestone;

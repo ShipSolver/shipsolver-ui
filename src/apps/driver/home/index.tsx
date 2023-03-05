@@ -1,5 +1,3 @@
-import React, { useCallback, useState } from "react";
-
 import Typography from "@mui/material/Typography";
 
 import Grid from "@mui/material/Grid";
@@ -8,21 +6,14 @@ import OuterBlueDivBox from "../components/outerBlueDivBox";
 import InnerBlueDivBox from "../components/innerBlueDivBox";
 import { LargeButton } from "../components/largeButton";
 import { Tickets } from "./tickets";
-import { TicketPopUpContent } from "./ticketPopUpContent";
-import { PickupModalContent } from "./pickupModalContent";
 import { CurrentDelivery } from "./currentDelivery";
 import { useNavigate } from "react-router-dom";
-import { styled } from "@mui/material/styles";
 import { fetchTicketsForStatus } from "../../../services/ticketServices";
 
-import { TicketMilestone } from "../../../services/types";
-
 import useLoadable from "../../../utils/useLoadable";
-import { useGetUserInfo } from "../../../state/authentication";
 
 export const Home = () => {
   const navigate = useNavigate();
-  const user = useGetUserInfo();
 
   const {
     val: currentDeliveries,

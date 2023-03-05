@@ -15,19 +15,16 @@ import MenuItem from "@mui/material/MenuItem";
 import { logout } from "../../../services/authenticationServices";
 import { useResetRecoilState } from "recoil";
 import { AuthenticatedUsernameAtom } from "../../../state/authentication";
-import Link from "@mui/material/Link";
 import { useNavigate } from "react-router-dom";
 
 const Header = () => {
-  const resetUser = useResetRecoilState(AuthenticatedUsernameAtom)
-  const navigate = useNavigate()
+  const resetUser = useResetRecoilState(AuthenticatedUsernameAtom);
+  const navigate = useNavigate();
 
-  const [anchorElNav, setAnchorElNav] = React.useState<
-    (EventTarget & HTMLButtonElement) | null
-  >(null);
-  const [anchorElUser, setAnchorElUser] = React.useState<
-    (EventTarget & HTMLButtonElement) | null
-  >(null);
+  const [anchorElNav, setAnchorElNav] =
+    React.useState<(EventTarget & HTMLButtonElement) | null>(null);
+  const [anchorElUser, setAnchorElUser] =
+    React.useState<(EventTarget & HTMLButtonElement) | null>(null);
 
   const handleOpenNavMenu = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -49,16 +46,16 @@ const Header = () => {
   };
 
   const goHome = () => {
-    navigate('/')
-  }
+    navigate("/");
+  };
 
   const handleLogout = async () => {
-    const {error} = await logout()
-    if(error === null){
-      resetUser()
-      navigate('/authentication')
+    const { error } = await logout();
+    if (error === null) {
+      resetUser();
+      navigate("/authentication");
     }
-  }
+  };
 
   return (
     <AppBar position="static" color="transparent">
@@ -71,7 +68,7 @@ const Header = () => {
             sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
             onClick={goHome}
           >
-            <strong>LOGO</strong>
+            <strong>ShipSolver</strong>
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
@@ -102,11 +99,11 @@ const Header = () => {
                 display: { xs: "block", md: "none" },
               }}
             >
-                <MenuItem onClick={goHome}>
-                  <Typography variant="h5" textAlign="center">
-                    Home
-                  </Typography>
-                </MenuItem>
+              <MenuItem onClick={goHome}>
+                <Typography variant="h5" textAlign="center">
+                  Home
+                </Typography>
+              </MenuItem>
             </Menu>
           </Box>
           <Typography
@@ -119,19 +116,22 @@ const Header = () => {
             LOGO
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-              <Button
-                onClick={goHome}
-                sx={{ my: 2, display: "block" }}
-                color="inherit"
-              >
-                Home
-              </Button>
+            <Button
+              onClick={goHome}
+              sx={{ my: 2, display: "block" }}
+              color="inherit"
+            >
+              Home
+            </Button>
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar
+                  alt="Sathira Katugaha"
+                  src="/static/images/avatar/2.jpg"
+                />
               </IconButton>
             </Tooltip>
             <Menu
@@ -150,9 +150,9 @@ const Header = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-                <MenuItem onClick={handleLogout}>
-                  <Typography textAlign="center">Logout</Typography>
-                </MenuItem>
+              <MenuItem onClick={handleLogout}>
+                <Typography textAlign="center">Logout</Typography>
+              </MenuItem>
             </Menu>
           </Box>
         </Toolbar>

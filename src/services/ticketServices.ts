@@ -34,12 +34,16 @@ export type TicketForStatusRes = {
   tickets: Ticket[];
 };
 export const fetchTicketsForStatus = async (status: TicketStatus) => {
-  const { data } = await axios.get(`/api/ticket/status/${status}`, {
-    params: {
-      limit: 10,
-    },
-  });
-  return data as TicketForStatusRes;
+  try {
+    const { data } = await axios.get(`/api/ticket/status/${status}`, {
+      params: {
+        limit: 10,
+      },
+    });
+    return Promise.resolve(data as TicketForStatusRes);
+  } catch (e) {
+    return Promise.reject(e);
+  }
 };
 
 export const fetchOrgCurrentDelivery = () => {
