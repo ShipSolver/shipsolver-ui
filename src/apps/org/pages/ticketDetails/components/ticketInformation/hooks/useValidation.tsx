@@ -93,19 +93,19 @@ export function useValidation() {
   ) {
     let numErrors = 0;
 
-    // // Make sure value is present
-    // for (let [key, val] of Object.entries(shipmentDetails)) {
-    //   if (key !== "specialInst" && isNaN(+val)) {
-    //     setErrors((prev) => ({
-    //       ...prev,
-    //       shipmentDetails: {
-    //         ...prev.shipmentDetails,
-    //         [key]: "Please enter a valid number",
-    //       },
-    //     }));
-    //     numErrors++;
-    //   }
-    // }
+    // Make sure value is present
+    for (let [key, val] of Object.entries(shipmentDetails)) {
+      if (key !== "specialInst" && isNaN(+val)) {
+        setErrors((prev) => ({
+          ...prev,
+          shipmentDetails: {
+            ...prev.shipmentDetails,
+            [key]: "Please enter a valid number",
+          },
+        }));
+        numErrors++;
+      }
+    }
 
     return numErrors;
   }

@@ -8,16 +8,20 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Alert from "@mui/material/Alert";
 import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
-import { ErrorAtom, UnconfirmedUsernameAtom, AuthenticatedUsernameAtom } from "../state/authentication";
+import {
+  ErrorAtom,
+  UnconfirmedUsernameAtom,
+  AuthenticatedUsernameAtom,
+} from "../state/authentication";
 import { login } from "../services/authenticationServices";
 import Loading from "../components/loading";
 import { validateEmail } from "../utils/regex";
 import { useNavigate } from "react-router-dom";
 
 function Login() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const setUnconfirmedUsername = useSetRecoilState(UnconfirmedUsernameAtom)
+  const setUnconfirmedUsername = useSetRecoilState(UnconfirmedUsernameAtom);
 
   const setError = useSetRecoilState(ErrorAtom);
   const resetError = useResetRecoilState(ErrorAtom);
@@ -40,16 +44,20 @@ function Login() {
     if (validateEmail(email) && password != "") {
       setFormError(null);
       setLoading(true);
-      const { user, error: err, unconfirmedUser } = await login({
+      const {
+        user,
+        error: err,
+        unconfirmedUser,
+      } = await login({
         email,
         password,
         rememberMe,
       });
       setLoading(false);
 
-      if(unconfirmedUser === true){
-        setUnconfirmedUsername(email)
-        navigate("/authentication/signup-code-confirmation")
+      if (unconfirmedUser === true) {
+        setUnconfirmedUsername(email);
+        navigate("/authentication/signup-code-confirmation");
       }
 
       setError(err);
@@ -63,9 +71,6 @@ function Login() {
     <Loading />
   ) : (
     <>
-      {(formError && formError != "" && <Alert severity="error">
-          {formError}
-      </Alert>)}
       <div className="ss-brand-spacer" />
       <Typography component="h1" variant="h2" color="primary" align="center">
         <b>Log in</b>
@@ -106,7 +111,7 @@ function Login() {
         autoComplete="current-password"
         onChange={(event) => setPassword(event.target.value)}
         onKeyPress={(e) => {
-          if (e.key == 'Enter') handleLogin();
+          if (e.key == "Enter") handleLogin();
         }}
       />
       <FormControlLabel

@@ -21,7 +21,7 @@ export const ShiftCompletion = ({ reasons }: ReasonsProps) => {
       title="Reason for completing shift before finishing deliveries"
       reasons={reasons}
       textfieldLabel="Enter Reason:"
-      action={handleCancelClick}
+      onSubmit={handleCancelClick}
     />
   );
 };

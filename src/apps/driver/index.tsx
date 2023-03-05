@@ -13,7 +13,8 @@ import DeliveryCompletion from "./deliveryCompletion";
 import { IncompletePickup, IncompletePickupReasons } from "./incompletePickup";
 import { ShiftCompletion, IncompleteShiftReasons } from "./shiftCompletion";
 import { DeclinePickup, DeclinePickupReasons } from "./declinePickup";
-import Header from "../org/pages/header";
+import Header from "./components/header";
+import DeliveryInCompletion from "./deliveryIncompletion";
 
 function DriverRouter() {
   return (
@@ -21,6 +22,7 @@ function DriverRouter() {
       <Header />
       <Routes>
         <Route index element={<Home />} />
+        <Route path="incomplete-delivery" element={<DeliveryInCompletion />} />
         <Route path="complete-delivery" element={<DeliveryCompletion />} />
         <Route
           path="incomplete-pickup"

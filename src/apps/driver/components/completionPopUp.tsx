@@ -26,63 +26,61 @@ export const CompletionPopUp = ({
 
   return (
     <Modal open={isShown} onClose={onClose}>
-      <OuterBlueDivBox
-        sx={{
-          position: "relative",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          width: "90vw",
-          border: "2px solid #000",
-          boxShadow: 24,
-          paddingBottom: 10,
-          paddingTop: 5,
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          height: "100%",
         }}
       >
         <div
           style={{
-            display: "inline-block",
-            position: "relative",
-            left: "50%",
-            transform: "translateX(-50%)",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            width: "100%",
           }}
         >
-          <Typography variant="h1" fontWeight="bold" textAlign="center">
-            Did you complete the order?
-          </Typography>
-        </div>
-        <InnerWhiteDivBox
-          style={{
-            marginTop: 30,
-            margin: 20,
-            padding: 35,
-            paddingBottom: 25,
-            paddingLeft: 50,
-            paddingRight: 50,
-          }}
-        >
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
-            <SelectorButton
-              selected={actionConfirmed}
-              handleClick={() => setActionConfirmed(true)}
-              label="YES"
-            />
+          <InnerWhiteDivBox style={{ padding: 12, width: "80vw" }}>
+            <div>
+              <Typography variant="h2" fontWeight="bold" textAlign="center">
+                Did you complete the order?
+              </Typography>
+            </div>
+            <OuterBlueDivBox
+              style={{
+                marginTop: 30,
+                margin: 20,
+                padding: 35,
+                paddingBottom: 25,
+                paddingLeft: 50,
+                paddingRight: 50,
+              }}
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                <SelectorButton
+                  selected={actionConfirmed}
+                  handleClick={() => setActionConfirmed(true)}
+                  label="YES"
+                />
 
-            <SelectorButton
-              selected={!actionConfirmed}
-              handleClick={() => setActionConfirmed(false)}
-              label="NO"
-            />
-          </Box>
-        </InnerWhiteDivBox>
-        <LargeButton label="Submit" action={handleSubmit} />
-        <LargeButton label="Cancel" action={handleSubmit} />
-      </OuterBlueDivBox>
+                <SelectorButton
+                  selected={!actionConfirmed}
+                  handleClick={() => setActionConfirmed(false)}
+                  label="NO"
+                />
+              </Box>
+            </OuterBlueDivBox>
+            <LargeButton label="Submit" action={handleSubmit} />
+            <LargeButton label="Cancel" action={onClose} />
+          </InnerWhiteDivBox>
+        </div>
+      </div>
     </Modal>
   );
 };

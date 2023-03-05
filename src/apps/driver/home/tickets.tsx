@@ -16,10 +16,12 @@ export const Tickets = ({
   tickets,
   status,
   fetch,
+  disableButton,
 }: {
   tickets: Ticket[] | null;
   status: string;
   fetch?: () => void;
+  disableButton?: boolean;
 }) => {
   const [selected, setSelected] = useState<Ticket | null>(null);
 
@@ -88,8 +90,9 @@ export const Tickets = ({
                   selected.ticketStatus.assignedTo.toString()
                 ).finally(fetch)
               }
+              disabled={disableButton}
             >
-              <Typography>Move to in transit</Typography>
+              <Typography variant="h3">Move to in transit</Typography>
             </ListItemButton>
           </List>
         </div>

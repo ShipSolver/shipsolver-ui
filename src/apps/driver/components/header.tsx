@@ -15,7 +15,6 @@ import MenuItem from "@mui/material/MenuItem";
 import { logout } from "../../../services/authenticationServices";
 import { useResetRecoilState } from "recoil";
 import { AuthenticatedUsernameAtom } from "../../../state/authentication";
-import Link from "@mui/material/Link";
 import { useNavigate } from "react-router-dom";
 
 const Header = () => {
@@ -70,7 +69,7 @@ const Header = () => {
             sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
             onClick={goHome}
           >
-            <strong>LOGO</strong>
+            <strong>Shipsolver</strong>
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
@@ -115,7 +114,7 @@ const Header = () => {
             sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}
             onClick={goHome}
           >
-            LOGO
+            Shipsolver
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             <Button
@@ -129,8 +128,8 @@ const Header = () => {
 
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" />
+              <IconButton onClick={handleOpenUserMenu}>
+                <Avatar alt="Sathira Katugaha" sx={{ width: 32, height: 32 }} />
               </IconButton>
             </Tooltip>
             <Menu

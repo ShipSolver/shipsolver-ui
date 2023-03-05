@@ -50,7 +50,7 @@ function Signup() {
         email,
         password,
         phone: "+1" + phone.replaceAll("-", ""),
-        userType
+        userType,
       });
       setError(err);
       setLoading(false);

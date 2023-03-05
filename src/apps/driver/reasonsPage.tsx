@@ -8,9 +8,6 @@ import { LargeButton } from "./components/largeButton";
 import SelectorButton from "./components/selectorButton";
 import TextField from "@mui/material/TextField";
 import { styled } from "@mui/material/styles";
-import { IconButton } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
-import { moveToIncomplete } from "../../services/ticketServices";
 
 export type ReasonsType = {
   reason: string;
@@ -25,55 +22,35 @@ interface ReasonsPageProps {
   title: string;
   reasons: ReasonsType[];
   textfieldLabel: string;
-  action?: () => void;
+  onSubmit?: (reasonId: ReasonsType["id"]) => void;
+  onCancel?: () => void;
 }
 
 export const ReasonsPage = ({
   title,
   reasons,
-  action,
+  onSubmit,
+  onCancel,
   textfieldLabel,
 }: ReasonsPageProps) => {
-  const [selected, setSelected] = useState<{ [key: string]: boolean }>(
-    Object.values(reasons).reduce(
-      (selected, reason) => ({ ...selected, [reason.id]: false }),
-      {}
-    )
-  );
+  const [selected, setSelected] = useState<ReasonsType | null>(null);
 
-  const [numSelected, setNumSelected] = useState<number>(0);
-
-  const handleSelectedClick = (id: string) => {
-    if (selected[id] === false) {
-      setNumSelected((numSelected) => numSelected + 1);
-    } else if (selected[id] === true) {
-      setNumSelected((numSelected) => numSelected - 1);
-    }
-    setSelected((prev) => ({
-      ...prev,
-      [id]: !prev[id],
-    }));
+  const handleSelect = (id: string) => {
+    setSelected(reasons.find((reason) => reason.id === id) || null);
   };
 
   const handleSubmitClick = () => {
-    if (numSelected == 1) {
-      for (const id in selected) {
-        if (selected[id] === true) {
-          // moveToIncomplete();
-        }
-      }
-    } else {
-      alert("Please Select ONE Option");
-    }
+    selected && onSubmit?.(selected.id);
+    setSelected(null);
   };
 
   const reasonsList = useMemo(
     () =>
       reasons.map((reason) => (
         <SelectorButton
-          selected={selected[reason.id]}
+          selected={selected?.id === reason.id}
           label={reason.reason}
-          handleClick={() => handleSelectedClick(reason.id)}
+          handleClick={() => handleSelect(reason.id)}
         />
       )),
     [selected]
@@ -92,7 +69,7 @@ export const ReasonsPage = ({
         </SelectorButtonWrapper>
       </StyledInnerWhiteDivBox>
       <LargeButton label="Submit" action={() => handleSubmitClick()} />
-      <LargeButton label="Cancel" action={() => action?.()} />
+      <LargeButton label="Cancel" action={onCancel} />
     </StyledOuterBlueDivBox>
   );
 };

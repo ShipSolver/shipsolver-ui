@@ -11,7 +11,6 @@ const SelectorButton = ({
   label: string;
   handleClick?: () => void;
 }) => {
-  const theme = useTheme();
   return (
     <Button
       onClick={() => {
@@ -23,9 +22,8 @@ const SelectorButton = ({
       style={{
         borderRadius: "8px",
         marginBottom: "10px",
-        paddingTop: 0,
-        paddingBottom: 0,
-        fontSize: "1.5rem",
+        fontSize: "1.4rem",
+        lineHeight: "1.5",
         fontWeight: "bold",
       }}
     >

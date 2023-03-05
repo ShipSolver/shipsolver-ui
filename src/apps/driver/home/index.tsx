@@ -126,6 +126,7 @@ export const Home = () => {
                 triggerRefetchCompleted();
                 triggerRefetchIncompleted();
               }}
+              disableButton={currentTicket != null}
             />
           </InnerBlueDivBox>
         ) : null}

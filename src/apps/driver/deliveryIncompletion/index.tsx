@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { ReasonsType, ReasonsProps, ReasonsPage } from "./reasonsPage";
-import { useNavigate } from "react-router-dom";
-import { DeliveryCompletionTicketAtom } from "../../state/deliveryCompletion";
-import { useResetRecoilState } from "recoil";
+import { useRecoilValue, useResetRecoilState } from "recoil";
+import { DeliveryCompletionTicketAtom } from "../../../state/deliveryCompletion";
+
+import { Navigate, useNavigate } from "react-router-dom";
+import { ReasonsPage, ReasonsType } from "../reasonsPage";
 
 export const IncompleteDeliveryReasons: ReasonsType[] = [
   { reason: "Closed", id: "closed" },
@@ -11,30 +11,33 @@ export const IncompleteDeliveryReasons: ReasonsType[] = [
   { reason: "Other", id: "other" },
 ];
 
-export const IncompleteDelivery = ({ reasons }: ReasonsProps) => {
+export default function DeliveryInCompletion() {
   const navigate = useNavigate();
+
+  const completionDelivery = useRecoilValue(DeliveryCompletionTicketAtom);
   const resetCompletionDelivery = useResetRecoilState(
     DeliveryCompletionTicketAtom
   );
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     resetCompletionDelivery();
     navigate("/");
   };
 
-  const handleCancel = () => {
-    console.log("cancel");
+  const handleCancel = async () => {
     resetCompletionDelivery();
     navigate("/");
   };
 
-  return (
+  return completionDelivery == null ? (
+    <Navigate to="/" />
+  ) : (
     <ReasonsPage
       title="Reason for incomplete delivery"
-      reasons={reasons}
+      reasons={IncompleteDeliveryReasons}
       textfieldLabel="Enter Reason:"
-      onSubmit={handleSubmit}
       onCancel={handleCancel}
+      onSubmit={handleSubmit}
     />
   );
-};
+}

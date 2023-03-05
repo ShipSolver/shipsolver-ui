@@ -25,8 +25,8 @@ export const CurrentDelivery = ({
 
   const handleSubmit = async (deliveryMarkedCompleted: boolean) => {
     if (currentTicket != null) {
+      setCompletionDelivery(currentTicket);
       if (deliveryMarkedCompleted) {
-        setCompletionDelivery(currentTicket);
         navigate("complete-delivery");
       } else {
         navigate("incomplete-delivery");

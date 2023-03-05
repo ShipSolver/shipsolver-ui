@@ -47,7 +47,6 @@ function AuthenticationRouter() {
     <Loading />
   ) : (
     <Container component="main" maxWidth="sm" className="ss-brand-app-content">
-      {error !== null && error !== "" && <Alert severity="error">{error}</Alert>}
       <Routes>
         <Route path="signup-thank-you" element={<SignupThankYou />} />
         <Route path="signup-code-confirmation" element={<SignupCodeEntry />} />

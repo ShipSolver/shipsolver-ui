@@ -21,7 +21,7 @@ export const DeclinePickup = ({ reasons }: ReasonsProps) => {
       title="Reason for declining the pickup"
       reasons={reasons}
       textfieldLabel="Enter Reason:"
-      action={handleCancelClick}
+      onSubmit={handleCancelClick}
     />
   );
 };

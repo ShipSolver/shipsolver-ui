@@ -113,7 +113,7 @@ const Header = () => {
             sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}
             onClick={goHome}
           >
-            LOGO
+            Shipsolver
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             <Button

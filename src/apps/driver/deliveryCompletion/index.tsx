@@ -17,7 +17,7 @@ import Divider from "@mui/material/Divider";
 
 import { SignaturePopUp } from "./components/signaturePage/signaturePopUp";
 import { CameraCapture } from "./components/cameraAccess/webcamAccess";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useResetRecoilState } from "recoil";
 import { DeliveryCompletionTicketAtom } from "../../../state/deliveryCompletion";
 import {
   markTicketAsDelivered,
@@ -63,6 +63,9 @@ export default function DeliveryCompletion() {
   const [pictureFiles, setPictureFiles] = useState<Array<pictureFile>>([]);
 
   const completionDelivery = useRecoilValue(DeliveryCompletionTicketAtom);
+  const resetCompletionDelivery = useResetRecoilState(
+    DeliveryCompletionTicketAtom
+  );
 
   const removePoDFile = useCallback(
     (filename: string) => {
@@ -104,67 +107,17 @@ export default function DeliveryCompletion() {
       podFiles.length > 0 &&
       signFiles.length > 0
     ) {
-      const podFileItem = podFiles[0];
-      const podFile = await imageSrcToFile(
-        podFileItem.imgSrc,
-        podFileItem.name
-      );
-      if (podFile == null) return;
-      const { s3Link: s3LinkPoD, error: errorPoD } = await uploadTicketImage({
-        file: podFile,
-      });
-
-      if (errorPoD || s3LinkPoD == null) {
-        alert(errorPoD);
-        return;
-      }
-      const signFileItem = signFiles[0];
-      const signFile = await imageSrcToFile(
-        signFileItem.imgSrc,
-        signFileItem.name
-      );
-      if (signFile == null) return;
-      const { s3Link: s3LinkSignature, error: errorSignature } =
-        await uploadTicketImage({
-          file: signFile,
-        });
-
-      if (errorSignature || s3LinkSignature == null) {
-        alert(errorSignature);
-        return;
-      }
-      let s3LinkExtraPicture: string | null = null;
-      let s3LinkError: string | null = null;
-
-      if (pictureFiles.length > 0) {
-        const extraPictureFileItem = pictureFiles[0];
-        const extraPictureFile = await imageSrcToFile(
-          extraPictureFileItem.imgSrc,
-          extraPictureFileItem.name
-        );
-        if (extraPictureFile == null) return;
-        const { s3Link: s3LinkExtraPictureTemp, error: errorExtraPicture } =
-          await uploadTicketImage({
-            file: extraPictureFile,
-          });
-        s3LinkExtraPicture = s3LinkExtraPictureTemp;
-        if (errorExtraPicture) {
-          alert(errorExtraPicture);
-        }
-      }
-
+      console.log({ podFiles, signFiles, pictureFiles });
       const { error } = await markTicketAsDelivered({
         userId: String(completionDelivery.ticketStatus.assignedTo),
         ticketId: String(completionDelivery.ticketId),
-        picture1Link: s3LinkExtraPicture ?? undefined,
-        customerSignatureLink: s3LinkSignature,
-        PODLink: s3LinkPoD,
       });
       if (error == null) {
         navigate("/");
       } else {
         alert(error);
       }
+      resetCompletionDelivery();
     } else {
       alert("No delivery to be submitted or pictures not taken");
     }
@@ -262,7 +215,15 @@ export default function DeliveryCompletion() {
         <MediumButton variant="contained" onClick={handleSubmit}>
           Submit
         </MediumButton>
-        <MediumButton variant="contained">Cancel</MediumButton>
+        <MediumButton
+          onClick={() => {
+            resetCompletionDelivery();
+            navigate("/");
+          }}
+          variant="contained"
+        >
+          Cancel
+        </MediumButton>
       </Box>
     </div>
   );

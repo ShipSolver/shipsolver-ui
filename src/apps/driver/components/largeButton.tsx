@@ -8,11 +8,11 @@ export const LargeButton = ({
   action,
 }: {
   label: string;
-  action: () => void;
+  action?: () => void;
 }) => {
   return (
     <LargeButtonWrapper>
-      <StyledButton variant="contained" onClick={() => action()}>
+      <StyledButton variant="contained" onClick={() => action?.()}>
         {label}
       </StyledButton>
     </LargeButtonWrapper>
