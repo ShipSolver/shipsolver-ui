@@ -30,7 +30,7 @@ export const sendDocument = async (
 interface DocumentReturnType {
   status: string;
   progress: number;
-  documents: [TicketInformationStateType, CommodityType[], { url: string }][];
+  documents: [TicketInformationStateType, CommodityType[]][];
 }
 
 interface DocumentsResponse extends Ticket {
@@ -111,10 +111,10 @@ export const checkStatus = async (
               },
               isPickup: true,
               // enterIntoInventory: true,
-              deliveryReceiptS3Path: orderS3Path
+              deliveryReceiptS3Path: orderS3Path,
+              deliveryReceiptLink: orderS3Link
             },
-            commodities,
-            { url: orderS3Link },
+            commodities
           ];
         }
       ),

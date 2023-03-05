@@ -5,6 +5,7 @@ import { CreateCommodityModal } from "./createCommodityModal";
 
 import { useRecoilValue } from "recoil";
 import { commoditiesAtom } from "../state/commodityState";
+import { Paper } from "@mui/material";
 
 export interface CommodityType {
   description: string;
@@ -22,7 +23,7 @@ export const Commodities = ({ isEditable }: CommoditiesProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const commoditiesCards = commodities?.map(({description}) => (
-    <div>
+    <Paper sx={{marginBottom: "8px"}}>
       <Typography>
         <b>Description:</b> {description}
       </Typography>
@@ -32,16 +33,16 @@ export const Commodities = ({ isEditable }: CommoditiesProps) => {
         <Typography>
           <b>Dimensions:</b> {dimensions}
         </Typography> */}
-    </div>
+    </Paper>
   ));
 
   return (
     <>
       <CardColumn
         cardContents={commoditiesCards}
-        $customHeight="29vh"
         isEditable={isEditable}
         action={() => setIsOpen(true)}
+        $height="275px"
       />
       <CreateCommodityModal
         open={isOpen}

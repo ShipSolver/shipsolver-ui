@@ -11,7 +11,7 @@ import { TicketInformationStateType } from "../../ticketDetails/components/ticke
 interface RefetchLoaderProps {
   documentID: number;
   onComplete: (
-    data: [TicketInformationStateType, CommodityType[], { url: string }][]
+    data: [TicketInformationStateType, CommodityType[]][]
   ) => void;
   onError: (error: string) => void;
 }

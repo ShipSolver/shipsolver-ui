@@ -19,6 +19,11 @@ import {
 
 import { CommodityType } from "../apps/org/pages/ticketDetails/components/commodities";
 import { RowType } from "../apps/org/pages/allTicketsTable/types";
+
+// import axiosRetry from 'axios-retry';
+
+// axiosRetry(axios, { retries: 3 });
+
 axios.defaults.baseURL = SERVER_URL;
 
 const delay = (time: number) => {
@@ -111,65 +116,18 @@ export const fetchTicket = async (
   ticketId?: string
 ): Promise<[TicketInformationStateType, CommodityType[]] | null> => {
   try {
-    const response: any = await axios.get(`/api/ticket/${ticketId}`, {
-      withCredentials: false,
-    });
+    const { data }: { data: Ticket } = await axios.get(
+      `/api/ticket/${ticketId}`,
+      {
+        withCredentials: false,
+      }
+    );
 
-    const {
-      customerName,
-      shipperCompany,
-      shipperName,
-      shipperAddress,
-      shipperPhoneNumber,
-      shipperPostalCode,
-      BOLNumber,
-      specialInstructions,
-      weight,
-      claimedNumberOfPieces,
-      barcodeNumber,
-      houseReferenceNumber,
-      consigneeCompany,
-      consigneeName,
-      consigneeAddress,
-      consigneePhoneNumber,
-      consigneePostalCode,
-      ...rest
-    } = response.data;
-
-    const data: TicketInformationStateType = {
-      firstParty: customerName,
-      shipper: {
-        company: shipperCompany,
-        name: shipperName,
-        address: shipperAddress,
-        phoneNum: shipperPhoneNumber,
-        postalCode: shipperPostalCode,
-      },
-      shipmentDetails: {
-        specialInst: specialInstructions,
-        bolNum: BOLNumber,
-        weight,
-        numPieces: claimedNumberOfPieces,
-        barcode: barcodeNumber,
-        refNum: houseReferenceNumber,
-      },
-      consignee: {
-        company: consigneeCompany,
-        name: consigneeName,
-        address: consigneeAddress,
-        phoneNum: consigneePhoneNumber,
-        postalCode: consigneePostalCode,
-      },
-      isPickup: true,
-      ...rest,
-      // enterIntoInventory: true,
-    };
-
-    const commodities: CommodityType[] = response.data.pieces
+    const commodities: CommodityType[] = data.pieces
       .split(",+-")
       .map((commodity: string) => ({ description: commodity }));
 
-    return [data, commodities];
+    return [convertTicketToTicketInformation(data), commodities];
   } catch (e) {
     console.error(e);
     return null;
@@ -463,6 +421,42 @@ export const moveToIncomplete = async (tickets: IMoveToIncomplete[]) => {
   }
 };
 
+export const rejectDelivery = async (
+  ticketId: number
+): Promise<null | string> => {
+  try {
+    await axios.post("/api/milestones/InventoryMilestones", {
+      withCredentials: false,
+      data: {
+        ticketId,
+        oldStatus: "completed_delivery",
+        newStatus: "incomplete_delivery",
+      },
+    });
+    return null;
+  } catch (e) {
+    return "Failed to reject delivery";
+  }
+};
+
+export const approveDelivery = async (
+  ticketId: number
+): Promise<null | string> => {
+  try {
+    await axios.post("/api/milestones/InventoryMilestones", {
+      withCredentials: false,
+      data: {
+        ticketId,
+        oldStatus: "completed_delivery",
+        newStatus: "completed_delivery",
+      },
+    });
+    return null;
+  } catch (e) {
+    return "Failed to approve delivery";
+  }
+};
+
 export const checkIntoInventory = async (ticketIDs: string[]) => {
   try {
     const response: any = await Promise.all(
@@ -494,3 +488,58 @@ export const deleteTickets = async (ticketIDs: string[]) => {
     return 0;
   }
 };
+
+export function convertTicketToTicketInformation(
+  ticket: Ticket
+): TicketInformationStateType {
+  const {
+    customerName,
+    shipperCompany,
+    shipperName,
+    shipperAddress,
+    shipperPhoneNumber,
+    shipperPostalCode,
+    BOLNumber,
+    specialInstructions,
+    weight,
+    claimedNumberOfPieces,
+    barcodeNumber,
+    houseReferenceNumber,
+    consigneeCompany,
+    consigneeName,
+    consigneeAddress,
+    consigneePhoneNumber,
+    consigneePostalCode,
+    orderS3Link,
+    ...rest
+  } = ticket;
+
+  return {
+    firstParty: customerName,
+    shipper: {
+      company: shipperCompany,
+      name: shipperName,
+      address: shipperAddress,
+      phoneNum: shipperPhoneNumber,
+      postalCode: shipperPostalCode,
+    },
+    shipmentDetails: {
+      specialInst: specialInstructions,
+      bolNum: BOLNumber,
+      weight,
+      numPieces: claimedNumberOfPieces,
+      barcode: barcodeNumber,
+      refNum: houseReferenceNumber,
+    },
+    consignee: {
+      company: consigneeCompany,
+      name: consigneeName,
+      address: consigneeAddress,
+      phoneNum: consigneePhoneNumber,
+      postalCode: consigneePostalCode,
+    },
+    isPickup: true,
+    ...rest,
+    // enterIntoInventory: true,
+  };
+}
