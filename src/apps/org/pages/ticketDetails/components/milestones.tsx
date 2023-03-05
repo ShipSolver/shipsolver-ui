@@ -4,6 +4,7 @@ import { CardColumn, Container } from "./cardColumn";
 import { fetchMilestones } from "../../../../../services/ticketServices";
 import useLoadable from "../../../../../utils/useLoadable";
 import Loading from "../../../../../components/loading";
+import { Paper } from "@mui/material";
 export interface MilestoneType {
   description: string;
   dateAndTime: Date;
@@ -20,8 +21,8 @@ export const Milestones = ({ ticketId }: MilestonesProps) => {
     error,
   } = useLoadable(fetchMilestones, ticketId);
 
-  const milestoneCards = milestones?.map(({ description, dateAndTime }) => [
-    <div>
+  const milestoneCards = milestones?.map(({ description, dateAndTime }) => (
+    <Paper sx={{marginBottom: "8px"}}>
       <Typography>
         <b>Description:</b> {description}
       </Typography>
@@ -32,12 +33,12 @@ export const Milestones = ({ ticketId }: MilestonesProps) => {
       <Typography>
             <b>Time:</b> {dateAndTime.toLocaleTimeString("en-CA", { hour12: false })}
         </Typography>
-    </div>,
-  ]);
+    </Paper>
+  ));
 
   return (
     <CardColumn
-      $customHeight="350px"
+      $height="370px"
       title="Milestones"
       cardContents={milestoneCards}
       error={error ? "There was an error fecthing milestones!" : undefined}

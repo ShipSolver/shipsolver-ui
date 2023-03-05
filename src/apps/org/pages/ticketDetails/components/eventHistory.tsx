@@ -1,6 +1,7 @@
 import React from "react";
 import Typography from "@mui/material/Typography";
 import { CardColumn } from "./cardColumn";
+import { Paper } from "@mui/material";
 
 export type EventHistoryType = {
   user?: string;
@@ -21,7 +22,7 @@ export const EventHistory = ({
 }: EventHistoryProps) => {
   const eventHistoryCards = ticketEdits?.map(
     ({ user, userRole, actions, dateAndTime }) => (
-      <div>
+      <Paper sx={{ marginBottom: "8px" }}>
         <Typography>
           <b>User:</b> {user}
         </Typography>
@@ -40,14 +41,14 @@ export const EventHistory = ({
         <Typography>
             <b>Time:</b> {dateAndTime?.toLocaleTimeString("en-CA", { hour12: false })}
         </Typography>
-      </div>
+      </Paper>
     )
   );
 
   return (
     <CardColumn
       title="Edits"
-      $customHeight="325px"
+      $height="350px"
       cardContents={eventHistoryCards}
       loading={loading}
       error={error ? "There was an error fecthing ticket edits!" : undefined}

@@ -1,14 +1,8 @@
 import React, { useState } from "react";
 
 import Typography from "@mui/material/Typography";
-import Card from "@mui/material/Card";
 import Paper from "../../../../../components/roundedPaper";
-import { styled } from "@mui/material/styles";
 import { CardColumn } from "../../ticketDetails/components";
-import { TestTicket } from "../test/testData";
-import { TicketInformationStateType } from "../../ticketDetails/components/ticketInformation/types";
-import { selectedTicketIDAtom } from "../state/selectedTicketState";
-import { useSetRecoilState, useRecoilValue } from "recoil";
 import { fetchTicketsForStatus } from "../../../../../services/ticketServices";
 import useLoadable from "../../../../../utils/useLoadable";
 import { Ticket } from "../../../../../services/types";
@@ -18,7 +12,7 @@ interface SelectDeliveryProps {
   onSelectTicket: (ticket: Ticket) => void;
 }
 
-export const SelectDelivery = ({ onSelectTicket }: SelectDeliveryProps) => {
+const SelectDeliveryBase = ({ onSelectTicket }: SelectDeliveryProps) => {
   const {
     val: response,
     loading,
@@ -59,13 +53,13 @@ export const SelectDelivery = ({ onSelectTicket }: SelectDeliveryProps) => {
     <CardColumn
       title="Select Delivery"
       cardContents={selectDeliveryCards}
-      isEditable
-      fullHeight
-      customPadding="16px 16px 0px 16px"
       loading={loading}
       error={
         error ? "There was an error fetching completed deliveries" : undefined
       }
+      $height="696px"
     />
   );
 };
+
+export const SelectDelivery = React.memo(SelectDeliveryBase);

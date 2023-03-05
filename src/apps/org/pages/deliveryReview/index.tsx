@@ -1,125 +1,117 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   fetchTicket,
   approveDelivery,
   rejectDelivery,
 } from "../../../../services/ticketServices";
-import { useParams } from "react-router-dom";
-import useLoadable from "../../../../utils/useLoadable";
 import { styled } from "@mui/material/styles";
 import Brand from "../../../../ShipSolverBrand";
 
-import { Grid, Typography, Box, Button } from "@mui/material";
+import { Grid, Box, Button, Snackbar } from "@mui/material";
 import { POD, CustomerSignature, Pictures } from "../ticketDetails/components";
 import { IncompleteDelivery } from "./components/incompleteDelivery";
 import { Spacer } from "../../../../components/spacer";
 import { TicketInformation } from "../ticketDetails/components";
 
-import { useSetRecoilState } from "recoil";
-import { commoditiesAtom } from "../ticketDetails/state/commodityState";
-
-import Loading from "../../../../components/loading";
-import { TestTicket } from "./test/testData";
 import { SelectDelivery } from "./components/selectDelivery";
 import { ColoredButton } from "../../../../components/coloredButton";
 import { TicketInformationStateType } from "../ticketDetails/components/ticketInformation/types";
-import { selectedTicketIDAtom } from "./state/selectedTicketState";
-import { useRecoilValue } from "recoil";
-import { fetchTicketsForStatus } from "../../../../services/ticketServices";
+import { convertTicketToTicketInformation } from "../../../../services/ticketServices";
+import { Ticket } from "../../../../services/types";
+import MuiAlert from "@mui/material/Alert";
 
 interface IDeliveryReview {
   completeDelivery?: boolean;
 }
 export const DeliveryReview = ({ completeDelivery }: IDeliveryReview) => {
-  //   const setCommodities = useSetRecoilState(commoditiesAtom);
-  //   let { ticketId } = useParams();
-
-  //   const {
-  //     val: ticketInfo,
-  //     loading,
-  //     error,
-  //   } = useLoadable(fetchTicket, ticketId ?? "");
-
-  //   if (loading || ticketInfo == null) {
-  //     return (
-  //       <Container>
-  //         <Loading />
-  //       </Container>
-  //     );
-  //   }
-
-  //   setCommodities(ticketInfo[1]);
-
   const [selectedTicket, setSelectedTicket] =
     useState<TicketInformationStateType | undefined>();
-  const selectedTicketID = useRecoilValue(selectedTicketIDAtom);
 
-  useEffect(() => {
-    (async () => {
-      if (selectedTicketID) {
-        const ticket = TestTicket[Number(selectedTicketID) - 1];
-        setSelectedTicket(ticket);
-      } else {
-        setSelectedTicket(undefined);
-      }
-    })();
-  }, [selectedTicket, selectedTicketID, setSelectedTicket]);
+  const [success, setSuccess] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleClose = () => {
+    if (success) {
+      setSuccess(null);
+    }
+
+    if (error) {
+      setError(null);
+    }
+  };
+
+  console.log(selectedTicket);
 
   return (
     <Container>
-      <Grid container spacing={2} columns={24}>
-        <Grid item xs={8}>
-          <SelectDelivery onSelectTicket={() => {}} />
+      <Grid container spacing={6} xs={12}>
+        <Grid item xs={4}>
+          <SelectDelivery
+            onSelectTicket={(ticket: Ticket) => {
+              setSelectedTicket(convertTicketToTicketInformation(ticket));
+            }}
+          />
         </Grid>
-        <Grid item xs={16} spacing={2}>
+        <Grid item xs={8}>
           <Wrapper>
             <TicketInformation
               data={selectedTicket}
               deliveryReviewComplete={completeDelivery}
+              key={selectedTicket?.ticketId}
             />
           </Wrapper>
           <Spacer height="18px" />
         </Grid>
         {completeDelivery ? (
           <>
-            <Grid item xs={6}>
+            <Grid item xs={3}>
               <FormWrap>
                 <POD />
               </FormWrap>
             </Grid>
 
-            <Grid item xs={6}>
+            <Grid item xs={3}>
               <FormWrap>
                 <CustomerSignature />
               </FormWrap>
             </Grid>
 
-            <Grid item xs={6}>
+            <Grid item xs={3}>
               <FormWrap>
                 <Pictures />
               </FormWrap>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={3}>
               <ButtonWrapper>
                 <Button
-                  onClick={() => {
-                    if (selectedTicketID) {
-                      approveDelivery(selectedTicketID);
+                  onClick={async () => {
+                    let error = await approveDelivery(
+                      selectedTicket!.ticketId!
+                    );
+                    if (!error) {
                       setSelectedTicket(undefined);
+                      setSuccess("Successfully approved POD");
+                    } else {
+                      setError(error);
                     }
                   }}
                   variant="outlined"
+                  disabled={!selectedTicket?.ticketId}
                 >
                   Approve POD
                 </Button>
                 <Button
-                  onClick={() => {
-                    if (selectedTicketID) {
-                      rejectDelivery(selectedTicketID);
+                  onClick={async () => {
+                    let error = await rejectDelivery(selectedTicket!.ticketId!);
+                    if (!error) {
                       setSelectedTicket(undefined);
+                      setSuccess("Succesfully rejected POD");
+                    } else {
+                      setError(error);
                     }
                   }}
                   variant="outlined"
+                  disabled={!selectedTicket?.ticketId}
                 >
                   Reject POD
                 </Button>
@@ -136,14 +128,6 @@ export const DeliveryReview = ({ completeDelivery }: IDeliveryReview) => {
               </FormWrap>
             </Grid>
             <Grid item xs={8}>
-              {/* <div
-                  style={{
-                    height: "100%",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "space-between",
-                  }}
-                > */}
               <ButtonWrapper>
                 <ColoredButton
                   color="#C5FAD180"
@@ -151,11 +135,33 @@ export const DeliveryReview = ({ completeDelivery }: IDeliveryReview) => {
                 />
                 <ColoredButton color="#FAC5C580" label="Delete Ticket" />
               </ButtonWrapper>
-              {/* </div> */}
             </Grid>
           </>
         )}
       </Grid>
+      <Snackbar
+        open={!!success || !!error}
+        autoHideDuration={6000}
+        onClose={handleClose}
+      >
+        {success ? (
+          <MuiAlert
+            severity="success"
+            onClose={handleClose}
+            sx={{ width: "100%" }}
+          >
+            {success}
+          </MuiAlert>
+        ) : (
+          <MuiAlert
+            severity="error"
+            onClose={handleClose}
+            sx={{ width: "100%" }}
+          >
+            {error}
+          </MuiAlert>
+        )}
+      </Snackbar>
     </Container>
   );
 };

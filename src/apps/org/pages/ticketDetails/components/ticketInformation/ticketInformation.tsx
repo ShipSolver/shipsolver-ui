@@ -67,21 +67,15 @@ export const TicketInformation = ({
   const [commodities, setcommodities] = useRecoilState(commoditiesAtom);
   const { ticketId } = useParams();
   const [newTicketId, setNewTicketId] = useState<string | undefined>();
-  const [deliveryReceiptURL, setDeliveryReceiptURL] =
-    useState<string | undefined>();
   const user = useGetUserInfo();
+  const [rerender, setRerender] = useState(false);
+
 
   useEffect(() => {
     return () => {
       setcommodities(null);
     };
   }, []);
-
-  useEffect(() => {
-    if (data != null) {
-      formData.current = data;
-    }
-  }, [data]);
 
   const handleClearClick = () => {
     formData.current = EMPTY_DATA;
