@@ -275,9 +275,11 @@ export const createTicket = async ({
   firstParty,
   deliveryReceiptS3Path,
   pieces,
-  deliveryRecieptLink,
   ...rest
 }: TicketType): Promise<number | string> => {
+
+  delete rest.deliveryRecieptLink;
+
   const payload = JSON.stringify({
     customerName: firstParty,
     shipperCompany: shipper.company,
