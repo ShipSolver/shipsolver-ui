@@ -30,7 +30,7 @@ export const TicketDetails = () => {
     val: ticketInfo = [TestTicketInformation, TestCommodities],
     loading,
     error,
-  } = useLoadable(fetchTicket, ticketId);
+  } = useLoadable(fetchTicket, +(ticketId ?? -1));
 
   const {
     val: ticketEdits,

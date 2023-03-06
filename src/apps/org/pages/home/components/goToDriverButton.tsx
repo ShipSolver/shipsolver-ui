@@ -12,7 +12,7 @@ interface IGoToDriver {
   selected: { [key: string]: boolean };
 }
 
-export function GoToDriver({ selected, numSelected }: IGoToDriver) {
+export function GoToDriverButton({ selected, numSelected }: IGoToDriver) {
   const navigate = useNavigate();
 
   const setFilter = useSetRecoilState(filterAtom);

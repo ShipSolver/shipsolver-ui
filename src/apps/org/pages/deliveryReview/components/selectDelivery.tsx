@@ -13,15 +13,23 @@ import { useSetRecoilState } from "recoil";
 interface SelectDeliveryProps {
   onSelectTicket: (ticket: Ticket) => void;
   completeDelivery?: boolean;
+  defaultTicketId?: string;
 }
 
-const SelectDeliveryBase = ({ onSelectTicket, completeDelivery }: SelectDeliveryProps) => {
+const SelectDeliveryBase = ({
+  onSelectTicket,
+  completeDelivery,
+  defaultTicketId,
+}: SelectDeliveryProps) => {
   const {
     val: response,
     loading,
     error,
     triggerRefetch,
-  } = useLoadable(fetchTicketsForStatus, completeDelivery ? "completed_delivery" : "incomplete_delivery");
+  } = useLoadable(
+    fetchTicketsForStatus,
+    completeDelivery ? "completed_delivery" : "incomplete_delivery"
+  );
 
   const setRefetch = useSetRecoilState(completedTicketsRefetchAtom);
 
@@ -29,7 +37,17 @@ const SelectDeliveryBase = ({ onSelectTicket, completeDelivery }: SelectDelivery
     setRefetch(triggerRefetch);
   }, [triggerRefetch]);
 
-  const [selected, setSelected] = useState<number>(-1);
+  useEffect(() => {
+    if (defaultTicketId && response) {
+      onSelectTicket(
+        response.tickets.filter(
+          ({ ticketId }) => ticketId === +defaultTicketId
+        )[0]
+      );
+    }
+  }, [response]);
+
+  const [selected, setSelected] = useState<number>(+(defaultTicketId ?? -1));
 
   const selectDeliveryCards = response?.tickets.map((ticket) => (
     <Paper

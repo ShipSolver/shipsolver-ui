@@ -39,7 +39,7 @@ function AppRouter() {
             }
           />
           <Route
-            path="pod-review"
+            path="pod-review/:ticketId?"
             element={
               <Suspense fallback={<Loading />}>
                 <LazyDeliveryReview completeDelivery />

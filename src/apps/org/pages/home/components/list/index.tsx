@@ -73,6 +73,7 @@ export function List({ listTitle, listType, fetch, args }: IList) {
             " " +
             ticket.ticketStatus.user.lastName
           : "",
+        ticket.ticketStatus.assignedTo ? "pendingApproval" : "approved",
       ].join("_");
 
       return (

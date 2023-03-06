@@ -11,7 +11,9 @@ import { DeleteTicketModal } from "../deleteTicketModal";
 import { refetchAtom } from "../../state/refetchAtom";
 import { useRecoilValue } from "recoil";
 import { checkIntoInventory } from "../../../../../../services/ticketServices";
-import { GoToDriver } from "../goToDriver";
+import { GoToDriverButton } from "../goToDriverButton";
+import { ReviewPODButton } from "../reviewPODButton";
+
 import "./menu.css";
 
 interface ITicketMenu {
@@ -38,7 +40,7 @@ export function TicketMenu({
             buttonText="Assign to driver"
             listItem
             getTicketIDs={() =>
-              getTicketIds(selected).map((id) => id.split("_")[0])
+              getTicketIds(selected).map((id) => +id.split("_")[0])
             }
             triggerRefetch={() => {
               refetch.assigned?.();
@@ -49,19 +51,21 @@ export function TicketMenu({
       }
       case "inProgress":
       case "assigned": {
-        return <GoToDriver selected={selected} numSelected={numSelected} />;
+        return (
+          <GoToDriverButton selected={selected} numSelected={numSelected} />
+        );
       }
       case "incomplete": {
         return (
           <>
-            <GoToDriver selected={selected} numSelected={numSelected} />
+            <GoToDriverButton selected={selected} numSelected={numSelected} />
             <Divider sx={{ borderBottomWidth: 2 }} />
             <ListItemButton>
               <Typography
                 className="menu-text-typography"
                 onClick={() => {
                   checkIntoInventory(
-                    getTicketIds(selected).map((id) => id.split("_")[0])
+                    getTicketIds(selected).map((id) => +id.split("_")[0])
                   );
                   refetch.inventory?.();
                   refetchSelf();
@@ -71,7 +75,7 @@ export function TicketMenu({
               </Typography>
             </ListItemButton>
             <Divider sx={{ borderBottomWidth: 2 }} />
-            <ListItemButton>
+            <ListItemButton onClick={() => navigate("/incomplete-delivery-review")}>
               <Typography className="menu-text-typography">
                 Review incomplete delivery
               </Typography>
@@ -82,19 +86,9 @@ export function TicketMenu({
       case "delivered": {
         return (
           <>
-            <GoToDriver selected={selected} numSelected={numSelected} />
+            <GoToDriverButton selected={selected} numSelected={numSelected} />
             <Divider sx={{ borderBottomWidth: 2 }} />
-            <ListItemButton disabled={numSelected > 1}>
-              <Typography className="menu-text-typography">
-                Approve POD
-              </Typography>
-            </ListItemButton>
-            <Divider sx={{ borderBottomWidth: 2 }} />
-            <ListItemButton>
-              <Typography className="menu-text-typography">
-                Review completed delivery
-              </Typography>
-            </ListItemButton>
+            <ReviewPODButton selected={selected} numSelected={numSelected} />
           </>
         );
       }

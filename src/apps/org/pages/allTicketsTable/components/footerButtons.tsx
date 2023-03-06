@@ -43,8 +43,7 @@ export const FooterButtons = ({ triggerRefetch }: FooterButtonsProps) => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const handleGetTicketInformation = async () => {
-
-    const ticketIds = getTicketIds(selectedTickets);
+    const ticketIds = getTicketIds(selectedTickets).map((ticket) => +ticket);
     const response = (await fetchTickets(ticketIds)) ?? [];
 
     return response.map((ticket) => {
@@ -67,7 +66,7 @@ export const FooterButtons = ({ triggerRefetch }: FooterButtonsProps) => {
 
   const handleReenterIntoInventory = async () => {
     setLoading(true);
-    const ticketIds = getTicketIds(selectedTickets);
+    const ticketIds = getTicketIds(selectedTickets).map((ticket) => +ticket);
     await checkIntoInventory(ticketIds);
     setLoading(false);
     triggerRefetch();
@@ -78,7 +77,9 @@ export const FooterButtons = ({ triggerRefetch }: FooterButtonsProps) => {
       <Button
         variant="contained"
         disabled={!singleRowSelected}
-        onClick={() => navigate(`/ticket-details/${getTicketIds(selectedTickets)[0]}`)}
+        onClick={() =>
+          navigate(`/ticket-details/${getTicketIds(selectedTickets)[0]}`)
+        }
       >
         {ButtonLabels.ticketDetails}
       </Button>
@@ -94,7 +95,9 @@ export const FooterButtons = ({ triggerRefetch }: FooterButtonsProps) => {
       </Button>
       <AssignToDriverModal
         disabled={!singleRowSelected}
-        getTicketIDs={() => getTicketIds(selectedTickets)}
+        getTicketIDs={() =>
+          getTicketIds(selectedTickets).map((ticket) => +ticket)
+        }
         buttonText={ButtonLabels.assignToDriver}
         triggerRefetch={triggerRefetch}
       />
@@ -117,7 +120,8 @@ const ButtonWrapper = styled("div")`
   justify-content: space-around;
 `;
 
-
-export function getTicketIds(selectedTickets: {[key: string]: boolean}){
-  return Object.entries(selectedTickets).filter(([_, val]) => val).map(([key, _]) => key);
+export function getTicketIds(selectedTickets: { [key: string]: boolean }) {
+  return Object.entries(selectedTickets)
+    .filter(([_, val]) => val)
+    .map(([key, _]) => key);
 }

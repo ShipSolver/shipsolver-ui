@@ -33,7 +33,7 @@ export const fetchAllDrivers = async (): Promise<
 };
 
 export const assignToDriver = async (
-  ticketIDs: string[],
+  ticketIDs: number[],
   driverID: string,
   userID?: string
 ) => {

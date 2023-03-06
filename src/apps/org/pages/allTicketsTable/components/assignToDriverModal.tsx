@@ -10,11 +10,12 @@ import Loading from "../../../../../components/loading";
 import { useGetUserInfo } from "../../../../../state/authentication";
 import useLoadable from "../../../../../utils/useLoadable";
 import ListItemButton from "@mui/material/ListItemButton";
+import { LargeNumberLike } from "crypto";
 
 interface AssignToDriverModalProps {
   disabled?: boolean;
   buttonText: string;
-  getTicketIDs: () => string[];
+  getTicketIDs: () => number[];
   triggerRefetch?: () => void;
   listItem?: boolean;
 }

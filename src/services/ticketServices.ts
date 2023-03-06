@@ -96,7 +96,7 @@ export const fetchAllTickets = async (): Promise<RowType[]> => {
   }
 };
 
-export const fetchTickets = async (ticketIDs: string[]) => {
+export const fetchTickets = async (ticketIDs: number[]) => {
   try {
     const response: { data: any }[] = await Promise.all(
       ticketIDs.map((ticketID) =>
@@ -113,7 +113,7 @@ export const fetchTickets = async (ticketIDs: string[]) => {
 };
 
 export const fetchTicket = async (
-  ticketId?: string
+  ticketId?: number
 ): Promise<[TicketInformationStateType, CommodityType[]] | null> => {
   try {
     const { data }: { data: Ticket } = await axios.get(

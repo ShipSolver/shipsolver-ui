@@ -19,7 +19,7 @@ export const DeleteTicketModal = ({ getTicketIDs, triggerRefetch }: DeleteTicket
 
   const handleDelete = async () => {
     setLoading(true);
-    const res = await deleteTickets(getTicketIDs());
+    const res = await deleteTickets(getTicketIDs().map(ticket => +ticket));
     if (res) {
       setSuccess(true);
       triggerRefetch();

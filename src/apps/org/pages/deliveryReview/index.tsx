@@ -8,13 +8,11 @@ import { styled } from "@mui/material/styles";
 import Brand from "../../../../ShipSolverBrand";
 
 import { Grid, Box, Button, Snackbar, Alert } from "@mui/material";
-import { POD, CustomerSignature, Pictures } from "../ticketDetails/components";
 import { IncompleteDelivery } from "./components/incompleteDelivery";
 import { Spacer } from "../../../../components/spacer";
 import { TicketInformation } from "../ticketDetails/components";
-
+import { useParams } from "react-router-dom";
 import { SelectDelivery } from "./components/selectDelivery";
-import { ColoredButton } from "../../../../components/coloredButton";
 import { TicketInformationStateType } from "../ticketDetails/components/ticketInformation/types";
 import {
   convertTicketToTicketInformation,
@@ -29,6 +27,7 @@ interface IDeliveryReview {
   completeDelivery?: boolean;
 }
 export const DeliveryReview = ({ completeDelivery }: IDeliveryReview) => {
+  const { ticketId } = useParams();
   const [selectedTicket, setSelectedTicket] =
     useState<TicketInformationStateType | undefined>();
 
@@ -151,6 +150,7 @@ export const DeliveryReview = ({ completeDelivery }: IDeliveryReview) => {
             onSelectTicket={(ticket: Ticket) => {
               setSelectedTicket(convertTicketToTicketInformation(ticket));
             }}
+            defaultTicketId={ticketId}
           />
         </Grid>
         <Grid item xs={8}>
