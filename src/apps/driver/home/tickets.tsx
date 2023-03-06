@@ -61,7 +61,7 @@ export const Tickets = ({
 
           return (
             <Paper variant="outlined">
-              <Typography variant="h4" marginBottom="5px">
+              <Typography variant="h6" marginBottom="5px">
                 <b>{ticket.consigneeAddress}</b>
               </Typography>
               <Typography>

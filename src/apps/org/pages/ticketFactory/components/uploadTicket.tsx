@@ -144,6 +144,7 @@ export const UploadTicket = () => {
           <TealBackground>
             <Typography color="error">{error}</Typography>
             <TicketInformation
+              hideDR
               data={ticketInformation[pageNum - 1]}
               newTicketDeliveryReceipt
             />
