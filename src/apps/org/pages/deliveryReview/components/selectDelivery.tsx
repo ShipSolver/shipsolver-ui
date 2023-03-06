@@ -12,15 +12,16 @@ import { useSetRecoilState } from "recoil";
 
 interface SelectDeliveryProps {
   onSelectTicket: (ticket: Ticket) => void;
+  completeDelivery?: boolean;
 }
 
-const SelectDeliveryBase = ({ onSelectTicket }: SelectDeliveryProps) => {
+const SelectDeliveryBase = ({ onSelectTicket, completeDelivery }: SelectDeliveryProps) => {
   const {
     val: response,
     loading,
     error,
     triggerRefetch,
-  } = useLoadable(fetchTicketsForStatus, "completed_delivery");
+  } = useLoadable(fetchTicketsForStatus, completeDelivery ? "completed_delivery" : "incomplete_delivery");
 
   const setRefetch = useSetRecoilState(completedTicketsRefetchAtom);
 

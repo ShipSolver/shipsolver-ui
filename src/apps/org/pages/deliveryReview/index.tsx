@@ -1,4 +1,4 @@
-import React, { useState, useMemo} from "react";
+import React, { useState, useMemo } from "react";
 import {
   fetchTicket,
   approveDelivery,
@@ -16,7 +16,11 @@ import { TicketInformation } from "../ticketDetails/components";
 import { SelectDelivery } from "./components/selectDelivery";
 import { ColoredButton } from "../../../../components/coloredButton";
 import { TicketInformationStateType } from "../ticketDetails/components/ticketInformation/types";
-import { convertTicketToTicketInformation } from "../../../../services/ticketServices";
+import {
+  convertTicketToTicketInformation,
+  checkIntoInventory,
+  deleteTickets,
+} from "../../../../services/ticketServices";
 import { Ticket } from "../../../../services/types";
 import { CompletedDeliveryFiles } from "./components/completedDeliveryFiles";
 import { useRecoilValue } from "recoil";
@@ -60,6 +64,7 @@ export const DeliveryReview = ({ completeDelivery }: IDeliveryReview) => {
                   );
                   if (!error) {
                     setSelectedTicket(undefined);
+                    refetch();
                     setSuccess("Successfully approved POD");
                   } else {
                     setError(error);
@@ -94,16 +99,43 @@ export const DeliveryReview = ({ completeDelivery }: IDeliveryReview) => {
 
     return (
       <>
-        <Grid item xs={8}></Grid>
-        <Grid item xs={8}>
-          <FormWrap>
-            <IncompleteDelivery />
-          </FormWrap>
-        </Grid>
-        <Grid item xs={8}>
+        <IncompleteDelivery ticketId={selectedTicket?.ticketId} />
+        <Grid item xs={3}>
           <ButtonWrapper>
-            <ColoredButton color="#C5FAD180" label="Re-enter Into Inventory" />
-            <ColoredButton color="#FAC5C580" label="Delete Ticket" />
+            <Button
+              onClick={async () => {
+                const error = await checkIntoInventory([
+                  selectedTicket!.ticketId!,
+                ]);
+                if (!error) {
+                  setSelectedTicket(undefined);
+                  refetch();
+                  setSuccess("Successfully checked into inventory");
+                } else {
+                  setError(error);
+                }
+              }}
+              variant="outlined"
+              disabled={!selectedTicket?.ticketId}
+            >
+              Re-enter into inventory
+            </Button>
+            <Button
+              onClick={async () => {
+                const error = await deleteTickets([selectedTicket!.ticketId!]);
+                if (!error) {
+                  setSelectedTicket(undefined);
+                  refetch();
+                  setSuccess("Succesfully deleted POD");
+                } else {
+                  setError(error);
+                }
+              }}
+              variant="outlined"
+              disabled={!selectedTicket?.ticketId}
+            >
+              Delete ticket
+            </Button>
           </ButtonWrapper>
         </Grid>
       </>
@@ -113,25 +145,26 @@ export const DeliveryReview = ({ completeDelivery }: IDeliveryReview) => {
   return (
     <Container>
       <Grid container spacing={6} xs={12}>
-          <Grid item xs={4}>
-            <SelectDelivery
-              onSelectTicket={(ticket: Ticket) => {
-                setSelectedTicket(convertTicketToTicketInformation(ticket));
-              }}
+        <Grid item xs={4}>
+          <SelectDelivery
+            completeDelivery={completeDelivery}
+            onSelectTicket={(ticket: Ticket) => {
+              setSelectedTicket(convertTicketToTicketInformation(ticket));
+            }}
+          />
+        </Grid>
+        <Grid item xs={8}>
+          <Wrapper>
+            <TicketInformation
+              data={selectedTicket}
+              deliveryReviewComplete={completeDelivery}
+              deliveryReviewIncomplete={!completeDelivery}
+              key={selectedTicket?.ticketId}
             />
-          </Grid>
-          <Grid item xs={8}>
-            <Wrapper>
-              <TicketInformation
-                data={selectedTicket}
-                deliveryReviewComplete={completeDelivery}
-                key={selectedTicket?.ticketId}
-              />
-            </Wrapper>
-            <Spacer height="18px" />
-          </Grid>
-          {footerContent}
-
+          </Wrapper>
+          <Spacer height="18px" />
+        </Grid>
+        {footerContent}
       </Grid>
       <Snackbar
         open={!!success || !!error}

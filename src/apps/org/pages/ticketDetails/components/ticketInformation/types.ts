@@ -39,13 +39,8 @@ export type TicketInformationStateType = {
   consignee: {
     [key in ConsigneeFields]: string;
   };
-  isPickup: boolean;
   noSignatureRequired?: boolean;
   tailgateAuthorized?: boolean;
-  id?: string;
-  podUrls?: string[];
-  customerSignatureUrls?: string[];
-  pictureUrls?: string[];
   deliveryReceiptS3Path?: string;
   deliveryReceiptLink?: string;
   ticketId?: number;
@@ -87,7 +82,6 @@ export const EMPTY_DATA: TicketInformationStateType = {
   ) as {
     [key in ConsigneeFields]: string;
   },
-  isPickup: false,
   noSignatureRequired: false,
   tailgateAuthorized: false,
 };

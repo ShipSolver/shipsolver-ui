@@ -275,8 +275,6 @@ export const createTicket = async ({
   firstParty,
   deliveryReceiptS3Path,
   pieces,
-  deliveryReceiptLink,
-  isPickup,
   noSignatureRequired,
   tailgateAuthorized,
 }: TicketType): Promise<number | string> => {
@@ -300,7 +298,6 @@ export const createTicket = async ({
     consigneePostalCode: consignee.postalCode,
     orderS3Link: deliveryReceiptS3Path,
     pieces,
-    isPickup,
     noSignatureRequired,
     tailgateAuthorized,
   });
@@ -479,9 +476,9 @@ export const approveDelivery = async (
   }
 };
 
-export const checkIntoInventory = async (ticketIDs: string[]) => {
+export const checkIntoInventory = async (ticketIDs: number[]) => {
   try {
-    const response: any = await Promise.all(
+    await Promise.all(
       ticketIDs.map((ticketId) =>
         axios.post("/api/milestones/InventoryMilestones", {
           withCredentials: false,
@@ -493,21 +490,20 @@ export const checkIntoInventory = async (ticketIDs: string[]) => {
         })
       )
     );
+    return null;
   } catch (e) {
-    console.error(e);
-    return e;
+    return "Failed to check into inventory";
   }
 };
 
-export const deleteTickets = async (ticketIDs: string[]) => {
+export const deleteTickets = async (ticketIDs: number[]) => {
   try {
     await Promise.all(
       ticketIDs.map((ticketID) => axios.delete(`/api/ticket/${ticketID}`))
     );
-    return 1;
+    return null;
   } catch (e) {
-    console.error(e);
-    return 0;
+    return "Failed to delete ticket";
   }
 };
 
@@ -559,7 +555,6 @@ export function convertTicketToTicketInformation(
       phoneNum: consigneePhoneNumber,
       postalCode: consigneePostalCode,
     },
-    isPickup: true,
     deliveryReceiptLink: orderS3Link,
     ...rest,
   };
@@ -569,6 +564,20 @@ export const fetchCompletedDeliveryFiles = async (ticketId: number) => {
   try {
     const { data } = await axios.get(
       `/api/milestones/DeliveryMilestones/${ticketId}`,
+      {
+        withCredentials: false,
+      }
+    );
+    return data[0];
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+export const fetchIncompletedDeliveryReasons = async (ticketId: number) => {
+  try {
+    const { data } = await axios.get(
+      `/api/milestones/IncompleteDeliveryMilestones/${ticketId}`,
       {
         withCredentials: false,
       }

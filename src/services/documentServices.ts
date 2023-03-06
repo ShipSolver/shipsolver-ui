@@ -109,7 +109,6 @@ export const checkStatus = async (
                 phoneNum: consigneePhoneNumber,
                 postalCode: consigneePostalCode,
               },
-              isPickup: true,
               deliveryReceiptS3Path: orderS3Path,
               deliveryReceiptLink: orderS3Link
             },

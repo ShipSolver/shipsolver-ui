@@ -218,28 +218,11 @@ export const TicketInformation = ({
           {formData.current.deliveryReceiptLink ? (
             <DeliveryReceiptModal
               url={formData.current.deliveryReceiptLink}
-              buttonText={deliveryReviewComplete ? "View DR" : "View PDF"}
+              buttonText="View DR"
             />
           ) : null}
           {!deliveryReview ? (
             <InputContainer>
-              <SpecialInputField>
-                <Checkbox
-                  disabled={!isEditable}
-                  defaultChecked={formData.current.isPickup}
-                  onClick={(e) => {
-                    formData.current = {
-                      ...formData.current,
-                      isPickup: (e.target as HTMLInputElement).checked,
-                    };
-                  }}
-                />
-                <Spacer width="16px" />
-                <Typography sx={{ fontSize: "18px", margin: "auto 0" }}>
-                  Pickup?
-                </Typography>
-              </SpecialInputField>
-
               <SpecialInputField>
                 <Checkbox
                   disabled={!isEditable}

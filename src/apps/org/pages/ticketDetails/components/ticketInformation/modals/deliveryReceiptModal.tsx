@@ -21,6 +21,7 @@ export function DeliveryReceiptModal({
         type="button"
         variant="contained"
         size="small"
+        style={{fontSize: "16px"}}
         onClick={() => setOpen(true)}
       >
         {buttonText}
