@@ -215,9 +215,9 @@ export const TicketInformation = ({
             flexDirection: "row-reverse",
           }}
         >
-          {formData.current.deliveryRecieptLink ? (
+          {formData.current.deliveryReceiptLink ? (
             <DeliveryReceiptModal
-              url={formData.current.deliveryRecieptLink}
+              url={formData.current.deliveryReceiptLink}
               buttonText={deliveryReviewComplete ? "View DR" : "View PDF"}
             />
           ) : null}

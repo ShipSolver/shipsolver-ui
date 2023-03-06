@@ -275,7 +275,7 @@ export const createTicket = async ({
   firstParty,
   deliveryReceiptS3Path,
   pieces,
-  deliveryRecieptLink,
+  deliveryReceiptLink,
   isPickup,
   noSignatureRequired,
   tailgateAuthorized,
@@ -560,7 +560,7 @@ export function convertTicketToTicketInformation(
       postalCode: consigneePostalCode,
     },
     isPickup: true,
-    deliveryRecieptLink: orderS3Link,
+    deliveryReceiptLink: orderS3Link,
     ...rest,
   };
 }
