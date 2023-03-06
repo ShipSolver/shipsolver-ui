@@ -71,6 +71,10 @@ export const Home = () => {
         setError(error);
       } else {
         setSuccess("Successfully completed shift");
+        triggerRefetchAssigned();
+        triggerRefetchInTransit();
+        triggerRefetchCompleted();
+        triggerRefetchIncompleted();
       }
     }
   };
@@ -163,7 +167,7 @@ export const Home = () => {
           <InnerBlueDivBox style={{ maxHeight: "90vh" }}>
             <Grid container justifyContent="space-between">
               <Typography variant="h2" color="#000" alignContent="left">
-                InComplete
+                Incomplete
               </Typography>
               <Typography variant="h2" color="#000" alignContent="right">
                 {String(incompleteCount ?? 0)}

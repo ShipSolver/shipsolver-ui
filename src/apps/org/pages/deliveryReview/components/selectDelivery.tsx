@@ -3,53 +3,37 @@ import React, { useState, useEffect } from "react";
 import Typography from "@mui/material/Typography";
 import Paper from "../../../../../components/roundedPaper";
 import { CardColumn } from "../../ticketDetails/components";
-import { fetchTicketsForStatus } from "../../../../../services/ticketServices";
-import useLoadable from "../../../../../utils/useLoadable";
+
 import { Ticket } from "../../../../../services/types";
 import "./selectDelivery.css";
-import { completedTicketsRefetchAtom } from "../state/refetchAtom";
-import { useSetRecoilState } from "recoil";
 
 interface SelectDeliveryProps {
   onSelectTicket: (ticket: Ticket) => void;
   completeDelivery?: boolean;
   defaultTicketId?: string;
+  tickets?: Ticket[];
+  loading: boolean;
+  error: boolean;
 }
 
 const SelectDeliveryBase = ({
   onSelectTicket,
-  completeDelivery,
   defaultTicketId,
+  tickets,
+  loading,
+  error,
 }: SelectDeliveryProps) => {
-  const {
-    val: response,
-    loading,
-    error,
-    triggerRefetch,
-  } = useLoadable(
-    fetchTicketsForStatus,
-    completeDelivery ? "completed_delivery" : "incomplete_delivery"
-  );
-
-  const setRefetch = useSetRecoilState(completedTicketsRefetchAtom);
-
   useEffect(() => {
-    setRefetch(triggerRefetch);
-  }, [triggerRefetch]);
-
-  useEffect(() => {
-    if (defaultTicketId && response) {
+    if (defaultTicketId && tickets) {
       onSelectTicket(
-        response.tickets.filter(
-          ({ ticketId }) => ticketId === +defaultTicketId
-        )[0]
+        tickets.filter(({ ticketId }) => ticketId === +defaultTicketId)[0]
       );
     }
-  }, [response]);
+  }, [tickets]);
 
   const [selected, setSelected] = useState<number>(+(defaultTicketId ?? -1));
 
-  const selectDeliveryCards = response?.tickets.map((ticket) => (
+  const selectDeliveryCards = tickets?.map((ticket) => (
     <Paper
       onClick={() => {
         setSelected(ticket.ticketId);
