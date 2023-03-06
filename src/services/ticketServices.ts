@@ -275,11 +275,11 @@ export const createTicket = async ({
   firstParty,
   deliveryReceiptS3Path,
   pieces,
-  ...rest
+  deliveryRecieptLink,
+  isPickup,
+  noSignatureRequired,
+  tailgateAuthorized,
 }: TicketType): Promise<number | string> => {
-
-  delete rest.deliveryRecieptLink;
-
   const payload = JSON.stringify({
     customerName: firstParty,
     shipperCompany: shipper.company,
@@ -300,7 +300,9 @@ export const createTicket = async ({
     consigneePostalCode: consignee.postalCode,
     orderS3Link: deliveryReceiptS3Path,
     pieces,
-    ...rest,
+    isPickup,
+    noSignatureRequired,
+    tailgateAuthorized,
   });
 
   try {
@@ -562,9 +564,7 @@ export function convertTicketToTicketInformation(
   };
 }
 
-export const fetchCompletedDeliveryFiles = async (
-  ticketId: number
-) => {
+export const fetchCompletedDeliveryFiles = async (ticketId: number) => {
   try {
     const { data } = await axios.get(
       `/api/milestones/DeliveryMilestones/${ticketId}`,
