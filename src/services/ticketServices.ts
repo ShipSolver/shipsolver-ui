@@ -236,27 +236,30 @@ export const uploadTicketImage = async ({ file }: { file: File }) => {
 
 export const markTicketAsDelivered = async ({
   ticketId,
-  picture1Link,
-  PODLink,
-  customerSignatureLink,
   userId,
+  picture1,
+  picture2,
+  customerSignature,
+  POD,
 }: {
   ticketId: string;
-  picture1Link?: string;
-  PODLink: string;
-  customerSignatureLink: string;
+  picture1: string;
+  picture2?: string;
+  POD: string;
+  customerSignature: string;
   userId: string;
 }) => {
   let error: string | null = null;
   try {
     await axios.post("/api/milestones/DeliveryMilestones", {
       ticketId,
-      picture1Link,
-      picture2Link: "",
-      picture3Link: "",
-      PODLink,
-      customerSignatureLink,
       completingUserId: userId,
+      pictures: {
+        "Picture1.jpeg": picture1,
+        ...(picture2 && { "Picture2.jpeg": picture2 }),
+        "Picture3.jpeg": customerSignature,
+        "POD.jpeg": POD,
+      },
     });
   } catch (e: any) {
     error = e?.toString?.() || `Error marking delivery ${ticketId} as complete`;

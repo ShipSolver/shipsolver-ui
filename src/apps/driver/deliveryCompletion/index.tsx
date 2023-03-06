@@ -36,24 +36,24 @@ export type signatureFile = {
   blobData: ImageData;
 };
 
-const blobToFile: (blob: Blob, fileName: string) => File = (
-  blob: Blob,
-  fileName: string
-) => {
-  return new File([blob], fileName, { lastModified: new Date().getTime() });
-};
+// const blobToFile: (blob: Blob, fileName: string) => File = (
+//   blob: Blob,
+//   fileName: string
+// ) => {
+//   return new File([blob], fileName, { lastModified: new Date().getTime() });
+// };
 
-const imageSrcToFile = async (imageSrc: string, fileName: string) => {
-  try {
-    console.log({ imageSrc, fileName });
-    const blob = await fetch(imageSrc).then((r) => r.blob());
-    return blobToFile(blob, fileName);
-  } catch (e: any) {
-    alert(e?.toString?.() || "Error saving blob image");
-  }
+// const imageSrcToFile = async (imageSrc: string, fileName: string) => {
+//   try {
+//     console.log({ imageSrc, fileName });
+//     const blob = await fetch(imageSrc).then((r) => r.blob());
+//     return blobToFile(blob, fileName);
+//   } catch (e: any) {
+//     alert(e?.toString?.() || "Error saving blob image");
+//   }
 
-  return null;
-};
+//   return null;
+// };
 
 export default function DeliveryCompletion() {
   const navigate = useNavigate();
@@ -108,9 +108,21 @@ export default function DeliveryCompletion() {
       signFiles.length > 0
     ) {
       console.log({ podFiles, signFiles, pictureFiles });
+      if (
+        pictureFiles.length < 1 ||
+        podFiles.length < 1 ||
+        signFiles.length < 1
+      ) {
+        alert("Please take all pictures");
+        return;
+      }
       const { error } = await markTicketAsDelivered({
         userId: String(completionDelivery.ticketStatus.assignedTo),
         ticketId: String(completionDelivery.ticketId),
+        picture1: pictureFiles[0].imgSrc,
+        picture2: pictureFiles[1]?.imgSrc,
+        POD: podFiles[0].imgSrc,
+        customerSignature: signFiles[0].imgSrc,
       });
       if (error == null) {
         navigate("/");
