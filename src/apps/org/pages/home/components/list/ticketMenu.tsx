@@ -87,8 +87,6 @@ export function TicketMenu({
         return (
           <>
             <GoToDriverButton selected={selected} numSelected={numSelected} />
-            <Divider sx={{ borderBottomWidth: 2 }} />
-            <ReviewPODButton selected={selected} numSelected={numSelected} />
           </>
         );
       }
