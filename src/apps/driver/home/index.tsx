@@ -1,6 +1,5 @@
+import React, { useState } from "react";
 import Typography from "@mui/material/Typography";
-
-import Grid from "@mui/material/Grid";
 import { Loading } from "../../../components/loading";
 import OuterBlueDivBox from "../components/outerBlueDivBox";
 import InnerBlueDivBox from "../components/innerBlueDivBox";
@@ -8,12 +7,17 @@ import { LargeButton } from "../components/largeButton";
 import { Tickets } from "./tickets";
 import { CurrentDelivery } from "./currentDelivery";
 import { useNavigate } from "react-router-dom";
-import { fetchTicketsForStatus } from "../../../services/ticketServices";
+import { Grid, Box, Button, Snackbar, Alert } from "@mui/material";
+import {
+  fetchTicketsForStatus,
+  moveToIncomplete,
+} from "../../../services/ticketServices";
 
 import useLoadable from "../../../utils/useLoadable";
 
 export const Home = () => {
-  const navigate = useNavigate();
+  const [success, setSuccess] = useState<string | undefined>();
+  const [error, setError] = useState<string | undefined>();
 
   const {
     val: currentDeliveries,
@@ -52,13 +56,32 @@ export const Home = () => {
   const completedCount = completedInfo?.count;
   const incompleteCount = incompleteInfo?.count;
 
-  const handleCompleteShift = () => {
+  const handleCompleteShift = async () => {
     if (assigned != null) {
-      if (assignedCount ?? 0 > 0) {
-        navigate("shift-complete");
+      let error = await moveToIncomplete(
+        assigned.map((ticket) => ({
+          ticketId: ticket.ticketId,
+          oldStatus: "assigned",
+          reasonForIncomplete: "Shift ended",
+          dueToEndedShift: true,
+        }))
+      );
+
+      if (error) {
+        setError(error);
       } else {
-        alert("No outstanding deliveries left to mark");
+        setSuccess("Successfully completed shift");
       }
+    }
+  };
+
+  const handleClose = () => {
+    if (success) {
+      setSuccess(undefined);
+    }
+
+    if (error) {
+      setError(error);
     }
   };
 
@@ -154,6 +177,25 @@ export const Home = () => {
         label="Complete Shift"
         action={() => handleCompleteShift()}
       />
+      <Snackbar
+        open={!!success || !!error}
+        autoHideDuration={6000}
+        onClose={handleClose}
+      >
+        {success ? (
+          <Alert
+            severity="success"
+            onClose={handleClose}
+            sx={{ width: "100%" }}
+          >
+            {success}
+          </Alert>
+        ) : (
+          <Alert severity="error" onClose={handleClose} sx={{ width: "100%" }}>
+            {error}
+          </Alert>
+        )}
+      </Snackbar>
     </div>
   );
 };

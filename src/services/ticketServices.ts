@@ -409,7 +409,7 @@ export const editTicket = async (
 };
 
 interface IMoveToIncomplete {
-  ticketId: string;
+  ticketId: number;
   oldStatus: string;
   reasonForIncomplete: string;
   dueToEndedShift?: boolean;
@@ -439,7 +439,7 @@ export const moveToIncomplete = async (tickets: IMoveToIncomplete[]) => {
     );
   } catch (e) {
     console.error(e);
-    return e;
+    return "There was an error marking the tickets as incomplete";
   }
 };
 
