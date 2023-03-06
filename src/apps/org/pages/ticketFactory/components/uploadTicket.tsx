@@ -67,7 +67,7 @@ export const UploadTicket = () => {
       data.forEach(([ticketInfo, commodity]) => {
         setTicketInformation([...ticketInformation, ticketInfo]);
         setCommodities([...commodities, commodity]);
-        setUrls([...urls, ticketInfo.deliveryRecieptLink!]);
+        setUrls([...urls, ticketInfo.deliveryReceiptLink!]);
       });
       setLoading(false);
       setFlowStage((prev) => prev + 1);

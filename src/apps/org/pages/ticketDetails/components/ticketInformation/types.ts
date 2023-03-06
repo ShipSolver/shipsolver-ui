@@ -47,48 +47,47 @@ export type TicketInformationStateType = {
   customerSignatureUrls?: string[];
   pictureUrls?: string[];
   deliveryReceiptS3Path?: string;
-  deliveryRecieptLink?: string;
+  deliveryReceiptLink?: string;
   ticketId?: number;
 };
 
 export type TicketInformationValidationType = {
-    firstParty?: string;
-    shipper?: {
-      [key in ShipperFields]?: string;
-    };
-    shipmentDetails?: {
-      [key in ShipmentDetailsFields]?: string;
-    };
-    consignee?: {
-      [key in ConsigneeFields]?: string;
-    };
-}
+  firstParty?: string;
+  shipper?: {
+    [key in ShipperFields]?: string;
+  };
+  shipmentDetails?: {
+    [key in ShipmentDetailsFields]?: string;
+  };
+  consignee?: {
+    [key in ConsigneeFields]?: string;
+  };
+};
 
 export interface TicketType extends TicketInformationStateType {
   pieces?: string;
 }
 
-
 export const EMPTY_DATA: TicketInformationStateType = {
-    shipper: Object.keys(ShipperFieldLabels).reduce(
-      (acc, val) => ({...acc, [val]: "" }),
-      {}
-    ) as {
-      [key in ShipperFields]: string;
-    },
-    shipmentDetails: Object.keys(ShipmentDetailsFieldLabels).reduce(
-      (acc, val) => ({...acc, [val]: "" }),
-      {}
-    ) as {
-      [key in ShipmentDetailsFields]: string | number;
-    },
-    consignee: Object.keys(ConsigneeFieldLabels).reduce(
-      (acc, val) => ({...acc, [val]: "" }),
-      {}
-    ) as {
-      [key in ConsigneeFields]: string;
-    },
-    isPickup: false,
-    noSignatureRequired: false,
-    tailgateAuthorized: false,
-  };
+  shipper: Object.keys(ShipperFieldLabels).reduce(
+    (acc, val) => ({ ...acc, [val]: "" }),
+    {}
+  ) as {
+    [key in ShipperFields]: string;
+  },
+  shipmentDetails: Object.keys(ShipmentDetailsFieldLabels).reduce(
+    (acc, val) => ({ ...acc, [val]: "" }),
+    {}
+  ) as {
+    [key in ShipmentDetailsFields]: string | number;
+  },
+  consignee: Object.keys(ConsigneeFieldLabels).reduce(
+    (acc, val) => ({ ...acc, [val]: "" }),
+    {}
+  ) as {
+    [key in ConsigneeFields]: string;
+  },
+  isPickup: false,
+  noSignatureRequired: false,
+  tailgateAuthorized: false,
+};

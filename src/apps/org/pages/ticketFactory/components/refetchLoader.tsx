@@ -10,9 +10,7 @@ import Box from "@mui/material/Box";
 import { TicketInformationStateType } from "../../ticketDetails/components/ticketInformation/types";
 interface RefetchLoaderProps {
   documentID: number;
-  onComplete: (
-    data: [TicketInformationStateType, CommodityType[]][]
-  ) => void;
+  onComplete: (data: [TicketInformationStateType, CommodityType[]][]) => void;
   onError: (error: string) => void;
 }
 
@@ -50,8 +48,6 @@ export const RefetchLoader = ({
   onError,
 }: RefetchLoaderProps) => {
   const [progress, setProgress] = useState<number>(0);
-
-  console.log({ documentID });
 
   useEffect(() => {
     const intervalID = setInterval(async () => {

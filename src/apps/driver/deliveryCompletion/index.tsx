@@ -107,7 +107,6 @@ export default function DeliveryCompletion() {
       podFiles.length > 0 &&
       signFiles.length > 0
     ) {
-      console.log({ podFiles, signFiles, pictureFiles });
       if (
         pictureFiles.length < 1 ||
         podFiles.length < 1 ||
@@ -115,40 +114,6 @@ export default function DeliveryCompletion() {
       ) {
         alert("Please take all pictures");
         return;
-      }
-      const signFileItem = signFiles[0];
-      const signFile = await imageSrcToFile(
-        signFileItem.imgSrc,
-        signFileItem.name
-      );
-      if (signFile == null) return;
-      const { s3Link: s3LinkSignature, error: errorSignature } =
-        await uploadTicketImage({
-          file: signFile,
-        });
-
-      if (errorSignature || s3LinkSignature == null) {
-        alert(errorSignature);
-        return;
-      }
-      let s3LinkExtraPicture: string | null = null;
-      const s3LinkError: string | null = null;
-
-      if (pictureFiles.length > 0) {
-        const extraPictureFileItem = pictureFiles[0];
-        const extraPictureFile = await imageSrcToFile(
-          extraPictureFileItem.imgSrc,
-          extraPictureFileItem.name
-        );
-        if (extraPictureFile == null) return;
-        const { s3Link: s3LinkExtraPictureTemp, error: errorExtraPicture } =
-          await uploadTicketImage({
-            file: extraPictureFile,
-          });
-        s3LinkExtraPicture = s3LinkExtraPictureTemp;
-        if (errorExtraPicture) {
-          alert(errorExtraPicture);
-        }
       }
 
       const { error } = await markTicketAsDelivered({
