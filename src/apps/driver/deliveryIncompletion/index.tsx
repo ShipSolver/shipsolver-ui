@@ -3,6 +3,7 @@ import { DeliveryCompletionTicketAtom } from "../../../state/deliveryCompletion"
 
 import { Navigate, useNavigate } from "react-router-dom";
 import { ReasonsPage, ReasonsType } from "../reasonsPage";
+import { moveToIncomplete } from "../../../services/ticketServices";
 
 export const IncompleteDeliveryReasons: ReasonsType[] = [
   { reason: "Closed", id: "closed" },
@@ -19,9 +20,24 @@ export default function DeliveryInCompletion() {
     DeliveryCompletionTicketAtom
   );
 
-  const handleSubmit = async () => {
-    resetCompletionDelivery();
-    navigate("/");
+  const handleSubmit = (reasonId: string) => {
+    const reason =
+      IncompleteDeliveryReasons.find((reason) => reason.id === reasonId)
+        ?.reason || IncompleteDeliveryReasons[0]?.reason;
+    reason &&
+      completionDelivery &&
+      moveToIncomplete([
+        {
+          ticketId: completionDelivery.ticketId,
+          reasonForIncomplete: reason,
+          oldStatus: completionDelivery.ticketStatus.currentStatus,
+        },
+      ])
+        .catch((e) => alert(e.toString()))
+        .finally(() => {
+          resetCompletionDelivery();
+          navigate("/");
+        });
   };
 
   const handleCancel = async () => {
