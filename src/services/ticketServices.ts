@@ -288,7 +288,7 @@ export const createTicket = async ({
     BOLNumber: shipmentDetails.bolNum,
     specialInstructions: shipmentDetails.specialInst,
     weight: shipmentDetails.weight,
-    claimedNumberOfPieces: pieces?.split(",+-") ?? 0,
+    claimedNumberOfPieces: pieces?.split(",+-").length ?? 0,
     barcodeNumber: shipmentDetails.barcode,
     houseReferenceNumber: shipmentDetails.refNum,
     consigneeCompany: consignee.company,
@@ -297,6 +297,7 @@ export const createTicket = async ({
     consigneePhoneNumber: consignee.phoneNum,
     consigneePostalCode: consignee.postalCode,
     orderS3Link: deliveryReceiptS3Path,
+    pieces
     ...rest,
   });
 
@@ -387,6 +388,7 @@ export const editTicket = async (
     consigneeAddress: consignee.address,
     consigneePhoneNumber: consignee.phoneNum,
     consigneePostalCode: consignee.postalCode,
+    pieces,
     ...rest,
   });
 

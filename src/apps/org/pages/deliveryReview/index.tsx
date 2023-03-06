@@ -19,7 +19,8 @@ import { TicketInformationStateType } from "../ticketDetails/components/ticketIn
 import { convertTicketToTicketInformation } from "../../../../services/ticketServices";
 import { Ticket } from "../../../../services/types";
 import { CompletedDeliveryFiles } from "./components/completedDeliveryFiles";
-
+import { useRecoilValue } from "recoil";
+import { completedTicketsRefetchAtom } from "./state/refetchAtom";
 interface IDeliveryReview {
   completeDelivery?: boolean;
 }
@@ -29,6 +30,7 @@ export const DeliveryReview = ({ completeDelivery }: IDeliveryReview) => {
 
   const [success, setSuccess] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const refetch = useRecoilValue(completedTicketsRefetchAtom);
 
   const handleClose = () => {
     if (success) {
@@ -73,6 +75,7 @@ export const DeliveryReview = ({ completeDelivery }: IDeliveryReview) => {
                   const error = await rejectDelivery(selectedTicket!.ticketId!);
                   if (!error) {
                     setSelectedTicket(undefined);
+                    refetch();
                     setSuccess("Succesfully rejected POD");
                   } else {
                     setError(error);
