@@ -51,7 +51,7 @@ const Canvas = ({
     onClear()
   }, [onClearTrigger])  
 
-  var sizeWidth = (60 * window.innerWidth) / 100,
+  const sizeWidth = (60 * window.innerWidth) / 100,
     sizeHeight = (50 * window.innerHeight) / 100;
 
   return (

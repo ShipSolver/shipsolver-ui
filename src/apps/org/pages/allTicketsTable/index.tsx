@@ -46,7 +46,7 @@ export const AllTicketsTable = () => {
           }
 
           if (key === "date") {
-            let date: Date = moment(row.date, DateFormat).toDate();
+            const date: Date = moment(row.date, DateFormat).toDate();
 
             if (date < (val[0] as Date) || date > (val[1] as Date)) {
               return false;

@@ -4,7 +4,6 @@ import { User } from "../services/types";
 import { CognitoUser } from "amazon-cognito-identity-js";
 import { useRecoilValue } from "recoil";
 import { useEffect, useState } from "react";
-import axios from "axios";
 
 export const UnconfirmedUsernameAtom = atom<string | null>({
   key: "unconfirmedUsernameAtom",

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import Typography from "@mui/material/Typography";
 import Paper from "../../../../../components/roundedPaper";
@@ -7,6 +7,8 @@ import { fetchTicketsForStatus } from "../../../../../services/ticketServices";
 import useLoadable from "../../../../../utils/useLoadable";
 import { Ticket } from "../../../../../services/types";
 import "./selectDelivery.css";
+import { completedTicketsRefetchAtom } from "../state/refetchAtom";
+import { useSetRecoilState } from "recoil";
 
 interface SelectDeliveryProps {
   onSelectTicket: (ticket: Ticket) => void;
@@ -17,7 +19,14 @@ const SelectDeliveryBase = ({ onSelectTicket }: SelectDeliveryProps) => {
     val: response,
     loading,
     error,
+    triggerRefetch,
   } = useLoadable(fetchTicketsForStatus, "completed_delivery");
+
+  const setRefetch = useSetRecoilState(completedTicketsRefetchAtom);
+
+  useEffect(() => {
+    setRefetch(triggerRefetch);
+  }, [triggerRefetch]);
 
   const [selected, setSelected] = useState<number>(-1);
 

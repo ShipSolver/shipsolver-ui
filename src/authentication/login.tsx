@@ -90,7 +90,7 @@ function Login() {
         error={notice && notice != "" ? true : false}
         helperText={notice && notice != "" ? notice : null}
         onChange={(event) => {
-          let emailStr = event.target.value;
+          const emailStr = event.target.value;
           setEmail(emailStr.replace(" ", ""));
           if (!validateEmail(emailStr) && emailStr != "") {
             setNotice("Username is not a valid email");

@@ -13,7 +13,7 @@ const phoneNumberRegex = new RegExp(
 );
 
 const postalCodeRegex = new RegExp(
-  /^((\d{5}-\d{4})|(\d{5})|([A-Z|a-z]\d[A-Z|a-z]\d[A-Z|a-z]\d))$/
+  /^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z][ -]?\d[ABCEGHJ-NPRSTV-Z]\d$/
 );
 
 export function useValidation() {

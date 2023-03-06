@@ -110,7 +110,6 @@ export const checkStatus = async (
                 postalCode: consigneePostalCode,
               },
               isPickup: true,
-              // enterIntoInventory: true,
               deliveryReceiptS3Path: orderS3Path,
               deliveryReceiptLink: orderS3Link
             },

@@ -22,7 +22,7 @@ export const Milestones = ({ ticketId }: MilestonesProps) => {
   } = useLoadable(fetchMilestones, ticketId);
 
   const milestoneCards = milestones?.map(({ description, dateAndTime }) => (
-    <Paper sx={{marginBottom: "8px"}}>
+    <Paper sx={{marginBottom: "8px", padding: "8px"}}>
       <Typography>
         <b>Description:</b> {description}
       </Typography>

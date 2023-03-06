@@ -1,43 +1,30 @@
-import React, { useEffect } from "react";
+import { Grid, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { Typography, Grid } from "@mui/material";
-import Brand from "../../../../ShipSolverBrand";
-import { Spacer } from "../../../../components/spacer";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { Spacer } from "../../../../components/spacer";
 import {
   fetchTicket,
   fetchTicketEdits,
 } from "../../../../services/ticketServices";
+import Brand from "../../../../ShipSolverBrand";
 import {
-  TitlePaper,
-  CommodityType,
-  Milestones,
-  MilestoneType,
-  POD,
-  Pictures,
-  CustomerSignature,
   EventHistory,
-  EventHistoryType,
+  Milestones,
   TicketInformation,
-  // FormWrap,
+  TitlePaper,
 } from "./components";
 
-import { TicketInformationStateType } from "./components/ticketInformation/types";
-import useLoadable from "../../../../utils/useLoadable";
 import { useSetRecoilState } from "recoil";
+import useLoadable from "../../../../utils/useLoadable";
 import { commoditiesAtom } from "./state/commodityState";
 
-import {
-  TestEventHistory,
-  TestTicketInformation,
-  TestMilestones,
-  TestCommodities,
-} from "./test/testData";
 import Loading from "../../../../components/loading";
+import { TestCommodities, TestTicketInformation } from "./test/testData";
 
 export const TicketDetails = () => {
   const setCommodities = useSetRecoilState(commoditiesAtom);
-  let { ticketId } = useParams();
+  const { ticketId } = useParams();
 
   const {
     val: ticketInfo = [TestTicketInformation, TestCommodities],
@@ -86,7 +73,10 @@ export const TicketDetails = () => {
                 Ticket Information
               </Typography>
             </TitlePaper>
-            <TicketInformation data={ticketInfo[0]} refetchTicketEdits={refetchTicketEdits}/>
+            <TicketInformation
+              data={ticketInfo[0]}
+              refetchTicketEdits={refetchTicketEdits}
+            />
             <Spacer height="18px" />
             {/* <Grid container spacing={6}>
               <Grid item xs={4}>

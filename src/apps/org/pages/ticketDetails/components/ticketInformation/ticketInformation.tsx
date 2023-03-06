@@ -1,43 +1,41 @@
-import React, { useState, useEffect, useRef } from "react";
 import {
-  Typography,
-  Box,
-  Grid,
-  TextField,
-  InputLabel,
-  Checkbox,
+  Alert,
   Button,
-  Paper,
+  Checkbox,
+  Grid,
+  InputLabel,
+  Snackbar,
+  TextField,
+  Typography,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { Edit as EditIcon } from "@mui/icons-material";
-import { Spacer } from "../../../../../../components/spacer";
-import { CommodityType, Commodities } from "../commodities";
+import React, { useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import { commoditiesAtom } from "../../state/commodityState";
+import { ColoredButton } from "../../../../../../components/coloredButton";
+import { Spacer } from "../../../../../../components/spacer";
 import {
   createTicket,
   editTicket,
 } from "../../../../../../services/ticketServices";
+import { useGetUserInfo } from "../../../../../../state/authentication";
+import { commoditiesAtom } from "../../state/commodityState";
+import { Commodities } from "../commodities";
+import { useValidation } from "./hooks/useValidation";
 import { TicketCreationSuccessModal } from "./modals/ticketCreationSuccessModal";
-import { ColoredButton } from "../../../../../../components/coloredButton";
-import { useParams } from "react-router-dom";
 import {
+  ConsigneeFieldLabels,
+  ConsigneeFields,
+  EMPTY_DATA,
+  SectionTypes,
+  ShipmentDetailsFieldLabels,
+  ShipmentDetailsFields,
+  ShipperFieldLabels,
+  ShipperFields,
   TicketInformationStateType,
   TicketType,
-  SectionTypes,
-  ShipmentDetailsFields,
-  ShipperFields,
-  ConsigneeFields,
-  ShipperFieldLabels,
-  ConsigneeFieldLabels,
-  ShipmentDetailsFieldLabels,
-  EMPTY_DATA,
 } from "./types";
-import { useValidation } from "./hooks/useValidation";
-import { useGetUserInfo } from "../../../../../../state/authentication";
 //@ts-ignore
-import { Document, Page } from "react-pdf/dist/esm/entry.vite";
 import { DeliveryReceiptModal } from "./modals/deliveryReceiptModal";
 
 interface TicketInformationProps {
@@ -66,10 +64,11 @@ export const TicketInformation = ({
   const { errors, validate, clearError } = useValidation();
   const [commodities, setcommodities] = useRecoilState(commoditiesAtom);
   const { ticketId } = useParams();
-  const [newTicketId, setNewTicketId] = useState<string | undefined>();
+  const [newTicketId, setNewTicketId] = useState<number | undefined>();
   const user = useGetUserInfo();
-  const [rerender, setRerender] = useState(false);
-
+  const [requestError, setRequestError] = useState<string | undefined>();
+  const [editSuccess, setEditSuccess] = useState<string | undefined>();
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     return () => {
@@ -77,36 +76,59 @@ export const TicketInformation = ({
     };
   }, []);
 
-  const handleClearClick = () => {
-    formData.current = EMPTY_DATA;
+  const handleCloseSnackbar = () => {
+    if (requestError) {
+      setRequestError(undefined);
+    }
+
+    if (editSuccess) {
+      setEditSuccess(undefined);
+    }
+  };
+
+  const handleClear = () => {
+    (document.getElementById("ticket-creation") as HTMLFormElement).reset();
+    setcommodities(null);
   };
 
   const handleSave = async (event?: React.SyntheticEvent<HTMLFormElement>) => {
     event?.preventDefault();
+    setLoading(true);
 
-    if (validate(formData.current) || !user) {
-      console.log("validation or unexpected event", user);
+    if (validate(formData.current)) {
+      setLoading(false);
       return;
     }
 
-    let ticket: TicketType = { ...formData.current };
+    if (!user) {
+      setRequestError("Unexpected error. Please logout and try again.");
+      setLoading(false);
+      return;
+    }
+
+    const ticket: TicketType = { ...formData.current };
     ticket.pieces =
       commodities?.map(({ description }) => description).join(",+-") ?? "";
 
     if (newTicket) {
-      const {
-        data: { ticketId },
-      } = await createTicket(ticket);
-      setNewTicketId(ticketId);
+      const ticketIdOrError = await createTicket(ticket);
+      if (typeof ticketIdOrError === "number") {
+        setNewTicketId(ticketIdOrError);
+      } else {
+        setRequestError(ticketIdOrError);
+      }
     } else if (ticketId) {
-      // edit ticket endpoint
-      const status = await editTicket(ticket, ticketId);
-      setIsEditable(false);
-      if (status) {
+      const error = await editTicket(ticket, ticketId);
+      if (error) {
+        setRequestError(error);
+      } else {
+        setIsEditable(false);
         refetchTicketEdits();
-        window.alert("successfully edited!");
+        setEditSuccess("Successfuly edited the ticket!");
       }
     }
+
+    setLoading(false);
   };
 
   const handleChange = (
@@ -159,7 +181,7 @@ export const TicketInformation = ({
   };
 
   return (
-    <StyledForm onSubmit={handleSave}>
+    <StyledForm onSubmit={handleSave} id="ticket-creation">
       <Grid container xs={12} spacing={3}>
         <Grid item xs={6}>
           <InputContainer>
@@ -201,26 +223,6 @@ export const TicketInformation = ({
           ) : null}
           {!deliveryReview ? (
             <InputContainer>
-              {/* {!newTicket ? (
-                <SpecialInputField>
-                  <Checkbox
-                    disabled={!isEditable}
-                    defaultChecked={formData.current.enterIntoInventory}
-                    onClick={(e) => {
-                      formData.current = {
-                        ...formData.current,
-                        enterIntoInventory: (e.target as HTMLInputElement)
-                          .checked,
-                      };
-                    }}
-                  />
-                  <Spacer width="16px" />
-                  <Typography sx={{ fontSize: "18px", margin: "auto 0" }}>
-                    Checked into Inventory
-                  </Typography>
-                </SpecialInputField>
-              ) : null} */}
-
               <SpecialInputField>
                 <Checkbox
                   disabled={!isEditable}
@@ -387,11 +389,21 @@ export const TicketInformation = ({
         ) : null}
         {newTicket ? (
           <div style={{ display: "flex", marginLeft: "24px" }}>
-            <Button type="submit" variant="outlined" key="addToInventory">
+            <Button
+              type="submit"
+              variant="outlined"
+              key="addToInventory"
+              disabled={loading}
+            >
               Add to Inventory
             </Button>
             <Spacer width="4px" />
-            <Button type="button" key="clear" onClick={handleClearClick}>
+            <Button
+              type="button"
+              onClick={handleClear}
+              key="clear"
+              disabled={loading}
+            >
               Clear
             </Button>
           </div>
@@ -409,8 +421,34 @@ export const TicketInformation = ({
       </Grid>
       <TicketCreationSuccessModal
         ticketId={newTicketId}
-        handleClose={() => setNewTicketId(undefined)}
+        handleClose={() => {
+          setNewTicketId(undefined);
+          handleClear();
+        }}
       />
+      <Snackbar
+        open={!!requestError || !!editSuccess}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+      >
+        {editSuccess ? (
+          <Alert
+            severity="success"
+            onClose={handleCloseSnackbar}
+            sx={{ width: "100%" }}
+          >
+            {editSuccess}
+          </Alert>
+        ) : (
+          <Alert
+            severity="error"
+            onClose={handleCloseSnackbar}
+            sx={{ width: "100%" }}
+          >
+            {requestError}
+          </Alert>
+        )}
+      </Snackbar>
     </StyledForm>
   );
 };

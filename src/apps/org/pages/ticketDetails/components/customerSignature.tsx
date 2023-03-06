@@ -1,18 +1,26 @@
 import React from "react";
-
+import Loading from "../../../../../components/loading";
 interface CustomerSignatureProps {
-  urls?: string[];
+  url?: string;
+  loading?: boolean;
 }
 
-export const CustomerSignature = ({ urls }: CustomerSignatureProps) => {
+export const CustomerSignature = ({ url, loading }: CustomerSignatureProps) => {
+  if (loading) {
+    return <Loading />;
+  }
+
   return (
     <>
       <h3>Customer Signatures</h3>
-      {urls?.map((url) => {
+      {url ? (
         <a href={url} key={url}>
-          {url}
-        </a>;
-      })}
+          Signature
+        </a>
+      ) : (
+        "No customer signature available"
+      )}
+      ;
     </>
   );
 };

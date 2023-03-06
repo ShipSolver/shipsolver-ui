@@ -69,8 +69,8 @@ export function useOnDraw(
       };
 
       const touchMoveListener = (e: TouchEvent) => {
-        var touch = e.touches[0];
-        var mouseEvent = new MouseEvent("mousemove", {
+        const touch = e.touches[0];
+        const mouseEvent = new MouseEvent("mousemove", {
           clientX: touch.clientX,
           clientY: touch.clientY,
         });
@@ -93,7 +93,7 @@ export function useOnDraw(
           const image = canvasRef.current.toDataURL("image/png");
           onSaveImage?.(image);
 
-          var sizeWidth = (60 * window.innerWidth) / 100,
+          const sizeWidth = (60 * window.innerWidth) / 100,
             sizeHeight = (50 * window.innerHeight) / 100;
 
           const ctx = canvasRef.current.getContext("2d");

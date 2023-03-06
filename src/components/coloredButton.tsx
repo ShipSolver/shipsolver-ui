@@ -1,14 +1,5 @@
 import React from "react";
-import {
-  Typography,
-  Box,
-  Grid,
-  TextField,
-  InputLabel,
-  Checkbox,
-  Button,
-  Paper,
-} from "@mui/material";
+import { Typography, Paper } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 export const ColoredButton = ({

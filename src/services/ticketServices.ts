@@ -274,8 +274,12 @@ export const createTicket = async ({
   consignee,
   firstParty,
   deliveryReceiptS3Path,
-  ...rest
-}: TicketType) => {
+  pieces,
+  deliveryRecieptLink,
+  isPickup,
+  noSignatureRequired,
+  tailgateAuthorized,
+}: TicketType): Promise<number | string> => {
   const payload = JSON.stringify({
     customerName: firstParty,
     shipperCompany: shipper.company,
@@ -286,7 +290,7 @@ export const createTicket = async ({
     BOLNumber: shipmentDetails.bolNum,
     specialInstructions: shipmentDetails.specialInst,
     weight: shipmentDetails.weight,
-    claimedNumberOfPieces: shipmentDetails.numPieces,
+    claimedNumberOfPieces: pieces?.split(",+-").length ?? 0,
     barcodeNumber: shipmentDetails.barcode,
     houseReferenceNumber: shipmentDetails.refNum,
     consigneeCompany: consignee.company,
@@ -295,19 +299,23 @@ export const createTicket = async ({
     consigneePhoneNumber: consignee.phoneNum,
     consigneePostalCode: consignee.postalCode,
     orderS3Link: deliveryReceiptS3Path,
-    ...rest,
+    pieces,
+    isPickup,
+    noSignatureRequired,
+    tailgateAuthorized,
   });
 
   try {
-    const response: any = await axios.post(`/api/ticket/`, {
+    const {
+      data: { ticketId },
+    }: { data: { ticketId: number } } = await axios.post(`/api/ticket/`, {
       withCredentials: false,
       data: payload,
     });
 
-    return response;
+    return ticketId;
   } catch (e) {
-    console.error(e);
-    return e;
+    return "Failed to create ticket";
   }
 };
 
@@ -322,8 +330,8 @@ export const fetchTicketEdits = async (
     });
     return response.data.map((edit) => {
       let dateAndTime;
-      let actions = [];
-      let user: string = "";
+      const actions = [];
+      let user = "";
 
       for (const [key, val] of Object.entries(edit)) {
         switch (key) {
@@ -356,7 +364,14 @@ export const fetchTicketEdits = async (
 };
 
 export const editTicket = async (
-  { shipper, shipmentDetails, consignee, firstParty, ...rest }: TicketType,
+  {
+    shipper,
+    shipmentDetails,
+    consignee,
+    firstParty,
+    pieces,
+    ...rest
+  }: TicketType,
   ticketID: string
 ) => {
   const payload = JSON.stringify({
@@ -369,7 +384,7 @@ export const editTicket = async (
     BOLNumber: shipmentDetails.bolNum,
     specialInstructions: shipmentDetails.specialInst,
     weight: shipmentDetails.weight,
-    claimedNumberOfPieces: shipmentDetails.numPieces,
+    claimedNumberOfPieces: pieces?.split(",+-").length ?? 0,
     barcodeNumber: shipmentDetails.barcode,
     houseReferenceNumber: shipmentDetails.refNum,
     consigneeCompany: consignee.company,
@@ -377,6 +392,7 @@ export const editTicket = async (
     consigneeAddress: consignee.address,
     consigneePhoneNumber: consignee.phoneNum,
     consigneePostalCode: consignee.postalCode,
+    pieces,
     ...rest,
   });
 
@@ -386,10 +402,9 @@ export const editTicket = async (
       data: payload,
     });
 
-    return true;
+    return null;
   } catch (e) {
-    console.error(e);
-    return false;
+    return "Failed to edit ticket";
   }
 };
 
@@ -534,7 +549,6 @@ export function convertTicketToTicketInformation(
       specialInst: specialInstructions,
       bolNum: BOLNumber,
       weight,
-      numPieces: claimedNumberOfPieces,
       barcode: barcodeNumber,
       refNum: houseReferenceNumber,
     },
@@ -546,7 +560,21 @@ export function convertTicketToTicketInformation(
       postalCode: consigneePostalCode,
     },
     isPickup: true,
+    deliveryRecieptLink: orderS3Link,
     ...rest,
-    // enterIntoInventory: true,
   };
 }
+
+export const fetchCompletedDeliveryFiles = async (ticketId: number) => {
+  try {
+    const { data } = await axios.get(
+      `/api/milestones/DeliveryMilestones/${ticketId}`,
+      {
+        withCredentials: false,
+      }
+    );
+    return data[0];
+  } catch (e) {
+    console.error(e);
+  }
+};
