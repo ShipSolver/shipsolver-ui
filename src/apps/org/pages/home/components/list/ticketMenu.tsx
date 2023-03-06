@@ -84,7 +84,7 @@ export function TicketMenu({
           <>
             <GoToDriver selected={selected} numSelected={numSelected} />
             <Divider sx={{ borderBottomWidth: 2 }} />
-            <ListItemButton>
+            <ListItemButton disabled={numSelected > 1}>
               <Typography className="menu-text-typography">
                 Approve POD
               </Typography>

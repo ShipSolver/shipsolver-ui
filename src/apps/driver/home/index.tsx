@@ -32,17 +32,12 @@ export const Home = () => {
   } = useLoadable(fetchTicketsForStatus, "completed_delivery");
 
   const {
-    val: pickupInfo,
-    loading: loading4,
-    triggerRefetch: triggerRefetchPickup,
-  } = useLoadable(fetchTicketsForStatus, "requested_pickup");
-  const {
     val: incompleteInfo,
     loading: loading5,
     triggerRefetch: triggerRefetchIncompleted,
   } = useLoadable(fetchTicketsForStatus, "incomplete_delivery");
 
-  const loading = loading1 || loading2 || loading3 || loading4 || loading5;
+  const loading = loading1 || loading2 || loading3 || loading5;
 
   const currentTicket =
     currentDeliveries?.tickets.length ?? -1 > 0
@@ -51,12 +46,10 @@ export const Home = () => {
 
   const assigned = assignedInfo?.tickets;
   const completed = completedInfo?.tickets;
-  const pickup = pickupInfo?.tickets;
   const incomplete = incompleteInfo?.tickets;
 
   const assignedCount = assignedInfo?.count;
   const completedCount = completedInfo?.count;
-  const pickupCount = pickupInfo?.count;
   const incompleteCount = incompleteInfo?.count;
 
   const handleCompleteShift = () => {
@@ -73,7 +66,7 @@ export const Home = () => {
     return <Loading />;
   }
 
-  if (!currentTicket && !assigned && !completed && !incomplete && !pickup) {
+  if (!currentTicket && !assigned && !completed && !incomplete) {
     return (
       <InnerBlueDivBox>
         <Typography
@@ -156,19 +149,6 @@ export const Home = () => {
             <Tickets tickets={incomplete} status="completed" />
           </InnerBlueDivBox>
         ) : null}
-        {/* {pickup ? (
-          <InnerBlueDivBox style={{ maxHeight: "90vh" }}>
-            <Grid container justifyContent="space-between">
-              <Typography variant="h2" color="#000" alignContent="left">
-                Requested Pickups
-              </Typography>
-              <Typography variant="h2" color="#000" alignContent="right">
-                {String(pickupCount ?? 0)}
-              </Typography>
-            </Grid>
-            <Tickets tickets={pickup} />
-          </InnerBlueDivBox>
-        ) : null} */}
       </OuterBlueDivBox>
       <LargeButton
         label="Complete Shift"
