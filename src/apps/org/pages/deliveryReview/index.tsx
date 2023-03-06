@@ -110,7 +110,6 @@ export const DeliveryReview = ({ completeDelivery }: IDeliveryReview) => {
   return (
     <Container>
       <Grid container spacing={6} xs={12}>
-
           <Grid item xs={4}>
             <SelectDelivery
               onSelectTicket={(ticket: Ticket) => {
