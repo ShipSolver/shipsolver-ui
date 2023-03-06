@@ -22,7 +22,7 @@ export const EventHistory = ({
 }: EventHistoryProps) => {
   const eventHistoryCards = ticketEdits?.map(
     ({ user, userRole, actions, dateAndTime }) => (
-      <Paper sx={{ marginBottom: "8px" }}>
+      <Paper sx={{ marginBottom: "8px", padding: "8px"}}>
         <Typography>
           <b>User:</b> {user}
         </Typography>

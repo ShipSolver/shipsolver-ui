@@ -560,6 +560,7 @@ export function convertTicketToTicketInformation(
       postalCode: consigneePostalCode,
     },
     isPickup: true,
+    deliveryRecieptLink: orderS3Link,
     ...rest,
   };
 }
