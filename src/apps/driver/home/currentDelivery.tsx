@@ -45,7 +45,7 @@ export const CurrentDelivery = ({
         Current Delivery
       </Typography>
       <InnerWhiteDivBox style={{ padding: 25 }}>
-        <Typography marginBottom="5px">
+        <Typography variant="h4" marginBottom="5px" sx={{ fontWeight: "bold" }}>
           {currentTicket.consigneeAddress}
         </Typography>
         <Typography color="#00000099">
@@ -57,7 +57,7 @@ export const CurrentDelivery = ({
         <Typography color="#00000099">
           First Party: {currentTicket.customerName}
         </Typography>
-        <Typography color="#00000099">
+        <Typography color="#00000099" sx={{ marginBottom: 4 }}>
           Date/Time Assigned:{" "}
           {date.toLocaleString("en-CA", {
             month: "long",

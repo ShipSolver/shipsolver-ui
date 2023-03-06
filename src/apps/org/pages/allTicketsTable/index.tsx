@@ -34,7 +34,9 @@ export const AllTicketsTable = () => {
     let rowData = fetchedRows;
     if (search) {
       rowData = rowData.filter((row) => {
-        return Object.values(row).includes(search);
+        return JSON.stringify(Object.values(row))
+          .toUpperCase()
+          .includes(search.toUpperCase());
       });
     }
 
@@ -83,5 +85,7 @@ export const AllTicketsTable = () => {
 
 const Wrapper = styled("div")`
   background-color: ${Brand.palette.secondary.main};
-  padding: 8px;
+  padding: 24px;
+  margin: 24px;
+  border-radius: 19px;
 `;

@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { Grid, Box, Button, Snackbar, Alert } from "@mui/material";
 import {
   fetchTicketsForStatus,
+  markAsInTransit,
   moveToIncomplete,
 } from "../../../services/ticketServices";
 
@@ -18,6 +19,8 @@ import useLoadable from "../../../utils/useLoadable";
 export const Home = () => {
   const [success, setSuccess] = useState<string | undefined>();
   const [error, setError] = useState<string | undefined>();
+  const [loadingCompleteShift, setLoadingCompleteShift] =
+    useState<boolean>(false);
 
   const {
     val: currentDeliveries,
@@ -41,8 +44,6 @@ export const Home = () => {
     triggerRefetch: triggerRefetchIncompleted,
   } = useLoadable(fetchTicketsForStatus, "incomplete_delivery");
 
-  const loading = loading1 || loading2 || loading3 || loading5;
-
   const currentTicket =
     currentDeliveries?.tickets.length ?? -1 > 0
       ? currentDeliveries?.tickets[0] ?? null
@@ -58,24 +59,53 @@ export const Home = () => {
 
   const handleCompleteShift = async () => {
     if (assigned != null) {
-      let error = await moveToIncomplete(
-        assigned.map((ticket) => ({
-          ticketId: ticket.ticketId,
-          oldStatus: "assigned",
-          reasonForIncomplete: "Shift ended",
-          dueToEndedShift: true,
-        }))
-      );
+      setLoadingCompleteShift(true);
+      Promise.all(
+        assigned.map((ticket) =>
+          markAsInTransit(
+            ticket.ticketId,
+            ticket.ticketStatus.assignedTo.toString()
+          ).then((_) =>
+            moveToIncomplete([
+              {
+                ticketId: ticket.ticketId,
+                oldStatus: "in_transit",
+                reasonForIncomplete: "Shift ended",
+                dueToEndedShift: true,
+              },
+            ])
+          )
+        )
+      )
+        .then((_) => {
+          setSuccess("Successfully completed shift");
+          triggerRefetchAssigned();
+          triggerRefetchInTransit();
+          triggerRefetchCompleted();
+          triggerRefetchIncompleted();
+        })
+        .catch((err) => {
+          setError(err.toString());
+        })
+        .finally(() => setLoadingCompleteShift(false));
+      // let error = await moveToIncomplete(
+      //   assigned.map((ticket) => ({
+      //     ticketId: ticket.ticketId,
+      //     oldStatus: "assigned",
+      //     reasonForIncomplete: "Shift ended",
+      //     dueToEndedShift: true,
+      //   }))
+      // );
 
-      if (error) {
-        setError(error);
-      } else {
-        setSuccess("Successfully completed shift");
-        triggerRefetchAssigned();
-        triggerRefetchInTransit();
-        triggerRefetchCompleted();
-        triggerRefetchIncompleted();
-      }
+      // if (error) {
+      //   setError(error);
+      // } else {
+      //   setSuccess("Successfully completed shift");
+      //   triggerRefetchAssigned();
+      //   triggerRefetchInTransit();
+      //   triggerRefetchCompleted();
+      //   triggerRefetchIncompleted();
+      // }
     }
   };
 
@@ -88,6 +118,9 @@ export const Home = () => {
       setError(error);
     }
   };
+
+  const loading =
+    loading1 || loading2 || loading3 || loading5 || loadingCompleteShift;
 
   if (loading) {
     return <Loading />;
