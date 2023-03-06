@@ -21,15 +21,8 @@ export const PODFileUpload = ({
   modal: boolean;
   setModal: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const name = "Rahul";
-
   function uploadHandler() {
-    const nameArry: string[] = name.split(" ");
     let PodFileName = "POD";
-    for (let i = 0; i < nameArry.length; ) {
-      PodFileName = PodFileName + "-" + nameArry[i];
-      i++;
-    }
     const current = new Date();
     const date = `${current.getFullYear()}-${
       current.getMonth() + 1

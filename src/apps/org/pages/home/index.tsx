@@ -17,12 +17,12 @@ const LISTS: {
 }[] = [
   {
     listTitle: "Delivered",
-    args: "unassigned_pickup",
+    args: "completed_delivery",
     listType: "delivered",
   },
   {
     listTitle: "Incomplete",
-    args: "requested_pickup",
+    args: "incomplete_delivery",
     listType: "incomplete",
   },
   {
