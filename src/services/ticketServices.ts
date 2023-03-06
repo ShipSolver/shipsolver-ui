@@ -297,7 +297,7 @@ export const createTicket = async ({
     consigneePhoneNumber: consignee.phoneNum,
     consigneePostalCode: consignee.postalCode,
     orderS3Link: deliveryReceiptS3Path,
-    pieces
+    pieces,
     ...rest,
   });
 
