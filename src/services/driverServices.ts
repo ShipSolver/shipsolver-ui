@@ -5,23 +5,6 @@ import drivers from "../mockData/drivers.json";
 import { Driver } from "./types";
 
 axios.defaults.baseURL = SERVER_URL;
-
-const delay = (time: number) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(2);
-    }, time);
-  });
-};
-
-export const fetchDriver = (driverID: string) => {
-  const mockServerDriverFetch = async () => {
-    await delay(250);
-    return drivers.testDriver as Driver;
-  };
-  return mockServerDriverFetch();
-};
-
 export interface IFetchAllDriversResponse {
   username: string;
   userId: string;

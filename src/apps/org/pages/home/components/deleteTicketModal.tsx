@@ -39,7 +39,7 @@ export const DeleteTicketModal = ({ getTicketIDs, triggerRefetch }: DeleteTicket
       <Modal open={open} onClose={() => setOpen(false)}>
         <Box
           sx={{
-            position: "absolute" as "absolute",
+            position: "absolute" as const,
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",

@@ -25,7 +25,7 @@ export const FileUpload = (props: SignFileUploadProps) => {
 
   function uploadHandler() {
     const nameArry: string[] = name.split(" ");
-    let signFileName: string = "signature";
+    let signFileName = "signature";
     for (let i = 0; i < nameArry.length; i++) {
       signFileName = signFileName + "-" + nameArry[i];
     }

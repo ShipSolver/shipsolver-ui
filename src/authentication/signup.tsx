@@ -6,15 +6,15 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Alert from "@mui/material/Alert";
 import Checkbox from "@mui/material/Checkbox";
-import InputLabel from "@mui/material/InputLabel";
 import { useNavigate } from "react-router-dom";
 
 import Loading from "../components/loading";
 import { validateEmail } from "../utils/regex";
 import { signup } from "../services/authenticationServices";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { ErrorAtom, UnconfirmedUsernameAtom } from "../state/authentication";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import { UserType } from "../services/types";
 
 function Signup() {
   const setUnconfirmedUsername = useSetRecoilState(UnconfirmedUsernameAtom);
@@ -33,7 +33,7 @@ function Signup() {
   const [emailHelp, setEmailHelp] = useState<string>("");
   const [passwordHelp, setPasswordHelp] = useState<string>("");
   const [invalidForm, setInvalidForm] = useState<string | null>(null);
-  const [userType, setUserType] = useState<string>("manager");
+  const [userType, setUserType] = useState<UserType>("manager");
 
   const navigate = useNavigate();
 
@@ -124,7 +124,7 @@ function Signup() {
             error={emailHelp && emailHelp != "" ? true : false}
             helperText={emailHelp && emailHelp != "" ? emailHelp : null}
             onChange={(event) => {
-              let emailStr = event.target.value;
+              const emailStr = event.target.value;
               setEmail(emailStr.replace(" ", ""));
               if (!validateEmail(emailStr) && emailStr != "") {
                 setEmailHelp("Username is not a valid email");
@@ -155,7 +155,7 @@ function Signup() {
                 : null
             }
             onChange={(event) => {
-              let pass = event.target.value;
+              const pass = event.target.value;
               if (pass != confirmPassword) {
                 setPasswordHelp("Passwords do not match!");
               } else {
@@ -191,7 +191,7 @@ function Signup() {
             type="password"
             id="confirmPassword"
             onChange={(event) => {
-              let pass = event.target.value;
+              const pass = event.target.value;
               if (pass != password) {
                 setPasswordHelp("Passwords do not match!");
               } else {

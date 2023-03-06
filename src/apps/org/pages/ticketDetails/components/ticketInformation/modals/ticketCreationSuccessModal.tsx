@@ -7,7 +7,7 @@ import { Spacer } from "../../../../../../../components/spacer";
 import { useNavigate } from "react-router-dom";
 
 interface ITicketCreationSuccessModal {
-  ticketId: string | undefined;
+  ticketId: number | undefined;
   handleClose: () => void;
 }
 
@@ -20,7 +20,7 @@ export function TicketCreationSuccessModal({
     <Modal open={!!ticketId} onClose={handleClose}>
       <Box
         sx={{
-          position: "absolute" as "absolute",
+          position: "absolute" as const,
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",

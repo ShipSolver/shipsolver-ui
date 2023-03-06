@@ -23,7 +23,7 @@ export const Commodities = ({ isEditable }: CommoditiesProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const commoditiesCards = commodities?.map(({description}) => (
-    <Paper sx={{marginBottom: "8px"}}>
+    <Paper sx={{marginBottom: "8px", padding: "8px"}}>
       <Typography>
         <b>Description:</b> {description}
       </Typography>

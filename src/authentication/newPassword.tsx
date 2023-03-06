@@ -113,7 +113,7 @@ function NewPasswordPage() {
             : null
         }
         onChange={(event) => {
-          let pass = event.target.value;
+          const pass = event.target.value;
           if (pass != confirmPassword) {
             setPasswordHelp("Passwords do not match!");
           } else {
@@ -145,7 +145,7 @@ function NewPasswordPage() {
         type="password"
         id="confirmPassword"
         onChange={(event) => {
-          let pass = event.target.value;
+          const pass = event.target.value;
           if (pass != password) {
             setPasswordHelp("Passwords do not match!");
           } else {

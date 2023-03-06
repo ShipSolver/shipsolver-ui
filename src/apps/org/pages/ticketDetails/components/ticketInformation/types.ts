@@ -11,7 +11,6 @@ export const ShipperFieldLabels = {
 export const ShipmentDetailsFieldLabels = {
   refNum: "House/Ref #",
   barcode: "Barcode",
-  numPieces: "# of Pieces",
   weight: "Weight",
   bolNum: "BOL #",
   specialInst: "Special Instructions",
@@ -40,7 +39,6 @@ export type TicketInformationStateType = {
   consignee: {
     [key in ConsigneeFields]: string;
   };
-  // enterIntoInventory?: boolean;
   isPickup: boolean;
   noSignatureRequired?: boolean;
   tailgateAuthorized?: boolean;
@@ -93,5 +91,4 @@ export const EMPTY_DATA: TicketInformationStateType = {
     isPickup: false,
     noSignatureRequired: false,
     tailgateAuthorized: false,
-    // enterIntoInventory: false
   };

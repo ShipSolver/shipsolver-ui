@@ -48,7 +48,7 @@ export const FooterButtons = ({ triggerRefetch }: FooterButtonsProps) => {
     const response = (await fetchTickets(ticketIds)) ?? [];
 
     return response.map((ticket) => {
-      let newTicket = ticket;
+      const newTicket = ticket;
       _.merge(newTicket, newTicket.customer);
       delete newTicket.customer;
 

@@ -91,7 +91,7 @@ export function useValidation() {
       [key in ShipmentDetailsFields]?: string | number;
     }
   ) {
-    let numErrors = 0;
+    const numErrors = 0;
 
     // Make sure value is present
     for (let [key, val] of Object.entries(shipmentDetails)) {

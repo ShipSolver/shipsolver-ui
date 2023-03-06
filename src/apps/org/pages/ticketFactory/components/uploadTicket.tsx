@@ -45,7 +45,7 @@ export const UploadTicket = () => {
   const sendUploadedPDF = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     if (uploadedFile) {
-      var formData = new FormData();
+      const formData = new FormData();
       formData.append("file", uploadedFile);
       setLoading(true);
       setError(undefined);

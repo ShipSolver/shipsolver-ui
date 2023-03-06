@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo} from "react";
 import {
   fetchTicket,
   approveDelivery,
@@ -7,7 +7,7 @@ import {
 import { styled } from "@mui/material/styles";
 import Brand from "../../../../ShipSolverBrand";
 
-import { Grid, Box, Button, Snackbar } from "@mui/material";
+import { Grid, Box, Button, Snackbar, Alert } from "@mui/material";
 import { POD, CustomerSignature, Pictures } from "../ticketDetails/components";
 import { IncompleteDelivery } from "./components/incompleteDelivery";
 import { Spacer } from "../../../../components/spacer";
@@ -18,7 +18,7 @@ import { ColoredButton } from "../../../../components/coloredButton";
 import { TicketInformationStateType } from "../ticketDetails/components/ticketInformation/types";
 import { convertTicketToTicketInformation } from "../../../../services/ticketServices";
 import { Ticket } from "../../../../services/types";
-import MuiAlert from "@mui/material/Alert";
+import { CompletedDeliveryFiles } from "./components/completedDeliveryFiles";
 
 interface IDeliveryReview {
   completeDelivery?: boolean;
@@ -40,104 +40,96 @@ export const DeliveryReview = ({ completeDelivery }: IDeliveryReview) => {
     }
   };
 
-  console.log(selectedTicket);
+  const footerContent = useMemo(() => {
+    if (!selectedTicket?.ticketId) {
+      return null;
+    }
+
+    if (completeDelivery) {
+      return (
+        <>
+          <CompletedDeliveryFiles ticketId={selectedTicket.ticketId} />
+          <Grid item xs={3}>
+            <ButtonWrapper>
+              <Button
+                onClick={async () => {
+                  const error = await approveDelivery(
+                    selectedTicket!.ticketId!
+                  );
+                  if (!error) {
+                    setSelectedTicket(undefined);
+                    setSuccess("Successfully approved POD");
+                  } else {
+                    setError(error);
+                  }
+                }}
+                variant="outlined"
+                disabled={!selectedTicket?.ticketId}
+              >
+                Approve POD
+              </Button>
+              <Button
+                onClick={async () => {
+                  const error = await rejectDelivery(selectedTicket!.ticketId!);
+                  if (!error) {
+                    setSelectedTicket(undefined);
+                    setSuccess("Succesfully rejected POD");
+                  } else {
+                    setError(error);
+                  }
+                }}
+                variant="outlined"
+                disabled={!selectedTicket?.ticketId}
+              >
+                Reject POD
+              </Button>
+            </ButtonWrapper>
+          </Grid>
+        </>
+      );
+    }
+
+    return (
+      <>
+        <Grid item xs={8}></Grid>
+        <Grid item xs={8}>
+          <FormWrap>
+            <IncompleteDelivery />
+          </FormWrap>
+        </Grid>
+        <Grid item xs={8}>
+          <ButtonWrapper>
+            <ColoredButton color="#C5FAD180" label="Re-enter Into Inventory" />
+            <ColoredButton color="#FAC5C580" label="Delete Ticket" />
+          </ButtonWrapper>
+        </Grid>
+      </>
+    );
+  }, [selectedTicket]);
 
   return (
     <Container>
       <Grid container spacing={6} xs={12}>
-        <Grid item xs={4}>
-          <SelectDelivery
-            onSelectTicket={(ticket: Ticket) => {
-              setSelectedTicket(convertTicketToTicketInformation(ticket));
-            }}
-          />
-        </Grid>
-        <Grid item xs={8}>
-          <Wrapper>
-            <TicketInformation
-              data={selectedTicket}
-              deliveryReviewComplete={completeDelivery}
-              key={selectedTicket?.ticketId}
+
+          <Grid item xs={4}>
+            <SelectDelivery
+              onSelectTicket={(ticket: Ticket) => {
+                setSelectedTicket(convertTicketToTicketInformation(ticket));
+              }}
             />
-          </Wrapper>
-          <Spacer height="18px" />
-        </Grid>
-        {completeDelivery ? (
-          <>
-            <Grid item xs={3}>
-              <FormWrap>
-                <POD />
-              </FormWrap>
-            </Grid>
+          </Grid>
+          <Grid item xs={8}>
+            <Wrapper>
+              <TicketInformation
+                data={selectedTicket}
+                deliveryReviewComplete={completeDelivery}
+                key={selectedTicket?.ticketId}
+              />
+            </Wrapper>
+            <Spacer height="18px" />
+          </Grid>
+          {footerContent}
 
-            <Grid item xs={3}>
-              <FormWrap>
-                <CustomerSignature />
-              </FormWrap>
-            </Grid>
-
-            <Grid item xs={3}>
-              <FormWrap>
-                <Pictures />
-              </FormWrap>
-            </Grid>
-            <Grid item xs={3}>
-              <ButtonWrapper>
-                <Button
-                  onClick={async () => {
-                    let error = await approveDelivery(
-                      selectedTicket!.ticketId!
-                    );
-                    if (!error) {
-                      setSelectedTicket(undefined);
-                      setSuccess("Successfully approved POD");
-                    } else {
-                      setError(error);
-                    }
-                  }}
-                  variant="outlined"
-                  disabled={!selectedTicket?.ticketId}
-                >
-                  Approve POD
-                </Button>
-                <Button
-                  onClick={async () => {
-                    let error = await rejectDelivery(selectedTicket!.ticketId!);
-                    if (!error) {
-                      setSelectedTicket(undefined);
-                      setSuccess("Succesfully rejected POD");
-                    } else {
-                      setError(error);
-                    }
-                  }}
-                  variant="outlined"
-                  disabled={!selectedTicket?.ticketId}
-                >
-                  Reject POD
-                </Button>
-              </ButtonWrapper>
-            </Grid>
-          </>
-        ) : (
-          <>
-            <Grid item xs={8}></Grid>
-
-            <Grid item xs={8}>
-              <FormWrap>
-                <IncompleteDelivery />
-              </FormWrap>
-            </Grid>
-            <Grid item xs={8}>
-              <ButtonWrapper>
-                <ColoredButton
-                  color="#C5FAD180"
-                  label="Re-enter Into Inventory"
-                />
-                <ColoredButton color="#FAC5C580" label="Delete Ticket" />
-              </ButtonWrapper>
-            </Grid>
-          </>
-        )}
       </Grid>
       <Snackbar
         open={!!success || !!error}
@@ -145,21 +137,17 @@ export const DeliveryReview = ({ completeDelivery }: IDeliveryReview) => {
         onClose={handleClose}
       >
         {success ? (
-          <MuiAlert
+          <Alert
             severity="success"
             onClose={handleClose}
             sx={{ width: "100%" }}
           >
             {success}
-          </MuiAlert>
+          </Alert>
         ) : (
-          <MuiAlert
-            severity="error"
-            onClose={handleClose}
-            sx={{ width: "100%" }}
-          >
+          <Alert severity="error" onClose={handleClose} sx={{ width: "100%" }}>
             {error}
-          </MuiAlert>
+          </Alert>
         )}
       </Snackbar>
     </Container>
@@ -176,7 +164,7 @@ const Container = styled("div")`
   padding: 8px;
 `;
 
-const FormWrap = styled(Box)`
+export const FormWrap = styled(Box)`
   background-color: white;
   padding: 16px;
   border: 1px solid black;

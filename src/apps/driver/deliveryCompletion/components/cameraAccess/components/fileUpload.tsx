@@ -21,11 +21,11 @@ export const PODFileUpload = ({
   modal: boolean;
   setModal: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const name: string = "Rahul";
+  const name = "Rahul";
 
   function uploadHandler() {
     const nameArry: string[] = name.split(" ");
-    let PodFileName: string = "POD";
+    let PodFileName = "POD";
     for (let i = 0; i < nameArry.length; ) {
       PodFileName = PodFileName + "-" + nameArry[i];
       i++;

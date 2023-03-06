@@ -43,7 +43,7 @@ const DriverSummaryBase = ({ rows }: DriverSummaryProps) => {
       {Object.entries(row).map(([key, val], i) =>
         key === "locationOfLastDelivery" ? (
           <TableCell>
-            <a href={val as string} target="_blank">
+            <a href={val as string} target="_blank" rel="noreferrer">
               Link to Location
             </a>
           </TableCell>
