@@ -13,7 +13,7 @@ const phoneNumberRegex = new RegExp(
 );
 
 const postalCodeRegex = new RegExp(
-  /^((\d{5}-\d{4})|(\d{5})|([A-Z|a-z]\d[A-Z|a-z]\d[A-Z|a-z]\d))$/
+  /^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z][ -]?\d[ABCEGHJ-NPRSTV-Z]\d$/
 );
 
 export function useValidation() {
@@ -91,7 +91,7 @@ export function useValidation() {
       [key in ShipmentDetailsFields]?: string | number;
     }
   ) {
-    const numErrors = 0;
+    let numErrors = 0;
 
     // Make sure value is present
     for (let [key, val] of Object.entries(shipmentDetails)) {
