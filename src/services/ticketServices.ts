@@ -303,6 +303,7 @@ export const createTicket = async ({
     pieces,
     noSignatureRequired,
     tailgateAuthorized,
+    isPickup: false,
   });
 
   try {
@@ -370,7 +371,8 @@ export const editTicket = async (
     consignee,
     firstParty,
     pieces,
-    ...rest
+    noSignatureRequired,
+    tailgateAuthorized,
   }: TicketType,
   ticketID: string
 ) => {
@@ -393,7 +395,9 @@ export const editTicket = async (
     consigneePhoneNumber: consignee.phoneNum,
     consigneePostalCode: consignee.postalCode,
     pieces,
-    ...rest,
+    noSignatureRequired,
+    tailgateAuthorized,
+    isPickup: false,
   });
 
   try {

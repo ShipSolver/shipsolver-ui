@@ -367,7 +367,7 @@ export const TicketInformation = ({
                   isEditable ? handleSave() : setIsEditable(true)
                 }
               >
-                Save
+                {isEditable ? "Save" : "Edit"}
               </Button>
             </ActionColumn>
           </Grid>
