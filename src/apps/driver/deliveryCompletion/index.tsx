@@ -116,13 +116,34 @@ export default function DeliveryCompletion() {
         return;
       }
 
+      // console.log({
+      //   userId: String(completionDelivery.ticketStatus.assignedTo),
+      //   ticketId: String(completionDelivery.ticketId),
+      //   picture1: pictureFiles[0].imgSrc.replace("data:image/jpeg;base64,", ""),
+      //   picture2: pictureFiles[1]?.imgSrc.replace(
+      //     "data:image/jpeg;base64,",
+      //     ""
+      //   ),
+      //   POD: podFiles[0].imgSrc.replace("data:image/jpeg;base64,", ""),
+      //   customerSignature: signFiles[0].imgSrc.replace(
+      //     "data:image/png;base64,",
+      //     ""
+      //   ),
+      // });
+
       const { error } = await markTicketAsDelivered({
         userId: String(completionDelivery.ticketStatus.assignedTo),
         ticketId: String(completionDelivery.ticketId),
-        picture1: pictureFiles[0].imgSrc,
-        picture2: pictureFiles[1]?.imgSrc,
-        POD: podFiles[0].imgSrc,
-        customerSignature: signFiles[0].imgSrc,
+        picture1: pictureFiles[0].imgSrc.replace("data:image/jpeg;base64,", ""),
+        picture2: pictureFiles[1]?.imgSrc.replace(
+          "data:image/jpeg;base64,",
+          ""
+        ),
+        POD: podFiles[0].imgSrc.replace("data:image/jpeg;base64,", ""),
+        customerSignature: signFiles[0].imgSrc.replace(
+          "data:image/png;base64,",
+          ""
+        ),
       });
       if (error == null) {
         navigate("/");

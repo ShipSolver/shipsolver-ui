@@ -252,13 +252,16 @@ export const markTicketAsDelivered = async ({
   let error: string | null = null;
   try {
     await axios.post("/api/milestones/DeliveryMilestones", {
-      ticketId,
-      completingUserId: userId,
-      pictures: {
-        "Picture1.jpeg": picture1,
-        ...(picture2 && { "Picture2.jpeg": picture2 }),
-        "Picture3.jpeg": customerSignature,
-        "POD.jpeg": POD,
+      data: {
+        ticketId,
+        completingUserId: userId,
+        pictures: {
+          "Picture1.jpeg": picture1,
+          ...(picture2 && { "Picture2.jpeg": picture2 }),
+          "Picture3.jpeg": customerSignature,
+          "POD.jpeg": POD,
+        },
+        newStatus: "completed_delivery",
       },
     });
   } catch (e: any) {
@@ -275,7 +278,6 @@ export const createTicket = async ({
   firstParty,
   deliveryReceiptS3Path,
   pieces,
-  deliveryReceiptLink,
   isPickup,
   noSignatureRequired,
   tailgateAuthorized,
