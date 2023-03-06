@@ -13,6 +13,7 @@ import { useRecoilValue } from "recoil";
 import { checkIntoInventory } from "../../../../../../services/ticketServices";
 import { GoToDriverButton } from "../goToDriverButton";
 import { ReviewPODButton } from "../reviewPODButton";
+import { ReviewIncompleteDeliveryButton } from "../reviewIncompleteDeliveryButton";
 
 import "./menu.css";
 
@@ -75,11 +76,10 @@ export function TicketMenu({
               </Typography>
             </ListItemButton>
             <Divider sx={{ borderBottomWidth: 2 }} />
-            <ListItemButton onClick={() => navigate("/incomplete-delivery-review")}>
-              <Typography className="menu-text-typography">
-                Review incomplete delivery
-              </Typography>
-            </ListItemButton>
+            <ReviewIncompleteDeliveryButton
+              selected={selected}
+              numSelected={numSelected}
+            />
           </>
         );
       }

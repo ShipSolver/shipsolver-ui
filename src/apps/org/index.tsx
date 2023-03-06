@@ -47,7 +47,7 @@ function AppRouter() {
             }
           />
           <Route
-            path="incomplete-delivery-review"
+            path="incomplete-delivery-review/:ticketId?"
             element={
               <Suspense fallback={<Loading />}>
                 <LazyDeliveryReview />

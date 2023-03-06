@@ -62,6 +62,9 @@ function Home() {
         <Button variant="contained" onClick={() => navigate("/pod-review")}>
           Review PODs
         </Button>
+        <Button variant="contained" onClick={() => navigate("/incomplete-delivery-review")}>
+          Review Incomplete Deliveries
+        </Button>
         <Button variant="contained" onClick={() => navigate("/all-tickets")}>
           View All Tickets
         </Button>
