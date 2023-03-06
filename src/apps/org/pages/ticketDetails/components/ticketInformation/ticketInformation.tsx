@@ -45,6 +45,7 @@ interface TicketInformationProps {
   deliveryReviewComplete?: boolean;
   deliveryReviewIncomplete?: boolean;
   refetchTicketEdits?: () => void;
+  hideDR?: boolean;
 }
 
 export const TicketInformation = ({
@@ -54,6 +55,7 @@ export const TicketInformation = ({
   newTicketDeliveryReceipt,
   deliveryReviewComplete,
   deliveryReviewIncomplete,
+  hideDR,
 }: TicketInformationProps) => {
   const newTicket = newTicketManual || newTicketDeliveryReceipt;
   const deliveryReview = deliveryReviewComplete || deliveryReviewIncomplete;
@@ -215,7 +217,7 @@ export const TicketInformation = ({
             flexDirection: "row-reverse",
           }}
         >
-          {formData.current.deliveryReceiptLink ? (
+          {!hideDR && formData.current.deliveryReceiptLink ? (
             <DeliveryReceiptModal
               url={formData.current.deliveryReceiptLink}
               buttonText="View DR"
