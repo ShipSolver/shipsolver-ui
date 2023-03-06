@@ -409,7 +409,7 @@ export const editTicket = async (
 };
 
 interface IMoveToIncomplete {
-  ticketId: string;
+  ticketId: number;
   oldStatus: string;
   reasonForIncomplete: string;
   dueToEndedShift?: boolean;

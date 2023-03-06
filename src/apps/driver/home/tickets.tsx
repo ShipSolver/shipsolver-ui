@@ -60,7 +60,7 @@ export const Tickets = ({
           }
 
           return (
-            <Paper variant="outlined">
+            <Paper className="ticket" variant="outlined">
               <Typography variant="h6" marginBottom="5px">
                 <b>{ticket.consigneeAddress}</b>
               </Typography>
