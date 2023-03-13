@@ -20,7 +20,6 @@ export const CustomerSignature = ({ url, loading }: CustomerSignatureProps) => {
       ) : (
         "No customer signature available"
       )}
-      ;
     </>
   );
 };

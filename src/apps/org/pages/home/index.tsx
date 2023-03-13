@@ -36,7 +36,7 @@ const LISTS: {
     listType: "assigned",
   },
   {
-    listTitle: "Inventory",
+    listTitle: "Ready for Dispatch",
     args: "checked_into_inventory",
     listType: "inventory",
   },

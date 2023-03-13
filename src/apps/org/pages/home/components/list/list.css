@@ -39,4 +39,5 @@
 .list-column-header {
   display: flex;
   flex-grow: 1;
+  /* text-transform: uppercase; */
 }
