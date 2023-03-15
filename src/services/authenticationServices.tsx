@@ -43,6 +43,8 @@ export const login: loginFn = async ({ email, password, rememberMe }) => {
         }
       }
     );
+
+    await axios.post("/api/user/login"); // This is to sync the tickets for new users
   } catch (err: any) {
     if (err.code && err.code === "UserNotConfirmedException")
       unconfirmedUser = true;
@@ -82,18 +84,6 @@ export const signup: signupFn = async ({
       },
     });
 
-    // Create user in BE
-    await axios.post("/api/user/", {
-      withCredentials: false,
-      data: {
-        userId: userSub,
-        userType,
-        username: email,
-        firstName: name.split(" ")[0],
-        lastName: name.split(" ")[1],
-        email,
-      },
-    });
   } catch (err: any) {
     error = err.toString != null ? err.toString() : "error signing up user";
   }
