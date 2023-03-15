@@ -37,7 +37,7 @@ export const CurrentDelivery = ({
   };
 
   const timestamp = Number(currentTicket && currentTicket.timestamp);
-  const date = new Date(timestamp);
+  const date = new Date(timestamp*1000);
 
   return currentTicket != null ? (
     <OuterBlueDivBox>

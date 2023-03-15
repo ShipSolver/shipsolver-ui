@@ -76,7 +76,7 @@ export const fetchAllTickets = async (): Promise<RowType[]> => {
         consigneeName,
         ticketStatus: { user, currentStatus },
       }: Ticket) => ({
-        date: moment(new Date(timestamp)).format(DateFormat),
+        date: moment(new Date(timestamp*1000)).format(DateFormat),
         status: currentStatus,
         firstParty: customerName,
         consigneeName,
@@ -194,16 +194,18 @@ export const fetchMilestones = async (
   ticketId?: string
 ): Promise<{ description: string; dateAndTime: Date }[]> => {
   try {
-    const response: { data: IFetchMilestones[] } = await axios.get(
+    const { data }: { data: IFetchMilestones[] } = await axios.get(
       `/api/milestones/${ticketId}`,
       {
         withCredentials: false,
       }
     );
 
-    return response.data.map(({ description, timestamp }) => ({
+    data.sort((a,b) => b.timestamp - a.timestamp);
+
+    return data.map(({ description, timestamp }) => ({
       description,
-      dateAndTime: new Date(timestamp),
+      dateAndTime: new Date(timestamp*1000),
     }));
   } catch (e) {
     console.error(e);
@@ -337,7 +339,7 @@ export const fetchTicketEdits = async (
       for (const [key, val] of Object.entries(edit)) {
         switch (key) {
           case "timestamp":
-            dateAndTime = new Date(val);
+            dateAndTime = new Date(+val*1000);
             break;
           case "firstName":
             user = val as string;

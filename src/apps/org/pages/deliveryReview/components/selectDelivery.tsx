@@ -48,12 +48,12 @@ const SelectDeliveryBase = ({
         {`Completed by: ${ticket.ticketStatus.user?.firstName} ${ticket.ticketStatus.user?.lastName}`}
       </Typography>
       <Typography variant="h6" color="#00000099">
-        {`Date: ${new Date(ticket.ticketStatus?.timestamp).toLocaleTimeString(
+        {`Date: ${new Date(ticket.ticketStatus?.timestamp*1000).toLocaleTimeString(
           "en-CA"
         )}`}
       </Typography>
       <Typography variant="h6" color="#00000099">
-        {`Time: ${new Date(ticket.ticketStatus?.timestamp).toLocaleTimeString(
+        {`Time: ${new Date(ticket.ticketStatus?.timestamp*1000).toLocaleTimeString(
           "en-CA",
           { hour12: false }
         )}`}

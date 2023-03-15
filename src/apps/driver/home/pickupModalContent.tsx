@@ -17,7 +17,7 @@ export const PickupModalContent = ({
 }) => {
   const navigate = useNavigate();
   const timestamp = Number(ticket.timestamp);
-  const date = new Date(timestamp);
+  const date = new Date(timestamp*1000);
   return (
     <>
       <Typography variant="h2" align="center" padding="40px">

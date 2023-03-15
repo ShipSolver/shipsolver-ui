@@ -26,7 +26,7 @@ export const TicketPopUpContent = ({
   changeStatusButtons?: ChangeStatusModalButtonProps[];
 }) => {
   const timestamp = Number(ticket.timestamp);
-  const date = new Date(timestamp);
+  const date = new Date(timestamp*1000);
   return (
     <>
       <Typography variant="h3" align="center">
