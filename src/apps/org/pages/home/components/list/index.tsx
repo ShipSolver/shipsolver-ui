@@ -50,21 +50,32 @@ export function List({ listTitle, listType, fetch, args }: IList) {
     }));
   };
 
-  const renderedTickets = useMemo(() => {
+  const { renderedTickets, length } = useMemo(() => {
     if (loading) {
-      return <Loading />;
+      return { element: <Loading />, length: 0 };
     }
 
     if (error) {
-      return (
+      const element = (
         <Typography
           style={{ margin: 8 }}
           color="error"
         >{`There was an error fetching your ${listType} tickets`}</Typography>
       );
+      return {
+        renderedTickets: element,
+        length: 0,
+      };
     }
 
-    return response?.tickets.map((ticket: Ticket) => {
+    const filteredTickets = response?.tickets.filter((ticket) => {
+      if (listTitle === "Delivered") {
+        return !!ticket.ticketStatus.assignedTo;
+      }
+      return true;
+    });
+
+    const element = filteredTickets?.map((ticket: Ticket) => {
       /* This is so that we can easily grab the driver name inside of TicketMenu */
       const key = [
         ticket.ticketId.toString(),
@@ -90,6 +101,11 @@ export function List({ listTitle, listType, fetch, args }: IList) {
         </Paper>
       );
     });
+
+    return {
+      renderedTickets: element,
+      length: filteredTickets?.length ?? 0,
+    };
   }, [loading, error, response, selected]);
 
   return (
@@ -107,7 +123,7 @@ export function List({ listTitle, listType, fetch, args }: IList) {
           color="black"
           gutterBottom
         >
-          <strong>{response?.count ?? 0}</strong>
+          <strong>{length}</strong>
         </Typography>
       </div>
       <div className="list-column">{renderedTickets}</div>

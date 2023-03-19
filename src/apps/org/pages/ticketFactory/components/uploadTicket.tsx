@@ -65,10 +65,12 @@ export const UploadTicket = () => {
 
   const handleComplete = useCallback(
     (data: [TicketInformationStateType, CommodityType[]][]) => {
+      setUrls([]);
+      setTicketInformation([]);
       data.forEach(([ticketInfo, commodity]) => {
-        setTicketInformation([...ticketInformation, ticketInfo]);
+        setTicketInformation((prev) => [...prev, ticketInfo]);
         setCommodities([...commodities, commodity]);
-        setUrls([...urls, ticketInfo.deliveryReceiptLink!]);
+        setUrls((prev) => [...prev, ticketInfo.deliveryReceiptLink!]);
       });
       setLoading(false);
       setFlowStage((prev) => prev + 1);
@@ -136,6 +138,7 @@ export const UploadTicket = () => {
           <PDFViewer
             maxLength={ticketInformation.length}
             urls={urls}
+            key={urls.toString()}
             commodities={commodities}
           />
         )}

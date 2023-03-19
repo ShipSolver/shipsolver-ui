@@ -25,6 +25,7 @@ import { CompletedDeliveryFiles } from "./components/completedDeliveryFiles";
 import { useRecoilValue } from "recoil";
 import { completedTicketsRefetchAtom } from "./state/refetchAtom";
 import useLoadable from "../../../../utils/useLoadable";
+import { useNavigate } from "react-router-dom";
 
 interface IDeliveryReview {
   completeDelivery?: boolean;
@@ -33,6 +34,8 @@ export const DeliveryReview = ({ completeDelivery }: IDeliveryReview) => {
   const { ticketId } = useParams();
   const [selectedTicket, setSelectedTicket] =
     useState<TicketInformationStateType | undefined>();
+
+  const navigate = useNavigate();
 
   const [success, setSuccess] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -82,6 +85,9 @@ export const DeliveryReview = ({ completeDelivery }: IDeliveryReview) => {
                     setSelectedTicket(undefined);
                     triggerRefetch();
                     setSuccess("Successfully approved POD");
+                    if (ticketId) {
+                      navigate("/pod-review");
+                    }
                   } else {
                     setError(error);
                   }
@@ -127,6 +133,7 @@ export const DeliveryReview = ({ completeDelivery }: IDeliveryReview) => {
                   setSelectedTicket(undefined);
                   triggerRefetch();
                   setSuccess("Successfully checked into inventory");
+                  navigate("/incomplete-delivery");
                 } else {
                   setError(error);
                 }

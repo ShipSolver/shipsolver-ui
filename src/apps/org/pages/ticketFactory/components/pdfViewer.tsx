@@ -15,7 +15,12 @@ import { styled } from "@mui/material/styles";
 import { CommodityType } from "../../ticketDetails/components";
 import { DocumentProps, PageProps } from "react-pdf";
 //@ts-ignore
-import { Document, Page } from "react-pdf/dist/esm/entry.vite";
+import { Document, Page, pdfjs } from "react-pdf/dist/esm/entry.vite";
+
+// console.log({ pdfjs, version: pdfjs.version });
+
+// pdfjs.GlobalWorkerOptions.workerSrc =
+//   "cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.js";
 interface PDFViewerProps {
   maxLength: number;
   urls: string[];
@@ -159,6 +164,8 @@ export const PDFViewer = ({
             //file="https://test-tenant2-bucket.s3.amazonaws.com/documents/2d0a8435-8b36-49b5-a56a-af52e7d1ec09/079ebfeb-893e-4604-83ad-20133c5e1f04.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4TXASK766T5UXIUV%2F20230304%2Fus-east-2%2Fs3%2Faws4_request&X-Amz-Date=20230304T070621Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=055e2d79abb08cf53a5a8efcf3d996854216ee6bd1fb29846b8a32ee892cf6bf"
             // ^ for testing
             onLoadSuccess={onDocumentLoadSuccess}
+            key={downloadURLs[pageNum - 1]}
+            onLoadError={(e: any) => console.log(e.toString())}
           >
             <Page {...pageProps} />
           </Document>
